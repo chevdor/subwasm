@@ -1,0 +1,102 @@
+= submeta
+:toc: right
+:prj: subwasm
+:cmd: subwasm
+
+WARNING: This project is "under-construction". This is an early version. The commands, sub-commands and options may change without prior warning.
+
+== Introduction
+
+The metadata of a given runtime is a critical piece of information: it can be seen as the signature of a runtime.
+It contains the exhaustive list of all the features publicly exposed by the runtime.
+
+Any node can be queried to provide its current metadata. This can be displayed in json format for instance. This is a great way to have a peek at what the runtime can do.
+
+INFO: Substrate V12 is 16534 lines once its json representation is prettified.
+
+== Capabilities
+
+{prj} allows:
+
+- getting the latest metadata from a running node
+- getting the latest runtime (wasm) from a running node
+- getting runtime and metadata at any point of time using a Block hash as reference
+- getting the metadata from a a wasm file without any node
+- extracting a few information (those not requiring storage) from a runtime as wasm file
+
+== Other options
+
+Here is a list of other projects allowing to get the raw metadata through a rpc call:
+
+ - https://github.com/polkadot-js/apps[PolkadotJS] from Jaco / Parity
+ - https://github.com/ascjones/subsee[subsee] from Andrew / Parity
+ - https://github.com/scs/substrate-api-client[substrate-api-client] from SCS
+ - https://github.com/paritytech/substrate-subxt[subxt] from Parity
+
+== Usage
+
+.Get a quick overview of the functions and some help
+
+----
+include::doc/usage.adoc[]
+----
+
+----
+include::doc/usage_get.adoc[]
+----
+
+----
+include::doc/usage_info.adoc[]
+----
+
+----
+include::doc/usage_meta.adoc[]
+----
+
+.Fetch a runtime from a running node
+
+We will start by fetching the runtime from a node.
+
+NOTE: Please note that you will likely need to connect to an **archive** node to retrieve older runtime. A runtime takes around 2MB of storage on-chain and thus, older versions are pruned and will no longer be accessible if you are connectin to a non-archive node.
+
+IMPORTANT: At the moment, the only supported protocol is `http`. You currently cannot use a WebSocket (`ws://...`). PRs are welcome :)
+
+    # Here we get the latest version of the runtime
+    subwasm get --url http://localhost:9933
+
+    # Here we get an older runtime, back when Polkadot was at block 20 !
+    subwasm get --url http://localhost:9933 --block 0x4d6a0bca208b85d41833a7f35cf73d1ae6974f4bad8ab576e2c3f751d691fe6c
+
+NOTE: By default, your runtime will be saved as `runtime_000.wasm`. Running this command again will increase the counter so we you don't lose your previous runtime. You may also use the `--output` flag to provide the destination and filename of your choice. Beware, in this case, there will be no incremented counter.
+
+.Get quick check of a runtime
+
+[subs="attributes+"]
+----
+# Show the runtime version and exit with status 0
+{cmd} info --input kusama-2030.wasm
+
+# Provide a few explanations and exit with a status that is not 0
+{cmd} info --input tictactoe.wasm
+----
+
+.Get the Metadata from a local runtime/wasm
+
+[subs="attributes+"]
+----
+# Show the runtime version as well
+{cmd} info --input kusama-2030.wasm -d
+
+# Show more information: a summary of the runtime modules
+{cmd} info --input data/kusama/kusama-2030.wasm -dd
+
+# Show more information: a list of the runtime modules + calls
+{cmd} info --input data/kusama/kusama-2030.wasm -ddd
+
+# The wash & wax program :) Show the metadata as json
+{cmd} info --input data/kusama/kusama-2030.wasm -dddd
+
+# You can massage the output using `jq`
+{cmd} info --input data/kusama/kusama-2030.wasm -dddd | jq
+----
+

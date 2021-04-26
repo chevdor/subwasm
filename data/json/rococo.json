@@ -1,0 +1,6186 @@
+[
+  1635018093,
+  {
+    "V12": {
+      "modules": [
+        {
+          "name": "System",
+          "storage": {
+            "prefix": "System",
+            "entries": [
+              {
+                "name": "Account",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Blake2_128Concat",
+                    "key": "T::AccountId",
+                    "value": "AccountInfo<T::Index, T::AccountData>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The full account information for a particular account ID."
+                ]
+              },
+              {
+                "name": "ExtrinsicCount",
+                "modifier": "Optional",
+                "ty": {
+                  "Plain": "u32"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Total extrinsics count for the current block."
+                ]
+              },
+              {
+                "name": "BlockWeight",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "ConsumedWeight"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The current weight for the block."
+                ]
+              },
+              {
+                "name": "AllExtrinsicsLen",
+                "modifier": "Optional",
+                "ty": {
+                  "Plain": "u32"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Total length (in bytes) for all extrinsics put together, for the current block."
+                ]
+              },
+              {
+                "name": "BlockHash",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "T::BlockNumber",
+                    "value": "T::Hash",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " Map of block numbers to block hashes."
+                ]
+              },
+              {
+                "name": "ExtrinsicData",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "u32",
+                    "value": "Vec<u8>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Extrinsics data for the current block (maps an extrinsic's index to its data)."
+                ]
+              },
+              {
+                "name": "Number",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "T::BlockNumber"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The current block number being processed. Set by `execute_block`."
+                ]
+              },
+              {
+                "name": "ParentHash",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "T::Hash"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " Hash of the previous block."
+                ]
+              },
+              {
+                "name": "Digest",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "DigestOf<T>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Digest of the current block, also part of the block header."
+                ]
+              },
+              {
+                "name": "Events",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<EventRecord<T::Event, T::Hash>>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Events deposited for the current block."
+                ]
+              },
+              {
+                "name": "EventCount",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "EventIndex"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The number of events in the `Events<T>` list."
+                ]
+              },
+              {
+                "name": "EventTopics",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Blake2_128Concat",
+                    "key": "T::Hash",
+                    "value": "Vec<(T::BlockNumber, EventIndex)>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Mapping between a topic (represented by T::Hash) and a vector of indexes",
+                  " of events in the `<Events<T>>` list.",
+                  "",
+                  " All topic vectors have deterministic storage locations depending on the topic. This",
+                  " allows light-clients to leverage the changes trie storage tracking mechanism and",
+                  " in case of changes fetch the list of events of interest.",
+                  "",
+                  " The value has the type `(T::BlockNumber, EventIndex)` because if we used only just",
+                  " the `EventIndex` then in case if the topic has the same contents on the next block",
+                  " no notification will be triggered thus the event might be lost."
+                ]
+              },
+              {
+                "name": "LastRuntimeUpgrade",
+                "modifier": "Optional",
+                "ty": {
+                  "Plain": "LastRuntimeUpgradeInfo"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Stores the `spec_version` and `spec_name` of when the last runtime upgrade happened."
+                ]
+              },
+              {
+                "name": "UpgradedToU32RefCount",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "bool"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " True if we have upgraded so that `type RefCount` is `u32`. False (default) if not."
+                ]
+              },
+              {
+                "name": "UpgradedToDualRefCount",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "bool"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " True if we have upgraded so that AccountInfo contains two types of `RefCount`. False",
+                  " (default) if not."
+                ]
+              },
+              {
+                "name": "ExecutionPhase",
+                "modifier": "Optional",
+                "ty": {
+                  "Plain": "Phase"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The execution phase of the block."
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "fill_block",
+              "arguments": [
+                {
+                  "name": "_ratio",
+                  "ty": "Perbill"
+                }
+              ],
+              "documentation": [
+                " A dispatch that will fill the block weight up to the given ratio."
+              ]
+            },
+            {
+              "name": "remark",
+              "arguments": [
+                {
+                  "name": "_remark",
+                  "ty": "Vec<u8>"
+                }
+              ],
+              "documentation": [
+                " Make some on-chain remark.",
+                "",
+                " # <weight>",
+                " - `O(1)`",
+                " - Base Weight: 0.665 µs, independent of remark length.",
+                " - No DB operations.",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "set_heap_pages",
+              "arguments": [
+                {
+                  "name": "pages",
+                  "ty": "u64"
+                }
+              ],
+              "documentation": [
+                " Set the number of pages in the WebAssembly environment's heap.",
+                "",
+                " # <weight>",
+                " - `O(1)`",
+                " - 1 storage write.",
+                " - Base Weight: 1.405 µs",
+                " - 1 write to HEAP_PAGES",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "set_code",
+              "arguments": [
+                {
+                  "name": "code",
+                  "ty": "Vec<u8>"
+                }
+              ],
+              "documentation": [
+                " Set the new runtime code.",
+                "",
+                " # <weight>",
+                " - `O(C + S)` where `C` length of `code` and `S` complexity of `can_set_code`",
+                " - 1 storage write (codec `O(C)`).",
+                " - 1 call to `can_set_code`: `O(S)` (calls `sp_io::misc::runtime_version` which is expensive).",
+                " - 1 event.",
+                " The weight of this function is dependent on the runtime, but generally this is very expensive.",
+                " We will treat this as a full block.",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "set_code_without_checks",
+              "arguments": [
+                {
+                  "name": "code",
+                  "ty": "Vec<u8>"
+                }
+              ],
+              "documentation": [
+                " Set the new runtime code without doing any checks of the given `code`.",
+                "",
+                " # <weight>",
+                " - `O(C)` where `C` length of `code`",
+                " - 1 storage write (codec `O(C)`).",
+                " - 1 event.",
+                " The weight of this function is dependent on the runtime. We will treat this as a full block.",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "set_changes_trie_config",
+              "arguments": [
+                {
+                  "name": "changes_trie_config",
+                  "ty": "Option<ChangesTrieConfiguration>"
+                }
+              ],
+              "documentation": [
+                " Set the new changes trie configuration.",
+                "",
+                " # <weight>",
+                " - `O(1)`",
+                " - 1 storage write or delete (codec `O(1)`).",
+                " - 1 call to `deposit_log`: Uses `append` API, so O(1)",
+                " - Base Weight: 7.218 µs",
+                " - DB Weight:",
+                "     - Writes: Changes Trie, System Digest",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "set_storage",
+              "arguments": [
+                {
+                  "name": "items",
+                  "ty": "Vec<KeyValue>"
+                }
+              ],
+              "documentation": [
+                " Set some items of storage.",
+                "",
+                " # <weight>",
+                " - `O(I)` where `I` length of `items`",
+                " - `I` storage writes (`O(1)`).",
+                " - Base Weight: 0.568 * i µs",
+                " - Writes: Number of items",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "kill_storage",
+              "arguments": [
+                {
+                  "name": "keys",
+                  "ty": "Vec<Key>"
+                }
+              ],
+              "documentation": [
+                " Kill some items from storage.",
+                "",
+                " # <weight>",
+                " - `O(IK)` where `I` length of `keys` and `K` length of one key",
+                " - `I` storage deletions.",
+                " - Base Weight: .378 * i µs",
+                " - Writes: Number of items",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "kill_prefix",
+              "arguments": [
+                {
+                  "name": "prefix",
+                  "ty": "Key"
+                },
+                {
+                  "name": "_subkeys",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Kill all storage items with a key that starts with the given prefix.",
+                "",
+                " **NOTE:** We rely on the Root origin to provide us the number of subkeys under",
+                " the prefix we are removing to accurately calculate the weight of this function.",
+                "",
+                " # <weight>",
+                " - `O(P)` where `P` amount of keys with prefix `prefix`",
+                " - `P` storage deletions.",
+                " - Base Weight: 0.834 * P µs",
+                " - Writes: Number of subkeys + 1",
+                " # </weight>"
+              ]
+            }
+          ],
+          "event": [
+            {
+              "name": "ExtrinsicSuccess",
+              "arguments": [
+                "DispatchInfo"
+              ],
+              "documentation": [
+                " An extrinsic completed successfully. \\[info\\]"
+              ]
+            },
+            {
+              "name": "ExtrinsicFailed",
+              "arguments": [
+                "DispatchError",
+                "DispatchInfo"
+              ],
+              "documentation": [
+                " An extrinsic failed. \\[error, info\\]"
+              ]
+            },
+            {
+              "name": "CodeUpdated",
+              "arguments": [],
+              "documentation": [
+                " `:code` was updated."
+              ]
+            },
+            {
+              "name": "NewAccount",
+              "arguments": [
+                "AccountId"
+              ],
+              "documentation": [
+                " A new \\[account\\] was created."
+              ]
+            },
+            {
+              "name": "KilledAccount",
+              "arguments": [
+                "AccountId"
+              ],
+              "documentation": [
+                " An \\[account\\] was reaped."
+              ]
+            }
+          ],
+          "constants": [
+            {
+              "name": "BlockWeights",
+              "ty": "limits::BlockWeights",
+              "value": [
+                0,
+                242,
+                5,
+                42,
+                1,
+                0,
+                0,
+                0,
+                0,
+                32,
+                74,
+                169,
+                209,
+                1,
+                0,
+                0,
+                64,
+                89,
+                115,
+                7,
+                0,
+                0,
+                0,
+                0,
+                1,
+                192,
+                202,
+                72,
+                147,
+                81,
+                1,
+                0,
+                0,
+                1,
+                0,
+                152,
+                247,
+                62,
+                93,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                64,
+                89,
+                115,
+                7,
+                0,
+                0,
+                0,
+                0,
+                1,
+                192,
+                82,
+                155,
+                253,
+                197,
+                1,
+                0,
+                0,
+                1,
+                0,
+                32,
+                74,
+                169,
+                209,
+                1,
+                0,
+                0,
+                1,
+                0,
+                136,
+                82,
+                106,
+                116,
+                0,
+                0,
+                0,
+                64,
+                89,
+                115,
+                7,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "documentation": [
+                " Block & extrinsics weights: base values and limits."
+              ]
+            },
+            {
+              "name": "BlockLength",
+              "ty": "limits::BlockLength",
+              "value": [
+                0,
+                0,
+                60,
+                0,
+                0,
+                0,
+                80,
+                0,
+                0,
+                0,
+                80,
+                0
+              ],
+              "documentation": [
+                " The maximum length of a block (in bytes)."
+              ]
+            },
+            {
+              "name": "BlockHashCount",
+              "ty": "T::BlockNumber",
+              "value": [
+                96,
+                9,
+                0,
+                0
+              ],
+              "documentation": [
+                " Maximum number of block number to block hash mappings to keep (oldest pruned first)."
+              ]
+            },
+            {
+              "name": "DbWeight",
+              "ty": "RuntimeDbWeight",
+              "value": [
+                64,
+                120,
+                125,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                225,
+                245,
+                5,
+                0,
+                0,
+                0,
+                0
+              ],
+              "documentation": [
+                " The weight of runtime database operations the runtime can invoke."
+              ]
+            },
+            {
+              "name": "Version",
+              "ty": "RuntimeVersion",
+              "value": [
+                24,
+                114,
+                111,
+                99,
+                111,
+                99,
+                111,
+                72,
+                112,
+                97,
+                114,
+                105,
+                116,
+                121,
+                45,
+                114,
+                111,
+                99,
+                111,
+                99,
+                111,
+                45,
+                118,
+                49,
+                45,
+                49,
+                0,
+                0,
+                0,
+                0,
+                210,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                48,
+                223,
+                106,
+                203,
+                104,
+                153,
+                7,
+                96,
+                155,
+                3,
+                0,
+                0,
+                0,
+                55,
+                227,
+                151,
+                252,
+                124,
+                145,
+                245,
+                228,
+                1,
+                0,
+                0,
+                0,
+                64,
+                254,
+                58,
+                212,
+                1,
+                248,
+                149,
+                154,
+                4,
+                0,
+                0,
+                0,
+                210,
+                188,
+                152,
+                151,
+                238,
+                208,
+                143,
+                21,
+                2,
+                0,
+                0,
+                0,
+                247,
+                139,
+                39,
+                139,
+                229,
+                63,
+                69,
+                76,
+                2,
+                0,
+                0,
+                0,
+                175,
+                44,
+                2,
+                151,
+                162,
+                62,
+                109,
+                61,
+                1,
+                0,
+                0,
+                0,
+                237,
+                153,
+                197,
+                172,
+                178,
+                94,
+                237,
+                245,
+                2,
+                0,
+                0,
+                0,
+                203,
+                202,
+                37,
+                227,
+                159,
+                20,
+                35,
+                135,
+                2,
+                0,
+                0,
+                0,
+                104,
+                122,
+                212,
+                74,
+                211,
+                127,
+                3,
+                194,
+                1,
+                0,
+                0,
+                0,
+                171,
+                60,
+                5,
+                114,
+                41,
+                31,
+                235,
+                139,
+                1,
+                0,
+                0,
+                0,
+                188,
+                157,
+                137,
+                144,
+                79,
+                91,
+                146,
+                63,
+                1,
+                0,
+                0,
+                0,
+                55,
+                200,
+                187,
+                19,
+                80,
+                169,
+                162,
+                168,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "documentation": [
+                " Get the chain's current version."
+              ]
+            },
+            {
+              "name": "SS58Prefix",
+              "ty": "u8",
+              "value": [
+                42
+              ],
+              "documentation": [
+                " The designated SS85 prefix of this chain.",
+                "",
+                " This replaces the \"ss58Format\" property declared in the chain spec. Reason is",
+                " that the runtime should know about the prefix in order to make use of it as",
+                " an identifier of the chain."
+              ]
+            }
+          ],
+          "errors": [
+            {
+              "name": "InvalidSpecName",
+              "documentation": [
+                " The name of specification does not match between the current runtime",
+                " and the new runtime."
+              ]
+            },
+            {
+              "name": "SpecVersionNeedsToIncrease",
+              "documentation": [
+                " The specification version is not allowed to decrease between the current runtime",
+                " and the new runtime."
+              ]
+            },
+            {
+              "name": "FailedToExtractRuntimeVersion",
+              "documentation": [
+                " Failed to extract the runtime version from the new runtime.",
+                "",
+                " Either calling `Core_version` or decoding `RuntimeVersion` failed."
+              ]
+            },
+            {
+              "name": "NonDefaultComposite",
+              "documentation": [
+                " Suicide called when the account has non-default composite data."
+              ]
+            },
+            {
+              "name": "NonZeroRefCount",
+              "documentation": [
+                " There is a non-zero reference count preventing the account from being purged."
+              ]
+            }
+          ],
+          "index": 0
+        },
+        {
+          "name": "Babe",
+          "storage": {
+            "prefix": "Babe",
+            "entries": [
+              {
+                "name": "EpochIndex",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "u64"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " Current epoch index."
+                ]
+              },
+              {
+                "name": "Authorities",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<(AuthorityId, BabeAuthorityWeight)>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Current epoch authorities."
+                ]
+              },
+              {
+                "name": "GenesisSlot",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Slot"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The slot at which the first epoch actually started. This is 0",
+                  " until the first block of the chain."
+                ]
+              },
+              {
+                "name": "CurrentSlot",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Slot"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " Current slot number."
+                ]
+              },
+              {
+                "name": "Randomness",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "schnorrkel::Randomness"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The epoch randomness for the *current* epoch.",
+                  "",
+                  " # Security",
+                  "",
+                  " This MUST NOT be used for gambling, as it can be influenced by a",
+                  " malicious validator in the short term. It MAY be used in many",
+                  " cryptographic protocols, however, so long as one remembers that this",
+                  " (like everything else on-chain) it is public. For example, it can be",
+                  " used where a number is needed that cannot have been chosen by an",
+                  " adversary, for purposes such as public-coin zero-knowledge proofs."
+                ]
+              },
+              {
+                "name": "NextEpochConfig",
+                "modifier": "Optional",
+                "ty": {
+                  "Plain": "NextConfigDescriptor"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Next epoch configuration, if changed."
+                ]
+              },
+              {
+                "name": "NextRandomness",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "schnorrkel::Randomness"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " Next epoch randomness."
+                ]
+              },
+              {
+                "name": "NextAuthorities",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<(AuthorityId, BabeAuthorityWeight)>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Next epoch authorities."
+                ]
+              },
+              {
+                "name": "SegmentIndex",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "u32"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " Randomness under construction.",
+                  "",
+                  " We make a tradeoff between storage accesses and list length.",
+                  " We store the under-construction randomness in segments of up to",
+                  " `UNDER_CONSTRUCTION_SEGMENT_LENGTH`.",
+                  "",
+                  " Once a segment reaches this length, we begin the next one.",
+                  " We reset all segments and return to `0` at the beginning of every",
+                  " epoch."
+                ]
+              },
+              {
+                "name": "UnderConstruction",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "u32",
+                    "value": "Vec<schnorrkel::Randomness>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " TWOX-NOTE: `SegmentIndex` is an increasing integer, so this is okay."
+                ]
+              },
+              {
+                "name": "Initialized",
+                "modifier": "Optional",
+                "ty": {
+                  "Plain": "MaybeRandomness"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Temporary value (cleared at block finalization) which is `Some`",
+                  " if per-block initialization has already been called for current block."
+                ]
+              },
+              {
+                "name": "AuthorVrfRandomness",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "MaybeRandomness"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Temporary value (cleared at block finalization) that includes the VRF output generated",
+                  " at this block. This field should always be populated during block processing unless",
+                  " secondary plain slots are enabled (which don't contain a VRF output)."
+                ]
+              },
+              {
+                "name": "Lateness",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "T::BlockNumber"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " How late the current block is compared to its parent.",
+                  "",
+                  " This entry is populated as part of block execution and is cleaned up",
+                  " on block finalization. Querying this storage entry outside of block",
+                  " execution context should always yield zero."
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "report_equivocation",
+              "arguments": [
+                {
+                  "name": "equivocation_proof",
+                  "ty": "EquivocationProof<T::Header>"
+                },
+                {
+                  "name": "key_owner_proof",
+                  "ty": "T::KeyOwnerProof"
+                }
+              ],
+              "documentation": [
+                " Report authority equivocation/misbehavior. This method will verify",
+                " the equivocation proof and validate the given key ownership proof",
+                " against the extracted offender. If both are valid, the offence will",
+                " be reported."
+              ]
+            },
+            {
+              "name": "report_equivocation_unsigned",
+              "arguments": [
+                {
+                  "name": "equivocation_proof",
+                  "ty": "EquivocationProof<T::Header>"
+                },
+                {
+                  "name": "key_owner_proof",
+                  "ty": "T::KeyOwnerProof"
+                }
+              ],
+              "documentation": [
+                " Report authority equivocation/misbehavior. This method will verify",
+                " the equivocation proof and validate the given key ownership proof",
+                " against the extracted offender. If both are valid, the offence will",
+                " be reported.",
+                " This extrinsic must be called unsigned and it is expected that only",
+                " block authors will call it (validated in `ValidateUnsigned`), as such",
+                " if the block author is defined it will be defined as the equivocation",
+                " reporter."
+              ]
+            }
+          ],
+          "event": null,
+          "constants": [
+            {
+              "name": "EpochDuration",
+              "ty": "u64",
+              "value": [
+                88,
+                2,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "documentation": [
+                " The number of **slots** that an epoch takes. We couple sessions to",
+                " epochs, i.e. we start a new session once the new epoch begins.",
+                " NOTE: Currently it is not possible to change the epoch duration",
+                " after the chain has started. Attempting to do so will brick block",
+                " production."
+              ]
+            },
+            {
+              "name": "ExpectedBlockTime",
+              "ty": "T::Moment",
+              "value": [
+                112,
+                23,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "documentation": [
+                " The expected average block time at which BABE should be creating",
+                " blocks. Since BABE is probabilistic it is not trivial to figure out",
+                " what the expected average block time should be based on the slot",
+                " duration and the security parameter `c` (where `1 - c` represents",
+                " the probability of a slot being empty)."
+              ]
+            }
+          ],
+          "errors": [],
+          "index": 1
+        },
+        {
+          "name": "Timestamp",
+          "storage": {
+            "prefix": "Timestamp",
+            "entries": [
+              {
+                "name": "Now",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "T::Moment"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " Current time for the current block."
+                ]
+              },
+              {
+                "name": "DidUpdate",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "bool"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Did the timestamp get updated in this block?"
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "set",
+              "arguments": [
+                {
+                  "name": "now",
+                  "ty": "Compact<T::Moment>"
+                }
+              ],
+              "documentation": [
+                " Set the current time.",
+                "",
+                " This call should be invoked exactly once per block. It will panic at the finalization",
+                " phase, if this call hasn't been invoked by that time.",
+                "",
+                " The timestamp should be greater than the previous one by the amount specified by",
+                " `MinimumPeriod`.",
+                "",
+                " The dispatch origin for this call must be `Inherent`.",
+                "",
+                " # <weight>",
+                " - `O(1)` (Note that implementations of `OnTimestampSet` must also be `O(1)`)",
+                " - 1 storage read and 1 storage mutation (codec `O(1)`). (because of `DidUpdate::take` in `on_finalize`)",
+                " - 1 event handler `on_timestamp_set`. Must be `O(1)`.",
+                " # </weight>"
+              ]
+            }
+          ],
+          "event": null,
+          "constants": [
+            {
+              "name": "MinimumPeriod",
+              "ty": "T::Moment",
+              "value": [
+                184,
+                11,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "documentation": [
+                " The minimum period between blocks. Beware that this is different to the *expected* period",
+                " that the block production apparatus provides. Your chosen consensus system will generally",
+                " work with this to determine a sensible block time. e.g. For Aura, it will be double this",
+                " period on default settings."
+              ]
+            }
+          ],
+          "errors": [],
+          "index": 2
+        },
+        {
+          "name": "Indices",
+          "storage": {
+            "prefix": "Indices",
+            "entries": [
+              {
+                "name": "Accounts",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Blake2_128Concat",
+                    "key": "T::AccountIndex",
+                    "value": "(T::AccountId, BalanceOf<T>, bool)",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The lookup from index to account."
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "claim",
+              "arguments": [
+                {
+                  "name": "index",
+                  "ty": "T::AccountIndex"
+                }
+              ],
+              "documentation": [
+                " Assign an previously unassigned index.",
+                "",
+                " Payment: `Deposit` is reserved from the sender account.",
+                "",
+                " The dispatch origin for this call must be _Signed_.",
+                "",
+                " - `index`: the index to be claimed. This must not be in use.",
+                "",
+                " Emits `IndexAssigned` if successful.",
+                "",
+                " # <weight>",
+                " - `O(1)`.",
+                " - One storage mutation (codec `O(1)`).",
+                " - One reserve operation.",
+                " - One event.",
+                " -------------------",
+                " - DB Weight: 1 Read/Write (Accounts)",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "transfer",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "T::AccountId"
+                },
+                {
+                  "name": "index",
+                  "ty": "T::AccountIndex"
+                }
+              ],
+              "documentation": [
+                " Assign an index already owned by the sender to another account. The balance reservation",
+                " is effectively transferred to the new account.",
+                "",
+                " The dispatch origin for this call must be _Signed_.",
+                "",
+                " - `index`: the index to be re-assigned. This must be owned by the sender.",
+                " - `new`: the new owner of the index. This function is a no-op if it is equal to sender.",
+                "",
+                " Emits `IndexAssigned` if successful.",
+                "",
+                " # <weight>",
+                " - `O(1)`.",
+                " - One storage mutation (codec `O(1)`).",
+                " - One transfer operation.",
+                " - One event.",
+                " -------------------",
+                " - DB Weight:",
+                "    - Reads: Indices Accounts, System Account (recipient)",
+                "    - Writes: Indices Accounts, System Account (recipient)",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "free",
+              "arguments": [
+                {
+                  "name": "index",
+                  "ty": "T::AccountIndex"
+                }
+              ],
+              "documentation": [
+                " Free up an index owned by the sender.",
+                "",
+                " Payment: Any previous deposit placed for the index is unreserved in the sender account.",
+                "",
+                " The dispatch origin for this call must be _Signed_ and the sender must own the index.",
+                "",
+                " - `index`: the index to be freed. This must be owned by the sender.",
+                "",
+                " Emits `IndexFreed` if successful.",
+                "",
+                " # <weight>",
+                " - `O(1)`.",
+                " - One storage mutation (codec `O(1)`).",
+                " - One reserve operation.",
+                " - One event.",
+                " -------------------",
+                " - DB Weight: 1 Read/Write (Accounts)",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "force_transfer",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "T::AccountId"
+                },
+                {
+                  "name": "index",
+                  "ty": "T::AccountIndex"
+                },
+                {
+                  "name": "freeze",
+                  "ty": "bool"
+                }
+              ],
+              "documentation": [
+                " Force an index to an account. This doesn't require a deposit. If the index is already",
+                " held, then any deposit is reimbursed to its current owner.",
+                "",
+                " The dispatch origin for this call must be _Root_.",
+                "",
+                " - `index`: the index to be (re-)assigned.",
+                " - `new`: the new owner of the index. This function is a no-op if it is equal to sender.",
+                " - `freeze`: if set to `true`, will freeze the index so it cannot be transferred.",
+                "",
+                " Emits `IndexAssigned` if successful.",
+                "",
+                " # <weight>",
+                " - `O(1)`.",
+                " - One storage mutation (codec `O(1)`).",
+                " - Up to one reserve operation.",
+                " - One event.",
+                " -------------------",
+                " - DB Weight:",
+                "    - Reads: Indices Accounts, System Account (original owner)",
+                "    - Writes: Indices Accounts, System Account (original owner)",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "freeze",
+              "arguments": [
+                {
+                  "name": "index",
+                  "ty": "T::AccountIndex"
+                }
+              ],
+              "documentation": [
+                " Freeze an index so it will always point to the sender account. This consumes the deposit.",
+                "",
+                " The dispatch origin for this call must be _Signed_ and the signing account must have a",
+                " non-frozen account `index`.",
+                "",
+                " - `index`: the index to be frozen in place.",
+                "",
+                " Emits `IndexFrozen` if successful.",
+                "",
+                " # <weight>",
+                " - `O(1)`.",
+                " - One storage mutation (codec `O(1)`).",
+                " - Up to one slash operation.",
+                " - One event.",
+                " -------------------",
+                " - DB Weight: 1 Read/Write (Accounts)",
+                " # </weight>"
+              ]
+            }
+          ],
+          "event": [
+            {
+              "name": "IndexAssigned",
+              "arguments": [
+                "AccountId",
+                "AccountIndex"
+              ],
+              "documentation": [
+                " A account index was assigned. \\[index, who\\]"
+              ]
+            },
+            {
+              "name": "IndexFreed",
+              "arguments": [
+                "AccountIndex"
+              ],
+              "documentation": [
+                " A account index has been freed up (unassigned). \\[index\\]"
+              ]
+            },
+            {
+              "name": "IndexFrozen",
+              "arguments": [
+                "AccountIndex",
+                "AccountId"
+              ],
+              "documentation": [
+                " A account index has been frozen to its current account ID. \\[index, who\\]"
+              ]
+            }
+          ],
+          "constants": [
+            {
+              "name": "Deposit",
+              "ty": "BalanceOf<T>",
+              "value": [
+                0,
+                16,
+                165,
+                212,
+                232,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "documentation": [
+                " The deposit needed for reserving an index."
+              ]
+            }
+          ],
+          "errors": [],
+          "index": 3
+        },
+        {
+          "name": "Balances",
+          "storage": {
+            "prefix": "Balances",
+            "entries": [
+              {
+                "name": "TotalIssuance",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "T::Balance"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The total units issued in the system."
+                ]
+              },
+              {
+                "name": "Account",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Blake2_128Concat",
+                    "key": "T::AccountId",
+                    "value": "AccountData<T::Balance>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The balance of an account.",
+                  "",
+                  " NOTE: This is only used in the case that this pallet is used to store balances."
+                ]
+              },
+              {
+                "name": "Locks",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Blake2_128Concat",
+                    "key": "T::AccountId",
+                    "value": "Vec<BalanceLock<T::Balance>>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Any liquidity locks on some account balances.",
+                  " NOTE: Should only be accessed when setting, changing and freeing a lock."
+                ]
+              },
+              {
+                "name": "StorageVersion",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Releases"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Storage version of the pallet.",
+                  "",
+                  " This is set to v2.0.0 for new networks."
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "transfer",
+              "arguments": [
+                {
+                  "name": "dest",
+                  "ty": "<T::Lookup as StaticLookup>::Source"
+                },
+                {
+                  "name": "value",
+                  "ty": "Compact<T::Balance>"
+                }
+              ],
+              "documentation": [
+                " Transfer some liquid free balance to another account.",
+                "",
+                " `transfer` will set the `FreeBalance` of the sender and receiver.",
+                " It will decrease the total issuance of the system by the `TransferFee`.",
+                " If the sender's account is below the existential deposit as a result",
+                " of the transfer, the account will be reaped.",
+                "",
+                " The dispatch origin for this call must be `Signed` by the transactor.",
+                "",
+                " # <weight>",
+                " - Dependent on arguments but not critical, given proper implementations for",
+                "   input config types. See related functions below.",
+                " - It contains a limited number of reads and writes internally and no complex computation.",
+                "",
+                " Related functions:",
+                "",
+                "   - `ensure_can_withdraw` is always called internally but has a bounded complexity.",
+                "   - Transferring balances to accounts that did not exist before will cause",
+                "      `T::OnNewAccount::on_new_account` to be called.",
+                "   - Removing enough funds from an account will trigger `T::DustRemoval::on_unbalanced`.",
+                "   - `transfer_keep_alive` works the same way as `transfer`, but has an additional",
+                "     check that the transfer will not kill the origin account.",
+                " ---------------------------------",
+                " - Base Weight: 73.64 µs, worst case scenario (account created, account removed)",
+                " - DB Weight: 1 Read and 1 Write to destination account",
+                " - Origin account is already in memory, so no DB operations for them.",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "set_balance",
+              "arguments": [
+                {
+                  "name": "who",
+                  "ty": "<T::Lookup as StaticLookup>::Source"
+                },
+                {
+                  "name": "new_free",
+                  "ty": "Compact<T::Balance>"
+                },
+                {
+                  "name": "new_reserved",
+                  "ty": "Compact<T::Balance>"
+                }
+              ],
+              "documentation": [
+                " Set the balances of a given account.",
+                "",
+                " This will alter `FreeBalance` and `ReservedBalance` in storage. it will",
+                " also decrease the total issuance of the system (`TotalIssuance`).",
+                " If the new free or reserved balance is below the existential deposit,",
+                " it will reset the account nonce (`frame_system::AccountNonce`).",
+                "",
+                " The dispatch origin for this call is `root`.",
+                "",
+                " # <weight>",
+                " - Independent of the arguments.",
+                " - Contains a limited number of reads and writes.",
+                " ---------------------",
+                " - Base Weight:",
+                "     - Creating: 27.56 µs",
+                "     - Killing: 35.11 µs",
+                " - DB Weight: 1 Read, 1 Write to `who`",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "force_transfer",
+              "arguments": [
+                {
+                  "name": "source",
+                  "ty": "<T::Lookup as StaticLookup>::Source"
+                },
+                {
+                  "name": "dest",
+                  "ty": "<T::Lookup as StaticLookup>::Source"
+                },
+                {
+                  "name": "value",
+                  "ty": "Compact<T::Balance>"
+                }
+              ],
+              "documentation": [
+                " Exactly as `transfer`, except the origin must be root and the source account may be",
+                " specified.",
+                " # <weight>",
+                " - Same as transfer, but additional read and write because the source account is",
+                "   not assumed to be in the overlay.",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "transfer_keep_alive",
+              "arguments": [
+                {
+                  "name": "dest",
+                  "ty": "<T::Lookup as StaticLookup>::Source"
+                },
+                {
+                  "name": "value",
+                  "ty": "Compact<T::Balance>"
+                }
+              ],
+              "documentation": [
+                " Same as the [`transfer`] call, but with a check that the transfer will not kill the",
+                " origin account.",
+                "",
+                " 99% of the time you want [`transfer`] instead.",
+                "",
+                " [`transfer`]: struct.Pallet.html#method.transfer",
+                " # <weight>",
+                " - Cheaper than transfer because account cannot be killed.",
+                " - Base Weight: 51.4 µs",
+                " - DB Weight: 1 Read and 1 Write to dest (sender is in overlay already)",
+                " #</weight>"
+              ]
+            }
+          ],
+          "event": [
+            {
+              "name": "Endowed",
+              "arguments": [
+                "AccountId",
+                "Balance"
+              ],
+              "documentation": [
+                " An account was created with some free balance. \\[account, free_balance\\]"
+              ]
+            },
+            {
+              "name": "DustLost",
+              "arguments": [
+                "AccountId",
+                "Balance"
+              ],
+              "documentation": [
+                " An account was removed whose balance was non-zero but below ExistentialDeposit,",
+                " resulting in an outright loss. \\[account, balance\\]"
+              ]
+            },
+            {
+              "name": "Transfer",
+              "arguments": [
+                "AccountId",
+                "AccountId",
+                "Balance"
+              ],
+              "documentation": [
+                " Transfer succeeded. \\[from, to, value\\]"
+              ]
+            },
+            {
+              "name": "BalanceSet",
+              "arguments": [
+                "AccountId",
+                "Balance",
+                "Balance"
+              ],
+              "documentation": [
+                " A balance was set by root. \\[who, free, reserved\\]"
+              ]
+            },
+            {
+              "name": "Deposit",
+              "arguments": [
+                "AccountId",
+                "Balance"
+              ],
+              "documentation": [
+                " Some amount was deposited (e.g. for transaction fees). \\[who, deposit\\]"
+              ]
+            },
+            {
+              "name": "Reserved",
+              "arguments": [
+                "AccountId",
+                "Balance"
+              ],
+              "documentation": [
+                " Some balance was reserved (moved from free to reserved). \\[who, value\\]"
+              ]
+            },
+            {
+              "name": "Unreserved",
+              "arguments": [
+                "AccountId",
+                "Balance"
+              ],
+              "documentation": [
+                " Some balance was unreserved (moved from reserved to free). \\[who, value\\]"
+              ]
+            },
+            {
+              "name": "ReserveRepatriated",
+              "arguments": [
+                "AccountId",
+                "AccountId",
+                "Balance",
+                "Status"
+              ],
+              "documentation": [
+                " Some balance was moved from the reserve of the first account to the second account.",
+                " Final argument indicates the destination balance type.",
+                " \\[from, to, balance, destination_status\\]"
+              ]
+            }
+          ],
+          "constants": [
+            {
+              "name": "ExistentialDeposit",
+              "ty": "T::Balance",
+              "value": [
+                0,
+                228,
+                11,
+                84,
+                2,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "documentation": [
+                " The minimum amount required to keep an account open."
+              ]
+            }
+          ],
+          "errors": [
+            {
+              "name": "VestingBalance",
+              "documentation": [
+                " Vesting balance too high to send value"
+              ]
+            },
+            {
+              "name": "LiquidityRestrictions",
+              "documentation": [
+                " Account liquidity restrictions prevent withdrawal"
+              ]
+            },
+            {
+              "name": "Overflow",
+              "documentation": [
+                " Got an overflow after adding"
+              ]
+            },
+            {
+              "name": "InsufficientBalance",
+              "documentation": [
+                " Balance too low to send value"
+              ]
+            },
+            {
+              "name": "ExistentialDeposit",
+              "documentation": [
+                " Value too low to create account due to existential deposit"
+              ]
+            },
+            {
+              "name": "KeepAlive",
+              "documentation": [
+                " Transfer/payment would kill account"
+              ]
+            },
+            {
+              "name": "ExistingVestingSchedule",
+              "documentation": [
+                " A vesting schedule already exists for this account"
+              ]
+            },
+            {
+              "name": "DeadAccount",
+              "documentation": [
+                " Beneficiary account must pre-exist"
+              ]
+            }
+          ],
+          "index": 4
+        },
+        {
+          "name": "TransactionPayment",
+          "storage": {
+            "prefix": "TransactionPayment",
+            "entries": [
+              {
+                "name": "NextFeeMultiplier",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Multiplier"
+                },
+                "default": [
+                  0,
+                  0,
+                  100,
+                  167,
+                  179,
+                  182,
+                  224,
+                  13,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": []
+              },
+              {
+                "name": "StorageVersion",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Releases"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": []
+              }
+            ]
+          },
+          "calls": null,
+          "event": null,
+          "constants": [
+            {
+              "name": "TransactionByteFee",
+              "ty": "BalanceOf<T>",
+              "value": [
+                0,
+                225,
+                245,
+                5,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "documentation": [
+                " The fee to be paid for making a transaction; the per-byte portion."
+              ]
+            },
+            {
+              "name": "WeightToFee",
+              "ty": "Vec<WeightToFeeCoefficient<BalanceOf<T>>>",
+              "value": [
+                4,
+                8,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+              ],
+              "documentation": [
+                " The polynomial that is applied in order to derive fee from weight."
+              ]
+            }
+          ],
+          "errors": [],
+          "index": 5
+        },
+        {
+          "name": "Authorship",
+          "storage": {
+            "prefix": "Authorship",
+            "entries": [
+              {
+                "name": "Uncles",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<UncleEntryItem<T::BlockNumber, T::Hash, T::AccountId>>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Uncles"
+                ]
+              },
+              {
+                "name": "Author",
+                "modifier": "Optional",
+                "ty": {
+                  "Plain": "T::AccountId"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Author of current block."
+                ]
+              },
+              {
+                "name": "DidSetUncles",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "bool"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Whether uncles were already set in this block."
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "set_uncles",
+              "arguments": [
+                {
+                  "name": "new_uncles",
+                  "ty": "Vec<T::Header>"
+                }
+              ],
+              "documentation": [
+                " Provide a set of uncles."
+              ]
+            }
+          ],
+          "event": null,
+          "constants": [],
+          "errors": [
+            {
+              "name": "InvalidUncleParent",
+              "documentation": [
+                " The uncle parent not in the chain."
+              ]
+            },
+            {
+              "name": "UnclesAlreadySet",
+              "documentation": [
+                " Uncles already set in the block."
+              ]
+            },
+            {
+              "name": "TooManyUncles",
+              "documentation": [
+                " Too many uncles."
+              ]
+            },
+            {
+              "name": "GenesisUncle",
+              "documentation": [
+                " The uncle is genesis."
+              ]
+            },
+            {
+              "name": "TooHighUncle",
+              "documentation": [
+                " The uncle is too high in chain."
+              ]
+            },
+            {
+              "name": "UncleAlreadyIncluded",
+              "documentation": [
+                " The uncle is already included."
+              ]
+            },
+            {
+              "name": "OldUncle",
+              "documentation": [
+                " The uncle isn't recent enough to be included."
+              ]
+            }
+          ],
+          "index": 6
+        },
+        {
+          "name": "Offences",
+          "storage": {
+            "prefix": "Offences",
+            "entries": [
+              {
+                "name": "Reports",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ReportIdOf<T>",
+                    "value": "OffenceDetails<T::AccountId, T::IdentificationTuple>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The primary structure that holds all offence records keyed by report identifiers."
+                ]
+              },
+              {
+                "name": "DeferredOffences",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<DeferredOffenceOf<T>>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Deferred reports that have been rejected by the offence handler and need to be submitted",
+                  " at a later time."
+                ]
+              },
+              {
+                "name": "ConcurrentReportsIndex",
+                "modifier": "Default",
+                "ty": {
+                  "DoubleMap": {
+                    "hasher": "Twox64Concat",
+                    "key1": "Kind",
+                    "key2": "OpaqueTimeSlot",
+                    "value": "Vec<ReportIdOf<T>>",
+                    "key2_hasher": "Twox64Concat"
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " A vector of reports of the same kind that happened at the same time slot."
+                ]
+              },
+              {
+                "name": "ReportsByKindIndex",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "Kind",
+                    "value": "Vec<u8>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Enumerates all reports of a kind along with the time they happened.",
+                  "",
+                  " All reports are sorted by the time of offence.",
+                  "",
+                  " Note that the actual type of this mapping is `Vec<u8>`, this is because values of",
+                  " different types are not supported at the moment so we are doing the manual serialization."
+                ]
+              }
+            ]
+          },
+          "calls": [],
+          "event": [
+            {
+              "name": "Offence",
+              "arguments": [
+                "Kind",
+                "OpaqueTimeSlot",
+                "bool"
+              ],
+              "documentation": [
+                " There is an offence reported of the given `kind` happened at the `session_index` and",
+                " (kind-specific) time slot. This event is not deposited for duplicate slashes. last",
+                " element indicates of the offence was applied (true) or queued (false)",
+                " \\[kind, timeslot, applied\\]."
+              ]
+            }
+          ],
+          "constants": [],
+          "errors": [],
+          "index": 7
+        },
+        {
+          "name": "Historical",
+          "storage": null,
+          "calls": null,
+          "event": null,
+          "constants": [],
+          "errors": [],
+          "index": 8
+        },
+        {
+          "name": "Session",
+          "storage": {
+            "prefix": "Session",
+            "entries": [
+              {
+                "name": "Validators",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<T::ValidatorId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The current set of validators."
+                ]
+              },
+              {
+                "name": "CurrentIndex",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "SessionIndex"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " Current index of the session."
+                ]
+              },
+              {
+                "name": "QueuedChanged",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "bool"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " True if the underlying economic identities or weighting behind the validators",
+                  " has changed in the queued validator set."
+                ]
+              },
+              {
+                "name": "QueuedKeys",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<(T::ValidatorId, T::Keys)>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The queued keys for the next session. When the next session begins, these keys",
+                  " will be used to determine the validator's session keys."
+                ]
+              },
+              {
+                "name": "DisabledValidators",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<u32>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Indices of disabled validators.",
+                  "",
+                  " The set is cleared when `on_session_ending` returns a new set of identities."
+                ]
+              },
+              {
+                "name": "NextKeys",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "T::ValidatorId",
+                    "value": "T::Keys",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The next session keys for a validator."
+                ]
+              },
+              {
+                "name": "KeyOwner",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "(KeyTypeId, Vec<u8>)",
+                    "value": "T::ValidatorId",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The owner of a key. The key is the `KeyTypeId` + the encoded key."
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "set_keys",
+              "arguments": [
+                {
+                  "name": "keys",
+                  "ty": "T::Keys"
+                },
+                {
+                  "name": "proof",
+                  "ty": "Vec<u8>"
+                }
+              ],
+              "documentation": [
+                " Sets the session key(s) of the function caller to `keys`.",
+                " Allows an account to set its session key prior to becoming a validator.",
+                " This doesn't take effect until the next session.",
+                "",
+                " The dispatch origin of this function must be signed.",
+                "",
+                " # <weight>",
+                " - Complexity: `O(1)`",
+                "   Actual cost depends on the number of length of `T::Keys::key_ids()` which is fixed.",
+                " - DbReads: `origin account`, `T::ValidatorIdOf`, `NextKeys`",
+                " - DbWrites: `origin account`, `NextKeys`",
+                " - DbReads per key id: `KeyOwner`",
+                " - DbWrites per key id: `KeyOwner`",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "purge_keys",
+              "arguments": [],
+              "documentation": [
+                " Removes any session key(s) of the function caller.",
+                " This doesn't take effect until the next session.",
+                "",
+                " The dispatch origin of this function must be signed.",
+                "",
+                " # <weight>",
+                " - Complexity: `O(1)` in number of key types.",
+                "   Actual cost depends on the number of length of `T::Keys::key_ids()` which is fixed.",
+                " - DbReads: `T::ValidatorIdOf`, `NextKeys`, `origin account`",
+                " - DbWrites: `NextKeys`, `origin account`",
+                " - DbWrites per key id: `KeyOwnder`",
+                " # </weight>"
+              ]
+            }
+          ],
+          "event": [
+            {
+              "name": "NewSession",
+              "arguments": [
+                "SessionIndex"
+              ],
+              "documentation": [
+                " New session has happened. Note that the argument is the \\[session_index\\], not the block",
+                " number as the type might suggest."
+              ]
+            }
+          ],
+          "constants": [],
+          "errors": [
+            {
+              "name": "InvalidProof",
+              "documentation": [
+                " Invalid ownership proof."
+              ]
+            },
+            {
+              "name": "NoAssociatedValidatorId",
+              "documentation": [
+                " No associated validator ID for account."
+              ]
+            },
+            {
+              "name": "DuplicatedKey",
+              "documentation": [
+                " Registered duplicate key."
+              ]
+            },
+            {
+              "name": "NoKeys",
+              "documentation": [
+                " No keys are associated with this account."
+              ]
+            },
+            {
+              "name": "NoAccount",
+              "documentation": [
+                " Key setting account is not live, so it's impossible to associate keys."
+              ]
+            }
+          ],
+          "index": 9
+        },
+        {
+          "name": "Grandpa",
+          "storage": {
+            "prefix": "GrandpaFinality",
+            "entries": [
+              {
+                "name": "State",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "StoredState<T::BlockNumber>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " State of the current authority set."
+                ]
+              },
+              {
+                "name": "PendingChange",
+                "modifier": "Optional",
+                "ty": {
+                  "Plain": "StoredPendingChange<T::BlockNumber>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Pending change: (signaled at, scheduled change)."
+                ]
+              },
+              {
+                "name": "NextForced",
+                "modifier": "Optional",
+                "ty": {
+                  "Plain": "T::BlockNumber"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " next block number where we can force a change."
+                ]
+              },
+              {
+                "name": "Stalled",
+                "modifier": "Optional",
+                "ty": {
+                  "Plain": "(T::BlockNumber, T::BlockNumber)"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " `true` if we are currently stalled."
+                ]
+              },
+              {
+                "name": "CurrentSetId",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "SetId"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The number of changes (both in terms of keys and underlying economic responsibilities)",
+                  " in the \"set\" of Grandpa validators from genesis."
+                ]
+              },
+              {
+                "name": "SetIdSession",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "SetId",
+                    "value": "SessionIndex",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " A mapping from grandpa set ID to the index of the *most recent* session for which its",
+                  " members were responsible.",
+                  "",
+                  " TWOX-NOTE: `SetId` is not under user control."
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "report_equivocation",
+              "arguments": [
+                {
+                  "name": "equivocation_proof",
+                  "ty": "EquivocationProof<T::Hash, T::BlockNumber>"
+                },
+                {
+                  "name": "key_owner_proof",
+                  "ty": "T::KeyOwnerProof"
+                }
+              ],
+              "documentation": [
+                " Report voter equivocation/misbehavior. This method will verify the",
+                " equivocation proof and validate the given key ownership proof",
+                " against the extracted offender. If both are valid, the offence",
+                " will be reported."
+              ]
+            },
+            {
+              "name": "report_equivocation_unsigned",
+              "arguments": [
+                {
+                  "name": "equivocation_proof",
+                  "ty": "EquivocationProof<T::Hash, T::BlockNumber>"
+                },
+                {
+                  "name": "key_owner_proof",
+                  "ty": "T::KeyOwnerProof"
+                }
+              ],
+              "documentation": [
+                " Report voter equivocation/misbehavior. This method will verify the",
+                " equivocation proof and validate the given key ownership proof",
+                " against the extracted offender. If both are valid, the offence",
+                " will be reported.",
+                "",
+                " This extrinsic must be called unsigned and it is expected that only",
+                " block authors will call it (validated in `ValidateUnsigned`), as such",
+                " if the block author is defined it will be defined as the equivocation",
+                " reporter."
+              ]
+            },
+            {
+              "name": "note_stalled",
+              "arguments": [
+                {
+                  "name": "delay",
+                  "ty": "T::BlockNumber"
+                },
+                {
+                  "name": "best_finalized_block_number",
+                  "ty": "T::BlockNumber"
+                }
+              ],
+              "documentation": [
+                " Note that the current authority set of the GRANDPA finality gadget has",
+                " stalled. This will trigger a forced authority set change at the beginning",
+                " of the next session, to be enacted `delay` blocks after that. The delay",
+                " should be high enough to safely assume that the block signalling the",
+                " forced change will not be re-orged (e.g. 1000 blocks). The GRANDPA voters",
+                " will start the new authority set using the given finalized block as base.",
+                " Only callable by root."
+              ]
+            }
+          ],
+          "event": [
+            {
+              "name": "NewAuthorities",
+              "arguments": [
+                "AuthorityList"
+              ],
+              "documentation": [
+                " New authority set has been applied. \\[authority_set\\]"
+              ]
+            },
+            {
+              "name": "Paused",
+              "arguments": [],
+              "documentation": [
+                " Current authority set has been paused."
+              ]
+            },
+            {
+              "name": "Resumed",
+              "arguments": [],
+              "documentation": [
+                " Current authority set has been resumed."
+              ]
+            }
+          ],
+          "constants": [],
+          "errors": [
+            {
+              "name": "PauseFailed",
+              "documentation": [
+                " Attempt to signal GRANDPA pause when the authority set isn't live",
+                " (either paused or already pending pause)."
+              ]
+            },
+            {
+              "name": "ResumeFailed",
+              "documentation": [
+                " Attempt to signal GRANDPA resume when the authority set isn't paused",
+                " (either live or already pending resume)."
+              ]
+            },
+            {
+              "name": "ChangePending",
+              "documentation": [
+                " Attempt to signal GRANDPA change with one already pending."
+              ]
+            },
+            {
+              "name": "TooSoon",
+              "documentation": [
+                " Cannot signal forced change so soon after last."
+              ]
+            },
+            {
+              "name": "InvalidKeyOwnershipProof",
+              "documentation": [
+                " A key ownership proof provided as part of an equivocation report is invalid."
+              ]
+            },
+            {
+              "name": "InvalidEquivocationProof",
+              "documentation": [
+                " An equivocation proof provided as part of an equivocation report is invalid."
+              ]
+            },
+            {
+              "name": "DuplicateOffenceReport",
+              "documentation": [
+                " A given equivocation report is valid but already previously reported."
+              ]
+            }
+          ],
+          "index": 10
+        },
+        {
+          "name": "ImOnline",
+          "storage": {
+            "prefix": "ImOnline",
+            "entries": [
+              {
+                "name": "HeartbeatAfter",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "T::BlockNumber"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The block number after which it's ok to send heartbeats in current session.",
+                  "",
+                  " At the beginning of each session we set this to a value that should",
+                  " fall roughly in the middle of the session duration.",
+                  " The idea is to first wait for the validators to produce a block",
+                  " in the current session, so that the heartbeat later on will not be necessary."
+                ]
+              },
+              {
+                "name": "Keys",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<T::AuthorityId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The current set of keys that may issue a heartbeat."
+                ]
+              },
+              {
+                "name": "ReceivedHeartbeats",
+                "modifier": "Optional",
+                "ty": {
+                  "DoubleMap": {
+                    "hasher": "Twox64Concat",
+                    "key1": "SessionIndex",
+                    "key2": "AuthIndex",
+                    "value": "Vec<u8>",
+                    "key2_hasher": "Twox64Concat"
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " For each session index, we keep a mapping of `AuthIndex` to",
+                  " `offchain::OpaqueNetworkState`."
+                ]
+              },
+              {
+                "name": "AuthoredBlocks",
+                "modifier": "Default",
+                "ty": {
+                  "DoubleMap": {
+                    "hasher": "Twox64Concat",
+                    "key1": "SessionIndex",
+                    "key2": "ValidatorId<T>",
+                    "value": "u32",
+                    "key2_hasher": "Twox64Concat"
+                  }
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " For each session index, we keep a mapping of `ValidatorId<T>` to the",
+                  " number of blocks authored by the given authority."
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "heartbeat",
+              "arguments": [
+                {
+                  "name": "heartbeat",
+                  "ty": "Heartbeat<T::BlockNumber>"
+                },
+                {
+                  "name": "_signature",
+                  "ty": "<T::AuthorityId as RuntimeAppPublic>::Signature"
+                }
+              ],
+              "documentation": [
+                " # <weight>",
+                " - Complexity: `O(K + E)` where K is length of `Keys` (heartbeat.validators_len)",
+                "   and E is length of `heartbeat.network_state.external_address`",
+                "   - `O(K)`: decoding of length `K`",
+                "   - `O(E)`: decoding/encoding of length `E`",
+                " - DbReads: pallet_session `Validators`, pallet_session `CurrentIndex`, `Keys`,",
+                "   `ReceivedHeartbeats`",
+                " - DbWrites: `ReceivedHeartbeats`",
+                " # </weight>"
+              ]
+            }
+          ],
+          "event": [
+            {
+              "name": "HeartbeatReceived",
+              "arguments": [
+                "AuthorityId"
+              ],
+              "documentation": [
+                " A new heartbeat was received from `AuthorityId` \\[authority_id\\]"
+              ]
+            },
+            {
+              "name": "AllGood",
+              "arguments": [],
+              "documentation": [
+                " At the end of the session, no offence was committed."
+              ]
+            },
+            {
+              "name": "SomeOffline",
+              "arguments": [
+                "Vec<IdentificationTuple>"
+              ],
+              "documentation": [
+                " At the end of the session, at least one validator was found to be \\[offline\\]."
+              ]
+            }
+          ],
+          "constants": [],
+          "errors": [
+            {
+              "name": "InvalidKey",
+              "documentation": [
+                " Non existent public key."
+              ]
+            },
+            {
+              "name": "DuplicatedHeartbeat",
+              "documentation": [
+                " Duplicated heartbeat."
+              ]
+            }
+          ],
+          "index": 11
+        },
+        {
+          "name": "AuthorityDiscovery",
+          "storage": null,
+          "calls": [],
+          "event": null,
+          "constants": [],
+          "errors": [],
+          "index": 12
+        },
+        {
+          "name": "ParachainsOrigin",
+          "storage": null,
+          "calls": null,
+          "event": null,
+          "constants": [],
+          "errors": [],
+          "index": 13
+        },
+        {
+          "name": "ParachainsConfiguration",
+          "storage": {
+            "prefix": "Configuration",
+            "entries": [
+              {
+                "name": "ActiveConfig",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "HostConfiguration<T::BlockNumber>"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The active configuration for the current session."
+                ]
+              },
+              {
+                "name": "PendingConfig",
+                "modifier": "Optional",
+                "ty": {
+                  "Plain": "HostConfiguration<T::BlockNumber>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Pending configuration (if any) for the next session."
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "set_validation_upgrade_frequency",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "T::BlockNumber"
+                }
+              ],
+              "documentation": [
+                " Set the validation upgrade frequency."
+              ]
+            },
+            {
+              "name": "set_validation_upgrade_delay",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "T::BlockNumber"
+                }
+              ],
+              "documentation": [
+                " Set the validation upgrade delay."
+              ]
+            },
+            {
+              "name": "set_acceptance_period",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "T::BlockNumber"
+                }
+              ],
+              "documentation": [
+                " Set the acceptance period for an included candidate."
+              ]
+            },
+            {
+              "name": "set_max_code_size",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Set the max validation code size for incoming upgrades."
+              ]
+            },
+            {
+              "name": "set_max_pov_size",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Set the max POV block size for incoming upgrades."
+              ]
+            },
+            {
+              "name": "set_max_head_data_size",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Set the max head data size for paras."
+              ]
+            },
+            {
+              "name": "set_parathread_cores",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Set the number of parathread execution cores."
+              ]
+            },
+            {
+              "name": "set_parathread_retries",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Set the number of retries for a particular parathread."
+              ]
+            },
+            {
+              "name": "set_group_rotation_frequency",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "T::BlockNumber"
+                }
+              ],
+              "documentation": [
+                " Set the parachain validator-group rotation frequency"
+              ]
+            },
+            {
+              "name": "set_chain_availability_period",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "T::BlockNumber"
+                }
+              ],
+              "documentation": [
+                " Set the availability period for parachains."
+              ]
+            },
+            {
+              "name": "set_thread_availability_period",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "T::BlockNumber"
+                }
+              ],
+              "documentation": [
+                " Set the availability period for parathreads."
+              ]
+            },
+            {
+              "name": "set_scheduling_lookahead",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Set the scheduling lookahead, in expected number of blocks at peak throughput."
+              ]
+            },
+            {
+              "name": "set_max_validators_per_core",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "Option<u32>"
+                }
+              ],
+              "documentation": [
+                " Set the maximum number of validators to assign to any core."
+              ]
+            },
+            {
+              "name": "set_dispute_period",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "SessionIndex"
+                }
+              ],
+              "documentation": [
+                " Set the dispute period, in number of sessions to keep for disputes."
+              ]
+            },
+            {
+              "name": "set_no_show_slots",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Set the no show slots, in number of number of consensus slots.",
+                " Must be at least 1."
+              ]
+            },
+            {
+              "name": "set_n_delay_tranches",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Set the total number of delay tranches."
+              ]
+            },
+            {
+              "name": "set_zeroth_delay_tranche_width",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Set the zeroth delay tranche width."
+              ]
+            },
+            {
+              "name": "set_needed_approvals",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Set the number of validators needed to approve a block."
+              ]
+            },
+            {
+              "name": "set_relay_vrf_modulo_samples",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Set the number of samples to do of the RelayVRFModulo approval assignment criterion."
+              ]
+            },
+            {
+              "name": "set_max_upward_queue_count",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Sets the maximum items that can present in a upward dispatch queue at once."
+              ]
+            },
+            {
+              "name": "set_max_upward_queue_size",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Sets the maximum total size of items that can present in a upward dispatch queue at once."
+              ]
+            },
+            {
+              "name": "set_max_downward_message_size",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Set the critical downward message size."
+              ]
+            },
+            {
+              "name": "set_preferred_dispatchable_upward_messages_step_weight",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "Weight"
+                }
+              ],
+              "documentation": [
+                " Sets the soft limit for the phase of dispatching dispatchable upward messages."
+              ]
+            },
+            {
+              "name": "set_max_upward_message_size",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Sets the maximum size of an upward message that can be sent by a candidate."
+              ]
+            },
+            {
+              "name": "set_max_upward_message_num_per_candidate",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Sets the maximum number of messages that a candidate can contain."
+              ]
+            },
+            {
+              "name": "set_hrmp_open_request_ttl",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Sets the number of sessions after which an HRMP open channel request expires."
+              ]
+            },
+            {
+              "name": "set_hrmp_sender_deposit",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "Balance"
+                }
+              ],
+              "documentation": [
+                " Sets the amount of funds that the sender should provide for opening an HRMP channel."
+              ]
+            },
+            {
+              "name": "set_hrmp_recipient_deposit",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "Balance"
+                }
+              ],
+              "documentation": [
+                " Sets the amount of funds that the recipient should provide for accepting opening an HRMP",
+                " channel."
+              ]
+            },
+            {
+              "name": "set_hrmp_channel_max_capacity",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Sets the maximum number of messages allowed in an HRMP channel at once."
+              ]
+            },
+            {
+              "name": "set_hrmp_channel_max_total_size",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Sets the maximum total size of messages in bytes allowed in an HRMP channel at once."
+              ]
+            },
+            {
+              "name": "set_hrmp_max_parachain_inbound_channels",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Sets the maximum number of inbound HRMP channels a parachain is allowed to accept."
+              ]
+            },
+            {
+              "name": "set_hrmp_max_parathread_inbound_channels",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Sets the maximum number of inbound HRMP channels a parathread is allowed to accept."
+              ]
+            },
+            {
+              "name": "set_hrmp_channel_max_message_size",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Sets the maximum size of a message that could ever be put into an HRMP channel."
+              ]
+            },
+            {
+              "name": "set_hrmp_max_parachain_outbound_channels",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Sets the maximum number of outbound HRMP channels a parachain is allowed to open."
+              ]
+            },
+            {
+              "name": "set_hrmp_max_parathread_outbound_channels",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Sets the maximum number of outbound HRMP channels a parathread is allowed to open."
+              ]
+            },
+            {
+              "name": "set_hrmp_max_message_num_per_candidate",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Sets the maximum number of outbound HRMP messages can be sent by a candidate."
+              ]
+            }
+          ],
+          "event": null,
+          "constants": [],
+          "errors": [
+            {
+              "name": "InvalidNewValue",
+              "documentation": [
+                " The new value for a configuration parameter is invalid."
+              ]
+            }
+          ],
+          "index": 14
+        },
+        {
+          "name": "Inclusion",
+          "storage": {
+            "prefix": "ParaInclusion",
+            "entries": [
+              {
+                "name": "AvailabilityBitfields",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ValidatorIndex",
+                    "value": "AvailabilityBitfieldRecord<T::BlockNumber>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The latest bitfield for each validator, referred to by their index in the validator set."
+                ]
+              },
+              {
+                "name": "PendingAvailability",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "CandidatePendingAvailability<T::Hash, T::BlockNumber>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Candidates pending availability by `ParaId`."
+                ]
+              },
+              {
+                "name": "PendingAvailabilityCommitments",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "CandidateCommitments",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The commitments of candidates pending availability, by ParaId."
+                ]
+              },
+              {
+                "name": "Validators",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<ValidatorId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The current validators, by their parachain session keys."
+                ]
+              },
+              {
+                "name": "CurrentSessionIndex",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "SessionIndex"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The current session index."
+                ]
+              }
+            ]
+          },
+          "calls": [],
+          "event": [
+            {
+              "name": "CandidateBacked",
+              "arguments": [
+                "CandidateReceipt<Hash>",
+                "HeadData",
+                "CoreIndex",
+                "GroupIndex"
+              ],
+              "documentation": [
+                " A candidate was backed. [candidate, head_data]"
+              ]
+            },
+            {
+              "name": "CandidateIncluded",
+              "arguments": [
+                "CandidateReceipt<Hash>",
+                "HeadData",
+                "CoreIndex",
+                "GroupIndex"
+              ],
+              "documentation": [
+                " A candidate was included. [candidate, head_data]"
+              ]
+            },
+            {
+              "name": "CandidateTimedOut",
+              "arguments": [
+                "CandidateReceipt<Hash>",
+                "HeadData",
+                "CoreIndex"
+              ],
+              "documentation": [
+                " A candidate timed out. [candidate, head_data]"
+              ]
+            }
+          ],
+          "constants": [],
+          "errors": [
+            {
+              "name": "WrongBitfieldSize",
+              "documentation": [
+                " Availability bitfield has unexpected size."
+              ]
+            },
+            {
+              "name": "BitfieldDuplicateOrUnordered",
+              "documentation": [
+                " Multiple bitfields submitted by same validator or validators out of order by index."
+              ]
+            },
+            {
+              "name": "ValidatorIndexOutOfBounds",
+              "documentation": [
+                " Validator index out of bounds."
+              ]
+            },
+            {
+              "name": "InvalidBitfieldSignature",
+              "documentation": [
+                " Invalid signature"
+              ]
+            },
+            {
+              "name": "UnscheduledCandidate",
+              "documentation": [
+                " Candidate submitted but para not scheduled."
+              ]
+            },
+            {
+              "name": "CandidateScheduledBeforeParaFree",
+              "documentation": [
+                " Candidate scheduled despite pending candidate already existing for the para."
+              ]
+            },
+            {
+              "name": "WrongCollator",
+              "documentation": [
+                " Candidate included with the wrong collator."
+              ]
+            },
+            {
+              "name": "ScheduledOutOfOrder",
+              "documentation": [
+                " Scheduled cores out of order."
+              ]
+            },
+            {
+              "name": "HeadDataTooLarge",
+              "documentation": [
+                " Head data exceeds the configured maximum."
+              ]
+            },
+            {
+              "name": "PrematureCodeUpgrade",
+              "documentation": [
+                " Code upgrade prematurely."
+              ]
+            },
+            {
+              "name": "NewCodeTooLarge",
+              "documentation": [
+                " Output code is too large"
+              ]
+            },
+            {
+              "name": "CandidateNotInParentContext",
+              "documentation": [
+                " Candidate not in parent context."
+              ]
+            },
+            {
+              "name": "UnoccupiedBitInBitfield",
+              "documentation": [
+                " The bitfield contains a bit relating to an unassigned availability core."
+              ]
+            },
+            {
+              "name": "InvalidGroupIndex",
+              "documentation": [
+                " Invalid group index in core assignment."
+              ]
+            },
+            {
+              "name": "InsufficientBacking",
+              "documentation": [
+                " Insufficient (non-majority) backing."
+              ]
+            },
+            {
+              "name": "InvalidBacking",
+              "documentation": [
+                " Invalid (bad signature, unknown validator, etc.) backing."
+              ]
+            },
+            {
+              "name": "NotCollatorSigned",
+              "documentation": [
+                " Collator did not sign PoV."
+              ]
+            },
+            {
+              "name": "ValidationDataHashMismatch",
+              "documentation": [
+                " The validation data hash does not match expected."
+              ]
+            },
+            {
+              "name": "InternalError",
+              "documentation": [
+                " Internal error only returned when compiled with debug assertions."
+              ]
+            },
+            {
+              "name": "IncorrectDownwardMessageHandling",
+              "documentation": [
+                " The downward message queue is not processed correctly."
+              ]
+            },
+            {
+              "name": "InvalidUpwardMessages",
+              "documentation": [
+                " At least one upward message sent does not pass the acceptance criteria."
+              ]
+            },
+            {
+              "name": "HrmpWatermarkMishandling",
+              "documentation": [
+                " The candidate didn't follow the rules of HRMP watermark advancement."
+              ]
+            },
+            {
+              "name": "InvalidOutboundHrmp",
+              "documentation": [
+                " The HRMP messages sent by the candidate is not valid."
+              ]
+            }
+          ],
+          "index": 15
+        },
+        {
+          "name": "InclusionInherent",
+          "storage": {
+            "prefix": "ParaInclusionInherent",
+            "entries": [
+              {
+                "name": "Included",
+                "modifier": "Optional",
+                "ty": {
+                  "Plain": "()"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Whether the inclusion inherent was included within this block.",
+                  "",
+                  " The `Option<()>` is effectively a bool, but it never hits storage in the `None` variant",
+                  " due to the guarantees of FRAME's storage APIs.",
+                  "",
+                  " If this is `None` at the end of the block, we panic and render the block invalid."
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "inclusion",
+              "arguments": [
+                {
+                  "name": "signed_bitfields",
+                  "ty": "SignedAvailabilityBitfields"
+                },
+                {
+                  "name": "backed_candidates",
+                  "ty": "Vec<BackedCandidate<T::Hash>>"
+                },
+                {
+                  "name": "parent_header",
+                  "ty": "Header"
+                }
+              ],
+              "documentation": [
+                " Include backed candidates and bitfields."
+              ]
+            }
+          ],
+          "event": null,
+          "constants": [],
+          "errors": [
+            {
+              "name": "TooManyInclusionInherents",
+              "documentation": [
+                " Inclusion inherent called more than once per block."
+              ]
+            },
+            {
+              "name": "InvalidParentHeader",
+              "documentation": [
+                " The hash of the submitted parent header doesn't correspond to the saved block hash of",
+                " the parent."
+              ]
+            }
+          ],
+          "index": 16
+        },
+        {
+          "name": "Scheduler",
+          "storage": {
+            "prefix": "ParaScheduler",
+            "entries": [
+              {
+                "name": "ValidatorGroups",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<Vec<ValidatorIndex>>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " All the validator groups. One for each core.",
+                  "",
+                  " Bound: The number of cores is the sum of the numbers of parachains and parathread multiplexers.",
+                  " Reasonably, 100-1000. The dominant factor is the number of validators: safe upper bound at 10k."
+                ]
+              },
+              {
+                "name": "ParathreadQueue",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "ParathreadClaimQueue"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " A queue of upcoming claims and which core they should be mapped onto.",
+                  "",
+                  " The number of queued claims is bounded at the `scheduling_lookahead`",
+                  " multiplied by the number of parathread multiplexer cores. Reasonably, 10 * 50 = 500."
+                ]
+              },
+              {
+                "name": "AvailabilityCores",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<Option<CoreOccupied>>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " One entry for each availability core. Entries are `None` if the core is not currently occupied. Can be",
+                  " temporarily `Some` if scheduled but not occupied.",
+                  " The i'th parachain belongs to the i'th core, with the remaining cores all being",
+                  " parathread-multiplexers.",
+                  "",
+                  " Bounded by the maximum of either of these two values:",
+                  "   * The number of parachains and parathread multiplexers",
+                  "   * The number of validators divided by `configuration.max_validators_per_core`."
+                ]
+              },
+              {
+                "name": "ParathreadClaimIndex",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<ParaId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " An index used to ensure that only one claim on a parathread exists in the queue or is",
+                  " currently being handled by an occupied core.",
+                  "",
+                  " Bounded by the number of parathread cores and scheduling lookahead. Reasonably, 10 * 50 = 500."
+                ]
+              },
+              {
+                "name": "SessionStartBlock",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "T::BlockNumber"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The block number where the session start occurred. Used to track how many group rotations have occurred.",
+                  "",
+                  " Note that in the context of parachains modules the session change is signalled during",
+                  " the block and enacted at the end of the block (at the finalization stage, to be exact).",
+                  " Thus for all intents and purposes the effect of the session change is observed at the",
+                  " block following the session change, block number of which we save in this storage value."
+                ]
+              },
+              {
+                "name": "Scheduled",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<CoreAssignment>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Currently scheduled cores - free but up to be occupied.",
+                  "",
+                  " Bounded by the number of cores: one for each parachain and parathread multiplexer.",
+                  "",
+                  " The value contained here will not be valid after the end of a block. Runtime APIs should be used to determine scheduled cores/",
+                  " for the upcoming block."
+                ]
+              }
+            ]
+          },
+          "calls": [],
+          "event": null,
+          "constants": [],
+          "errors": [],
+          "index": 17
+        },
+        {
+          "name": "Paras",
+          "storage": {
+            "prefix": "Paras",
+            "entries": [
+              {
+                "name": "Parachains",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<ParaId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " All parachains. Ordered ascending by ParaId. Parathreads are not included."
+                ]
+              },
+              {
+                "name": "ParaLifecycles",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "ParaLifecycle",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The current lifecycle of a all known Para IDs."
+                ]
+              },
+              {
+                "name": "Heads",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "HeadData",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The head-data of every registered para."
+                ]
+              },
+              {
+                "name": "CurrentCode",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "ValidationCode",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The validation code of every live para."
+                ]
+              },
+              {
+                "name": "PastCode",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "(ParaId, T::BlockNumber)",
+                    "value": "ValidationCode",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Actual past code, indicated by the para id as well as the block number at which it became outdated."
+                ]
+              },
+              {
+                "name": "PastCodeMeta",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "ParaPastCodeMeta<T::BlockNumber>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " Past code of parachains. The parachains themselves may not be registered anymore,",
+                  " but we also keep their code on-chain for the same amount of time as outdated code",
+                  " to keep it available for secondary checkers."
+                ]
+              },
+              {
+                "name": "PastCodePruning",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<(ParaId, T::BlockNumber)>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Which paras have past code that needs pruning and the relay-chain block at which the code was replaced.",
+                  " Note that this is the actual height of the included block, not the expected height at which the",
+                  " code upgrade would be applied, although they may be equal.",
+                  " This is to ensure the entire acceptance period is covered, not an offset acceptance period starting",
+                  " from the time at which the parachain perceives a code upgrade as having occurred.",
+                  " Multiple entries for a single para are permitted. Ordered ascending by block number."
+                ]
+              },
+              {
+                "name": "FutureCodeUpgrades",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "T::BlockNumber",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The block number at which the planned code change is expected for a para.",
+                  " The change will be applied after the first parablock for this ID included which executes",
+                  " in the context of a relay chain block with a number >= `expected_at`."
+                ]
+              },
+              {
+                "name": "FutureCode",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "ValidationCode",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The actual future code of a para."
+                ]
+              },
+              {
+                "name": "UpcomingParas",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<ParaId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Upcoming paras (chains and threads). These are only updated on session change. Corresponds to an",
+                  " entry in the upcoming-genesis map. Ordered ascending by ParaId."
+                ]
+              },
+              {
+                "name": "UpcomingParasGenesis",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "ParaGenesisArgs",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Upcoming paras instantiation arguments."
+                ]
+              },
+              {
+                "name": "OutgoingParas",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<ParaId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Paras that are to be cleaned up at the end of the session. Ordered ascending by ParaId."
+                ]
+              },
+              {
+                "name": "UpcomingUpgrades",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<ParaId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Existing Parathreads that should upgrade to be a Parachain. Ordered ascending by ParaId."
+                ]
+              },
+              {
+                "name": "UpcomingDowngrades",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<ParaId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Existing Parachains that should downgrade to be a Parathread. Ordered ascending by ParaId."
+                ]
+              }
+            ]
+          },
+          "calls": [],
+          "event": null,
+          "constants": [],
+          "errors": [],
+          "index": 18
+        },
+        {
+          "name": "Initializer",
+          "storage": {
+            "prefix": "Initializer",
+            "entries": [
+              {
+                "name": "HasInitialized",
+                "modifier": "Optional",
+                "ty": {
+                  "Plain": "()"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Whether the parachains modules have been initialized within this block.",
+                  "",
+                  " Semantically a bool, but this guarantees it should never hit the trie,",
+                  " as this is cleared in `on_finalize` and Frame optimizes `None` values to be empty values.",
+                  "",
+                  " As a bool, `set(false)` and `remove()` both lead to the next `get()` being false, but one of",
+                  " them writes to the trie and one does not. This confusion makes `Option<()>` more suitable for",
+                  " the semantics of this variable."
+                ]
+              },
+              {
+                "name": "BufferedSessionChanges",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<BufferedSessionChange>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Buffered session changes along with the block number at which they should be applied.",
+                  "",
+                  " Typically this will be empty or one element long. Apart from that this item never hits",
+                  " the storage.",
+                  "",
+                  " However this is a `Vec` regardless to handle various edge cases that may occur at runtime",
+                  " upgrade boundaries or if governance intervenes."
+                ]
+              }
+            ]
+          },
+          "calls": [],
+          "event": null,
+          "constants": [],
+          "errors": [],
+          "index": 19
+        },
+        {
+          "name": "Dmp",
+          "storage": {
+            "prefix": "Dmp",
+            "entries": [
+              {
+                "name": "OutgoingParas",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<ParaId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Paras that are to be cleaned up at the end of the session.",
+                  " The entries are sorted ascending by the para id."
+                ]
+              },
+              {
+                "name": "DownwardMessageQueues",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "Vec<InboundDownwardMessage<T::BlockNumber>>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The downward messages addressed for a certain para."
+                ]
+              },
+              {
+                "name": "DownwardMessageQueueHeads",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "Hash",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " A mapping that stores the downward message queue MQC head for each para.",
+                  "",
+                  " Each link in this chain has a form:",
+                  " `(prev_head, B, H(M))`, where",
+                  " - `prev_head`: is the previous head hash or zero if none.",
+                  " - `B`: is the relay-chain block number in which a message was appended.",
+                  " - `H(M)`: is the hash of the message being appended."
+                ]
+              }
+            ]
+          },
+          "calls": [],
+          "event": null,
+          "constants": [],
+          "errors": [],
+          "index": 20
+        },
+        {
+          "name": "Ump",
+          "storage": {
+            "prefix": "Ump",
+            "entries": [
+              {
+                "name": "OutgoingParas",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<ParaId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Paras that are to be cleaned up at the end of the session.",
+                  " The entries are sorted ascending by the para id."
+                ]
+              },
+              {
+                "name": "RelayDispatchQueues",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "VecDeque<UpwardMessage>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The messages waiting to be handled by the relay-chain originating from a certain parachain.",
+                  "",
+                  " Note that some upward messages might have been already processed by the inclusion logic. E.g.",
+                  " channel management messages.",
+                  "",
+                  " The messages are processed in FIFO order."
+                ]
+              },
+              {
+                "name": "RelayDispatchQueueSize",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "(u32, u32)",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " Size of the dispatch queues. Caches sizes of the queues in `RelayDispatchQueue`.",
+                  "",
+                  " First item in the tuple is the count of messages and second",
+                  " is the total length (in bytes) of the message payloads.",
+                  "",
+                  " Note that this is an auxilary mapping: it's possible to tell the byte size and the number of",
+                  " messages only looking at `RelayDispatchQueues`. This mapping is separate to avoid the cost of",
+                  " loading the whole message queue if only the total size and count are required.",
+                  "",
+                  " Invariant:",
+                  " - The set of keys should exactly match the set of keys of `RelayDispatchQueues`."
+                ]
+              },
+              {
+                "name": "NeedsDispatch",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<ParaId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The ordered list of `ParaId`s that have a `RelayDispatchQueue` entry.",
+                  "",
+                  " Invariant:",
+                  " - The set of items from this vector should be exactly the set of the keys in",
+                  "   `RelayDispatchQueues` and `RelayDispatchQueueSize`."
+                ]
+              },
+              {
+                "name": "NextDispatchRoundStartWith",
+                "modifier": "Optional",
+                "ty": {
+                  "Plain": "ParaId"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " This is the para that gets will get dispatched first during the next upward dispatchable queue",
+                  " execution round.",
+                  "",
+                  " Invariant:",
+                  " - If `Some(para)`, then `para` must be present in `NeedsDispatch`."
+                ]
+              }
+            ]
+          },
+          "calls": [],
+          "event": null,
+          "constants": [],
+          "errors": [],
+          "index": 21
+        },
+        {
+          "name": "Hrmp",
+          "storage": {
+            "prefix": "Hrmp",
+            "entries": [
+              {
+                "name": "OutgoingParas",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<ParaId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Paras that are to be cleaned up at the end of the session.",
+                  " The entries are sorted ascending by the para id."
+                ]
+              },
+              {
+                "name": "HrmpOpenChannelRequests",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "HrmpChannelId",
+                    "value": "HrmpOpenChannelRequest",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The set of pending HRMP open channel requests.",
+                  "",
+                  " The set is accompanied by a list for iteration.",
+                  "",
+                  " Invariant:",
+                  " - There are no channels that exists in list but not in the set and vice versa."
+                ]
+              },
+              {
+                "name": "HrmpOpenChannelRequestsList",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<HrmpChannelId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": []
+              },
+              {
+                "name": "HrmpOpenChannelRequestCount",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "u32",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " This mapping tracks how many open channel requests are inititated by a given sender para.",
+                  " Invariant: `HrmpOpenChannelRequests` should contain the same number of items that has `(X, _)`",
+                  " as the number of `HrmpOpenChannelRequestCount` for `X`."
+                ]
+              },
+              {
+                "name": "HrmpAcceptedChannelRequestCount",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "u32",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " This mapping tracks how many open channel requests were accepted by a given recipient para.",
+                  " Invariant: `HrmpOpenChannelRequests` should contain the same number of items `(_, X)` with",
+                  " `confirmed` set to true, as the number of `HrmpAcceptedChannelRequestCount` for `X`."
+                ]
+              },
+              {
+                "name": "HrmpCloseChannelRequests",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "HrmpChannelId",
+                    "value": "()",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " A set of pending HRMP close channel requests that are going to be closed during the session change.",
+                  " Used for checking if a given channel is registered for closure.",
+                  "",
+                  " The set is accompanied by a list for iteration.",
+                  "",
+                  " Invariant:",
+                  " - There are no channels that exists in list but not in the set and vice versa."
+                ]
+              },
+              {
+                "name": "HrmpCloseChannelRequestsList",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<HrmpChannelId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": []
+              },
+              {
+                "name": "HrmpWatermarks",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "T::BlockNumber",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The HRMP watermark associated with each para.",
+                  " Invariant:",
+                  " - each para `P` used here as a key should satisfy `Paras::is_valid_para(P)` within a session."
+                ]
+              },
+              {
+                "name": "HrmpChannels",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "HrmpChannelId",
+                    "value": "HrmpChannel",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " HRMP channel data associated with each para.",
+                  " Invariant:",
+                  " - each participant in the channel should satisfy `Paras::is_valid_para(P)` within a session."
+                ]
+              },
+              {
+                "name": "HrmpIngressChannelsIndex",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "Vec<ParaId>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Ingress/egress indexes allow to find all the senders and receivers given the opposite",
+                  " side. I.e.",
+                  "",
+                  " (a) ingress index allows to find all the senders for a given recipient.",
+                  " (b) egress index allows to find all the recipients for a given sender.",
+                  "",
+                  " Invariants:",
+                  " - for each ingress index entry for `P` each item `I` in the index should present in `HrmpChannels`",
+                  "   as `(I, P)`.",
+                  " - for each egress index entry for `P` each item `E` in the index should present in `HrmpChannels`",
+                  "   as `(P, E)`.",
+                  " - there should be no other dangling channels in `HrmpChannels`.",
+                  " - the vectors are sorted."
+                ]
+              },
+              {
+                "name": "HrmpEgressChannelsIndex",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "Vec<ParaId>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": []
+              },
+              {
+                "name": "HrmpChannelContents",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "HrmpChannelId",
+                    "value": "Vec<InboundHrmpMessage<T::BlockNumber>>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Storage for the messages for each channel.",
+                  " Invariant: cannot be non-empty if the corresponding channel in `HrmpChannels` is `None`."
+                ]
+              },
+              {
+                "name": "HrmpChannelDigests",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "Vec<(T::BlockNumber, Vec<ParaId>)>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Maintains a mapping that can be used to answer the question:",
+                  " What paras sent a message at the given block number for a given reciever.",
+                  " Invariants:",
+                  " - The inner `Vec<ParaId>` is never empty.",
+                  " - The inner `Vec<ParaId>` cannot store two same `ParaId`.",
+                  " - The outer vector is sorted ascending by block number and cannot store two items with the same",
+                  "   block number."
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "hrmp_init_open_channel",
+              "arguments": [
+                {
+                  "name": "recipient",
+                  "ty": "ParaId"
+                },
+                {
+                  "name": "proposed_max_capacity",
+                  "ty": "u32"
+                },
+                {
+                  "name": "proposed_max_message_size",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Initiate opening a channel from a parachain to a given recipient with given channel",
+                " parameters.",
+                "",
+                " - `proposed_max_capacity` - specifies how many messages can be in the channel at once.",
+                " - `proposed_max_message_size` - specifies the maximum size of any of the messages.",
+                "",
+                " These numbers are a subject to the relay-chain configuration limits.",
+                "",
+                " The channel can be opened only after the recipient confirms it and only on a session",
+                " change."
+              ]
+            },
+            {
+              "name": "hrmp_accept_open_channel",
+              "arguments": [
+                {
+                  "name": "sender",
+                  "ty": "ParaId"
+                }
+              ],
+              "documentation": [
+                " Accept a pending open channel request from the given sender.",
+                "",
+                " The channel will be opened only on the next session boundary."
+              ]
+            },
+            {
+              "name": "hrmp_close_channel",
+              "arguments": [
+                {
+                  "name": "channel_id",
+                  "ty": "HrmpChannelId"
+                }
+              ],
+              "documentation": [
+                " Initiate unilateral closing of a channel. The origin must be either the sender or the",
+                " recipient in the channel being closed.",
+                "",
+                " The closure can only happen on a session change."
+              ]
+            }
+          ],
+          "event": null,
+          "constants": [],
+          "errors": [
+            {
+              "name": "OpenHrmpChannelToSelf",
+              "documentation": [
+                " The sender tried to open a channel to themselves."
+              ]
+            },
+            {
+              "name": "OpenHrmpChannelInvalidRecipient",
+              "documentation": [
+                " The recipient is not a valid para."
+              ]
+            },
+            {
+              "name": "OpenHrmpChannelZeroCapacity",
+              "documentation": [
+                " The requested capacity is zero."
+              ]
+            },
+            {
+              "name": "OpenHrmpChannelCapacityExceedsLimit",
+              "documentation": [
+                " The requested capacity exceeds the global limit."
+              ]
+            },
+            {
+              "name": "OpenHrmpChannelZeroMessageSize",
+              "documentation": [
+                " The requested maximum message size is 0."
+              ]
+            },
+            {
+              "name": "OpenHrmpChannelMessageSizeExceedsLimit",
+              "documentation": [
+                " The open request requested the message size that exceeds the global limit."
+              ]
+            },
+            {
+              "name": "OpenHrmpChannelAlreadyExists",
+              "documentation": [
+                " The channel already exists"
+              ]
+            },
+            {
+              "name": "OpenHrmpChannelAlreadyRequested",
+              "documentation": [
+                " There is already a request to open the same channel."
+              ]
+            },
+            {
+              "name": "OpenHrmpChannelLimitExceeded",
+              "documentation": [
+                " The sender already has the maximum number of allowed outbound channels."
+              ]
+            },
+            {
+              "name": "AcceptHrmpChannelDoesntExist",
+              "documentation": [
+                " The channel from the sender to the origin doesn't exist."
+              ]
+            },
+            {
+              "name": "AcceptHrmpChannelAlreadyConfirmed",
+              "documentation": [
+                " The channel is already confirmed."
+              ]
+            },
+            {
+              "name": "AcceptHrmpChannelLimitExceeded",
+              "documentation": [
+                " The recipient already has the maximum number of allowed inbound channels."
+              ]
+            },
+            {
+              "name": "CloseHrmpChannelUnauthorized",
+              "documentation": [
+                " The origin tries to close a channel where it is neither the sender nor the recipient."
+              ]
+            },
+            {
+              "name": "CloseHrmpChannelDoesntExist",
+              "documentation": [
+                " The channel to be closed doesn't exist."
+              ]
+            },
+            {
+              "name": "CloseHrmpChannelAlreadyUnderway",
+              "documentation": [
+                " The channel close request is already requested."
+              ]
+            }
+          ],
+          "index": 22
+        },
+        {
+          "name": "SessionInfo",
+          "storage": {
+            "prefix": "ParaSessionInfo",
+            "entries": [
+              {
+                "name": "AssignmentKeysUnsafe",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<AssignmentId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Assignment keys for the current session.",
+                  " Note that this API is private due to it being prone to 'off-by-one' at session boundaries.",
+                  " When in doubt, use `Sessions` API instead."
+                ]
+              },
+              {
+                "name": "EarliestStoredSession",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "SessionIndex"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The earliest session for which previous session info is stored."
+                ]
+              },
+              {
+                "name": "Sessions",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Identity",
+                    "key": "SessionIndex",
+                    "value": "SessionInfo",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Session information in a rolling window.",
+                  " Should have an entry in range `EarliestStoredSession..=CurrentSessionIndex`.",
+                  " Does not have any entries before the session index in the first session change notification."
+                ]
+              }
+            ]
+          },
+          "calls": [],
+          "event": null,
+          "constants": [],
+          "errors": [],
+          "index": 23
+        },
+        {
+          "name": "Registrar",
+          "storage": {
+            "prefix": "Registrar",
+            "entries": [
+              {
+                "name": "ParathreadsRegistrationEnabled",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "bool"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Whether parathreads are enabled or not."
+                ]
+              },
+              {
+                "name": "PendingSwap",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "ParaId",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Pending swap operations."
+                ]
+              },
+              {
+                "name": "Paras",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "bool",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Map of all registered parathreads/chains."
+                ]
+              },
+              {
+                "name": "Debtors",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "T::AccountId",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " Users who have paid a parathread's deposit."
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "register_parathread",
+              "arguments": [
+                {
+                  "name": "id",
+                  "ty": "ParaId"
+                },
+                {
+                  "name": "genesis_head",
+                  "ty": "HeadData"
+                },
+                {
+                  "name": "validation_code",
+                  "ty": "ValidationCode"
+                }
+              ],
+              "documentation": [
+                " Register a parathread with given code for immediate use.",
+                "",
+                " Must be sent from a Signed origin that is able to have `ParathreadDeposit` reserved.",
+                " `genesis_head` and `validation_code` are used to initalize the parathread's state."
+              ]
+            },
+            {
+              "name": "deregister_parathread",
+              "arguments": [],
+              "documentation": [
+                " Deregister a parathread and retreive the deposit.",
+                "",
+                " Must be sent from a `Parachain` origin which is currently a parathread.",
+                "",
+                " Ensure that before calling this that any funds you want emptied from the parathread's",
+                " account is moved out; after this it will be impossible to retreive them (without",
+                " governance intervention)."
+              ]
+            },
+            {
+              "name": "enable_parathread_registration",
+              "arguments": [],
+              "documentation": []
+            },
+            {
+              "name": "disable_parathread_registration",
+              "arguments": [],
+              "documentation": []
+            },
+            {
+              "name": "swap",
+              "arguments": [
+                {
+                  "name": "other",
+                  "ty": "ParaId"
+                }
+              ],
+              "documentation": [
+                " Swap a parachain with another parachain or parathread. The origin must be a `Parachain`.",
+                " The swap will happen only if there is already an opposite swap pending. If there is not,",
+                " the swap will be stored in the pending swaps map, ready for a later confirmatory swap.",
+                "",
+                " The `ParaId`s remain mapped to the same head data and code so external code can rely on",
+                " `ParaId` to be a long-term identifier of a notional \"parachain\". However, their",
+                " scheduling info (i.e. whether they're a parathread or parachain), auction information",
+                " and the auction deposit are switched."
+              ]
+            }
+          ],
+          "event": null,
+          "constants": [],
+          "errors": [
+            {
+              "name": "ParaAlreadyExists",
+              "documentation": [
+                " Parachain already exists."
+              ]
+            },
+            {
+              "name": "InvalidChainId",
+              "documentation": [
+                " Invalid parachain ID."
+              ]
+            },
+            {
+              "name": "InvalidThreadId",
+              "documentation": [
+                " Invalid parathread ID."
+              ]
+            },
+            {
+              "name": "CodeTooLarge",
+              "documentation": [
+                " Invalid para code size."
+              ]
+            },
+            {
+              "name": "HeadDataTooLarge",
+              "documentation": [
+                " Invalid para head data size."
+              ]
+            },
+            {
+              "name": "ParathreadsRegistrationDisabled",
+              "documentation": [
+                " Parathreads registration is disabled."
+              ]
+            },
+            {
+              "name": "DefinitelyNotWasm",
+              "documentation": [
+                " The validation code provided doesn't start with the Wasm file magic string."
+              ]
+            }
+          ],
+          "index": 24
+        },
+        {
+          "name": "ParasSudoWrapper",
+          "storage": null,
+          "calls": [
+            {
+              "name": "sudo_schedule_para_initialize",
+              "arguments": [
+                {
+                  "name": "id",
+                  "ty": "ParaId"
+                },
+                {
+                  "name": "genesis",
+                  "ty": "ParaGenesisArgs"
+                }
+              ],
+              "documentation": [
+                " Schedule a para to be initialized at the start of the next session."
+              ]
+            },
+            {
+              "name": "sudo_schedule_para_cleanup",
+              "arguments": [
+                {
+                  "name": "id",
+                  "ty": "ParaId"
+                }
+              ],
+              "documentation": [
+                " Schedule a para to be cleaned up at the start of the next session."
+              ]
+            },
+            {
+              "name": "sudo_queue_downward_xcm",
+              "arguments": [
+                {
+                  "name": "id",
+                  "ty": "ParaId"
+                },
+                {
+                  "name": "xcm",
+                  "ty": "xcm::VersionedXcm"
+                }
+              ],
+              "documentation": [
+                " Send a downward XCM to the given para.",
+                "",
+                " The given parachain should exist and the payload should not exceed the preconfigured size",
+                " `config.max_downward_message_size`."
+              ]
+            },
+            {
+              "name": "sudo_establish_hrmp_channel",
+              "arguments": [
+                {
+                  "name": "sender",
+                  "ty": "ParaId"
+                },
+                {
+                  "name": "recipient",
+                  "ty": "ParaId"
+                },
+                {
+                  "name": "max_capacity",
+                  "ty": "u32"
+                },
+                {
+                  "name": "max_message_size",
+                  "ty": "u32"
+                }
+              ],
+              "documentation": [
+                " Forcefully establish a channel from the sender to the recipient.",
+                "",
+                " This is equivalent to sending an `Hrmp::hrmp_init_open_channel` extrinsic followed by",
+                " `Hrmp::hrmp_accept_open_channel`."
+              ]
+            }
+          ],
+          "event": null,
+          "constants": [],
+          "errors": [
+            {
+              "name": "ParaDoesntExist",
+              "documentation": [
+                " The specified parachain or parathread is not registered."
+              ]
+            },
+            {
+              "name": "ExceedsMaxMessageSize",
+              "documentation": [
+                " A DMP message couldn't be sent because it exceeds the maximum size allowed for a downward",
+                " message."
+              ]
+            },
+            {
+              "name": "DefinitelyNotWasm",
+              "documentation": [
+                " The validation code provided doesn't start with the Wasm file magic string."
+              ]
+            }
+          ],
+          "index": 25
+        },
+        {
+          "name": "Sudo",
+          "storage": {
+            "prefix": "Sudo",
+            "entries": [
+              {
+                "name": "Key",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "T::AccountId"
+                },
+                "default": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "documentation": [
+                  " The `AccountId` of the sudo key."
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "sudo",
+              "arguments": [
+                {
+                  "name": "call",
+                  "ty": "Box<<T as Config>::Call>"
+                }
+              ],
+              "documentation": [
+                " Authenticates the sudo key and dispatches a function call with `Root` origin.",
+                "",
+                " The dispatch origin for this call must be _Signed_.",
+                "",
+                " # <weight>",
+                " - O(1).",
+                " - Limited storage reads.",
+                " - One DB write (event).",
+                " - Weight of derivative `call` execution + 10,000.",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "sudo_unchecked_weight",
+              "arguments": [
+                {
+                  "name": "call",
+                  "ty": "Box<<T as Config>::Call>"
+                },
+                {
+                  "name": "_weight",
+                  "ty": "Weight"
+                }
+              ],
+              "documentation": [
+                " Authenticates the sudo key and dispatches a function call with `Root` origin.",
+                " This function does not check the weight of the call, and instead allows the",
+                " Sudo user to specify the weight of the call.",
+                "",
+                " The dispatch origin for this call must be _Signed_.",
+                "",
+                " # <weight>",
+                " - O(1).",
+                " - The weight of this call is defined by the caller.",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "set_key",
+              "arguments": [
+                {
+                  "name": "new",
+                  "ty": "<T::Lookup as StaticLookup>::Source"
+                }
+              ],
+              "documentation": [
+                " Authenticates the current sudo key and sets the given AccountId (`new`) as the new sudo key.",
+                "",
+                " The dispatch origin for this call must be _Signed_.",
+                "",
+                " # <weight>",
+                " - O(1).",
+                " - Limited storage reads.",
+                " - One DB change.",
+                " # </weight>"
+              ]
+            },
+            {
+              "name": "sudo_as",
+              "arguments": [
+                {
+                  "name": "who",
+                  "ty": "<T::Lookup as StaticLookup>::Source"
+                },
+                {
+                  "name": "call",
+                  "ty": "Box<<T as Config>::Call>"
+                }
+              ],
+              "documentation": [
+                " Authenticates the sudo key and dispatches a function call with `Signed` origin from",
+                " a given account.",
+                "",
+                " The dispatch origin for this call must be _Signed_.",
+                "",
+                " # <weight>",
+                " - O(1).",
+                " - Limited storage reads.",
+                " - One DB write (event).",
+                " - Weight of derivative `call` execution + 10,000.",
+                " # </weight>"
+              ]
+            }
+          ],
+          "event": [
+            {
+              "name": "Sudid",
+              "arguments": [
+                "DispatchResult"
+              ],
+              "documentation": [
+                " A sudo just took place. \\[result\\]"
+              ]
+            },
+            {
+              "name": "KeyChanged",
+              "arguments": [
+                "AccountId"
+              ],
+              "documentation": [
+                " The \\[sudoer\\] just switched identity; the old key is supplied."
+              ]
+            },
+            {
+              "name": "SudoAsDone",
+              "arguments": [
+                "DispatchResult"
+              ],
+              "documentation": [
+                " A sudo just took place. \\[result\\]"
+              ]
+            }
+          ],
+          "constants": [],
+          "errors": [
+            {
+              "name": "RequireSudo",
+              "documentation": [
+                " Sender must be the Sudo account"
+              ]
+            }
+          ],
+          "index": 26
+        },
+        {
+          "name": "ProposeParachain",
+          "storage": {
+            "prefix": "ParachainProposer",
+            "entries": [
+              {
+                "name": "Proposals",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "Proposal<T::AccountId, T::ValidatorId, BalanceOf<T>>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " All the proposals."
+                ]
+              },
+              {
+                "name": "ParachainValidationCode",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "ValidationCode",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " The validation WASM code of the parachain."
+                ]
+              },
+              {
+                "name": "ApprovedProposals",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<ParaId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Proposals that are approved."
+                ]
+              },
+              {
+                "name": "ScheduledProposals",
+                "modifier": "Default",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "SessionIndex",
+                    "value": "Vec<ParaId>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Proposals that are scheduled at for a fixed session to be applied."
+                ]
+              },
+              {
+                "name": "ParachainInfo",
+                "modifier": "Optional",
+                "ty": {
+                  "Map": {
+                    "hasher": "Twox64Concat",
+                    "key": "ParaId",
+                    "value": "RegisteredParachainInfo<T::AccountId, T::ValidatorId>",
+                    "unused": false
+                  }
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Information about the registered parachains."
+                ]
+              },
+              {
+                "name": "ValidatorsToRetire",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<T::ValidatorId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Validators that should be retired, because their Parachain was deregistered."
+                ]
+              },
+              {
+                "name": "ValidatorsToAdd",
+                "modifier": "Default",
+                "ty": {
+                  "Plain": "Vec<T::ValidatorId>"
+                },
+                "default": [
+                  0
+                ],
+                "documentation": [
+                  " Validators that should be added."
+                ]
+              }
+            ]
+          },
+          "calls": [
+            {
+              "name": "propose_parachain",
+              "arguments": [
+                {
+                  "name": "para_id",
+                  "ty": "ParaId"
+                },
+                {
+                  "name": "name",
+                  "ty": "Vec<u8>"
+                },
+                {
+                  "name": "validation_code",
+                  "ty": "ValidationCode"
+                },
+                {
+                  "name": "genesis_head",
+                  "ty": "HeadData"
+                },
+                {
+                  "name": "validators",
+                  "ty": "Vec<T::ValidatorId>"
+                },
+                {
+                  "name": "balance",
+                  "ty": "BalanceOf<T>"
+                }
+              ],
+              "documentation": [
+                " Propose a new parachain",
+                "",
+                " This requires:",
+                " - `para_id`: The id of the parachain.",
+                " - `name`: The name of the parachain.",
+                " - `validation_function`: The wasm runtime of the parachain.",
+                " - `initial_head_state`: The genesis state of the parachain.",
+                " - `validators`: Validators that will validate for the relay chain, needs to be at least one.",
+                " - `balance`: The initial balance of the parachain on the relay chain.",
+                "",
+                " It will reserve a deposit from the sender account over the lifetime of the chain."
+              ]
+            },
+            {
+              "name": "approve_proposal",
+              "arguments": [
+                {
+                  "name": "para_id",
+                  "ty": "ParaId"
+                }
+              ],
+              "documentation": [
+                " Approve a parachain proposal."
+              ]
+            },
+            {
+              "name": "cancel_proposal",
+              "arguments": [
+                {
+                  "name": "para_id",
+                  "ty": "ParaId"
+                }
+              ],
+              "documentation": [
+                " Cancel a parachain proposal.",
+                "",
+                " This also unreserves the deposit."
+              ]
+            },
+            {
+              "name": "deregister_parachain",
+              "arguments": [
+                {
+                  "name": "para_id",
+                  "ty": "ParaId"
+                }
+              ],
+              "documentation": [
+                " Deregister a parachain that was already successfully registered in the relay chain."
+              ]
+            },
+            {
+              "name": "register_validators",
+              "arguments": [
+                {
+                  "name": "validators",
+                  "ty": "Vec<T::ValidatorId>"
+                }
+              ],
+              "documentation": [
+                " Add new validators to the set."
+              ]
+            }
+          ],
+          "event": [
+            {
+              "name": "ParachainProposed",
+              "arguments": [
+                "Vec<u8>",
+                "ParaId"
+              ],
+              "documentation": [
+                " A parachain was proposed for registration."
+              ]
+            },
+            {
+              "name": "ParachainApproved",
+              "arguments": [
+                "ParaId"
+              ],
+              "documentation": [
+                " A parachain was approved and is scheduled for being activated."
+              ]
+            },
+            {
+              "name": "ParachainRegistered",
+              "arguments": [
+                "ParaId"
+              ],
+              "documentation": [
+                " A parachain was registered and is now running."
+              ]
+            },
+            {
+              "name": "ValidatorsRegistered",
+              "arguments": [
+                "Vec<ValidatorId>"
+              ],
+              "documentation": [
+                " New validators were added to the set."
+              ]
+            }
+          ],
+          "constants": [
+            {
+              "name": "MaxNameLength",
+              "ty": "u32",
+              "value": [
+                20,
+                0,
+                0,
+                0
+              ],
+              "documentation": [
+                " The maximum name length of a parachain."
+              ]
+            },
+            {
+              "name": "ProposeDeposit",
+              "ty": "BalanceOf<T>",
+              "value": [
+                0,
+                128,
+                198,
+                164,
+                126,
+                141,
+                3,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "documentation": [
+                " The deposit that will be reserved when proposing a parachain."
+              ]
+            }
+          ],
+          "errors": [
+            {
+              "name": "NameTooLong",
+              "documentation": [
+                " The name of the parachain is too long."
+              ]
+            },
+            {
+              "name": "ParachainIdAlreadyTaken",
+              "documentation": [
+                " The requested parachain id is already registered."
+              ]
+            },
+            {
+              "name": "ParachainIdAlreadyProposed",
+              "documentation": [
+                " The requested parachain id is already proposed for another parachain."
+              ]
+            },
+            {
+              "name": "ProposalNotFound",
+              "documentation": [
+                " Could not find the parachain proposal."
+              ]
+            },
+            {
+              "name": "NotAuthorized",
+              "documentation": [
+                " Not authorized to do a certain operation."
+              ]
+            },
+            {
+              "name": "ValidatorAlreadyRegistered",
+              "documentation": [
+                " A validator is already registered in the active validator set."
+              ]
+            },
+            {
+              "name": "ParachainInfoNotFound",
+              "documentation": [
+                " No information about the registered parachain found."
+              ]
+            },
+            {
+              "name": "ParachainAlreadyApproved",
+              "documentation": [
+                " Parachain is already approved for registration."
+              ]
+            },
+            {
+              "name": "ParachainAlreadyScheduled",
+              "documentation": [
+                " Parachain is already scheduled for registration."
+              ]
+            },
+            {
+              "name": "DefinitelyNotWasm",
+              "documentation": [
+                " The given WASM blob is definitley not valid."
+              ]
+            },
+            {
+              "name": "AtLeastOneValidatorRequired",
+              "documentation": [
+                " Registration requires at least one validator."
+              ]
+            }
+          ],
+          "index": 27
+        }
+      ],
+      "extrinsic": {
+        "version": 4,
+        "signed_extensions": [
+          "CheckSpecVersion",
+          "CheckTxVersion",
+          "CheckGenesis",
+          "CheckMortality",
+          "CheckNonce",
+          "CheckWeight",
+          "ChargeTransactionPayment"
+        ]
+      },
+      "marker": null
+    }
+  }
+]

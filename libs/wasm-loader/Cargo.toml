@@ -1,0 +1,8 @@
+[package]
+name = "wasm-loader"
+version = "0.1.0"
+authors = ["chevdor <chevdor@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+rpc-client = { path = "../rpc-client" }

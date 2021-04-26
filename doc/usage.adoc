@@ -1,0 +1,17 @@
+subwasm 0.1.0
+chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+This enum enumerates all available sub-commands
+
+USAGE:
+    subwasm [FLAGS] <SUBCOMMAND>
+
+FLAGS:
+    -h, --help       Prints help information
+    -v, --verbose    A level of verbosity, and can be used multiple times
+    -V, --version    Prints version information
+
+SUBCOMMANDS:
+    get     Get/Download the runtime wasm from a running node through rpc
+    help    Prints this message or the help of the given subcommand(s)
+    info    The `info` sub-command returns summarized information about a runtime
+    meta    The `info` sub-command returns summarized information about a runtime

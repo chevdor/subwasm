@@ -1,0 +1,20 @@
+[package]
+name = "subwasm"
+version = "0.1.0"
+authors = ["chevdor <chevdor@gmail.com>", "Wilfried Kopp <wilfried@parity.io"]
+edition = "2018"
+
+[dependencies]
+color-eyre = "0.5.11"
+clap = "3.0.0-beta.2"
+subwasmlib = { path = "../lib" }
+wasm-testbed = { path = "../libs/wasm-testbed" }
+wasm-loader = { path = "../libs/wasm-loader" }
+
+# For the doc
+rpc-client = { path = "../libs/rpc-client", optional = true }
+substrate-runtime-proposal-hash = { path = "../libs/substrate-runtime-proposal-hash", optional = true }
+
+[features]
+# Defines a feature named `webp` that does not enable any other features.
+doc = [ "rpc-client" ]

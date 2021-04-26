@@ -1,0 +1,15 @@
+subwasm-info 0.1.0
+chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+The `info` sub-command returns summarized information about a runtime
+
+USAGE:
+    subwasm info [FLAGS] [OPTIONS]
+
+FLAGS:
+    -d, --details-level    The more `-d` you add and the more you see... Try `-d` or `-dd` or `-ddd`
+                           or ... `-dddd`
+    -h, --help             Prints help information
+    -V, --version          Prints version information
+
+OPTIONS:
+    -i, --input <input>    The wasm file to load [default: runtime.wasm]

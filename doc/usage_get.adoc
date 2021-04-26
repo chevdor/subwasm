@@ -1,0 +1,24 @@
+subwasm-get 0.1.0
+chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+Get/Download the runtime wasm from a running node through rpc
+
+USAGE:
+    subwasm get [OPTIONS]
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+    -b, --block <block>      The optional block where to fetch the runtime. That allows fetching
+                             older runtimes but you will need to connect to archive nodes.
+                             Currently, you must pass a block hash. Passing the block numbers is not
+                             supported
+    -o, --output <output>    You may specifiy the output filename where the runtime will be saved.
+                             If not provided, we will figure out an appropriate default name based
+                             on a counter: runtime_NNN.wasm where NNN is incrementing to make sure
+                             you do not override previous runtime. If you specify an existing file
+                             as output, it will be overwritten
+    -u, --url <url>          The node url. Example: ws://localhost:9944 or http://localhost:9933.
+                             WARNING: Only http is currently supported [default:
+                             http://localhost:9933]

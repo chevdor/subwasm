@@ -1,0 +1,13 @@
+subwasm-meta 0.1.0
+chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+The `info` sub-command returns summarized information about a runtime
+
+USAGE:
+    subwasm meta [OPTIONS]
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+    -i, --input <input>    The wasm file to load [default: runtime.wasm]

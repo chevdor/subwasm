@@ -1,0 +1,7210 @@
+[
+  {
+    "modules": [
+      {
+        "name": "System",
+        "storage": {
+          "prefix": "System",
+          "entries": [
+            {
+              "name": "Account",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Blake2_128Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "ExtrinsicCount",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "u32"
+              }
+            },
+            {
+              "name": "BlockWeight",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "ConsumedWeight"
+              }
+            },
+            {
+              "name": "AllExtrinsicsLen",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "u32"
+              }
+            },
+            {
+              "name": "BlockHash",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::BlockNumber",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "ExtrinsicData",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "u32",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Number",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "T::BlockNumber"
+              }
+            },
+            {
+              "name": "ParentHash",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "T::Hash"
+              }
+            },
+            {
+              "name": "Digest",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "DigestOf<T>"
+              }
+            },
+            {
+              "name": "Events",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<EventRecord<T::Event, T::Hash>>"
+              }
+            },
+            {
+              "name": "EventCount",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "EventIndex"
+              }
+            },
+            {
+              "name": "EventTopics",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Blake2_128Concat",
+                  "key": "T::Hash",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "LastRuntimeUpgrade",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "LastRuntimeUpgradeInfo"
+              }
+            },
+            {
+              "name": "UpgradedToU32RefCount",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "bool"
+              }
+            },
+            {
+              "name": "UpgradedToDualRefCount",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "bool"
+              }
+            },
+            {
+              "name": "ExecutionPhase",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "Phase"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "fill_block",
+            "arguments": [
+              {
+                "name": "_ratio",
+                "ty": "Perbill"
+              }
+            ]
+          },
+          {
+            "name": "remark",
+            "arguments": [
+              {
+                "name": "_remark",
+                "ty": "Vec<u8>"
+              }
+            ]
+          },
+          {
+            "name": "set_heap_pages",
+            "arguments": [
+              {
+                "name": "pages",
+                "ty": "u64"
+              }
+            ]
+          },
+          {
+            "name": "set_code",
+            "arguments": [
+              {
+                "name": "code",
+                "ty": "Vec<u8>"
+              }
+            ]
+          },
+          {
+            "name": "set_code_without_checks",
+            "arguments": [
+              {
+                "name": "code",
+                "ty": "Vec<u8>"
+              }
+            ]
+          },
+          {
+            "name": "set_changes_trie_config",
+            "arguments": [
+              {
+                "name": "changes_trie_config",
+                "ty": "Option<ChangesTrieConfiguration>"
+              }
+            ]
+          },
+          {
+            "name": "set_storage",
+            "arguments": [
+              {
+                "name": "items",
+                "ty": "Vec<KeyValue>"
+              }
+            ]
+          },
+          {
+            "name": "kill_storage",
+            "arguments": [
+              {
+                "name": "keys",
+                "ty": "Vec<Key>"
+              }
+            ]
+          },
+          {
+            "name": "kill_prefix",
+            "arguments": [
+              {
+                "name": "prefix",
+                "ty": "Key"
+              },
+              {
+                "name": "_subkeys",
+                "ty": "u32"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "ExtrinsicSuccess",
+            "arguments": [
+              "DispatchInfo"
+            ]
+          },
+          {
+            "name": "ExtrinsicFailed",
+            "arguments": [
+              "DispatchError",
+              "DispatchInfo"
+            ]
+          },
+          {
+            "name": "CodeUpdated",
+            "arguments": []
+          },
+          {
+            "name": "NewAccount",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "KilledAccount",
+            "arguments": [
+              "AccountId"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "BlockWeights",
+            "ty": "limits::BlockWeights"
+          },
+          {
+            "name": "BlockLength",
+            "ty": "limits::BlockLength"
+          },
+          {
+            "name": "BlockHashCount",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "DbWeight",
+            "ty": "RuntimeDbWeight"
+          },
+          {
+            "name": "Version",
+            "ty": "RuntimeVersion"
+          },
+          {
+            "name": "SS58Prefix",
+            "ty": "u8"
+          }
+        ],
+        "errors": [
+          {
+            "name": "InvalidSpecName"
+          },
+          {
+            "name": "SpecVersionNeedsToIncrease"
+          },
+          {
+            "name": "FailedToExtractRuntimeVersion"
+          },
+          {
+            "name": "NonDefaultComposite"
+          },
+          {
+            "name": "NonZeroRefCount"
+          }
+        ],
+        "index": 0
+      },
+      {
+        "name": "Utility",
+        "storage": null,
+        "calls": [
+          {
+            "name": "batch",
+            "arguments": [
+              {
+                "name": "calls",
+                "ty": "Vec<<T as Config>::Call>"
+              }
+            ]
+          },
+          {
+            "name": "as_derivative",
+            "arguments": [
+              {
+                "name": "index",
+                "ty": "u16"
+              },
+              {
+                "name": "call",
+                "ty": "Box<<T as Config>::Call>"
+              }
+            ]
+          },
+          {
+            "name": "batch_all",
+            "arguments": [
+              {
+                "name": "calls",
+                "ty": "Vec<<T as Config>::Call>"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "BatchInterrupted",
+            "arguments": [
+              "u32",
+              "DispatchError"
+            ]
+          },
+          {
+            "name": "BatchCompleted",
+            "arguments": []
+          }
+        ],
+        "constants": [],
+        "errors": [],
+        "index": 1
+      },
+      {
+        "name": "Babe",
+        "storage": {
+          "prefix": "Babe",
+          "entries": [
+            {
+              "name": "EpochIndex",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "u64"
+              }
+            },
+            {
+              "name": "Authorities",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<(AuthorityId, BabeAuthorityWeight)>"
+              }
+            },
+            {
+              "name": "GenesisSlot",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Slot"
+              }
+            },
+            {
+              "name": "CurrentSlot",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Slot"
+              }
+            },
+            {
+              "name": "Randomness",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "schnorrkel::Randomness"
+              }
+            },
+            {
+              "name": "NextEpochConfig",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "NextConfigDescriptor"
+              }
+            },
+            {
+              "name": "NextRandomness",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "schnorrkel::Randomness"
+              }
+            },
+            {
+              "name": "NextAuthorities",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<(AuthorityId, BabeAuthorityWeight)>"
+              }
+            },
+            {
+              "name": "SegmentIndex",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "u32"
+              }
+            },
+            {
+              "name": "UnderConstruction",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "u32",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Initialized",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "MaybeRandomness"
+              }
+            },
+            {
+              "name": "AuthorVrfRandomness",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "MaybeRandomness"
+              }
+            },
+            {
+              "name": "Lateness",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "T::BlockNumber"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "report_equivocation",
+            "arguments": [
+              {
+                "name": "equivocation_proof",
+                "ty": "EquivocationProof<T::Header>"
+              },
+              {
+                "name": "key_owner_proof",
+                "ty": "T::KeyOwnerProof"
+              }
+            ]
+          },
+          {
+            "name": "report_equivocation_unsigned",
+            "arguments": [
+              {
+                "name": "equivocation_proof",
+                "ty": "EquivocationProof<T::Header>"
+              },
+              {
+                "name": "key_owner_proof",
+                "ty": "T::KeyOwnerProof"
+              }
+            ]
+          }
+        ],
+        "event": null,
+        "constants": [
+          {
+            "name": "EpochDuration",
+            "ty": "u64"
+          },
+          {
+            "name": "ExpectedBlockTime",
+            "ty": "T::Moment"
+          }
+        ],
+        "errors": [],
+        "index": 2
+      },
+      {
+        "name": "Timestamp",
+        "storage": {
+          "prefix": "Timestamp",
+          "entries": [
+            {
+              "name": "Now",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "T::Moment"
+              }
+            },
+            {
+              "name": "DidUpdate",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "bool"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "set",
+            "arguments": [
+              {
+                "name": "now",
+                "ty": "Compact<T::Moment>"
+              }
+            ]
+          }
+        ],
+        "event": null,
+        "constants": [
+          {
+            "name": "MinimumPeriod",
+            "ty": "T::Moment"
+          }
+        ],
+        "errors": [],
+        "index": 3
+      },
+      {
+        "name": "Authorship",
+        "storage": {
+          "prefix": "Authorship",
+          "entries": [
+            {
+              "name": "Uncles",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<UncleEntryItem<T::BlockNumber, T::Hash, T::AccountId>>"
+              }
+            },
+            {
+              "name": "Author",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "T::AccountId"
+              }
+            },
+            {
+              "name": "DidSetUncles",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "bool"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "set_uncles",
+            "arguments": [
+              {
+                "name": "new_uncles",
+                "ty": "Vec<T::Header>"
+              }
+            ]
+          }
+        ],
+        "event": null,
+        "constants": [],
+        "errors": [
+          {
+            "name": "InvalidUncleParent"
+          },
+          {
+            "name": "UnclesAlreadySet"
+          },
+          {
+            "name": "TooManyUncles"
+          },
+          {
+            "name": "GenesisUncle"
+          },
+          {
+            "name": "TooHighUncle"
+          },
+          {
+            "name": "UncleAlreadyIncluded"
+          },
+          {
+            "name": "OldUncle"
+          }
+        ],
+        "index": 4
+      },
+      {
+        "name": "Indices",
+        "storage": {
+          "prefix": "Indices",
+          "entries": [
+            {
+              "name": "Accounts",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Blake2_128Concat",
+                  "key": "T::AccountIndex",
+                  "unused": false
+                }
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "claim",
+            "arguments": [
+              {
+                "name": "index",
+                "ty": "T::AccountIndex"
+              }
+            ]
+          },
+          {
+            "name": "transfer",
+            "arguments": [
+              {
+                "name": "new",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "index",
+                "ty": "T::AccountIndex"
+              }
+            ]
+          },
+          {
+            "name": "free",
+            "arguments": [
+              {
+                "name": "index",
+                "ty": "T::AccountIndex"
+              }
+            ]
+          },
+          {
+            "name": "force_transfer",
+            "arguments": [
+              {
+                "name": "new",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "index",
+                "ty": "T::AccountIndex"
+              },
+              {
+                "name": "freeze",
+                "ty": "bool"
+              }
+            ]
+          },
+          {
+            "name": "freeze",
+            "arguments": [
+              {
+                "name": "index",
+                "ty": "T::AccountIndex"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "IndexAssigned",
+            "arguments": [
+              "AccountId",
+              "AccountIndex"
+            ]
+          },
+          {
+            "name": "IndexFreed",
+            "arguments": [
+              "AccountIndex"
+            ]
+          },
+          {
+            "name": "IndexFrozen",
+            "arguments": [
+              "AccountIndex",
+              "AccountId"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "Deposit",
+            "ty": "BalanceOf<T>"
+          }
+        ],
+        "errors": [],
+        "index": 5
+      },
+      {
+        "name": "Balances",
+        "storage": {
+          "prefix": "Balances",
+          "entries": [
+            {
+              "name": "TotalIssuance",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "T::Balance"
+              }
+            },
+            {
+              "name": "Account",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Blake2_128Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Locks",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Blake2_128Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "StorageVersion",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Releases"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "transfer",
+            "arguments": [
+              {
+                "name": "dest",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "value",
+                "ty": "Compact<T::Balance>"
+              }
+            ]
+          },
+          {
+            "name": "set_balance",
+            "arguments": [
+              {
+                "name": "who",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "new_free",
+                "ty": "Compact<T::Balance>"
+              },
+              {
+                "name": "new_reserved",
+                "ty": "Compact<T::Balance>"
+              }
+            ]
+          },
+          {
+            "name": "force_transfer",
+            "arguments": [
+              {
+                "name": "source",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "dest",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "value",
+                "ty": "Compact<T::Balance>"
+              }
+            ]
+          },
+          {
+            "name": "transfer_keep_alive",
+            "arguments": [
+              {
+                "name": "dest",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "value",
+                "ty": "Compact<T::Balance>"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "Endowed",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "DustLost",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Transfer",
+            "arguments": [
+              "AccountId",
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "BalanceSet",
+            "arguments": [
+              "AccountId",
+              "Balance",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Deposit",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Reserved",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Unreserved",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "ReserveRepatriated",
+            "arguments": [
+              "AccountId",
+              "AccountId",
+              "Balance",
+              "Status"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "ExistentialDeposit",
+            "ty": "T::Balance"
+          }
+        ],
+        "errors": [
+          {
+            "name": "VestingBalance"
+          },
+          {
+            "name": "LiquidityRestrictions"
+          },
+          {
+            "name": "Overflow"
+          },
+          {
+            "name": "InsufficientBalance"
+          },
+          {
+            "name": "ExistentialDeposit"
+          },
+          {
+            "name": "KeepAlive"
+          },
+          {
+            "name": "ExistingVestingSchedule"
+          },
+          {
+            "name": "DeadAccount"
+          }
+        ],
+        "index": 6
+      },
+      {
+        "name": "TransactionPayment",
+        "storage": {
+          "prefix": "TransactionPayment",
+          "entries": [
+            {
+              "name": "NextFeeMultiplier",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Multiplier"
+              }
+            },
+            {
+              "name": "StorageVersion",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Releases"
+              }
+            }
+          ]
+        },
+        "calls": null,
+        "event": null,
+        "constants": [
+          {
+            "name": "TransactionByteFee",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "WeightToFee",
+            "ty": "Vec<WeightToFeeCoefficient<BalanceOf<T>>>"
+          }
+        ],
+        "errors": [],
+        "index": 7
+      },
+      {
+        "name": "Staking",
+        "storage": {
+          "prefix": "Staking",
+          "entries": [
+            {
+              "name": "HistoryDepth",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "u32"
+              }
+            },
+            {
+              "name": "ValidatorCount",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "u32"
+              }
+            },
+            {
+              "name": "MinimumValidatorCount",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "u32"
+              }
+            },
+            {
+              "name": "Invulnerables",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<T::AccountId>"
+              }
+            },
+            {
+              "name": "Bonded",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Ledger",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Blake2_128Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Payee",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Validators",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Nominators",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "CurrentEra",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "EraIndex"
+              }
+            },
+            {
+              "name": "ActiveEra",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "ActiveEraInfo"
+              }
+            },
+            {
+              "name": "ErasStartSessionIndex",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "EraIndex",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "ErasStakers",
+              "modifier": "Default",
+              "ty": {
+                "DoubleMap": {
+                  "hasher": "Twox64Concat",
+                  "key1": "EraIndex",
+                  "key2": "T::AccountId",
+                  "key2_hasher": "Twox64Concat"
+                }
+              }
+            },
+            {
+              "name": "ErasStakersClipped",
+              "modifier": "Default",
+              "ty": {
+                "DoubleMap": {
+                  "hasher": "Twox64Concat",
+                  "key1": "EraIndex",
+                  "key2": "T::AccountId",
+                  "key2_hasher": "Twox64Concat"
+                }
+              }
+            },
+            {
+              "name": "ErasValidatorPrefs",
+              "modifier": "Default",
+              "ty": {
+                "DoubleMap": {
+                  "hasher": "Twox64Concat",
+                  "key1": "EraIndex",
+                  "key2": "T::AccountId",
+                  "key2_hasher": "Twox64Concat"
+                }
+              }
+            },
+            {
+              "name": "ErasValidatorReward",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "EraIndex",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "ErasRewardPoints",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "EraIndex",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "ErasTotalStake",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "EraIndex",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "ForceEra",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Forcing"
+              }
+            },
+            {
+              "name": "SlashRewardFraction",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Perbill"
+              }
+            },
+            {
+              "name": "CanceledSlashPayout",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "BalanceOf<T>"
+              }
+            },
+            {
+              "name": "UnappliedSlashes",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "EraIndex",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "BondedEras",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<(EraIndex, SessionIndex)>"
+              }
+            },
+            {
+              "name": "ValidatorSlashInEra",
+              "modifier": "Optional",
+              "ty": {
+                "DoubleMap": {
+                  "hasher": "Twox64Concat",
+                  "key1": "EraIndex",
+                  "key2": "T::AccountId",
+                  "key2_hasher": "Twox64Concat"
+                }
+              }
+            },
+            {
+              "name": "NominatorSlashInEra",
+              "modifier": "Optional",
+              "ty": {
+                "DoubleMap": {
+                  "hasher": "Twox64Concat",
+                  "key1": "EraIndex",
+                  "key2": "T::AccountId",
+                  "key2_hasher": "Twox64Concat"
+                }
+              }
+            },
+            {
+              "name": "SlashingSpans",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "SpanSlash",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "(T::AccountId, slashing::SpanIndex)",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "EarliestUnappliedSlash",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "EraIndex"
+              }
+            },
+            {
+              "name": "SnapshotValidators",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "Vec<T::AccountId>"
+              }
+            },
+            {
+              "name": "SnapshotNominators",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "Vec<T::AccountId>"
+              }
+            },
+            {
+              "name": "QueuedElected",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "ElectionResult<T::AccountId, BalanceOf<T>>"
+              }
+            },
+            {
+              "name": "QueuedScore",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "ElectionScore"
+              }
+            },
+            {
+              "name": "EraElectionStatus",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "ElectionStatus<T::BlockNumber>"
+              }
+            },
+            {
+              "name": "IsCurrentSessionFinal",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "bool"
+              }
+            },
+            {
+              "name": "StorageVersion",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Releases"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "bond",
+            "arguments": [
+              {
+                "name": "controller",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "value",
+                "ty": "Compact<BalanceOf<T>>"
+              },
+              {
+                "name": "payee",
+                "ty": "RewardDestination<T::AccountId>"
+              }
+            ]
+          },
+          {
+            "name": "bond_extra",
+            "arguments": [
+              {
+                "name": "max_additional",
+                "ty": "Compact<BalanceOf<T>>"
+              }
+            ]
+          },
+          {
+            "name": "unbond",
+            "arguments": [
+              {
+                "name": "value",
+                "ty": "Compact<BalanceOf<T>>"
+              }
+            ]
+          },
+          {
+            "name": "withdraw_unbonded",
+            "arguments": [
+              {
+                "name": "num_slashing_spans",
+                "ty": "u32"
+              }
+            ]
+          },
+          {
+            "name": "validate",
+            "arguments": [
+              {
+                "name": "prefs",
+                "ty": "ValidatorPrefs"
+              }
+            ]
+          },
+          {
+            "name": "nominate",
+            "arguments": [
+              {
+                "name": "targets",
+                "ty": "Vec<<T::Lookup as StaticLookup>::Source>"
+              }
+            ]
+          },
+          {
+            "name": "chill",
+            "arguments": []
+          },
+          {
+            "name": "set_payee",
+            "arguments": [
+              {
+                "name": "payee",
+                "ty": "RewardDestination<T::AccountId>"
+              }
+            ]
+          },
+          {
+            "name": "set_controller",
+            "arguments": [
+              {
+                "name": "controller",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              }
+            ]
+          },
+          {
+            "name": "set_validator_count",
+            "arguments": [
+              {
+                "name": "new",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "increase_validator_count",
+            "arguments": [
+              {
+                "name": "additional",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "scale_validator_count",
+            "arguments": [
+              {
+                "name": "factor",
+                "ty": "Percent"
+              }
+            ]
+          },
+          {
+            "name": "force_no_eras",
+            "arguments": []
+          },
+          {
+            "name": "force_new_era",
+            "arguments": []
+          },
+          {
+            "name": "set_invulnerables",
+            "arguments": [
+              {
+                "name": "invulnerables",
+                "ty": "Vec<T::AccountId>"
+              }
+            ]
+          },
+          {
+            "name": "force_unstake",
+            "arguments": [
+              {
+                "name": "stash",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "num_slashing_spans",
+                "ty": "u32"
+              }
+            ]
+          },
+          {
+            "name": "force_new_era_always",
+            "arguments": []
+          },
+          {
+            "name": "cancel_deferred_slash",
+            "arguments": [
+              {
+                "name": "era",
+                "ty": "EraIndex"
+              },
+              {
+                "name": "slash_indices",
+                "ty": "Vec<u32>"
+              }
+            ]
+          },
+          {
+            "name": "payout_stakers",
+            "arguments": [
+              {
+                "name": "validator_stash",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "era",
+                "ty": "EraIndex"
+              }
+            ]
+          },
+          {
+            "name": "rebond",
+            "arguments": [
+              {
+                "name": "value",
+                "ty": "Compact<BalanceOf<T>>"
+              }
+            ]
+          },
+          {
+            "name": "set_history_depth",
+            "arguments": [
+              {
+                "name": "new_history_depth",
+                "ty": "Compact<EraIndex>"
+              },
+              {
+                "name": "_era_items_deleted",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "reap_stash",
+            "arguments": [
+              {
+                "name": "stash",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "num_slashing_spans",
+                "ty": "u32"
+              }
+            ]
+          },
+          {
+            "name": "submit_election_solution",
+            "arguments": [
+              {
+                "name": "winners",
+                "ty": "Vec<ValidatorIndex>"
+              },
+              {
+                "name": "compact",
+                "ty": "CompactAssignments"
+              },
+              {
+                "name": "score",
+                "ty": "ElectionScore"
+              },
+              {
+                "name": "era",
+                "ty": "EraIndex"
+              },
+              {
+                "name": "size",
+                "ty": "ElectionSize"
+              }
+            ]
+          },
+          {
+            "name": "submit_election_solution_unsigned",
+            "arguments": [
+              {
+                "name": "winners",
+                "ty": "Vec<ValidatorIndex>"
+              },
+              {
+                "name": "compact",
+                "ty": "CompactAssignments"
+              },
+              {
+                "name": "score",
+                "ty": "ElectionScore"
+              },
+              {
+                "name": "era",
+                "ty": "EraIndex"
+              },
+              {
+                "name": "size",
+                "ty": "ElectionSize"
+              }
+            ]
+          },
+          {
+            "name": "kick",
+            "arguments": [
+              {
+                "name": "who",
+                "ty": "Vec<<T::Lookup as StaticLookup>::Source>"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "EraPayout",
+            "arguments": [
+              "EraIndex",
+              "Balance",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Reward",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Slash",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "OldSlashingReportDiscarded",
+            "arguments": [
+              "SessionIndex"
+            ]
+          },
+          {
+            "name": "StakingElection",
+            "arguments": [
+              "ElectionCompute"
+            ]
+          },
+          {
+            "name": "SolutionStored",
+            "arguments": [
+              "ElectionCompute"
+            ]
+          },
+          {
+            "name": "Bonded",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Unbonded",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Withdrawn",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Kicked",
+            "arguments": [
+              "AccountId",
+              "AccountId"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "SessionsPerEra",
+            "ty": "SessionIndex"
+          },
+          {
+            "name": "BondingDuration",
+            "ty": "EraIndex"
+          },
+          {
+            "name": "SlashDeferDuration",
+            "ty": "EraIndex"
+          },
+          {
+            "name": "ElectionLookahead",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "MaxIterations",
+            "ty": "u32"
+          },
+          {
+            "name": "MinSolutionScoreBump",
+            "ty": "Perbill"
+          },
+          {
+            "name": "MaxNominatorRewardedPerValidator",
+            "ty": "u32"
+          }
+        ],
+        "errors": [
+          {
+            "name": "NotController"
+          },
+          {
+            "name": "NotStash"
+          },
+          {
+            "name": "AlreadyBonded"
+          },
+          {
+            "name": "AlreadyPaired"
+          },
+          {
+            "name": "EmptyTargets"
+          },
+          {
+            "name": "DuplicateIndex"
+          },
+          {
+            "name": "InvalidSlashIndex"
+          },
+          {
+            "name": "InsufficientValue"
+          },
+          {
+            "name": "NoMoreChunks"
+          },
+          {
+            "name": "NoUnlockChunk"
+          },
+          {
+            "name": "FundedTarget"
+          },
+          {
+            "name": "InvalidEraToReward"
+          },
+          {
+            "name": "InvalidNumberOfNominations"
+          },
+          {
+            "name": "NotSortedAndUnique"
+          },
+          {
+            "name": "AlreadyClaimed"
+          },
+          {
+            "name": "OffchainElectionEarlySubmission"
+          },
+          {
+            "name": "OffchainElectionWeakSubmission"
+          },
+          {
+            "name": "SnapshotUnavailable"
+          },
+          {
+            "name": "OffchainElectionBogusWinnerCount"
+          },
+          {
+            "name": "OffchainElectionBogusWinner"
+          },
+          {
+            "name": "OffchainElectionBogusCompact"
+          },
+          {
+            "name": "OffchainElectionBogusNominator"
+          },
+          {
+            "name": "OffchainElectionBogusNomination"
+          },
+          {
+            "name": "OffchainElectionSlashedNomination"
+          },
+          {
+            "name": "OffchainElectionBogusSelfVote"
+          },
+          {
+            "name": "OffchainElectionBogusEdge"
+          },
+          {
+            "name": "OffchainElectionBogusScore"
+          },
+          {
+            "name": "OffchainElectionBogusElectionSize"
+          },
+          {
+            "name": "CallNotAllowed"
+          },
+          {
+            "name": "IncorrectHistoryDepth"
+          },
+          {
+            "name": "IncorrectSlashingSpans"
+          },
+          {
+            "name": "BadState"
+          },
+          {
+            "name": "TooManyTargets"
+          },
+          {
+            "name": "BadTarget"
+          }
+        ],
+        "index": 8
+      },
+      {
+        "name": "Session",
+        "storage": {
+          "prefix": "Session",
+          "entries": [
+            {
+              "name": "Validators",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<T::ValidatorId>"
+              }
+            },
+            {
+              "name": "CurrentIndex",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "SessionIndex"
+              }
+            },
+            {
+              "name": "QueuedChanged",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "bool"
+              }
+            },
+            {
+              "name": "QueuedKeys",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<(T::ValidatorId, T::Keys)>"
+              }
+            },
+            {
+              "name": "DisabledValidators",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<u32>"
+              }
+            },
+            {
+              "name": "NextKeys",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::ValidatorId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "KeyOwner",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "(KeyTypeId, Vec<u8>)",
+                  "unused": false
+                }
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "set_keys",
+            "arguments": [
+              {
+                "name": "keys",
+                "ty": "T::Keys"
+              },
+              {
+                "name": "proof",
+                "ty": "Vec<u8>"
+              }
+            ]
+          },
+          {
+            "name": "purge_keys",
+            "arguments": []
+          }
+        ],
+        "event": [
+          {
+            "name": "NewSession",
+            "arguments": [
+              "SessionIndex"
+            ]
+          }
+        ],
+        "constants": [],
+        "errors": [
+          {
+            "name": "InvalidProof"
+          },
+          {
+            "name": "NoAssociatedValidatorId"
+          },
+          {
+            "name": "DuplicatedKey"
+          },
+          {
+            "name": "NoKeys"
+          },
+          {
+            "name": "NoAccount"
+          }
+        ],
+        "index": 9
+      },
+      {
+        "name": "Democracy",
+        "storage": {
+          "prefix": "Democracy",
+          "entries": [
+            {
+              "name": "PublicPropCount",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "PropIndex"
+              }
+            },
+            {
+              "name": "PublicProps",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<(PropIndex, T::Hash, T::AccountId)>"
+              }
+            },
+            {
+              "name": "DepositOf",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "PropIndex",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Preimages",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Identity",
+                  "key": "T::Hash",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "ReferendumCount",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "ReferendumIndex"
+              }
+            },
+            {
+              "name": "LowestUnbaked",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "ReferendumIndex"
+              }
+            },
+            {
+              "name": "ReferendumInfoOf",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "ReferendumIndex",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "VotingOf",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Locks",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "LastTabledWasExternal",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "bool"
+              }
+            },
+            {
+              "name": "NextExternal",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "(T::Hash, VoteThreshold)"
+              }
+            },
+            {
+              "name": "Blacklist",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Identity",
+                  "key": "T::Hash",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Cancellations",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Identity",
+                  "key": "T::Hash",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "StorageVersion",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "Releases"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "propose",
+            "arguments": [
+              {
+                "name": "proposal_hash",
+                "ty": "T::Hash"
+              },
+              {
+                "name": "value",
+                "ty": "Compact<BalanceOf<T>>"
+              }
+            ]
+          },
+          {
+            "name": "second",
+            "arguments": [
+              {
+                "name": "proposal",
+                "ty": "Compact<PropIndex>"
+              },
+              {
+                "name": "seconds_upper_bound",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "vote",
+            "arguments": [
+              {
+                "name": "ref_index",
+                "ty": "Compact<ReferendumIndex>"
+              },
+              {
+                "name": "vote",
+                "ty": "AccountVote<BalanceOf<T>>"
+              }
+            ]
+          },
+          {
+            "name": "emergency_cancel",
+            "arguments": [
+              {
+                "name": "ref_index",
+                "ty": "ReferendumIndex"
+              }
+            ]
+          },
+          {
+            "name": "external_propose",
+            "arguments": [
+              {
+                "name": "proposal_hash",
+                "ty": "T::Hash"
+              }
+            ]
+          },
+          {
+            "name": "external_propose_majority",
+            "arguments": [
+              {
+                "name": "proposal_hash",
+                "ty": "T::Hash"
+              }
+            ]
+          },
+          {
+            "name": "external_propose_default",
+            "arguments": [
+              {
+                "name": "proposal_hash",
+                "ty": "T::Hash"
+              }
+            ]
+          },
+          {
+            "name": "fast_track",
+            "arguments": [
+              {
+                "name": "proposal_hash",
+                "ty": "T::Hash"
+              },
+              {
+                "name": "voting_period",
+                "ty": "T::BlockNumber"
+              },
+              {
+                "name": "delay",
+                "ty": "T::BlockNumber"
+              }
+            ]
+          },
+          {
+            "name": "veto_external",
+            "arguments": [
+              {
+                "name": "proposal_hash",
+                "ty": "T::Hash"
+              }
+            ]
+          },
+          {
+            "name": "cancel_referendum",
+            "arguments": [
+              {
+                "name": "ref_index",
+                "ty": "Compact<ReferendumIndex>"
+              }
+            ]
+          },
+          {
+            "name": "cancel_queued",
+            "arguments": [
+              {
+                "name": "which",
+                "ty": "ReferendumIndex"
+              }
+            ]
+          },
+          {
+            "name": "delegate",
+            "arguments": [
+              {
+                "name": "to",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "conviction",
+                "ty": "Conviction"
+              },
+              {
+                "name": "balance",
+                "ty": "BalanceOf<T>"
+              }
+            ]
+          },
+          {
+            "name": "undelegate",
+            "arguments": []
+          },
+          {
+            "name": "clear_public_proposals",
+            "arguments": []
+          },
+          {
+            "name": "note_preimage",
+            "arguments": [
+              {
+                "name": "encoded_proposal",
+                "ty": "Vec<u8>"
+              }
+            ]
+          },
+          {
+            "name": "note_preimage_operational",
+            "arguments": [
+              {
+                "name": "encoded_proposal",
+                "ty": "Vec<u8>"
+              }
+            ]
+          },
+          {
+            "name": "note_imminent_preimage",
+            "arguments": [
+              {
+                "name": "encoded_proposal",
+                "ty": "Vec<u8>"
+              }
+            ]
+          },
+          {
+            "name": "note_imminent_preimage_operational",
+            "arguments": [
+              {
+                "name": "encoded_proposal",
+                "ty": "Vec<u8>"
+              }
+            ]
+          },
+          {
+            "name": "reap_preimage",
+            "arguments": [
+              {
+                "name": "proposal_hash",
+                "ty": "T::Hash"
+              },
+              {
+                "name": "proposal_len_upper_bound",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "unlock",
+            "arguments": [
+              {
+                "name": "target",
+                "ty": "T::AccountId"
+              }
+            ]
+          },
+          {
+            "name": "remove_vote",
+            "arguments": [
+              {
+                "name": "index",
+                "ty": "ReferendumIndex"
+              }
+            ]
+          },
+          {
+            "name": "remove_other_vote",
+            "arguments": [
+              {
+                "name": "target",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "index",
+                "ty": "ReferendumIndex"
+              }
+            ]
+          },
+          {
+            "name": "enact_proposal",
+            "arguments": [
+              {
+                "name": "proposal_hash",
+                "ty": "T::Hash"
+              },
+              {
+                "name": "index",
+                "ty": "ReferendumIndex"
+              }
+            ]
+          },
+          {
+            "name": "blacklist",
+            "arguments": [
+              {
+                "name": "proposal_hash",
+                "ty": "T::Hash"
+              },
+              {
+                "name": "maybe_ref_index",
+                "ty": "Option<ReferendumIndex>"
+              }
+            ]
+          },
+          {
+            "name": "cancel_proposal",
+            "arguments": [
+              {
+                "name": "prop_index",
+                "ty": "Compact<PropIndex>"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "Proposed",
+            "arguments": [
+              "PropIndex",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Tabled",
+            "arguments": [
+              "PropIndex",
+              "Balance",
+              "Vec<AccountId>"
+            ]
+          },
+          {
+            "name": "ExternalTabled",
+            "arguments": []
+          },
+          {
+            "name": "Started",
+            "arguments": [
+              "ReferendumIndex",
+              "VoteThreshold"
+            ]
+          },
+          {
+            "name": "Passed",
+            "arguments": [
+              "ReferendumIndex"
+            ]
+          },
+          {
+            "name": "NotPassed",
+            "arguments": [
+              "ReferendumIndex"
+            ]
+          },
+          {
+            "name": "Cancelled",
+            "arguments": [
+              "ReferendumIndex"
+            ]
+          },
+          {
+            "name": "Executed",
+            "arguments": [
+              "ReferendumIndex",
+              "bool"
+            ]
+          },
+          {
+            "name": "Delegated",
+            "arguments": [
+              "AccountId",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Undelegated",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Vetoed",
+            "arguments": [
+              "AccountId",
+              "Hash",
+              "BlockNumber"
+            ]
+          },
+          {
+            "name": "PreimageNoted",
+            "arguments": [
+              "Hash",
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "PreimageUsed",
+            "arguments": [
+              "Hash",
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "PreimageInvalid",
+            "arguments": [
+              "Hash",
+              "ReferendumIndex"
+            ]
+          },
+          {
+            "name": "PreimageMissing",
+            "arguments": [
+              "Hash",
+              "ReferendumIndex"
+            ]
+          },
+          {
+            "name": "PreimageReaped",
+            "arguments": [
+              "Hash",
+              "AccountId",
+              "Balance",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Unlocked",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Blacklisted",
+            "arguments": [
+              "Hash"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "EnactmentPeriod",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "LaunchPeriod",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "VotingPeriod",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "MinimumDeposit",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "FastTrackVotingPeriod",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "CooloffPeriod",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "PreimageByteDeposit",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "MaxVotes",
+            "ty": "u32"
+          }
+        ],
+        "errors": [
+          {
+            "name": "ValueLow"
+          },
+          {
+            "name": "ProposalMissing"
+          },
+          {
+            "name": "BadIndex"
+          },
+          {
+            "name": "AlreadyCanceled"
+          },
+          {
+            "name": "DuplicateProposal"
+          },
+          {
+            "name": "ProposalBlacklisted"
+          },
+          {
+            "name": "NotSimpleMajority"
+          },
+          {
+            "name": "InvalidHash"
+          },
+          {
+            "name": "NoProposal"
+          },
+          {
+            "name": "AlreadyVetoed"
+          },
+          {
+            "name": "NotDelegated"
+          },
+          {
+            "name": "DuplicatePreimage"
+          },
+          {
+            "name": "NotImminent"
+          },
+          {
+            "name": "TooEarly"
+          },
+          {
+            "name": "Imminent"
+          },
+          {
+            "name": "PreimageMissing"
+          },
+          {
+            "name": "ReferendumInvalid"
+          },
+          {
+            "name": "PreimageInvalid"
+          },
+          {
+            "name": "NoneWaiting"
+          },
+          {
+            "name": "NotLocked"
+          },
+          {
+            "name": "NotExpired"
+          },
+          {
+            "name": "NotVoter"
+          },
+          {
+            "name": "NoPermission"
+          },
+          {
+            "name": "AlreadyDelegating"
+          },
+          {
+            "name": "Overflow"
+          },
+          {
+            "name": "Underflow"
+          },
+          {
+            "name": "InsufficientFunds"
+          },
+          {
+            "name": "NotDelegating"
+          },
+          {
+            "name": "VotesExist"
+          },
+          {
+            "name": "InstantNotAllowed"
+          },
+          {
+            "name": "Nonsense"
+          },
+          {
+            "name": "WrongUpperBound"
+          },
+          {
+            "name": "MaxVotesReached"
+          },
+          {
+            "name": "InvalidWitness"
+          },
+          {
+            "name": "TooManyProposals"
+          }
+        ],
+        "index": 10
+      },
+      {
+        "name": "Council",
+        "storage": {
+          "prefix": "Instance1Collective",
+          "entries": [
+            {
+              "name": "Proposals",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<T::Hash>"
+              }
+            },
+            {
+              "name": "ProposalOf",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Identity",
+                  "key": "T::Hash",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Voting",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Identity",
+                  "key": "T::Hash",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "ProposalCount",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "u32"
+              }
+            },
+            {
+              "name": "Members",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<T::AccountId>"
+              }
+            },
+            {
+              "name": "Prime",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "T::AccountId"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "set_members",
+            "arguments": [
+              {
+                "name": "new_members",
+                "ty": "Vec<T::AccountId>"
+              },
+              {
+                "name": "prime",
+                "ty": "Option<T::AccountId>"
+              },
+              {
+                "name": "old_count",
+                "ty": "MemberCount"
+              }
+            ]
+          },
+          {
+            "name": "execute",
+            "arguments": [
+              {
+                "name": "proposal",
+                "ty": "Box<<T as Config<I>>::Proposal>"
+              },
+              {
+                "name": "length_bound",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "propose",
+            "arguments": [
+              {
+                "name": "threshold",
+                "ty": "Compact<MemberCount>"
+              },
+              {
+                "name": "proposal",
+                "ty": "Box<<T as Config<I>>::Proposal>"
+              },
+              {
+                "name": "length_bound",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "vote",
+            "arguments": [
+              {
+                "name": "proposal",
+                "ty": "T::Hash"
+              },
+              {
+                "name": "index",
+                "ty": "Compact<ProposalIndex>"
+              },
+              {
+                "name": "approve",
+                "ty": "bool"
+              }
+            ]
+          },
+          {
+            "name": "close",
+            "arguments": [
+              {
+                "name": "proposal_hash",
+                "ty": "T::Hash"
+              },
+              {
+                "name": "index",
+                "ty": "Compact<ProposalIndex>"
+              },
+              {
+                "name": "proposal_weight_bound",
+                "ty": "Compact<Weight>"
+              },
+              {
+                "name": "length_bound",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "disapprove_proposal",
+            "arguments": [
+              {
+                "name": "proposal_hash",
+                "ty": "T::Hash"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "Proposed",
+            "arguments": [
+              "AccountId",
+              "ProposalIndex",
+              "Hash",
+              "MemberCount"
+            ]
+          },
+          {
+            "name": "Voted",
+            "arguments": [
+              "AccountId",
+              "Hash",
+              "bool",
+              "MemberCount",
+              "MemberCount"
+            ]
+          },
+          {
+            "name": "Approved",
+            "arguments": [
+              "Hash"
+            ]
+          },
+          {
+            "name": "Disapproved",
+            "arguments": [
+              "Hash"
+            ]
+          },
+          {
+            "name": "Executed",
+            "arguments": [
+              "Hash",
+              "DispatchResult"
+            ]
+          },
+          {
+            "name": "MemberExecuted",
+            "arguments": [
+              "Hash",
+              "DispatchResult"
+            ]
+          },
+          {
+            "name": "Closed",
+            "arguments": [
+              "Hash",
+              "MemberCount",
+              "MemberCount"
+            ]
+          }
+        ],
+        "constants": [],
+        "errors": [
+          {
+            "name": "NotMember"
+          },
+          {
+            "name": "DuplicateProposal"
+          },
+          {
+            "name": "ProposalMissing"
+          },
+          {
+            "name": "WrongIndex"
+          },
+          {
+            "name": "DuplicateVote"
+          },
+          {
+            "name": "AlreadyInitialized"
+          },
+          {
+            "name": "TooEarly"
+          },
+          {
+            "name": "TooManyProposals"
+          },
+          {
+            "name": "WrongProposalWeight"
+          },
+          {
+            "name": "WrongProposalLength"
+          }
+        ],
+        "index": 11
+      },
+      {
+        "name": "TechnicalCommittee",
+        "storage": {
+          "prefix": "Instance2Collective",
+          "entries": [
+            {
+              "name": "Proposals",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<T::Hash>"
+              }
+            },
+            {
+              "name": "ProposalOf",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Identity",
+                  "key": "T::Hash",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Voting",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Identity",
+                  "key": "T::Hash",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "ProposalCount",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "u32"
+              }
+            },
+            {
+              "name": "Members",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<T::AccountId>"
+              }
+            },
+            {
+              "name": "Prime",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "T::AccountId"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "set_members",
+            "arguments": [
+              {
+                "name": "new_members",
+                "ty": "Vec<T::AccountId>"
+              },
+              {
+                "name": "prime",
+                "ty": "Option<T::AccountId>"
+              },
+              {
+                "name": "old_count",
+                "ty": "MemberCount"
+              }
+            ]
+          },
+          {
+            "name": "execute",
+            "arguments": [
+              {
+                "name": "proposal",
+                "ty": "Box<<T as Config<I>>::Proposal>"
+              },
+              {
+                "name": "length_bound",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "propose",
+            "arguments": [
+              {
+                "name": "threshold",
+                "ty": "Compact<MemberCount>"
+              },
+              {
+                "name": "proposal",
+                "ty": "Box<<T as Config<I>>::Proposal>"
+              },
+              {
+                "name": "length_bound",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "vote",
+            "arguments": [
+              {
+                "name": "proposal",
+                "ty": "T::Hash"
+              },
+              {
+                "name": "index",
+                "ty": "Compact<ProposalIndex>"
+              },
+              {
+                "name": "approve",
+                "ty": "bool"
+              }
+            ]
+          },
+          {
+            "name": "close",
+            "arguments": [
+              {
+                "name": "proposal_hash",
+                "ty": "T::Hash"
+              },
+              {
+                "name": "index",
+                "ty": "Compact<ProposalIndex>"
+              },
+              {
+                "name": "proposal_weight_bound",
+                "ty": "Compact<Weight>"
+              },
+              {
+                "name": "length_bound",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "disapprove_proposal",
+            "arguments": [
+              {
+                "name": "proposal_hash",
+                "ty": "T::Hash"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "Proposed",
+            "arguments": [
+              "AccountId",
+              "ProposalIndex",
+              "Hash",
+              "MemberCount"
+            ]
+          },
+          {
+            "name": "Voted",
+            "arguments": [
+              "AccountId",
+              "Hash",
+              "bool",
+              "MemberCount",
+              "MemberCount"
+            ]
+          },
+          {
+            "name": "Approved",
+            "arguments": [
+              "Hash"
+            ]
+          },
+          {
+            "name": "Disapproved",
+            "arguments": [
+              "Hash"
+            ]
+          },
+          {
+            "name": "Executed",
+            "arguments": [
+              "Hash",
+              "DispatchResult"
+            ]
+          },
+          {
+            "name": "MemberExecuted",
+            "arguments": [
+              "Hash",
+              "DispatchResult"
+            ]
+          },
+          {
+            "name": "Closed",
+            "arguments": [
+              "Hash",
+              "MemberCount",
+              "MemberCount"
+            ]
+          }
+        ],
+        "constants": [],
+        "errors": [
+          {
+            "name": "NotMember"
+          },
+          {
+            "name": "DuplicateProposal"
+          },
+          {
+            "name": "ProposalMissing"
+          },
+          {
+            "name": "WrongIndex"
+          },
+          {
+            "name": "DuplicateVote"
+          },
+          {
+            "name": "AlreadyInitialized"
+          },
+          {
+            "name": "TooEarly"
+          },
+          {
+            "name": "TooManyProposals"
+          },
+          {
+            "name": "WrongProposalWeight"
+          },
+          {
+            "name": "WrongProposalLength"
+          }
+        ],
+        "index": 12
+      },
+      {
+        "name": "Elections",
+        "storage": {
+          "prefix": "PhragmenElection",
+          "entries": [
+            {
+              "name": "Members",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<SeatHolder<T::AccountId, BalanceOf<T>>>"
+              }
+            },
+            {
+              "name": "RunnersUp",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<SeatHolder<T::AccountId, BalanceOf<T>>>"
+              }
+            },
+            {
+              "name": "Candidates",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<(T::AccountId, BalanceOf<T>)>"
+              }
+            },
+            {
+              "name": "ElectionRounds",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "u32"
+              }
+            },
+            {
+              "name": "Voting",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "vote",
+            "arguments": [
+              {
+                "name": "votes",
+                "ty": "Vec<T::AccountId>"
+              },
+              {
+                "name": "value",
+                "ty": "Compact<BalanceOf<T>>"
+              }
+            ]
+          },
+          {
+            "name": "remove_voter",
+            "arguments": []
+          },
+          {
+            "name": "submit_candidacy",
+            "arguments": [
+              {
+                "name": "candidate_count",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "renounce_candidacy",
+            "arguments": [
+              {
+                "name": "renouncing",
+                "ty": "Renouncing"
+              }
+            ]
+          },
+          {
+            "name": "remove_member",
+            "arguments": [
+              {
+                "name": "who",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "has_replacement",
+                "ty": "bool"
+              }
+            ]
+          },
+          {
+            "name": "clean_defunct_voters",
+            "arguments": [
+              {
+                "name": "_num_voters",
+                "ty": "u32"
+              },
+              {
+                "name": "_num_defunct",
+                "ty": "u32"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "NewTerm",
+            "arguments": [
+              "Vec<(AccountId, Balance)>"
+            ]
+          },
+          {
+            "name": "EmptyTerm",
+            "arguments": []
+          },
+          {
+            "name": "ElectionError",
+            "arguments": []
+          },
+          {
+            "name": "MemberKicked",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Renounced",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "CandidateSlashed",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "SeatHolderSlashed",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "CandidacyBond",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "VotingBondBase",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "VotingBondFactor",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "DesiredMembers",
+            "ty": "u32"
+          },
+          {
+            "name": "DesiredRunnersUp",
+            "ty": "u32"
+          },
+          {
+            "name": "TermDuration",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "ModuleId",
+            "ty": "LockIdentifier"
+          }
+        ],
+        "errors": [
+          {
+            "name": "UnableToVote"
+          },
+          {
+            "name": "NoVotes"
+          },
+          {
+            "name": "TooManyVotes"
+          },
+          {
+            "name": "MaximumVotesExceeded"
+          },
+          {
+            "name": "LowBalance"
+          },
+          {
+            "name": "UnableToPayBond"
+          },
+          {
+            "name": "MustBeVoter"
+          },
+          {
+            "name": "ReportSelf"
+          },
+          {
+            "name": "DuplicatedCandidate"
+          },
+          {
+            "name": "MemberSubmit"
+          },
+          {
+            "name": "RunnerUpSubmit"
+          },
+          {
+            "name": "InsufficientCandidateFunds"
+          },
+          {
+            "name": "NotMember"
+          },
+          {
+            "name": "InvalidWitnessData"
+          },
+          {
+            "name": "InvalidVoteCount"
+          },
+          {
+            "name": "InvalidRenouncing"
+          },
+          {
+            "name": "InvalidReplacement"
+          }
+        ],
+        "index": 13
+      },
+      {
+        "name": "TechnicalMembership",
+        "storage": {
+          "prefix": "Instance1Membership",
+          "entries": [
+            {
+              "name": "Members",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<T::AccountId>"
+              }
+            },
+            {
+              "name": "Prime",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "T::AccountId"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "add_member",
+            "arguments": [
+              {
+                "name": "who",
+                "ty": "T::AccountId"
+              }
+            ]
+          },
+          {
+            "name": "remove_member",
+            "arguments": [
+              {
+                "name": "who",
+                "ty": "T::AccountId"
+              }
+            ]
+          },
+          {
+            "name": "swap_member",
+            "arguments": [
+              {
+                "name": "remove",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "add",
+                "ty": "T::AccountId"
+              }
+            ]
+          },
+          {
+            "name": "reset_members",
+            "arguments": [
+              {
+                "name": "members",
+                "ty": "Vec<T::AccountId>"
+              }
+            ]
+          },
+          {
+            "name": "change_key",
+            "arguments": [
+              {
+                "name": "new",
+                "ty": "T::AccountId"
+              }
+            ]
+          },
+          {
+            "name": "set_prime",
+            "arguments": [
+              {
+                "name": "who",
+                "ty": "T::AccountId"
+              }
+            ]
+          },
+          {
+            "name": "clear_prime",
+            "arguments": []
+          }
+        ],
+        "event": [
+          {
+            "name": "MemberAdded",
+            "arguments": []
+          },
+          {
+            "name": "MemberRemoved",
+            "arguments": []
+          },
+          {
+            "name": "MembersSwapped",
+            "arguments": []
+          },
+          {
+            "name": "MembersReset",
+            "arguments": []
+          },
+          {
+            "name": "KeyChanged",
+            "arguments": []
+          },
+          {
+            "name": "Dummy",
+            "arguments": [
+              "sp_std::marker::PhantomData<(AccountId, Event)>"
+            ]
+          }
+        ],
+        "constants": [],
+        "errors": [],
+        "index": 14
+      },
+      {
+        "name": "Grandpa",
+        "storage": {
+          "prefix": "GrandpaFinality",
+          "entries": [
+            {
+              "name": "State",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "StoredState<T::BlockNumber>"
+              }
+            },
+            {
+              "name": "PendingChange",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "StoredPendingChange<T::BlockNumber>"
+              }
+            },
+            {
+              "name": "NextForced",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "T::BlockNumber"
+              }
+            },
+            {
+              "name": "Stalled",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "(T::BlockNumber, T::BlockNumber)"
+              }
+            },
+            {
+              "name": "CurrentSetId",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "SetId"
+              }
+            },
+            {
+              "name": "SetIdSession",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "SetId",
+                  "unused": false
+                }
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "report_equivocation",
+            "arguments": [
+              {
+                "name": "equivocation_proof",
+                "ty": "EquivocationProof<T::Hash, T::BlockNumber>"
+              },
+              {
+                "name": "key_owner_proof",
+                "ty": "T::KeyOwnerProof"
+              }
+            ]
+          },
+          {
+            "name": "report_equivocation_unsigned",
+            "arguments": [
+              {
+                "name": "equivocation_proof",
+                "ty": "EquivocationProof<T::Hash, T::BlockNumber>"
+              },
+              {
+                "name": "key_owner_proof",
+                "ty": "T::KeyOwnerProof"
+              }
+            ]
+          },
+          {
+            "name": "note_stalled",
+            "arguments": [
+              {
+                "name": "delay",
+                "ty": "T::BlockNumber"
+              },
+              {
+                "name": "best_finalized_block_number",
+                "ty": "T::BlockNumber"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "NewAuthorities",
+            "arguments": [
+              "AuthorityList"
+            ]
+          },
+          {
+            "name": "Paused",
+            "arguments": []
+          },
+          {
+            "name": "Resumed",
+            "arguments": []
+          }
+        ],
+        "constants": [],
+        "errors": [
+          {
+            "name": "PauseFailed"
+          },
+          {
+            "name": "ResumeFailed"
+          },
+          {
+            "name": "ChangePending"
+          },
+          {
+            "name": "TooSoon"
+          },
+          {
+            "name": "InvalidKeyOwnershipProof"
+          },
+          {
+            "name": "InvalidEquivocationProof"
+          },
+          {
+            "name": "DuplicateOffenceReport"
+          }
+        ],
+        "index": 15
+      },
+      {
+        "name": "Treasury",
+        "storage": {
+          "prefix": "Treasury",
+          "entries": [
+            {
+              "name": "ProposalCount",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "ProposalIndex"
+              }
+            },
+            {
+              "name": "Proposals",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "ProposalIndex",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Approvals",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<ProposalIndex>"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "propose_spend",
+            "arguments": [
+              {
+                "name": "value",
+                "ty": "Compact<BalanceOf<T, I>>"
+              },
+              {
+                "name": "beneficiary",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              }
+            ]
+          },
+          {
+            "name": "reject_proposal",
+            "arguments": [
+              {
+                "name": "proposal_id",
+                "ty": "Compact<ProposalIndex>"
+              }
+            ]
+          },
+          {
+            "name": "approve_proposal",
+            "arguments": [
+              {
+                "name": "proposal_id",
+                "ty": "Compact<ProposalIndex>"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "Proposed",
+            "arguments": [
+              "ProposalIndex"
+            ]
+          },
+          {
+            "name": "Spending",
+            "arguments": [
+              "Balance"
+            ]
+          },
+          {
+            "name": "Awarded",
+            "arguments": [
+              "ProposalIndex",
+              "Balance",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Rejected",
+            "arguments": [
+              "ProposalIndex",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Burnt",
+            "arguments": [
+              "Balance"
+            ]
+          },
+          {
+            "name": "Rollover",
+            "arguments": [
+              "Balance"
+            ]
+          },
+          {
+            "name": "Deposit",
+            "arguments": [
+              "Balance"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "ProposalBond",
+            "ty": "Permill"
+          },
+          {
+            "name": "ProposalBondMinimum",
+            "ty": "BalanceOf<T, I>"
+          },
+          {
+            "name": "SpendPeriod",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "Burn",
+            "ty": "Permill"
+          },
+          {
+            "name": "ModuleId",
+            "ty": "ModuleId"
+          }
+        ],
+        "errors": [
+          {
+            "name": "InsufficientProposersBalance"
+          },
+          {
+            "name": "InvalidIndex"
+          }
+        ],
+        "index": 16
+      },
+      {
+        "name": "Contracts",
+        "storage": {
+          "prefix": "Contracts",
+          "entries": [
+            {
+              "name": "CurrentSchedule",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Schedule<T>"
+              }
+            },
+            {
+              "name": "PristineCode",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Identity",
+                  "key": "CodeHash<T>",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "CodeStorage",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Identity",
+                  "key": "CodeHash<T>",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "AccountCounter",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "u64"
+              }
+            },
+            {
+              "name": "ContractInfoOf",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "DeletionQueue",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<storage::DeletedContract>"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "update_schedule",
+            "arguments": [
+              {
+                "name": "schedule",
+                "ty": "Schedule<T>"
+              }
+            ]
+          },
+          {
+            "name": "call",
+            "arguments": [
+              {
+                "name": "dest",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "value",
+                "ty": "Compact<BalanceOf<T>>"
+              },
+              {
+                "name": "gas_limit",
+                "ty": "Compact<Gas>"
+              },
+              {
+                "name": "data",
+                "ty": "Vec<u8>"
+              }
+            ]
+          },
+          {
+            "name": "instantiate_with_code",
+            "arguments": [
+              {
+                "name": "endowment",
+                "ty": "Compact<BalanceOf<T>>"
+              },
+              {
+                "name": "gas_limit",
+                "ty": "Compact<Gas>"
+              },
+              {
+                "name": "code",
+                "ty": "Vec<u8>"
+              },
+              {
+                "name": "data",
+                "ty": "Vec<u8>"
+              },
+              {
+                "name": "salt",
+                "ty": "Vec<u8>"
+              }
+            ]
+          },
+          {
+            "name": "instantiate",
+            "arguments": [
+              {
+                "name": "endowment",
+                "ty": "Compact<BalanceOf<T>>"
+              },
+              {
+                "name": "gas_limit",
+                "ty": "Compact<Gas>"
+              },
+              {
+                "name": "code_hash",
+                "ty": "CodeHash<T>"
+              },
+              {
+                "name": "data",
+                "ty": "Vec<u8>"
+              },
+              {
+                "name": "salt",
+                "ty": "Vec<u8>"
+              }
+            ]
+          },
+          {
+            "name": "claim_surcharge",
+            "arguments": [
+              {
+                "name": "dest",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "aux_sender",
+                "ty": "Option<T::AccountId>"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "Instantiated",
+            "arguments": [
+              "AccountId",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Evicted",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Terminated",
+            "arguments": [
+              "AccountId",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Restored",
+            "arguments": [
+              "AccountId",
+              "AccountId",
+              "Hash",
+              "Balance"
+            ]
+          },
+          {
+            "name": "CodeStored",
+            "arguments": [
+              "Hash"
+            ]
+          },
+          {
+            "name": "ScheduleUpdated",
+            "arguments": [
+              "u32"
+            ]
+          },
+          {
+            "name": "ContractEmitted",
+            "arguments": [
+              "AccountId",
+              "Vec<u8>"
+            ]
+          },
+          {
+            "name": "CodeRemoved",
+            "arguments": [
+              "Hash"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "SignedClaimHandicap",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "TombstoneDeposit",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "DepositPerContract",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "DepositPerStorageByte",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "DepositPerStorageItem",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "RentFraction",
+            "ty": "Perbill"
+          },
+          {
+            "name": "SurchargeReward",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "MaxDepth",
+            "ty": "u32"
+          },
+          {
+            "name": "MaxValueSize",
+            "ty": "u32"
+          },
+          {
+            "name": "DeletionQueueDepth",
+            "ty": "u32"
+          },
+          {
+            "name": "DeletionWeightLimit",
+            "ty": "Weight"
+          }
+        ],
+        "errors": [
+          {
+            "name": "InvalidScheduleVersion"
+          },
+          {
+            "name": "InvalidSurchargeClaim"
+          },
+          {
+            "name": "InvalidSourceContract"
+          },
+          {
+            "name": "InvalidDestinationContract"
+          },
+          {
+            "name": "InvalidTombstone"
+          },
+          {
+            "name": "InvalidContractOrigin"
+          },
+          {
+            "name": "OutOfGas"
+          },
+          {
+            "name": "OutputBufferTooSmall"
+          },
+          {
+            "name": "BelowSubsistenceThreshold"
+          },
+          {
+            "name": "NewContractNotFunded"
+          },
+          {
+            "name": "TransferFailed"
+          },
+          {
+            "name": "MaxCallDepthReached"
+          },
+          {
+            "name": "NotCallable"
+          },
+          {
+            "name": "CodeTooLarge"
+          },
+          {
+            "name": "CodeNotFound"
+          },
+          {
+            "name": "OutOfBounds"
+          },
+          {
+            "name": "DecodingFailed"
+          },
+          {
+            "name": "ContractTrapped"
+          },
+          {
+            "name": "ValueTooLarge"
+          },
+          {
+            "name": "ReentranceDenied"
+          },
+          {
+            "name": "InputAlreadyRead"
+          },
+          {
+            "name": "RandomSubjectTooLong"
+          },
+          {
+            "name": "TooManyTopics"
+          },
+          {
+            "name": "DuplicateTopics"
+          },
+          {
+            "name": "NoChainExtension"
+          },
+          {
+            "name": "DeletionQueueFull"
+          },
+          {
+            "name": "ContractNotEvictable"
+          },
+          {
+            "name": "StorageExhausted"
+          },
+          {
+            "name": "DuplicateContract"
+          }
+        ],
+        "index": 17
+      },
+      {
+        "name": "Sudo",
+        "storage": {
+          "prefix": "Sudo",
+          "entries": [
+            {
+              "name": "Key",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "T::AccountId"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "sudo",
+            "arguments": [
+              {
+                "name": "call",
+                "ty": "Box<<T as Config>::Call>"
+              }
+            ]
+          },
+          {
+            "name": "sudo_unchecked_weight",
+            "arguments": [
+              {
+                "name": "call",
+                "ty": "Box<<T as Config>::Call>"
+              },
+              {
+                "name": "_weight",
+                "ty": "Weight"
+              }
+            ]
+          },
+          {
+            "name": "set_key",
+            "arguments": [
+              {
+                "name": "new",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              }
+            ]
+          },
+          {
+            "name": "sudo_as",
+            "arguments": [
+              {
+                "name": "who",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "call",
+                "ty": "Box<<T as Config>::Call>"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "Sudid",
+            "arguments": [
+              "DispatchResult"
+            ]
+          },
+          {
+            "name": "KeyChanged",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "SudoAsDone",
+            "arguments": [
+              "DispatchResult"
+            ]
+          }
+        ],
+        "constants": [],
+        "errors": [
+          {
+            "name": "RequireSudo"
+          }
+        ],
+        "index": 18
+      },
+      {
+        "name": "ImOnline",
+        "storage": {
+          "prefix": "ImOnline",
+          "entries": [
+            {
+              "name": "HeartbeatAfter",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "T::BlockNumber"
+              }
+            },
+            {
+              "name": "Keys",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<T::AuthorityId>"
+              }
+            },
+            {
+              "name": "ReceivedHeartbeats",
+              "modifier": "Optional",
+              "ty": {
+                "DoubleMap": {
+                  "hasher": "Twox64Concat",
+                  "key1": "SessionIndex",
+                  "key2": "AuthIndex",
+                  "key2_hasher": "Twox64Concat"
+                }
+              }
+            },
+            {
+              "name": "AuthoredBlocks",
+              "modifier": "Default",
+              "ty": {
+                "DoubleMap": {
+                  "hasher": "Twox64Concat",
+                  "key1": "SessionIndex",
+                  "key2": "ValidatorId<T>",
+                  "key2_hasher": "Twox64Concat"
+                }
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "heartbeat",
+            "arguments": [
+              {
+                "name": "heartbeat",
+                "ty": "Heartbeat<T::BlockNumber>"
+              },
+              {
+                "name": "_signature",
+                "ty": "<T::AuthorityId as RuntimeAppPublic>::Signature"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "HeartbeatReceived",
+            "arguments": [
+              "AuthorityId"
+            ]
+          },
+          {
+            "name": "AllGood",
+            "arguments": []
+          },
+          {
+            "name": "SomeOffline",
+            "arguments": [
+              "Vec<IdentificationTuple>"
+            ]
+          }
+        ],
+        "constants": [],
+        "errors": [
+          {
+            "name": "InvalidKey"
+          },
+          {
+            "name": "DuplicatedHeartbeat"
+          }
+        ],
+        "index": 19
+      },
+      {
+        "name": "AuthorityDiscovery",
+        "storage": null,
+        "calls": [],
+        "event": null,
+        "constants": [],
+        "errors": [],
+        "index": 20
+      },
+      {
+        "name": "Offences",
+        "storage": {
+          "prefix": "Offences",
+          "entries": [
+            {
+              "name": "Reports",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "ReportIdOf<T>",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "DeferredOffences",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<DeferredOffenceOf<T>>"
+              }
+            },
+            {
+              "name": "ConcurrentReportsIndex",
+              "modifier": "Default",
+              "ty": {
+                "DoubleMap": {
+                  "hasher": "Twox64Concat",
+                  "key1": "Kind",
+                  "key2": "OpaqueTimeSlot",
+                  "key2_hasher": "Twox64Concat"
+                }
+              }
+            },
+            {
+              "name": "ReportsByKindIndex",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "Kind",
+                  "unused": false
+                }
+              }
+            }
+          ]
+        },
+        "calls": [],
+        "event": [
+          {
+            "name": "Offence",
+            "arguments": [
+              "Kind",
+              "OpaqueTimeSlot",
+              "bool"
+            ]
+          }
+        ],
+        "constants": [],
+        "errors": [],
+        "index": 21
+      },
+      {
+        "name": "Historical",
+        "storage": null,
+        "calls": null,
+        "event": null,
+        "constants": [],
+        "errors": [],
+        "index": 22
+      },
+      {
+        "name": "RandomnessCollectiveFlip",
+        "storage": {
+          "prefix": "RandomnessCollectiveFlip",
+          "entries": [
+            {
+              "name": "RandomMaterial",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<T::Hash>"
+              }
+            }
+          ]
+        },
+        "calls": [],
+        "event": null,
+        "constants": [],
+        "errors": [],
+        "index": 23
+      },
+      {
+        "name": "Identity",
+        "storage": {
+          "prefix": "Identity",
+          "entries": [
+            {
+              "name": "IdentityOf",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "SuperOf",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Blake2_128Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "SubsOf",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Registrars",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<Option<RegistrarInfo<BalanceOf<T>, T::AccountId>>>"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "add_registrar",
+            "arguments": [
+              {
+                "name": "account",
+                "ty": "T::AccountId"
+              }
+            ]
+          },
+          {
+            "name": "set_identity",
+            "arguments": [
+              {
+                "name": "info",
+                "ty": "IdentityInfo"
+              }
+            ]
+          },
+          {
+            "name": "set_subs",
+            "arguments": [
+              {
+                "name": "subs",
+                "ty": "Vec<(T::AccountId, Data)>"
+              }
+            ]
+          },
+          {
+            "name": "clear_identity",
+            "arguments": []
+          },
+          {
+            "name": "request_judgement",
+            "arguments": [
+              {
+                "name": "reg_index",
+                "ty": "Compact<RegistrarIndex>"
+              },
+              {
+                "name": "max_fee",
+                "ty": "Compact<BalanceOf<T>>"
+              }
+            ]
+          },
+          {
+            "name": "cancel_request",
+            "arguments": [
+              {
+                "name": "reg_index",
+                "ty": "RegistrarIndex"
+              }
+            ]
+          },
+          {
+            "name": "set_fee",
+            "arguments": [
+              {
+                "name": "index",
+                "ty": "Compact<RegistrarIndex>"
+              },
+              {
+                "name": "fee",
+                "ty": "Compact<BalanceOf<T>>"
+              }
+            ]
+          },
+          {
+            "name": "set_account_id",
+            "arguments": [
+              {
+                "name": "index",
+                "ty": "Compact<RegistrarIndex>"
+              },
+              {
+                "name": "new",
+                "ty": "T::AccountId"
+              }
+            ]
+          },
+          {
+            "name": "set_fields",
+            "arguments": [
+              {
+                "name": "index",
+                "ty": "Compact<RegistrarIndex>"
+              },
+              {
+                "name": "fields",
+                "ty": "IdentityFields"
+              }
+            ]
+          },
+          {
+            "name": "provide_judgement",
+            "arguments": [
+              {
+                "name": "reg_index",
+                "ty": "Compact<RegistrarIndex>"
+              },
+              {
+                "name": "target",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "judgement",
+                "ty": "Judgement<BalanceOf<T>>"
+              }
+            ]
+          },
+          {
+            "name": "kill_identity",
+            "arguments": [
+              {
+                "name": "target",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              }
+            ]
+          },
+          {
+            "name": "add_sub",
+            "arguments": [
+              {
+                "name": "sub",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "data",
+                "ty": "Data"
+              }
+            ]
+          },
+          {
+            "name": "rename_sub",
+            "arguments": [
+              {
+                "name": "sub",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "data",
+                "ty": "Data"
+              }
+            ]
+          },
+          {
+            "name": "remove_sub",
+            "arguments": [
+              {
+                "name": "sub",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              }
+            ]
+          },
+          {
+            "name": "quit_sub",
+            "arguments": []
+          }
+        ],
+        "event": [
+          {
+            "name": "IdentitySet",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "IdentityCleared",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "IdentityKilled",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "JudgementRequested",
+            "arguments": [
+              "AccountId",
+              "RegistrarIndex"
+            ]
+          },
+          {
+            "name": "JudgementUnrequested",
+            "arguments": [
+              "AccountId",
+              "RegistrarIndex"
+            ]
+          },
+          {
+            "name": "JudgementGiven",
+            "arguments": [
+              "AccountId",
+              "RegistrarIndex"
+            ]
+          },
+          {
+            "name": "RegistrarAdded",
+            "arguments": [
+              "RegistrarIndex"
+            ]
+          },
+          {
+            "name": "SubIdentityAdded",
+            "arguments": [
+              "AccountId",
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "SubIdentityRemoved",
+            "arguments": [
+              "AccountId",
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "SubIdentityRevoked",
+            "arguments": [
+              "AccountId",
+              "AccountId",
+              "Balance"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "BasicDeposit",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "FieldDeposit",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "SubAccountDeposit",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "MaxSubAccounts",
+            "ty": "u32"
+          },
+          {
+            "name": "MaxAdditionalFields",
+            "ty": "u32"
+          },
+          {
+            "name": "MaxRegistrars",
+            "ty": "u32"
+          }
+        ],
+        "errors": [
+          {
+            "name": "TooManySubAccounts"
+          },
+          {
+            "name": "NotFound"
+          },
+          {
+            "name": "NotNamed"
+          },
+          {
+            "name": "EmptyIndex"
+          },
+          {
+            "name": "FeeChanged"
+          },
+          {
+            "name": "NoIdentity"
+          },
+          {
+            "name": "StickyJudgement"
+          },
+          {
+            "name": "JudgementGiven"
+          },
+          {
+            "name": "InvalidJudgement"
+          },
+          {
+            "name": "InvalidIndex"
+          },
+          {
+            "name": "InvalidTarget"
+          },
+          {
+            "name": "TooManyFields"
+          },
+          {
+            "name": "TooManyRegistrars"
+          },
+          {
+            "name": "AlreadyClaimed"
+          },
+          {
+            "name": "NotSub"
+          },
+          {
+            "name": "NotOwned"
+          }
+        ],
+        "index": 24
+      },
+      {
+        "name": "Society",
+        "storage": {
+          "prefix": "Society",
+          "entries": [
+            {
+              "name": "Founder",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "T::AccountId"
+              }
+            },
+            {
+              "name": "Rules",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "T::Hash"
+              }
+            },
+            {
+              "name": "Candidates",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<Bid<T::AccountId, BalanceOf<T, I>>>"
+              }
+            },
+            {
+              "name": "SuspendedCandidates",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Pot",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "BalanceOf<T, I>"
+              }
+            },
+            {
+              "name": "Head",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "T::AccountId"
+              }
+            },
+            {
+              "name": "Members",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<T::AccountId>"
+              }
+            },
+            {
+              "name": "SuspendedMembers",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Bids",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<Bid<T::AccountId, BalanceOf<T, I>>>"
+              }
+            },
+            {
+              "name": "Vouching",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Payouts",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Strikes",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Votes",
+              "modifier": "Optional",
+              "ty": {
+                "DoubleMap": {
+                  "hasher": "Twox64Concat",
+                  "key1": "T::AccountId",
+                  "key2": "T::AccountId",
+                  "key2_hasher": "Twox64Concat"
+                }
+              }
+            },
+            {
+              "name": "Defender",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "T::AccountId"
+              }
+            },
+            {
+              "name": "DefenderVotes",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "MaxMembers",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "u32"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "bid",
+            "arguments": [
+              {
+                "name": "value",
+                "ty": "BalanceOf<T, I>"
+              }
+            ]
+          },
+          {
+            "name": "unbid",
+            "arguments": [
+              {
+                "name": "pos",
+                "ty": "u32"
+              }
+            ]
+          },
+          {
+            "name": "vouch",
+            "arguments": [
+              {
+                "name": "who",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "value",
+                "ty": "BalanceOf<T, I>"
+              },
+              {
+                "name": "tip",
+                "ty": "BalanceOf<T, I>"
+              }
+            ]
+          },
+          {
+            "name": "unvouch",
+            "arguments": [
+              {
+                "name": "pos",
+                "ty": "u32"
+              }
+            ]
+          },
+          {
+            "name": "vote",
+            "arguments": [
+              {
+                "name": "candidate",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "approve",
+                "ty": "bool"
+              }
+            ]
+          },
+          {
+            "name": "defender_vote",
+            "arguments": [
+              {
+                "name": "approve",
+                "ty": "bool"
+              }
+            ]
+          },
+          {
+            "name": "payout",
+            "arguments": []
+          },
+          {
+            "name": "found",
+            "arguments": [
+              {
+                "name": "founder",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "max_members",
+                "ty": "u32"
+              },
+              {
+                "name": "rules",
+                "ty": "Vec<u8>"
+              }
+            ]
+          },
+          {
+            "name": "unfound",
+            "arguments": []
+          },
+          {
+            "name": "judge_suspended_member",
+            "arguments": [
+              {
+                "name": "who",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "forgive",
+                "ty": "bool"
+              }
+            ]
+          },
+          {
+            "name": "judge_suspended_candidate",
+            "arguments": [
+              {
+                "name": "who",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "judgement",
+                "ty": "Judgement"
+              }
+            ]
+          },
+          {
+            "name": "set_max_members",
+            "arguments": [
+              {
+                "name": "max",
+                "ty": "u32"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "Founded",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Bid",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Vouch",
+            "arguments": [
+              "AccountId",
+              "Balance",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "AutoUnbid",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Unbid",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Unvouch",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Inducted",
+            "arguments": [
+              "AccountId",
+              "Vec<AccountId>"
+            ]
+          },
+          {
+            "name": "SuspendedMemberJudgement",
+            "arguments": [
+              "AccountId",
+              "bool"
+            ]
+          },
+          {
+            "name": "CandidateSuspended",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "MemberSuspended",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Challenged",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Vote",
+            "arguments": [
+              "AccountId",
+              "AccountId",
+              "bool"
+            ]
+          },
+          {
+            "name": "DefenderVote",
+            "arguments": [
+              "AccountId",
+              "bool"
+            ]
+          },
+          {
+            "name": "NewMaxMembers",
+            "arguments": [
+              "u32"
+            ]
+          },
+          {
+            "name": "Unfounded",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Deposit",
+            "arguments": [
+              "Balance"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "CandidateDeposit",
+            "ty": "BalanceOf<T, I>"
+          },
+          {
+            "name": "WrongSideDeduction",
+            "ty": "BalanceOf<T, I>"
+          },
+          {
+            "name": "MaxStrikes",
+            "ty": "u32"
+          },
+          {
+            "name": "PeriodSpend",
+            "ty": "BalanceOf<T, I>"
+          },
+          {
+            "name": "RotationPeriod",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "ChallengePeriod",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "ModuleId",
+            "ty": "ModuleId"
+          }
+        ],
+        "errors": [
+          {
+            "name": "BadPosition"
+          },
+          {
+            "name": "NotMember"
+          },
+          {
+            "name": "AlreadyMember"
+          },
+          {
+            "name": "Suspended"
+          },
+          {
+            "name": "NotSuspended"
+          },
+          {
+            "name": "NoPayout"
+          },
+          {
+            "name": "AlreadyFounded"
+          },
+          {
+            "name": "InsufficientPot"
+          },
+          {
+            "name": "AlreadyVouching"
+          },
+          {
+            "name": "NotVouching"
+          },
+          {
+            "name": "Head"
+          },
+          {
+            "name": "Founder"
+          },
+          {
+            "name": "AlreadyBid"
+          },
+          {
+            "name": "AlreadyCandidate"
+          },
+          {
+            "name": "NotCandidate"
+          },
+          {
+            "name": "MaxMembers"
+          },
+          {
+            "name": "NotFounder"
+          },
+          {
+            "name": "NotHead"
+          }
+        ],
+        "index": 25
+      },
+      {
+        "name": "Recovery",
+        "storage": {
+          "prefix": "Recovery",
+          "entries": [
+            {
+              "name": "Recoverable",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "ActiveRecoveries",
+              "modifier": "Optional",
+              "ty": {
+                "DoubleMap": {
+                  "hasher": "Twox64Concat",
+                  "key1": "T::AccountId",
+                  "key2": "T::AccountId",
+                  "key2_hasher": "Twox64Concat"
+                }
+              }
+            },
+            {
+              "name": "Proxy",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Blake2_128Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "as_recovered",
+            "arguments": [
+              {
+                "name": "account",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "call",
+                "ty": "Box<<T as Config>::Call>"
+              }
+            ]
+          },
+          {
+            "name": "set_recovered",
+            "arguments": [
+              {
+                "name": "lost",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "rescuer",
+                "ty": "T::AccountId"
+              }
+            ]
+          },
+          {
+            "name": "create_recovery",
+            "arguments": [
+              {
+                "name": "friends",
+                "ty": "Vec<T::AccountId>"
+              },
+              {
+                "name": "threshold",
+                "ty": "u16"
+              },
+              {
+                "name": "delay_period",
+                "ty": "T::BlockNumber"
+              }
+            ]
+          },
+          {
+            "name": "initiate_recovery",
+            "arguments": [
+              {
+                "name": "account",
+                "ty": "T::AccountId"
+              }
+            ]
+          },
+          {
+            "name": "vouch_recovery",
+            "arguments": [
+              {
+                "name": "lost",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "rescuer",
+                "ty": "T::AccountId"
+              }
+            ]
+          },
+          {
+            "name": "claim_recovery",
+            "arguments": [
+              {
+                "name": "account",
+                "ty": "T::AccountId"
+              }
+            ]
+          },
+          {
+            "name": "close_recovery",
+            "arguments": [
+              {
+                "name": "rescuer",
+                "ty": "T::AccountId"
+              }
+            ]
+          },
+          {
+            "name": "remove_recovery",
+            "arguments": []
+          },
+          {
+            "name": "cancel_recovered",
+            "arguments": [
+              {
+                "name": "account",
+                "ty": "T::AccountId"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "RecoveryCreated",
+            "arguments": [
+              "AccountId"
+            ]
+          },
+          {
+            "name": "RecoveryInitiated",
+            "arguments": [
+              "AccountId",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "RecoveryVouched",
+            "arguments": [
+              "AccountId",
+              "AccountId",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "RecoveryClosed",
+            "arguments": [
+              "AccountId",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "AccountRecovered",
+            "arguments": [
+              "AccountId",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "RecoveryRemoved",
+            "arguments": [
+              "AccountId"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "ConfigDepositBase",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "FriendDepositFactor",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "MaxFriends",
+            "ty": "u16"
+          },
+          {
+            "name": "RecoveryDeposit",
+            "ty": "BalanceOf<T>"
+          }
+        ],
+        "errors": [
+          {
+            "name": "NotAllowed"
+          },
+          {
+            "name": "ZeroThreshold"
+          },
+          {
+            "name": "NotEnoughFriends"
+          },
+          {
+            "name": "MaxFriends"
+          },
+          {
+            "name": "NotSorted"
+          },
+          {
+            "name": "NotRecoverable"
+          },
+          {
+            "name": "AlreadyRecoverable"
+          },
+          {
+            "name": "AlreadyStarted"
+          },
+          {
+            "name": "NotStarted"
+          },
+          {
+            "name": "NotFriend"
+          },
+          {
+            "name": "DelayPeriod"
+          },
+          {
+            "name": "AlreadyVouched"
+          },
+          {
+            "name": "Threshold"
+          },
+          {
+            "name": "StillActive"
+          },
+          {
+            "name": "Overflow"
+          },
+          {
+            "name": "AlreadyProxy"
+          },
+          {
+            "name": "BadState"
+          }
+        ],
+        "index": 26
+      },
+      {
+        "name": "Vesting",
+        "storage": {
+          "prefix": "Vesting",
+          "entries": [
+            {
+              "name": "Vesting",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Blake2_128Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "vest",
+            "arguments": []
+          },
+          {
+            "name": "vest_other",
+            "arguments": [
+              {
+                "name": "target",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              }
+            ]
+          },
+          {
+            "name": "vested_transfer",
+            "arguments": [
+              {
+                "name": "target",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "schedule",
+                "ty": "VestingInfo<BalanceOf<T>, T::BlockNumber>"
+              }
+            ]
+          },
+          {
+            "name": "force_vested_transfer",
+            "arguments": [
+              {
+                "name": "source",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "target",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "schedule",
+                "ty": "VestingInfo<BalanceOf<T>, T::BlockNumber>"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "VestingUpdated",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "VestingCompleted",
+            "arguments": [
+              "AccountId"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "MinVestedTransfer",
+            "ty": "BalanceOf<T>"
+          }
+        ],
+        "errors": [
+          {
+            "name": "NotVesting"
+          },
+          {
+            "name": "ExistingVestingSchedule"
+          },
+          {
+            "name": "AmountLow"
+          }
+        ],
+        "index": 27
+      },
+      {
+        "name": "Scheduler",
+        "storage": {
+          "prefix": "Scheduler",
+          "entries": [
+            {
+              "name": "Agenda",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::BlockNumber",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Lookup",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "Vec<u8>",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "StorageVersion",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Releases"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "schedule",
+            "arguments": [
+              {
+                "name": "when",
+                "ty": "T::BlockNumber"
+              },
+              {
+                "name": "maybe_periodic",
+                "ty": "Option<schedule::Period<T::BlockNumber>>"
+              },
+              {
+                "name": "priority",
+                "ty": "schedule::Priority"
+              },
+              {
+                "name": "call",
+                "ty": "Box<<T as Config>::Call>"
+              }
+            ]
+          },
+          {
+            "name": "cancel",
+            "arguments": [
+              {
+                "name": "when",
+                "ty": "T::BlockNumber"
+              },
+              {
+                "name": "index",
+                "ty": "u32"
+              }
+            ]
+          },
+          {
+            "name": "schedule_named",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Vec<u8>"
+              },
+              {
+                "name": "when",
+                "ty": "T::BlockNumber"
+              },
+              {
+                "name": "maybe_periodic",
+                "ty": "Option<schedule::Period<T::BlockNumber>>"
+              },
+              {
+                "name": "priority",
+                "ty": "schedule::Priority"
+              },
+              {
+                "name": "call",
+                "ty": "Box<<T as Config>::Call>"
+              }
+            ]
+          },
+          {
+            "name": "cancel_named",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Vec<u8>"
+              }
+            ]
+          },
+          {
+            "name": "schedule_after",
+            "arguments": [
+              {
+                "name": "after",
+                "ty": "T::BlockNumber"
+              },
+              {
+                "name": "maybe_periodic",
+                "ty": "Option<schedule::Period<T::BlockNumber>>"
+              },
+              {
+                "name": "priority",
+                "ty": "schedule::Priority"
+              },
+              {
+                "name": "call",
+                "ty": "Box<<T as Config>::Call>"
+              }
+            ]
+          },
+          {
+            "name": "schedule_named_after",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Vec<u8>"
+              },
+              {
+                "name": "after",
+                "ty": "T::BlockNumber"
+              },
+              {
+                "name": "maybe_periodic",
+                "ty": "Option<schedule::Period<T::BlockNumber>>"
+              },
+              {
+                "name": "priority",
+                "ty": "schedule::Priority"
+              },
+              {
+                "name": "call",
+                "ty": "Box<<T as Config>::Call>"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "Scheduled",
+            "arguments": [
+              "BlockNumber",
+              "u32"
+            ]
+          },
+          {
+            "name": "Canceled",
+            "arguments": [
+              "BlockNumber",
+              "u32"
+            ]
+          },
+          {
+            "name": "Dispatched",
+            "arguments": [
+              "TaskAddress<BlockNumber>",
+              "Option<Vec<u8>>",
+              "DispatchResult"
+            ]
+          }
+        ],
+        "constants": [],
+        "errors": [
+          {
+            "name": "FailedToSchedule"
+          },
+          {
+            "name": "NotFound"
+          },
+          {
+            "name": "TargetBlockNumberInPast"
+          },
+          {
+            "name": "RescheduleNoChange"
+          }
+        ],
+        "index": 28
+      },
+      {
+        "name": "Proxy",
+        "storage": {
+          "prefix": "Proxy",
+          "entries": [
+            {
+              "name": "Proxies",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Announcements",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "proxy",
+            "arguments": [
+              {
+                "name": "real",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "force_proxy_type",
+                "ty": "Option<T::ProxyType>"
+              },
+              {
+                "name": "call",
+                "ty": "Box<<T as Config>::Call>"
+              }
+            ]
+          },
+          {
+            "name": "add_proxy",
+            "arguments": [
+              {
+                "name": "delegate",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "proxy_type",
+                "ty": "T::ProxyType"
+              },
+              {
+                "name": "delay",
+                "ty": "T::BlockNumber"
+              }
+            ]
+          },
+          {
+            "name": "remove_proxy",
+            "arguments": [
+              {
+                "name": "delegate",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "proxy_type",
+                "ty": "T::ProxyType"
+              },
+              {
+                "name": "delay",
+                "ty": "T::BlockNumber"
+              }
+            ]
+          },
+          {
+            "name": "remove_proxies",
+            "arguments": []
+          },
+          {
+            "name": "anonymous",
+            "arguments": [
+              {
+                "name": "proxy_type",
+                "ty": "T::ProxyType"
+              },
+              {
+                "name": "delay",
+                "ty": "T::BlockNumber"
+              },
+              {
+                "name": "index",
+                "ty": "u16"
+              }
+            ]
+          },
+          {
+            "name": "kill_anonymous",
+            "arguments": [
+              {
+                "name": "spawner",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "proxy_type",
+                "ty": "T::ProxyType"
+              },
+              {
+                "name": "index",
+                "ty": "u16"
+              },
+              {
+                "name": "height",
+                "ty": "Compact<T::BlockNumber>"
+              },
+              {
+                "name": "ext_index",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "announce",
+            "arguments": [
+              {
+                "name": "real",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "call_hash",
+                "ty": "CallHashOf<T>"
+              }
+            ]
+          },
+          {
+            "name": "remove_announcement",
+            "arguments": [
+              {
+                "name": "real",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "call_hash",
+                "ty": "CallHashOf<T>"
+              }
+            ]
+          },
+          {
+            "name": "reject_announcement",
+            "arguments": [
+              {
+                "name": "delegate",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "call_hash",
+                "ty": "CallHashOf<T>"
+              }
+            ]
+          },
+          {
+            "name": "proxy_announced",
+            "arguments": [
+              {
+                "name": "delegate",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "real",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "force_proxy_type",
+                "ty": "Option<T::ProxyType>"
+              },
+              {
+                "name": "call",
+                "ty": "Box<<T as Config>::Call>"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "ProxyExecuted",
+            "arguments": [
+              "DispatchResult"
+            ]
+          },
+          {
+            "name": "AnonymousCreated",
+            "arguments": [
+              "AccountId",
+              "AccountId",
+              "ProxyType",
+              "u16"
+            ]
+          },
+          {
+            "name": "Announced",
+            "arguments": [
+              "AccountId",
+              "AccountId",
+              "Hash"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "ProxyDepositBase",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "ProxyDepositFactor",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "MaxProxies",
+            "ty": "u16"
+          },
+          {
+            "name": "MaxPending",
+            "ty": "u32"
+          },
+          {
+            "name": "AnnouncementDepositBase",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "AnnouncementDepositFactor",
+            "ty": "BalanceOf<T>"
+          }
+        ],
+        "errors": [
+          {
+            "name": "TooMany"
+          },
+          {
+            "name": "NotFound"
+          },
+          {
+            "name": "NotProxy"
+          },
+          {
+            "name": "Unproxyable"
+          },
+          {
+            "name": "Duplicate"
+          },
+          {
+            "name": "NoPermission"
+          },
+          {
+            "name": "Unannounced"
+          },
+          {
+            "name": "NoSelfProxy"
+          }
+        ],
+        "index": 29
+      },
+      {
+        "name": "Multisig",
+        "storage": {
+          "prefix": "Multisig",
+          "entries": [
+            {
+              "name": "Multisigs",
+              "modifier": "Optional",
+              "ty": {
+                "DoubleMap": {
+                  "hasher": "Twox64Concat",
+                  "key1": "T::AccountId",
+                  "key2": "[u8; 32]",
+                  "key2_hasher": "Blake2_128Concat"
+                }
+              }
+            },
+            {
+              "name": "Calls",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Identity",
+                  "key": "[u8; 32]",
+                  "unused": false
+                }
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "as_multi_threshold_1",
+            "arguments": [
+              {
+                "name": "other_signatories",
+                "ty": "Vec<T::AccountId>"
+              },
+              {
+                "name": "call",
+                "ty": "Box<<T as Config>::Call>"
+              }
+            ]
+          },
+          {
+            "name": "as_multi",
+            "arguments": [
+              {
+                "name": "threshold",
+                "ty": "u16"
+              },
+              {
+                "name": "other_signatories",
+                "ty": "Vec<T::AccountId>"
+              },
+              {
+                "name": "maybe_timepoint",
+                "ty": "Option<Timepoint<T::BlockNumber>>"
+              },
+              {
+                "name": "call",
+                "ty": "OpaqueCall"
+              },
+              {
+                "name": "store_call",
+                "ty": "bool"
+              },
+              {
+                "name": "max_weight",
+                "ty": "Weight"
+              }
+            ]
+          },
+          {
+            "name": "approve_as_multi",
+            "arguments": [
+              {
+                "name": "threshold",
+                "ty": "u16"
+              },
+              {
+                "name": "other_signatories",
+                "ty": "Vec<T::AccountId>"
+              },
+              {
+                "name": "maybe_timepoint",
+                "ty": "Option<Timepoint<T::BlockNumber>>"
+              },
+              {
+                "name": "call_hash",
+                "ty": "[u8; 32]"
+              },
+              {
+                "name": "max_weight",
+                "ty": "Weight"
+              }
+            ]
+          },
+          {
+            "name": "cancel_as_multi",
+            "arguments": [
+              {
+                "name": "threshold",
+                "ty": "u16"
+              },
+              {
+                "name": "other_signatories",
+                "ty": "Vec<T::AccountId>"
+              },
+              {
+                "name": "timepoint",
+                "ty": "Timepoint<T::BlockNumber>"
+              },
+              {
+                "name": "call_hash",
+                "ty": "[u8; 32]"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "NewMultisig",
+            "arguments": [
+              "AccountId",
+              "AccountId",
+              "CallHash"
+            ]
+          },
+          {
+            "name": "MultisigApproval",
+            "arguments": [
+              "AccountId",
+              "Timepoint<BlockNumber>",
+              "AccountId",
+              "CallHash"
+            ]
+          },
+          {
+            "name": "MultisigExecuted",
+            "arguments": [
+              "AccountId",
+              "Timepoint<BlockNumber>",
+              "AccountId",
+              "CallHash",
+              "DispatchResult"
+            ]
+          },
+          {
+            "name": "MultisigCancelled",
+            "arguments": [
+              "AccountId",
+              "Timepoint<BlockNumber>",
+              "AccountId",
+              "CallHash"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "DepositBase",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "DepositFactor",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "MaxSignatories",
+            "ty": "u16"
+          }
+        ],
+        "errors": [
+          {
+            "name": "MinimumThreshold"
+          },
+          {
+            "name": "AlreadyApproved"
+          },
+          {
+            "name": "NoApprovalsNeeded"
+          },
+          {
+            "name": "TooFewSignatories"
+          },
+          {
+            "name": "TooManySignatories"
+          },
+          {
+            "name": "SignatoriesOutOfOrder"
+          },
+          {
+            "name": "SenderInSignatories"
+          },
+          {
+            "name": "NotFound"
+          },
+          {
+            "name": "NotOwner"
+          },
+          {
+            "name": "NoTimepoint"
+          },
+          {
+            "name": "WrongTimepoint"
+          },
+          {
+            "name": "UnexpectedTimepoint"
+          },
+          {
+            "name": "WeightTooLow"
+          },
+          {
+            "name": "AlreadyStored"
+          }
+        ],
+        "index": 30
+      },
+      {
+        "name": "Bounties",
+        "storage": {
+          "prefix": "Treasury",
+          "entries": [
+            {
+              "name": "BountyCount",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "BountyIndex"
+              }
+            },
+            {
+              "name": "Bounties",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "BountyIndex",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "BountyDescriptions",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "BountyIndex",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "BountyApprovals",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<BountyIndex>"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "propose_bounty",
+            "arguments": [
+              {
+                "name": "value",
+                "ty": "Compact<BalanceOf<T>>"
+              },
+              {
+                "name": "description",
+                "ty": "Vec<u8>"
+              }
+            ]
+          },
+          {
+            "name": "approve_bounty",
+            "arguments": [
+              {
+                "name": "bounty_id",
+                "ty": "Compact<BountyIndex>"
+              }
+            ]
+          },
+          {
+            "name": "propose_curator",
+            "arguments": [
+              {
+                "name": "bounty_id",
+                "ty": "Compact<BountyIndex>"
+              },
+              {
+                "name": "curator",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "fee",
+                "ty": "Compact<BalanceOf<T>>"
+              }
+            ]
+          },
+          {
+            "name": "unassign_curator",
+            "arguments": [
+              {
+                "name": "bounty_id",
+                "ty": "Compact<BountyIndex>"
+              }
+            ]
+          },
+          {
+            "name": "accept_curator",
+            "arguments": [
+              {
+                "name": "bounty_id",
+                "ty": "Compact<BountyIndex>"
+              }
+            ]
+          },
+          {
+            "name": "award_bounty",
+            "arguments": [
+              {
+                "name": "bounty_id",
+                "ty": "Compact<BountyIndex>"
+              },
+              {
+                "name": "beneficiary",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              }
+            ]
+          },
+          {
+            "name": "claim_bounty",
+            "arguments": [
+              {
+                "name": "bounty_id",
+                "ty": "Compact<BountyIndex>"
+              }
+            ]
+          },
+          {
+            "name": "close_bounty",
+            "arguments": [
+              {
+                "name": "bounty_id",
+                "ty": "Compact<BountyIndex>"
+              }
+            ]
+          },
+          {
+            "name": "extend_bounty_expiry",
+            "arguments": [
+              {
+                "name": "bounty_id",
+                "ty": "Compact<BountyIndex>"
+              },
+              {
+                "name": "_remark",
+                "ty": "Vec<u8>"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "BountyProposed",
+            "arguments": [
+              "BountyIndex"
+            ]
+          },
+          {
+            "name": "BountyRejected",
+            "arguments": [
+              "BountyIndex",
+              "Balance"
+            ]
+          },
+          {
+            "name": "BountyBecameActive",
+            "arguments": [
+              "BountyIndex"
+            ]
+          },
+          {
+            "name": "BountyAwarded",
+            "arguments": [
+              "BountyIndex",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "BountyClaimed",
+            "arguments": [
+              "BountyIndex",
+              "Balance",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "BountyCanceled",
+            "arguments": [
+              "BountyIndex"
+            ]
+          },
+          {
+            "name": "BountyExtended",
+            "arguments": [
+              "BountyIndex"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "DataDepositPerByte",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "BountyDepositBase",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "BountyDepositPayoutDelay",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "BountyUpdatePeriod",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "BountyCuratorDeposit",
+            "ty": "Permill"
+          },
+          {
+            "name": "BountyValueMinimum",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "MaximumReasonLength",
+            "ty": "u32"
+          }
+        ],
+        "errors": [
+          {
+            "name": "InsufficientProposersBalance"
+          },
+          {
+            "name": "InvalidIndex"
+          },
+          {
+            "name": "ReasonTooBig"
+          },
+          {
+            "name": "UnexpectedStatus"
+          },
+          {
+            "name": "RequireCurator"
+          },
+          {
+            "name": "InvalidValue"
+          },
+          {
+            "name": "InvalidFee"
+          },
+          {
+            "name": "PendingPayout"
+          },
+          {
+            "name": "Premature"
+          }
+        ],
+        "index": 31
+      },
+      {
+        "name": "Tips",
+        "storage": {
+          "prefix": "Treasury",
+          "entries": [
+            {
+              "name": "Tips",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::Hash",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Reasons",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Identity",
+                  "key": "T::Hash",
+                  "unused": false
+                }
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "report_awesome",
+            "arguments": [
+              {
+                "name": "reason",
+                "ty": "Vec<u8>"
+              },
+              {
+                "name": "who",
+                "ty": "T::AccountId"
+              }
+            ]
+          },
+          {
+            "name": "retract_tip",
+            "arguments": [
+              {
+                "name": "hash",
+                "ty": "T::Hash"
+              }
+            ]
+          },
+          {
+            "name": "tip_new",
+            "arguments": [
+              {
+                "name": "reason",
+                "ty": "Vec<u8>"
+              },
+              {
+                "name": "who",
+                "ty": "T::AccountId"
+              },
+              {
+                "name": "tip_value",
+                "ty": "Compact<BalanceOf<T>>"
+              }
+            ]
+          },
+          {
+            "name": "tip",
+            "arguments": [
+              {
+                "name": "hash",
+                "ty": "T::Hash"
+              },
+              {
+                "name": "tip_value",
+                "ty": "Compact<BalanceOf<T>>"
+              }
+            ]
+          },
+          {
+            "name": "close_tip",
+            "arguments": [
+              {
+                "name": "hash",
+                "ty": "T::Hash"
+              }
+            ]
+          },
+          {
+            "name": "slash_tip",
+            "arguments": [
+              {
+                "name": "hash",
+                "ty": "T::Hash"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "NewTip",
+            "arguments": [
+              "Hash"
+            ]
+          },
+          {
+            "name": "TipClosing",
+            "arguments": [
+              "Hash"
+            ]
+          },
+          {
+            "name": "TipClosed",
+            "arguments": [
+              "Hash",
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "TipRetracted",
+            "arguments": [
+              "Hash"
+            ]
+          },
+          {
+            "name": "TipSlashed",
+            "arguments": [
+              "Hash",
+              "AccountId",
+              "Balance"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "TipCountdown",
+            "ty": "T::BlockNumber"
+          },
+          {
+            "name": "TipFindersFee",
+            "ty": "Percent"
+          },
+          {
+            "name": "TipReportDepositBase",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "DataDepositPerByte",
+            "ty": "BalanceOf<T>"
+          },
+          {
+            "name": "MaximumReasonLength",
+            "ty": "u32"
+          }
+        ],
+        "errors": [
+          {
+            "name": "ReasonTooBig"
+          },
+          {
+            "name": "AlreadyKnown"
+          },
+          {
+            "name": "UnknownTip"
+          },
+          {
+            "name": "NotFinder"
+          },
+          {
+            "name": "StillOpen"
+          },
+          {
+            "name": "Premature"
+          }
+        ],
+        "index": 32
+      },
+      {
+        "name": "Assets",
+        "storage": {
+          "prefix": "Assets",
+          "entries": [
+            {
+              "name": "Asset",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Blake2_128Concat",
+                  "key": "T::AssetId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "Account",
+              "modifier": "Default",
+              "ty": {
+                "DoubleMap": {
+                  "hasher": "Blake2_128Concat",
+                  "key1": "T::AssetId",
+                  "key2": "T::AccountId",
+                  "key2_hasher": "Blake2_128Concat"
+                }
+              }
+            },
+            {
+              "name": "Metadata",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Blake2_128Concat",
+                  "key": "T::AssetId",
+                  "unused": false
+                }
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "create",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              },
+              {
+                "name": "admin",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "max_zombies",
+                "ty": "u32"
+              },
+              {
+                "name": "min_balance",
+                "ty": "T::Balance"
+              }
+            ]
+          },
+          {
+            "name": "force_create",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              },
+              {
+                "name": "owner",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "max_zombies",
+                "ty": "Compact<u32>"
+              },
+              {
+                "name": "min_balance",
+                "ty": "Compact<T::Balance>"
+              }
+            ]
+          },
+          {
+            "name": "destroy",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              },
+              {
+                "name": "zombies_witness",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "force_destroy",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              },
+              {
+                "name": "zombies_witness",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "mint",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              },
+              {
+                "name": "beneficiary",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "amount",
+                "ty": "Compact<T::Balance>"
+              }
+            ]
+          },
+          {
+            "name": "burn",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              },
+              {
+                "name": "who",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "amount",
+                "ty": "Compact<T::Balance>"
+              }
+            ]
+          },
+          {
+            "name": "transfer",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              },
+              {
+                "name": "target",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "amount",
+                "ty": "Compact<T::Balance>"
+              }
+            ]
+          },
+          {
+            "name": "force_transfer",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              },
+              {
+                "name": "source",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "dest",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "amount",
+                "ty": "Compact<T::Balance>"
+              }
+            ]
+          },
+          {
+            "name": "freeze",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              },
+              {
+                "name": "who",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              }
+            ]
+          },
+          {
+            "name": "thaw",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              },
+              {
+                "name": "who",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              }
+            ]
+          },
+          {
+            "name": "freeze_asset",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              }
+            ]
+          },
+          {
+            "name": "thaw_asset",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              }
+            ]
+          },
+          {
+            "name": "transfer_ownership",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              },
+              {
+                "name": "owner",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              }
+            ]
+          },
+          {
+            "name": "set_team",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              },
+              {
+                "name": "issuer",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "admin",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              },
+              {
+                "name": "freezer",
+                "ty": "<T::Lookup as StaticLookup>::Source"
+              }
+            ]
+          },
+          {
+            "name": "set_max_zombies",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              },
+              {
+                "name": "max_zombies",
+                "ty": "Compact<u32>"
+              }
+            ]
+          },
+          {
+            "name": "set_metadata",
+            "arguments": [
+              {
+                "name": "id",
+                "ty": "Compact<T::AssetId>"
+              },
+              {
+                "name": "name",
+                "ty": "Vec<u8>"
+              },
+              {
+                "name": "symbol",
+                "ty": "Vec<u8>"
+              },
+              {
+                "name": "decimals",
+                "ty": "u8"
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "name": "Created",
+            "arguments": [
+              "AssetId",
+              "AccountId",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Issued",
+            "arguments": [
+              "AssetId",
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Transferred",
+            "arguments": [
+              "AssetId",
+              "AccountId",
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Burned",
+            "arguments": [
+              "AssetId",
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "TeamChanged",
+            "arguments": [
+              "AssetId",
+              "AccountId",
+              "AccountId",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "OwnerChanged",
+            "arguments": [
+              "AssetId",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "ForceTransferred",
+            "arguments": [
+              "AssetId",
+              "AccountId",
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "Frozen",
+            "arguments": [
+              "AssetId",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "Thawed",
+            "arguments": [
+              "AssetId",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "AssetFrozen",
+            "arguments": [
+              "AssetId"
+            ]
+          },
+          {
+            "name": "AssetThawed",
+            "arguments": [
+              "AssetId"
+            ]
+          },
+          {
+            "name": "Destroyed",
+            "arguments": [
+              "AssetId"
+            ]
+          },
+          {
+            "name": "ForceCreated",
+            "arguments": [
+              "AssetId",
+              "AccountId"
+            ]
+          },
+          {
+            "name": "MaxZombiesChanged",
+            "arguments": [
+              "AssetId",
+              "u32"
+            ]
+          },
+          {
+            "name": "MetadataSet",
+            "arguments": [
+              "AssetId",
+              "Vec<u8>",
+              "Vec<u8>",
+              "u8"
+            ]
+          }
+        ],
+        "constants": [],
+        "errors": [
+          {
+            "name": "AmountZero"
+          },
+          {
+            "name": "BalanceLow"
+          },
+          {
+            "name": "BalanceZero"
+          },
+          {
+            "name": "NoPermission"
+          },
+          {
+            "name": "Unknown"
+          },
+          {
+            "name": "Frozen"
+          },
+          {
+            "name": "InUse"
+          },
+          {
+            "name": "TooManyZombies"
+          },
+          {
+            "name": "RefsLeft"
+          },
+          {
+            "name": "BadWitness"
+          },
+          {
+            "name": "MinBalanceZero"
+          },
+          {
+            "name": "Overflow"
+          },
+          {
+            "name": "BadState"
+          },
+          {
+            "name": "BadMetadata"
+          }
+        ],
+        "index": 33
+      },
+      {
+        "name": "Mmr",
+        "storage": {
+          "prefix": "MerkleMountainRange",
+          "entries": [
+            {
+              "name": "RootHash",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "<T as Config<I>>::Hash"
+              }
+            },
+            {
+              "name": "NumberOfLeaves",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "u64"
+              }
+            },
+            {
+              "name": "Nodes",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Identity",
+                  "key": "u64",
+                  "unused": false
+                }
+              }
+            }
+          ]
+        },
+        "calls": null,
+        "event": null,
+        "constants": [],
+        "errors": [],
+        "index": 34
+      },
+      {
+        "name": "Lottery",
+        "storage": {
+          "prefix": "Lottery",
+          "entries": [
+            {
+              "name": "LotteryIndex",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "u32"
+              }
+            },
+            {
+              "name": "Lottery",
+              "modifier": "Optional",
+              "ty": {
+                "Plain": "LotteryConfig<T::BlockNumber, BalanceOf<T>>"
+              }
+            },
+            {
+              "name": "Participants",
+              "modifier": "Default",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "T::AccountId",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "TicketsCount",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "u32"
+              }
+            },
+            {
+              "name": "Tickets",
+              "modifier": "Optional",
+              "ty": {
+                "Map": {
+                  "hasher": "Twox64Concat",
+                  "key": "u32",
+                  "unused": false
+                }
+              }
+            },
+            {
+              "name": "CallIndices",
+              "modifier": "Default",
+              "ty": {
+                "Plain": "Vec<CallIndex>"
+              }
+            }
+          ]
+        },
+        "calls": [
+          {
+            "name": "buy_ticket",
+            "arguments": [
+              {
+                "name": "call",
+                "ty": "Box<<T as Config>::Call>"
+              }
+            ]
+          },
+          {
+            "name": "set_calls",
+            "arguments": [
+              {
+                "name": "calls",
+                "ty": "Vec<<T as Config>::Call>"
+              }
+            ]
+          },
+          {
+            "name": "start_lottery",
+            "arguments": [
+              {
+                "name": "price",
+                "ty": "BalanceOf<T>"
+              },
+              {
+                "name": "length",
+                "ty": "T::BlockNumber"
+              },
+              {
+                "name": "delay",
+                "ty": "T::BlockNumber"
+              },
+              {
+                "name": "repeat",
+                "ty": "bool"
+              }
+            ]
+          },
+          {
+            "name": "stop_repeat",
+            "arguments": []
+          }
+        ],
+        "event": [
+          {
+            "name": "LotteryStarted",
+            "arguments": []
+          },
+          {
+            "name": "CallsUpdated",
+            "arguments": []
+          },
+          {
+            "name": "Winner",
+            "arguments": [
+              "AccountId",
+              "Balance"
+            ]
+          },
+          {
+            "name": "TicketBought",
+            "arguments": [
+              "AccountId",
+              "CallIndex"
+            ]
+          }
+        ],
+        "constants": [
+          {
+            "name": "ModuleId",
+            "ty": "ModuleId"
+          },
+          {
+            "name": "MaxCalls",
+            "ty": "u32"
+          }
+        ],
+        "errors": [],
+        "index": 35
+      }
+    ],
+    "extrinsic": {
+      "version": 4,
+      "signed_extensions": [
+        "CheckSpecVersion",
+        "CheckTxVersion",
+        "CheckGenesis",
+        "CheckMortality",
+        "CheckNonce",
+        "CheckWeight",
+        "ChargeTransactionPayment"
+      ]
+    }
+  }
+]
