@@ -46,7 +46,6 @@ variables:                         &default-vars
   tags:
     - docker
 
-# check style
 checkstyle-linux-stable:
   stage:                           checkstyle
   <<:                              *only
@@ -58,14 +57,12 @@ checkstyle-linux-stable:
     - cargo +nightly clippy
   allow_failure:                   false
 
-# test rust stable
-# test-linux-stable:
-#   stage:                           test
-#   <<:                              *docker-env
-#   <<:                              *only
-#   <<:                              *test
+test-linux-stable:
+  stage:                           test
+  <<:                              *docker-env
+  <<:                              *only
+  <<:                              *test
 
-# test rust stable
 build:
   stage:                           build
   <<:                              *docker-env
