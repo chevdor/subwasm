@@ -137,6 +137,7 @@ mod tests {
 	mod common {
 		use super::*;
 		#[test]
+		#[ignore = "need data"]
 		fn it_panics_on_non_substrate_wasm() {
 			assert!(WasmTestBed::new(Source::File(PathBuf::from(WASM_NO_SUBSTRATE))).is_err());
 		}
@@ -148,6 +149,7 @@ mod tests {
 
 		#[test]
 		#[should_panic]
+		#[ignore = "need data"]
 		fn it_loads_kusama_1050() {
 			let runtime = WasmTestBed::new(Source::File(PathBuf::from(KUSAMA_1050_VXX))).unwrap();
 			println!("{:#?}", runtime);
@@ -158,6 +160,7 @@ mod tests {
 
 		#[test]
 		#[should_panic]
+		#[ignore = "need data"]
 		fn it_loads_kusama_1062() {
 			let runtime = WasmTestBed::new(Source::File(PathBuf::from(KUSAMA_1062_VXX))).unwrap();
 			println!("{:#?}", runtime);
@@ -173,7 +176,8 @@ mod tests {
 			assert!(v.apis.len() == 12);
 		}
 
-		#[test]
+		#[test]		
+		#[ignore = "need data"]
 		fn it_loads_kusama_metdata() {
 			let runtime = WasmTestBed::new(Source::File(PathBuf::from(KUSAMA_2030_VXX))).unwrap();
 			println!("{:#?}", runtime);
@@ -185,6 +189,7 @@ mod tests {
 		}
 
 		#[test]
+		#[ignore = "need data"]
 		fn it_loads_kusama_2030() {
 			let runtime = WasmTestBed::new(Source::File(PathBuf::from(KUSAMA_2030_VXX))).unwrap();
 			println!("{:#?}", runtime);
@@ -207,6 +212,7 @@ mod tests {
 
 		#[test]
 		#[should_panic]
+		#[ignore = "need data"]
 		fn it_loads_polkadot_01() {
 			let runtime = WasmTestBed::new(Source::File(PathBuf::from(POLKADOT_01_V11))).unwrap();
 			println!("{:#?}", runtime);
@@ -215,6 +221,7 @@ mod tests {
 		}
 
 		#[test]
+		#[ignore = "need data"]
 		fn it_loads_polkadot_29() {
 			let runtime = WasmTestBed::new(Source::File(PathBuf::from(POLKADOT_29_V12))).unwrap();
 
