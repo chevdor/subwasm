@@ -1,20 +1,20 @@
 run:
-	cargo run
+	cargo +nightly run
 
 test:
-	cargo watch -x "test -- --no-capture"
+	cargo +nightly watch -x "test -- --no-capture"
 
 get:
-	cargo run -- get --url http://localhost:9933
+	cargo +nightly run -- get --url http://localhost:9933
 
 fetch-kusama:
 	echo 'Fetching runtimes from Kusama'
 
-doc:
-	cargo doc --workspace --all-features
-
 usage:
-	cargo run -q -- --help > doc/usage.adoc
-	cargo run -q -- get --help > doc/usage_get.adoc
-	cargo run -q -- info --help > doc/usage_info.adoc
-	cargo run -q -- meta --help > doc/usage_meta.adoc
+	cargo +nightly run -q -- --help > doc/usage.adoc
+	cargo +nightly run -q -- get --help > doc/usage_get.adoc
+	cargo +nightly run -q -- info --help > doc/usage_info.adoc
+	cargo +nightly run -q -- meta --help > doc/usage_meta.adoc
+
+doc:usage
+	cargo +nightly doc -p subwasm -p subwasmlib -p wasm-loader -p wasm-testbed -p rpc-client -p substrate-runtime-proposal-hash --all-features --no-deps

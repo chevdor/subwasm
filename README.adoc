@@ -89,24 +89,3 @@ NOTE: By default, your runtime will be saved as `runtime_000.wasm`. Running this
 # Provide a few explanations and exit with a status that is not 0
 {cmd} info --input tictactoe.wasm
 ----
-
-.Get the Metadata from a local runtime/wasm
-
-[subs="attributes+"]
-----
-# Show the runtime version as well
-{cmd} info --input kusama-2030.wasm -d
-
-# Show more information: a summary of the runtime modules
-{cmd} info --input data/kusama/kusama-2030.wasm -dd
-
-# Show more information: a list of the runtime modules + calls
-{cmd} info --input data/kusama/kusama-2030.wasm -ddd
-
-# The wash & wax program :) Show the metadata as json
-{cmd} info --input data/kusama/kusama-2030.wasm -dddd
-
-# You can massage the output using `jq`
-{cmd} info --input data/kusama/kusama-2030.wasm -dddd | jq
-----
-

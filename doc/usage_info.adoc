@@ -1,6 +1,6 @@
 subwasm-info 0.1.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-The `info` sub-command returns summarized information about a runtime
+The `info` command returns summarized information about a runtime
 
 USAGE:
     subwasm info [FLAGS] [OPTIONS]
