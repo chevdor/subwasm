@@ -24,6 +24,16 @@ INFO: Substrate V12 is 16534 lines once its json representation is prettified.
 - getting the metadata from a a wasm file without any node
 - extracting a few information (those not requiring storage) from a runtime as wasm file
 
+== Install
+
+For now, you need to use nightly:
+
+    rustup install nightly
+
+then:
+
+    cargo +nightly install --git https://gitlab.com/chevdor/subwasm
+
 == Other options
 
 Here is a list of other projects allowing to get the raw metadata through a rpc call:

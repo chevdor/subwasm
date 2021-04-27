@@ -74,9 +74,13 @@ impl WasmTestBed {
 		executor.call_in_wasm(&wasm, None, method, call_data, &mut ext, sp_core::traits::MissingHostFunctions::Allow)
 	}
 
-	fn is_substrate_wasm(data: &[u8]) -> bool { data[0..4] == META }
+	fn is_substrate_wasm(data: &[u8]) -> bool {
+		data[0..4] == META
+	}
 
-	fn get_metadata_version(data: &[u8]) -> u8 { data[4] }
+	fn get_metadata_version(data: &[u8]) -> u8 {
+		data[4]
+	}
 
 	pub fn get_core_version(wasm: &[u8]) -> Option<RuntimeVersion> {
 		let encoded = Self::call(&wasm, "Core_version", &[]).unwrap();
@@ -85,19 +89,29 @@ impl WasmTestBed {
 
 	/// We probably don't need to maintain this as decoding the runtime will
 	/// tell us whether the version is supported or not.
-	pub fn is_supported(&self) -> bool { matches!(self.metadata_version, x if x >= 12) }
+	pub fn is_supported(&self) -> bool {
+		matches!(self.metadata_version, x if x >= 12)
+	}
 
 	/// Get a reference to the substrate wasm's metadata version.
-	pub fn metadata_version(&self) -> &u8 { &self.metadata_version }
+	pub fn metadata_version(&self) -> &u8 {
+		&self.metadata_version
+	}
 
 	/// Get a reference to the substrate wasm's runtime metadata prefixed.
-	pub fn runtime_metadata_prefixed(&self) -> &RuntimeMetadataPrefixed { &self.runtime_metadata_prefixed }
+	pub fn runtime_metadata_prefixed(&self) -> &RuntimeMetadataPrefixed {
+		&self.runtime_metadata_prefixed
+	}
 
 	/// Get the `RuntimeMetada`
-	pub fn metadata(&self) -> &RuntimeMetadata { &self.runtime_metadata_prefixed.1 }
+	pub fn metadata(&self) -> &RuntimeMetadata {
+		&self.runtime_metadata_prefixed.1
+	}
 
 	/// Get a reference to the substrate wasm's core version.
-	pub fn core_version(&self) -> &Option<RuntimeVersion> { &self.core_version }
+	pub fn core_version(&self) -> &Option<RuntimeVersion> {
+		&self.core_version
+	}
 
 	/// Compute the proposal hash of the runtime
 	pub fn proposal_hash(&self) -> String {

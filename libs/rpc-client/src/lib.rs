@@ -102,9 +102,12 @@ mod tests {
 
 	use super::*;
 	const HASH: &str = "0x4d6a0bca208b85d41833a7f35cf73d1ae6974f4bad8ab576e2c3f751d691fe6c"; // Polkadot #20
-	fn get_node() -> String { env::var("POLKADOT_HTTP").unwrap_or("http://localhost:9933".to_string()) }
+	fn get_node() -> String {
+		env::var("POLKADOT_HTTP").unwrap_or("http://localhost:9933".to_string())
+	}
 
 	#[test]
+	#[ignore = "integration needs an http node"]
 	fn it_fetches_a_wasm_from_node_via_http() {
 		let url = String::from(get_node());
 		let reference = OnchainBlock { url: NodeEndpoint::Http(url), block_ref: None };
@@ -116,6 +119,7 @@ mod tests {
 	}
 
 	#[test]
+	#[ignore = "integration needs an http node"]
 	fn it_fetches_a_wasm_from_node_via_http_latest() {
 		let url = String::from(get_node());
 		let reference = OnchainBlock { url: NodeEndpoint::Http(url), block_ref: Some(HASH.to_string()) };
@@ -139,6 +143,7 @@ mod tests {
 	}
 
 	#[test]
+	#[ignore = "integration needs an http node"]
 	fn it_fetches_metadata_from_node() {
 		let polkadot_http = NodeEndpoint::Http(get_node());
 		let reference = OnchainBlock { url: polkadot_http, block_ref: None };

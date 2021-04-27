@@ -1,0 +1,73 @@
+stages:
+  - checkstyle
+  - test
+  - build
+
+variables:                         &default-vars
+  GIT_STRATEGY:                    fetch
+  GIT_DEPTH:                       100
+  CARGO_INCREMENTAL:               0
+
+.test:                             &test
+  script:
+    - cargo +nightly test --workspace
+
+.build:                             &build
+  script:
+    - cargo +nightly build --all
+    - cargo +nightly doc -p subwasm -p subwasmlib -p wasm-loader -p wasm-testbed -p rpc-client -p substrate-runtime-proposal-hash --all-features --no-deps
+
+.only:                             &only
+  only:
+    - triggers
+    - tags
+    - master
+    - schedules
+    - web
+    - /^[0-9]+$/
+
+.docker-env:                       &docker-env
+  image:                           rust:latest
+  before_script:
+    - rustup show
+    - rustup install nightly
+    - cargo --version
+    # - sccache -s
+  variables:
+    <<:                            *default-vars
+    CARGO_TARGET_DIR:              "/ci-cache/${CI_PROJECT_NAME}/targets/${CI_COMMIT_REF_NAME}/${CI_JOB_NAME}"
+  retry:
+    max: 2
+    when:
+      - runner_system_failure
+      - unknown_failure
+      - api_failure
+  interruptible:                   true
+  tags:
+    - docker
+
+# check style
+checkstyle-linux-stable:
+  stage:                           checkstyle
+  <<:                              *only
+  <<:                              *docker-env
+  script:
+    - rustup component add rustfmt
+    - cargo fmt --all -- --check
+    - rustup component add clippy --toolchain nightly
+    - cargo +nightly clippy
+  allow_failure:                   false
+
+# test rust stable
+# test-linux-stable:
+#   stage:                           test
+#   <<:                              *docker-env
+#   <<:                              *only
+#   <<:                              *test
+
+# test rust stable
+build:
+  stage:                           build
+  <<:                              *docker-env
+  <<:                              *only
+  <<:                              *build
