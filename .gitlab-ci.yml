@@ -26,6 +26,11 @@ variables:                         &default-vars
     - web
     - /^[0-9]+$/
 
+.only_tags:                             &only_tags
+  only:
+    - triggers
+    - tags
+
 .docker-env:                       &docker-env
   image:                           rust:latest
   before_script:
@@ -66,5 +71,5 @@ test-linux-stable:
 build:
   stage:                           build
   <<:                              *docker-env
-  <<:                              *only
+  <<:                              *only_tags
   <<:                              *build
