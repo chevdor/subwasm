@@ -3,6 +3,12 @@ name = "subwasm"
 version = "0.1.0"
 authors = ["chevdor <chevdor@gmail.com>", "Wilfried Kopp <wilfried@parity.io"]
 edition = "2018"
+license = "MIT"
+description = "subwasm is a utility that works on WASM Runtime of Substrate based chains"
+homepage = "https://gitlab.com/chevdor/subwasm"
+repository = "https://gitlab.com/chevdor/subwasm"
+readme = "README.md"
+keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "kusama"]
 
 [dependencies]
 color-eyre = "0.5.11"

@@ -176,7 +176,7 @@ mod tests {
 			assert!(v.apis.len() == 12);
 		}
 
-		#[test]		
+		#[test]
 		#[ignore = "need data"]
 		fn it_loads_kusama_metdata() {
 			let runtime = WasmTestBed::new(Source::File(PathBuf::from(KUSAMA_2030_VXX))).unwrap();

@@ -3,6 +3,10 @@ name = "substrate-runtime-proposal-hash"
 version = "0.1.0"
 authors = ["chevdor <chevdor@gmail.com>"]
 edition = "2018"
+homepage = "https://gitlab.com/chevdor/subwasm"
+repository = "https://gitlab.com/chevdor/subwasm"
+readme = "README.md"
+keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "kusama"]
 
 [dependencies]
 sp-runtime = "3.0.0"

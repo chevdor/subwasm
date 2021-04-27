@@ -4,6 +4,10 @@ description = "A simple(istic...) rcp-client you probably should NOT be using :)
 version = "0.1.0"
 authors = ["chevdor <chevdor@gmail.com>"]
 edition = "2018"
+homepage = "https://gitlab.com/chevdor/subwasm"
+repository = "https://gitlab.com/chevdor/subwasm"
+readme = "README.md"
+keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "kusama"]
 
 [dependencies]
 frame-metadata-subsee = { package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "subsee", features = ["v12", "v13", "std"] }
