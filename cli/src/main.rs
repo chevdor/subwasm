@@ -41,7 +41,7 @@ fn main() -> color_eyre::Result<()> {
 			}
 		}
 
-		SubCommand::Meta(meta_opts) => {
+		SubCommand::Metadata(meta_opts) => {
 			let src = Source::File(PathBuf::from(&meta_opts.input));
 			let runtime = WasmTestBed::new(src).expect("Loading runtime to testbed");
 			display_raw_metadata(runtime.metadata())?;

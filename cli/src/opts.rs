@@ -25,8 +25,8 @@ pub enum SubCommand {
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Info(InfoOpts),
 
-	#[clap(version = crate_version!(), author = crate_authors!())]
-	Meta(MetaOpts),
+	#[clap(version = crate_version!(), author = crate_authors!(), alias("meta"))]
+	Metadata(MetaOpts),
 }
 
 /// The `info` command returns summarized information about a runtime.
@@ -41,7 +41,7 @@ pub struct InfoOpts {
 	pub details_level: i32,
 }
 
-/// The `meta` command returns the metadata.
+/// Returns the metadata as a json object. You may also use the "meta" alias.
 #[derive(Clap)]
 pub struct MetaOpts {
 	/// The wasm file to load
