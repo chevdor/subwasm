@@ -27,5 +27,4 @@ The following crates are direct dependencies coming with this project.
 - [`subwasmlib`]
 - [`wasm_loader`]
 - [`wasm_testbed`]
-- [`rpc_client`]
 - [`substrate_runtime_proposal_hash`]

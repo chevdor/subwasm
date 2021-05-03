@@ -4,7 +4,6 @@ resolver = "2"
 members = [
     "cli",
     "lib",
-    "libs/rpc-client",
     "libs/wasm-loader",
     "libs/wasm-testbed",
     "libs/substrate-runtime-proposal-hash",

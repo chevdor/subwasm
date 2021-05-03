@@ -10,12 +10,12 @@ variables:                         &default-vars
 
 .test:                             &test
   script:
-    - cargo +nightly test --workspace
+    - cargo test --workspace
 
 .build:                             &build
   script:
-    - cargo +nightly build --all
-    - cargo +nightly doc -p subwasm -p subwasmlib -p wasm-loader -p wasm-testbed -p rpc-client -p substrate-runtime-proposal-hash --all-features --no-deps
+    - cargo build --all
+    - cargo doc -p subwasm -p subwasmlib -p wasm-loader -p wasm-testbed -p substrate-runtime-proposal-hash --all-features --no-deps
 
 .only:                             &only
   only:
@@ -35,7 +35,7 @@ variables:                         &default-vars
   image:                           rust:latest
   before_script:
     - rustup show
-    - rustup install nightly
+    # - rustup install nightly
     - cargo --version
     # - sccache -s
   variables:
@@ -56,10 +56,9 @@ checkstyle-linux-stable:
   <<:                              *only
   <<:                              *docker-env
   script:
-    - rustup component add rustfmt
+    - rustup component add rustfmt clippy
     - cargo fmt --all -- --check
-    - rustup component add clippy --toolchain nightly
-    - cargo +nightly clippy
+    - cargo clippy
   allow_failure:                   false
 
 test-linux-stable:

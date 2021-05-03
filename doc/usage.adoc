@@ -11,7 +11,7 @@ FLAGS:
     -V, --version    Prints version information
 
 SUBCOMMANDS:
-    get     Get/Download the runtime wasm from a running node through rpc
-    help    Prints this message or the help of the given subcommand(s)
-    info    The `info` command returns summarized information about a runtime
-    meta    The `meta` command returns the metadata
+    get         Get/Download the runtime wasm from a running node through rpc
+    help        Prints this message or the help of the given subcommand(s)
+    info        The `info` command returns summarized information about a runtime
+    metadata    Returns the metadata as a json object. You may also use the "meta" alias

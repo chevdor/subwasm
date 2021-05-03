@@ -18,9 +18,4 @@ wasm-testbed = { path = "../libs/wasm-testbed" }
 wasm-loader = { path = "../libs/wasm-loader" }
 
 # For the doc
-rpc-client = { path = "../libs/rpc-client", optional = true }
 substrate-runtime-proposal-hash = { path = "../libs/substrate-runtime-proposal-hash", optional = true }
-
-[features]
-# Defines a feature named `webp` that does not enable any other features.
-doc = [ "rpc-client" ]

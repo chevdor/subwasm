@@ -4,6 +4,9 @@ run:
 test:
 	cargo +nightly watch -x "test -- --no-capture"
 
+test_all:
+	cargo test -- --include-ignored
+
 get:
 	cargo +nightly run -- get --url http://localhost:9933
 
@@ -17,4 +20,4 @@ usage:
 	cargo +nightly run -q -- meta --help > doc/usage_meta.adoc
 
 doc:usage
-	cargo +nightly doc -p subwasm -p subwasmlib -p wasm-loader -p wasm-testbed -p rpc-client -p substrate-runtime-proposal-hash --all-features --no-deps
+	cargo +nightly doc -p subwasm -p subwasmlib -p wasm-loader -p wasm-testbed -p substrate-runtime-proposal-hash --all-features --no-deps

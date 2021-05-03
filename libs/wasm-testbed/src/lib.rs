@@ -1,6 +1,3 @@
-#![feature(external_doc)]
-#![doc(include = "../README.md")]
-
 use codec::Decode;
 use frame_metadata_subsee::{RuntimeMetadata, RuntimeMetadataPrefixed}; // TODO: Check v12, v13,
 use sc_executor::{CallInWasm, RuntimeVersion, WasmExecutionMethod, WasmExecutor};

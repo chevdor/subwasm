@@ -9,7 +9,6 @@ readme = "README.md"
 keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "kusama"]
 
 [dependencies]
-rpc-client = { path = "../libs/rpc-client" }
 wasm-loader = { path = "../libs/wasm-loader" }
 wasm-testbed = { path = "../libs/wasm-testbed" }
 serde_json = "1.0.61"

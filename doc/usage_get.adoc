@@ -19,6 +19,5 @@ OPTIONS:
                              on a counter: runtime_NNN.wasm where NNN is incrementing to make sure
                              you do not override previous runtime. If you specify an existing file
                              as output, it will be overwritten
-    -u, --url <url>          The node url. Example: ws://localhost:9944 or http://localhost:9933.
-                             WARNING: Only http is currently supported [default:
-                             http://localhost:9933]
+    -u, --url <url>          The node url. Example: ws://localhost:9944 or http://localhost:9933
+                             [default: http://localhost:9933]

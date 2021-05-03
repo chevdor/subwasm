@@ -69,8 +69,6 @@ We will start by fetching the runtime from a node.
 
 NOTE: Please note that you will likely need to connect to an **archive** node to retrieve older runtime. A runtime takes around 2MB of storage on-chain and thus, older versions are pruned and will no longer be accessible if you are connectin to a non-archive node.
 
-IMPORTANT: At the moment, the only supported protocol is `http`. You currently cannot use a WebSocket (`ws://...`). PRs are welcome :)
-
     # Here we get the latest version of the runtime
     subwasm get --url http://localhost:9933
 

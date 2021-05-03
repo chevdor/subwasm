@@ -52,7 +52,7 @@ pub struct MetaOpts {
 /// Get/Download the runtime wasm from a running node through rpc
 #[derive(Clap)]
 pub struct GetOpts {
-	/// The node url. Example: ws://localhost:9944 or http://localhost:9933. WARNING: Only http is currently supported.
+	/// The node url. Example: ws://localhost:9944 or http://localhost:9933.
 	#[clap(short, long, default_value = "http://localhost:9933")]
 	pub url: String,
 

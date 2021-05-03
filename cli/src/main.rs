@@ -1,5 +1,3 @@
-#![feature(external_doc)]
-#![doc(include = "../README.md")]
 mod opts;
 
 use clap::Clap;

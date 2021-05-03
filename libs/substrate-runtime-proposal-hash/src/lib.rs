@@ -1,6 +1,3 @@
-#![feature(external_doc)]
-#![doc(include = "../README.md")]
-
 use blake2::digest::{Update, VariableOutput};
 use blake2::VarBlake2b;
 use codec::Encode;

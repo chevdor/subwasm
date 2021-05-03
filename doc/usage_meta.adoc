@@ -1,9 +1,9 @@
-subwasm-meta 0.1.0
+subwasm-metadata 0.1.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-The `meta` command returns the metadata
+Returns the metadata as a json object. You may also use the "meta" alias
 
 USAGE:
-    subwasm meta [OPTIONS]
+    subwasm metadata [OPTIONS]
 
 FLAGS:
     -h, --help       Prints help information

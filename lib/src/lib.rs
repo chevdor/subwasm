@@ -1,12 +1,9 @@
-#![feature(external_doc)]
-#![doc(include = "../README.md")]
-
 use color_eyre::eyre;
-use frame_metadata_subsee::{v12, RuntimeMetadata, RuntimeMetadataPrefixed}; // TODO checkout v13
-use rpc_client::*;
+use frame_metadata_subsee::{v12, RuntimeMetadata, RuntimeMetadataPrefixed};
 use std::io::prelude::*;
 use std::path::Path;
 use std::{fs::File, path::PathBuf};
+use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock}; // TODO checkout v13
 
 /// Display all the metadata or a part of it for a given pallet
 pub fn display_metadata(metadata: RuntimeMetadataPrefixed) -> color_eyre::Result<()> {
@@ -117,7 +114,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 	};
 
 	let reference = OnchainBlock { url, block_ref };
-	let wasm = RpcClient::fetch_wasm(reference).expect("Getting wasm from the node");
+	let wasm = wasm_loader::WasmLoader::fetch_wasm(reference).expect("Getting wasm from the node");
 	println!("Got the runtime, its size is {:?}", wasm.len());
 
 	let outfile = match output {
