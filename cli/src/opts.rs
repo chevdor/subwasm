@@ -45,7 +45,7 @@ pub struct InfoOpts {
 #[derive(Clap)]
 pub struct MetaOpts {
 	/// The wasm file to load
-	#[clap(short, long, default_value = "runtime.wasm")]
+	#[clap(short, long, default_value = "runtime_000.wasm")]
 	pub input: PathBuf,
 }
 

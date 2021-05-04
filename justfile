@@ -1,3 +1,5 @@
+VERSION := `toml get cli/Cargo.toml package.version | jq -r`
+TARGET_DIR := "target/release"
 run:
 	cargo run
 
@@ -33,3 +35,11 @@ fetch-polkadot:
 fetch-westend:
 	echo 'Fetching latest runtime from Westend'
 	cargo run -- get --url wss://westend-rpc.polkadot.io -o westend.wasm
+
+mac:
+	@echo Preparing artifacts for MacOS for v{{VERSION}}
+	cargo build --release
+	tar -czf {{TARGET_DIR}}/subwasm-mac-v{{VERSION}}.tar.gz {{TARGET_DIR}}/subwasm
+	shasum -a 256 {{TARGET_DIR}}/subwasm-mac-v{{VERSION}}.tar.gz > {{TARGET_DIR}}/subwasm-mac-v{{VERSION}}.tar.gz.sha256
+	ls -al {{TARGET_DIR}}/*{{VERSION}}*
+	cat {{TARGET_DIR}}/*{{VERSION}}*.sha256
