@@ -38,7 +38,7 @@ impl WasmLoader {
 		// Create the runtime
 		let rt = Runtime::new().unwrap();
 		// TODO: See https://github.com/paritytech/jsonrpsee/issues/298
-		let response: Result<String, Error> = match &reference.url {
+		let response: Result<String, Error> = match &reference.endpoint {
 			NodeEndpoint::Http(url) => {
 				let client = HttpClientBuilder::default().build(url)?;
 				rt.block_on(client.request("state_getStorage", params.into()))
@@ -89,7 +89,7 @@ mod tests {
 	fn it_fetches_a_wasm_from_node_via_http() {
 		let url = String::from(get_http_node());
 		println!("Connecting to {:?}", &url);
-		let reference = OnchainBlock { url: NodeEndpoint::Http(url), block_ref: None };
+		let reference = OnchainBlock { endpoint: NodeEndpoint::Http(url), block_ref: None };
 		let wasm = WasmLoader::fetch_wasm(&reference).unwrap();
 		println!("wasm size: {:?}", wasm.len());
 		assert!(wasm.len() > 1_000_000);
@@ -100,7 +100,7 @@ mod tests {
 	fn it_fetches_a_wasm_from_node_via_ws() {
 		let url = String::from(get_ws_node());
 		println!("Connecting to {:?}", &url);
-		let reference = OnchainBlock { url: NodeEndpoint::WebSocket(url), block_ref: None };
+		let reference = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: None };
 		let wasm = WasmLoader::fetch_wasm(&reference).unwrap();
 		println!("wasm size: {:?}", wasm.len());
 		assert!(wasm.len() > 1_000_000);
@@ -113,8 +113,8 @@ mod tests {
 
 		let url = String::from(get_ws_node());
 		println!("Connecting to {:?}", &url);
-		let latest = OnchainBlock { url: NodeEndpoint::WebSocket(url.clone()), block_ref: None };
-		let older = OnchainBlock { url: NodeEndpoint::WebSocket(url), block_ref: Some(HASH.to_string()) };
+		let latest = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url.clone()), block_ref: None };
+		let older = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: Some(HASH.to_string()) };
 		let wasm_latest = WasmLoader::fetch_wasm(&latest).unwrap();
 		let wasm_older = WasmLoader::fetch_wasm(&older).unwrap();
 		println!("wasm latest size: {:?}", wasm_latest.len());

@@ -1,9 +1,10 @@
 use color_eyre::eyre;
 use frame_metadata::{v12, RuntimeMetadata, RuntimeMetadataPrefixed}; // TODO checkout v13
+use num_format::{Locale, ToFormattedString};
 use std::io::prelude::*;
 use std::path::Path;
 use std::{fs::File, path::PathBuf};
-use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock};
+use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
 
 /// Prints magic and version from a raw buffer
 pub fn print_magic_and_version(data: &[u8]) {
@@ -124,7 +125,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 		_ => panic!("The url should either start with http or ws"),
 	};
 
-	let reference = OnchainBlock { url, block_ref };
+	let reference = OnchainBlock { endpoint: url, block_ref };
 	let wasm = wasm_loader::WasmLoader::fetch_wasm(&reference).expect("Getting wasm from the node");
 	println!("Got the runtime, its size is {:?}", wasm.len());
 
@@ -153,4 +154,93 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 	buffer.write_all(&wasm)?;
 	println!("Done");
 	Ok(())
+}
+
+pub fn print_runtime_infos(src: Source) {
+	let sizes = |x| -> (f32, usize) { (x as f32 / 1024.0 / 1024.0, x) };
+
+	println!("⏱️  Loading WASM from {:?}", src);
+	let runtime_a = wasm_testbed::WasmTestBed::new(&src).expect("Failed loading runtime");
+
+	// RUNTIME SIZE
+	let size = runtime_a.size();
+
+	println!("🏋️  Runtime Size:\t{:.3?} MB ({} bytes)", sizes(size).0, sizes(size).1.to_formatted_string(&Locale::en));
+
+	// METADATA VERSION
+	let metadata_a_version = runtime_a.metadata_version();
+	println!("🎁 Metadata version:\tV{:?}", metadata_a_version);
+
+	// CORE VERSIONS
+	let version_a = runtime_a.core_version().as_ref().expect("Some version");
+	println!("🔥 Core version:\t{}", version_a);
+
+	println!("🗳️  Proposal hash:\t{}", runtime_a.proposal_hash());
+}
+
+/// Compare 2 runtimes. It compares their versions first
+/// then their metata.
+pub fn diff(src_a: Source, src_b: Source) {
+	let size = |x| -> (f32, usize) { (x as f32 / 1024.0 / 1024.0, x) };
+
+	println!("Loading WASM runtimes:");
+	println!("  🅰️  {:?}", src_a);
+	let runtime_a = wasm_testbed::WasmTestBed::new(&src_a).expect("Can only diff if the 2 runtimes can load");
+	println!("  🅱️  {:?}", src_b);
+	let runtime_b = wasm_testbed::WasmTestBed::new(&src_b).expect("Can only diff if the 2 runtimes can load");
+
+	// RUNTIME SIZE
+	let size_a = runtime_a.size();
+	let size_b = runtime_b.size();
+
+	println!("Checking runtime sizes:");
+	if size_a == size_b {
+		println!(
+			"  ✅  Both size are identical: {:.3?} MB ({} bytes)",
+			size(size_a).0,
+			size(size_a).1.to_formatted_string(&Locale::en)
+		);
+	} else {
+		println!("  🅰️  {:.3?} MB ({} bytes)", size(size_a).0, size(size_a).1.to_formatted_string(&Locale::en));
+		println!("  🅱️  {:.3?} MB ({} bytes)", size(size_b).0, size(size_b).1.to_formatted_string(&Locale::en));
+	}
+
+	// METADATA VERSIONS
+	let metadata_a_version = runtime_a.metadata_version();
+	let metadata_b_version = runtime_b.metadata_version();
+	println!("Checking metadata versions:");
+	if metadata_a_version == metadata_b_version {
+		println!("  ✅ Both metadata versions are identical: V{:?}", metadata_a_version);
+	} else {
+		println!("Found different metadata versions:");
+		println!("  🅰️  V{:?}", metadata_a_version);
+		println!("  🅱️  V{:?}", metadata_b_version);
+	}
+
+	// CORE VERSIONS
+	println!("Checking core versions:");
+	let version_a = runtime_a.core_version().as_ref().expect("Some version");
+	let version_b = runtime_b.core_version().as_ref().expect("Some version");
+
+	if version_a == version_b {
+		print!("  ✅  The 2 core versions are identical: ");
+		println!("{}", version_a);
+	} else {
+		println!("  ❌ The 2 core versions are different: ");
+		// println!("{:#?}", version_a);
+		println!("  🅰️  {}", version_a);
+		// println!("{:#?}", version_b);
+		println!("  🅱️  {}", version_b);
+	}
+
+	println!("Checking runtime metadata:");
+	let metadata_a = runtime_a.metadata();
+	let metadata_b = runtime_b.metadata();
+
+	if metadata_a == metadata_b {
+		// println!("  {}", version_a);
+		println!("  ✅  The metadata are identical");
+	} else {
+		println!("  ❌  The metadata are different");
+	}
 }

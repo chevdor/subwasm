@@ -1,4 +1,4 @@
-subwasm 0.2.0
+subwasm 0.3.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 You can find all available commands below
 
@@ -11,6 +11,7 @@ FLAGS:
     -V, --version    Prints version information
 
 SUBCOMMANDS:
+    diff        Compare 2 runtimes
     get         Get/Download the runtime wasm from a running node through rpc
     help        Prints this message or the help of the given subcommand(s)
     info        The `info` command returns summarized information about a runtime

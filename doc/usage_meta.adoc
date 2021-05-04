@@ -1,4 +1,4 @@
-subwasm-metadata 0.2.0
+subwasm-metadata 0.3.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 Returns the metadata as a json object. You may also use the "meta" alias
 
@@ -10,4 +10,4 @@ FLAGS:
     -V, --version    Prints version information
 
 OPTIONS:
-    -i, --input <input>    The wasm file to load [default: runtime.wasm]
+    -i, --input <input>    The wasm file to load [default: runtime_000.wasm]

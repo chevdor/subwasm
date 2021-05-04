@@ -7,4 +7,5 @@ members = [
     "libs/wasm-loader",
     "libs/wasm-testbed",
     "libs/substrate-runtime-proposal-hash",
+    "libs/substrate-runtime-differ",
 ]
