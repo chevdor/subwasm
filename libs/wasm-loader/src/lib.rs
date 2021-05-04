@@ -85,6 +85,7 @@ mod tests {
 	}
 
 	#[test]
+	#[ignore = "needs node"]
 	fn it_fetches_a_wasm_from_node_via_http() {
 		let url = String::from(get_http_node());
 		println!("Connecting to {:?}", &url);
@@ -95,6 +96,7 @@ mod tests {
 	}
 
 	#[test]
+	#[ignore = "needs node"]
 	fn it_fetches_a_wasm_from_node_via_ws() {
 		let url = String::from(get_ws_node());
 		println!("Connecting to {:?}", &url);
@@ -105,6 +107,7 @@ mod tests {
 	}
 
 	#[test]
+	#[ignore = "needs node"]
 	fn it_fetches_wasm_from_a_given_block() {
 		const HASH: &str = "0x4d6a0bca208b85d41833a7f35cf73d1ae6974f4bad8ab576e2c3f751d691fe6c"; // Polkadot #20
 
