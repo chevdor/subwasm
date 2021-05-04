@@ -35,7 +35,6 @@ variables:                         &default-vars
   image:                           rust:latest
   before_script:
     - rustup show
-    # - rustup install nightly
     - cargo --version
     # - sccache -s
   variables:

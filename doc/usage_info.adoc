@@ -12,4 +12,4 @@ FLAGS:
     -V, --version          Prints version information
 
 OPTIONS:
-    -i, --input <input>    The wasm file to load [default: runtime.wasm]
+    -i, --input <input>    The wasm file to load [default: runtime_000.wasm]
