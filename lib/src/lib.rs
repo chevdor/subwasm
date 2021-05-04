@@ -1,9 +1,18 @@
 use color_eyre::eyre;
-use frame_metadata_subsee::{v12, RuntimeMetadata, RuntimeMetadataPrefixed};
+use frame_metadata::{v12, RuntimeMetadata, RuntimeMetadataPrefixed}; // TODO checkout v13
 use std::io::prelude::*;
 use std::path::Path;
 use std::{fs::File, path::PathBuf};
-use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock}; // TODO checkout v13
+use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock};
+
+/// Prints magic and version from a raw buffer
+pub fn print_magic_and_version(data: &[u8]) {
+	let is_substrate_wasm = wasm_testbed::WasmTestBed::is_substrate_wasm(data);
+	let version = wasm_testbed::WasmTestBed::get_metadata_version(data);
+
+	println!("✨ Magic number found: {}", if is_substrate_wasm { "YES" } else { "NO" });
+	println!("#️⃣ Extracted version : V{:?}", version);
+}
 
 /// Display all the metadata or a part of it for a given pallet
 pub fn display_metadata(metadata: RuntimeMetadataPrefixed) -> color_eyre::Result<()> {
@@ -23,13 +32,14 @@ pub fn display_metadata(metadata: RuntimeMetadataPrefixed) -> color_eyre::Result
 					.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
 				serde_json::to_string_pretty(&pallet_metadata)?
 			}
-			RuntimeMetadata::V13(v13) => {
-				let pallet = v13
-					.modules
-					.iter()
-					.find(|m| &m.name == pallet)
-					.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
-				serde_json::to_string_pretty(&pallet)?
+			RuntimeMetadata::V13(_v13) => {
+				// let pallet = v13
+				// 	.modules
+				// 	.iter()
+				// 	.find(|m| &m.name == pallet)
+				// 	.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
+				// serde_json::to_string_pretty(&pallet)?
+				todo!("Not yet implemented");
 			}
 			_ => return Err(eyre::eyre!("Unsupported metadata version")),
 		}
@@ -76,10 +86,10 @@ pub fn display_raw_metadata(metadata: &RuntimeMetadata) -> color_eyre::Result<()
 pub fn display_infos(metadata: &RuntimeMetadataPrefixed) -> color_eyre::Result<()> {
 	match &metadata.1 {
 		RuntimeMetadata::V12(_v12) => {
-			println!("Detected runtime V12.");
+			println!("Detected Substrate Runtime V12");
 		}
 		RuntimeMetadata::V13(_v13) => {
-			println!("Detected runtime V13.");
+			println!("Detected Substrate Runtime V13");
 		}
 		_ => return Err(eyre::eyre!("Unsupported metadata version")),
 	};
@@ -96,9 +106,10 @@ pub fn display_modules_list(metadata: &RuntimeMetadataPrefixed) -> color_eyre::R
 
 			modules.iter().for_each(|module| println!(" - {:02}: {:?}", module.index, module.name));
 		}
-		RuntimeMetadata::V13(v13) => {
-			let _pallet = v13.modules.iter().inspect(|module| println!(" - {:?}{:?}", module.index, module.name));
+		RuntimeMetadata::V13(_v13) => {
+			// let _pallet = v13.modules.iter().inspect(|module| println!(" - {:?}{:?}", module.index, module.name));
 			// .find(|m| &m.name == pallet)
+			todo!("Not yet implemented");
 		}
 		_ => return Err(eyre::eyre!("Unsupported metadata version")),
 	}
@@ -114,7 +125,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 	};
 
 	let reference = OnchainBlock { url, block_ref };
-	let wasm = wasm_loader::WasmLoader::fetch_wasm(reference).expect("Getting wasm from the node");
+	let wasm = wasm_loader::WasmLoader::fetch_wasm(&reference).expect("Getting wasm from the node");
 	println!("Got the runtime, its size is {:?}", wasm.len());
 
 	let outfile = match output {

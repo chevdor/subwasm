@@ -19,29 +19,40 @@ fn main() -> color_eyre::Result<()> {
 
 		SubCommand::Info(info_opts) => {
 			let src = Source::File(PathBuf::from(&info_opts.input));
-			if let Ok(runtime) = WasmTestBed::new(src) {
-				match info_opts.details_level {
-					0 => {
-						display_infos(runtime.runtime_metadata_prefixed())?;
-						println!(
-							"Version {:?} {} supported.",
-							runtime.metadata_version(),
-							if runtime.is_supported() { "is" } else { "is NOT" }
-						);
-						println!("Proposal hash: {}", runtime.proposal_hash());
+			let runtime = WasmTestBed::new(&src)
+				.map_err(|e| {
+					eprintln!("{}", e);
+					if let WasmTestbedError::Decoding(data) = e {
+						print_magic_and_version(&data);
 					}
-					_ => {
-						display_modules_list(runtime.runtime_metadata_prefixed())?;
-					}
+					const REPO: &'static str = env!("CARGO_PKG_REPOSITORY");
+					const NAME: &'static str = env!("CARGO_PKG_NAME");
+					const VERSION: &'static str = env!("CARGO_PKG_VERSION");
+					println!("🗣️ If you think it should have worked, please open an issue at {}/issues", REPO);
+					println!("and attach your runtime and mention using {} v{}", NAME, VERSION);
+					panic!("Could not load runtime");
+				})
+				.unwrap();
+
+			match info_opts.details_level {
+				0 => {
+					// println!(
+					// 	"Version {:?} {} supported.",
+					// 	runtime.metadata_version(),
+					// 	if runtime.is_supported() { "is" } else { "is NOT" }
+					// );
+					display_infos(runtime.runtime_metadata_prefixed())?;
+					println!("Proposal hash: {}", runtime.proposal_hash());
 				}
-			} else {
-				panic!("That does not look like a Substrate runtime, or least not a recent one we can decode.")
+				_ => {
+					display_modules_list(runtime.runtime_metadata_prefixed())?;
+				}
 			}
 		}
 
 		SubCommand::Metadata(meta_opts) => {
 			let src = Source::File(PathBuf::from(&meta_opts.input));
-			let runtime = WasmTestBed::new(src).expect("Loading runtime to testbed");
+			let runtime = WasmTestBed::new(&src).expect("Loading runtime to testbed");
 			display_raw_metadata(runtime.metadata())?;
 		}
 	};

@@ -32,8 +32,8 @@ pub enum SubCommand {
 /// The `info` command returns summarized information about a runtime.
 #[derive(Clap)]
 pub struct InfoOpts {
-	/// The wasm file to load
-	#[clap(short, long, default_value = "runtime.wasm")]
+	/// The wasm file to load.
+	#[clap(short, long, default_value = "runtime_000.wasm")]
 	pub input: PathBuf,
 
 	/// The more `-d` you add and the more you see... Try `-d` or `-dd` or `-ddd` or ... `-dddd`

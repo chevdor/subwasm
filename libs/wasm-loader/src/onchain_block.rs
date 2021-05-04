@@ -1,7 +1,6 @@
 use crate::NodeEndpoint;
 
-// TODO: to change
-pub type BlockRef = String;
+pub type BlockRef = String; // TODO: to change
 
 /// This structure points to a node url and an optional block reference.
 #[derive(Debug, Clone)]

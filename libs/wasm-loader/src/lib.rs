@@ -1,5 +1,6 @@
 mod node_endpoint;
 mod onchain_block;
+mod source;
 
 use jsonrpsee::{
 	http_client::{traits::Client, Error, HttpClientBuilder, JsonValue},
@@ -7,42 +8,37 @@ use jsonrpsee::{
 };
 pub use node_endpoint::NodeEndpoint;
 pub use onchain_block::{BlockRef, OnchainBlock};
+pub use source::Source;
 
 use std::io::Read;
-use std::{fs, fs::File, path::Path, path::PathBuf};
+use std::{fs, fs::File, path::Path};
 use tokio::runtime::Runtime;
-
-/// The source of the wasm. It can come from the local file system (`File`) or from a chain (`Chain`).
-pub enum Source {
-	File(PathBuf),
-	Chain(OnchainBlock),
-}
 
 pub struct WasmLoader {}
 
 impl WasmLoader {
 	/// Load some binary from a file
-	fn load_from_file(filename: &Path) -> Result<Vec<u8>, String> {
+	fn load_from_file(filename: &Path) -> Vec<u8> {
 		let mut f = File::open(&filename).unwrap_or_else(|_| panic!("File {} not found", filename.to_string_lossy()));
 		let metadata = fs::metadata(&filename).expect("unable to read metadata");
 		let mut buffer = vec![0; metadata.len() as usize];
 		f.read_exact(&mut buffer).expect("buffer overflow");
 
-		Ok(buffer)
+		buffer
 	}
 
-	pub fn fetch_wasm(reference: OnchainBlock) -> Result<Vec<u8>, Error> {
+	pub fn fetch_wasm(reference: &OnchainBlock) -> Result<Vec<u8>, Error> {
 		// let code = "0x3a636f6465".to_string(); // :code in hex
-		let block_ref = reference.block_ref;
+		let block_ref = reference.block_ref.as_ref();
 		let params = match block_ref {
-			Some(x) => vec![JsonValue::from("0x3a636f6465"), JsonValue::from(x)],
+			Some(x) => vec![JsonValue::from("0x3a636f6465"), JsonValue::from(x.to_string())],
 			None => vec!["0x3a636f6465".into()],
 		};
 
 		// Create the runtime
 		let rt = Runtime::new().unwrap();
 		// TODO: See https://github.com/paritytech/jsonrpsee/issues/298
-		let response: Result<String, Error> = match reference.url {
+		let response: Result<String, Error> = match &reference.url {
 			NodeEndpoint::Http(url) => {
 				let client = HttpClientBuilder::default().build(url)?;
 				rt.block_on(client.request("state_getStorage", params.into()))
@@ -59,7 +55,7 @@ impl WasmLoader {
 	}
 
 	/// Load wasm from a node
-	fn load_from_node(reference: OnchainBlock) -> Result<Vec<u8>, String> {
+	fn load_from_node(reference: &OnchainBlock) -> Result<Vec<u8>, String> {
 		match WasmLoader::fetch_wasm(reference) {
 			Ok(wasm) => Ok(wasm),
 			Err(e) => Err(e.to_string()), // TODO: fix that
@@ -67,9 +63,9 @@ impl WasmLoader {
 	}
 
 	/// Load the binary wasm from a file or from a running node via rpc
-	pub fn load(source: Source) -> Result<Vec<u8>, String> {
+	pub fn load(source: &Source) -> Result<Vec<u8>, String> {
 		match source {
-			Source::File(f) => Self::load_from_file(&f),
+			Source::File(f) => Ok(Self::load_from_file(&f)),
 			Source::Chain(n) => Self::load_from_node(n),
 		}
 	}
@@ -93,7 +89,7 @@ mod tests {
 		let url = String::from(get_http_node());
 		println!("Connecting to {:?}", &url);
 		let reference = OnchainBlock { url: NodeEndpoint::Http(url), block_ref: None };
-		let wasm = WasmLoader::fetch_wasm(reference).unwrap();
+		let wasm = WasmLoader::fetch_wasm(&reference).unwrap();
 		println!("wasm size: {:?}", wasm.len());
 		assert!(wasm.len() > 1_000_000);
 	}
@@ -103,7 +99,7 @@ mod tests {
 		let url = String::from(get_ws_node());
 		println!("Connecting to {:?}", &url);
 		let reference = OnchainBlock { url: NodeEndpoint::WebSocket(url), block_ref: None };
-		let wasm = WasmLoader::fetch_wasm(reference).unwrap();
+		let wasm = WasmLoader::fetch_wasm(&reference).unwrap();
 		println!("wasm size: {:?}", wasm.len());
 		assert!(wasm.len() > 1_000_000);
 	}
@@ -116,8 +112,8 @@ mod tests {
 		println!("Connecting to {:?}", &url);
 		let latest = OnchainBlock { url: NodeEndpoint::WebSocket(url.clone()), block_ref: None };
 		let older = OnchainBlock { url: NodeEndpoint::WebSocket(url), block_ref: Some(HASH.to_string()) };
-		let wasm_latest = WasmLoader::fetch_wasm(latest).unwrap();
-		let wasm_older = WasmLoader::fetch_wasm(older).unwrap();
+		let wasm_latest = WasmLoader::fetch_wasm(&latest).unwrap();
+		let wasm_older = WasmLoader::fetch_wasm(&older).unwrap();
 		println!("wasm latest size: {:?}", wasm_latest.len());
 		println!("wasm older size: {:?}", wasm_older.len());
 		assert!(wasm_latest.len() > 1_000_000);
