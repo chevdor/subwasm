@@ -17,6 +17,7 @@ usage:
 	cargo run -q -- get --help > doc/usage_get.adoc
 	cargo run -q -- info --help > doc/usage_info.adoc
 	cargo run -q -- meta --help > doc/usage_meta.adoc
+	cargo run -q -- diff --help > doc/usage_diff.adoc
 
 doc:usage
 	cargo doc -p subwasm -p subwasmlib -p wasm-loader -p wasm-testbed -p substrate-runtime-proposal-hash --all-features --no-deps

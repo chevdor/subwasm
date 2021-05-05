@@ -77,7 +77,7 @@ pub struct DiffOpts {
 	#[clap(short, long)]
 	pub a: Source,
 
-	/// The first source
+	/// The second source
 	#[clap(short, long)]
 	pub b: Source,
 }

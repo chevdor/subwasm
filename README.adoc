@@ -68,6 +68,10 @@ include::doc/usage_info.adoc[]
 include::doc/usage_meta.adoc[]
 ----
 
+----
+include::doc/usage_diff.adoc[]
+----
+
 .Fetch a runtime from a running node
 
 We will start by fetching the runtime from a node.
