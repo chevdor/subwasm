@@ -3,3 +3,4 @@
 data
 .env
 scripts/out
+*.gz
