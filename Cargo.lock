@@ -787,18 +787,18 @@ source = "git+https://github.com/paritytech/frame-metadata?branch=main#a404c8f40
 dependencies = [
  "cfg-if 1.0.0",
  "parity-scale-codec",
- "scale-info",
+ "scale-info 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
 ]
 
 [[package]]
 name = "frame-metadata"
 version = "12.0.0"
-source = "git+https://github.com/paritytech/frame-metadata?branch=subsee#92aced5f3d4605f36f72b875cbdac8be9ac5e430"
+source = "git+https://github.com/paritytech/frame-metadata?branch=subsee#b02894949737a7b1e462af282330c3cf1f43acf9"
 dependencies = [
  "cfg-if 1.0.0",
  "parity-scale-codec",
- "scale-info",
+ "scale-info 0.6.0 (git+https://github.com/paritytech/scale-info?branch=aj-substrate)",
  "serde",
 ]
 
@@ -2198,7 +2198,19 @@ dependencies = [
  "cfg-if 1.0.0",
  "derive_more",
  "parity-scale-codec",
- "scale-info-derive",
+ "scale-info-derive 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde",
+]
+
+[[package]]
+name = "scale-info"
+version = "0.6.0"
+source = "git+https://github.com/paritytech/scale-info?branch=aj-substrate#ff42886b35a3c5e960a8b2089bdef5fccd0ee245"
+dependencies = [
+ "cfg-if 1.0.0",
+ "derive_more",
+ "parity-scale-codec",
+ "scale-info-derive 0.4.0 (git+https://github.com/paritytech/scale-info?branch=aj-substrate)",
  "serde",
 ]
 
@@ -2209,6 +2221,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e321c3d4ef7d3a90b0b4eda276d4215c6cbf3d59f66a9934e7866a48dcaa29b3"
 dependencies = [
  "proc-macro-crate 0.1.5",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "scale-info-derive"
+version = "0.4.0"
+source = "git+https://github.com/paritytech/scale-info?branch=aj-substrate#ff42886b35a3c5e960a8b2089bdef5fccd0ee245"
+dependencies = [
+ "proc-macro-crate 1.0.0",
  "proc-macro2",
  "quote",
  "syn",
@@ -2817,7 +2840,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-runtime-differ"
-version = "0.1.0"
+version = "0.4.0"
 dependencies = [
  "frame-metadata 12.0.0 (git+https://github.com/paritytech/frame-metadata?branch=subsee)",
 ]
@@ -2851,7 +2874,7 @@ checksum = "1e81da0851ada1f3e9d4312c704aa4f8806f0f9d69faaf8df2f3464b4a9437c2"
 
 [[package]]
 name = "subwasm"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "clap",
  "color-eyre",
@@ -2863,7 +2886,7 @@ dependencies = [
 
 [[package]]
 name = "subwasmlib"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "color-eyre",
  "frame-metadata 12.0.0 (git+https://github.com/paritytech/frame-metadata?branch=main)",
@@ -3396,7 +3419,7 @@ checksum = "d9a543ae66aa233d14bb765ed9af4a33e81b8b58d1584cf1b47ff8cd0b9e4489"
 
 [[package]]
 name = "wasm-loader"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "hex",
  "jsonrpsee",
@@ -3405,7 +3428,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-testbed"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "frame-metadata 12.0.0 (git+https://github.com/paritytech/frame-metadata?branch=main)",
  "parity-scale-codec",
