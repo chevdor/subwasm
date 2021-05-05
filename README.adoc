@@ -28,13 +28,7 @@ NOTE: Substrate V12 is 16534 lines once its json representation is prettified.
 
 === Using Cargo
 
-For now, you need to use nightly:
-
-    rustup install nightly
-
-then:
-
-    cargo +nightly install --git https://gitlab.com/chevdor/subwasm
+    cargo install --git https://gitlab.com/chevdor/subwasm
 
 === Homebrew
 
@@ -80,11 +74,15 @@ We will start by fetching the runtime from a node.
 
 NOTE: Please note that you will likely need to connect to an **archive** node to retrieve older runtime. A runtime takes around 2MB of storage on-chain and thus, older versions are pruned and will no longer be accessible if you are connectin to a non-archive node.
 
-    # Here we get the latest version of the runtime
-    subwasm get --url http://localhost:9933
+.Here we get the latest version of the runtime, the 3 commands do the same since they all use the default values:
 
-    # Here we get an older runtime, back when Polkadot was at block 20 !
-    subwasm get --url http://localhost:9933 --block 0x4d6a0bca208b85d41833a7f35cf73d1ae6974f4bad8ab576e2c3f751d691fe6c
+    subwasm get
+    subwasm get --url http://localhost:9933
+    subwasm get --url http://localhost:9933 --output runtime_000.wasm
+
+.Here we get an older runtime, back when Polkadot was at block 20 !
+
+    subwasm get brew tap chevdor/subwasm --block 0x4d6a0bca208b85d41833a7f35cf73d1ae6974f4bad8ab576e2c3f751d691fe6c
 
 NOTE: By default, your runtime will be saved as `runtime_000.wasm`. Running this command again will increase the counter so we you don't lose your previous runtime. You may also use the `--output` flag to provide the destination and filename of your choice. Beware, in this case, there will be no incremented counter.
 
