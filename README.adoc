@@ -3,7 +3,7 @@
 :prj: subwasm
 :cmd: subwasm
 
-WARNING: This project is "under-construction". This is an early version. The commands, sub-commands and options may change without prior warning.
+image::resources/logos/Logo_512.png[align="center", width="50%"]
 
 == Introduction
 
@@ -12,7 +12,7 @@ It contains the exhaustive list of all the features publicly exposed by the runt
 
 Any node can be queried to provide its current metadata. This can be displayed in json format for instance. This is a great way to have a peek at what the runtime can do.
 
-INFO: Substrate V12 is 16534 lines once its json representation is prettified.
+NOTE: Substrate V12 is 16534 lines once its json representation is prettified.
 
 == Capabilities
 
@@ -26,6 +26,8 @@ INFO: Substrate V12 is 16534 lines once its json representation is prettified.
 
 == Install
 
+=== Using Cargo
+
 For now, you need to use nightly:
 
     rustup install nightly
@@ -34,7 +36,14 @@ then:
 
     cargo +nightly install --git https://gitlab.com/chevdor/subwasm
 
-== Other options
+=== Homebrew
+
+MacOS Homebrew users can use:
+
+    brew tap chevdor/subwasm
+    brew install subwasm
+
+== Alternatives
 
 Here is a list of other projects allowing to get the raw metadata through a rpc call:
 
@@ -42,6 +51,8 @@ Here is a list of other projects allowing to get the raw metadata through a rpc 
  - https://github.com/ascjones/subsee[subsee] from Andrew / Parity
  - https://github.com/scs/substrate-api-client[substrate-api-client] from SCS
  - https://github.com/paritytech/substrate-subxt[subxt] from Parity
+
+All those alternatives require a running node and access it via jsonrpc.
 
 == Usage
 
