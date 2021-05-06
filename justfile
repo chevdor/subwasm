@@ -19,6 +19,9 @@ usage:
 	cargo run -q -- meta --help > doc/usage_meta.adoc
 	cargo run -q -- diff --help > doc/usage_diff.adoc
 
+	cargo run -q -- get --url wss://rpc.polkadot.io > doc/demo_get.adoc --out /tmp/runtime.wasm
+	cargo run -q -- info --in /tmp/runtime.wasm > doc/demo_info.adoc
+
 doc:usage
 	cargo doc -p subwasm -p subwasmlib -p wasm-loader -p wasm-testbed -p substrate-runtime-proposal-hash --all-features --no-deps
 

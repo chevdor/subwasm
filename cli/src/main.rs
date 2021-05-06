@@ -2,6 +2,7 @@ mod opts;
 
 use clap::Clap;
 use opts::*;
+use rand::seq::SliceRandom;
 use std::path::PathBuf;
 use subwasmlib::*;
 use wasm_loader::*;
@@ -13,8 +14,22 @@ fn main() -> color_eyre::Result<()> {
 
 	match opts.subcmd {
 		SubCommand::Get(get_opts) => {
-			println!("Getting runtime from a node at {}", get_opts.url);
-			download_runtime(&get_opts.url, get_opts.block, get_opts.output)?;
+			let urls = match get_opts.chain.as_ref() {
+				"polkadot" => vec![
+					"wss://rpc.polkadot.io",
+					"wss://polkadot.api.onfinality.io/public-ws",
+					"wss://polkadot.elara.patract.io",
+				],
+				"kusama" => vec!["wss://kusama-rpc.polkadot.io"],
+				"westend" => vec!["wss://westend-rpc.polkadot.io"],
+				"rococo" => vec!["wss://rococo-rpc.polkadot.io"],
+				"wococo" => vec!["wss://wococo-rpc.polkadot.io"],
+				_ => vec![get_opts.url.as_ref()],
+			};
+
+			let url = urls.choose(&mut rand::thread_rng()).expect("Picking a node");
+			println!("Getting runtime from a node at {:?}", url);
+			download_runtime(url, get_opts.block, get_opts.output)?;
 		}
 
 		SubCommand::Info(info_opts) => {

@@ -55,8 +55,12 @@ pub struct MetaOpts {
 #[derive(Clap)]
 pub struct GetOpts {
 	/// The node url. Example: ws://localhost:9944 or http://localhost:9933.
-	#[clap(short, long, default_value = "http://localhost:9933")]
+	#[clap(short, long, default_value = "http://localhost:9933", required_unless_present="chain")]
 	pub url: String,
+
+	/// Provide the name of a chain and 'some' url will be filled for you
+	#[clap(long)]
+	pub chain: String,
 
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
