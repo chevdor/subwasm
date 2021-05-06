@@ -11,6 +11,10 @@ pub struct Opts {
 	#[clap(short, long, parse(from_occurrences))]
 	pub _verbose: i32,
 
+	/// Less output
+	#[clap(short, long)]
+	pub quiet: bool,
+
 	#[clap(subcommand)]
 	pub subcmd: SubCommand,
 }
@@ -55,10 +59,12 @@ pub struct MetaOpts {
 #[derive(Clap)]
 pub struct GetOpts {
 	/// The node url. Example: ws://localhost:9944 or http://localhost:9933.
-	#[clap(short, long, default_value = "http://localhost:9933", required_unless_present="chain")]
+	#[clap(short, long, default_value = "http://localhost:9933", required_unless_present = "chain")]
 	pub url: String,
 
-	/// Provide the name of a chain and 'some' url will be filled for you
+	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
+	/// If you pass a valid --chain, --url will be ignored
+	/// --chain local = http://localhost:9933
 	#[clap(long)]
 	pub chain: String,
 

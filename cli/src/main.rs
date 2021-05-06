@@ -1,6 +1,6 @@
 mod opts;
 
-use clap::Clap;
+use clap::{crate_name, crate_version, Clap};
 use opts::*;
 use rand::seq::SliceRandom;
 use std::path::PathBuf;
@@ -8,9 +8,18 @@ use subwasmlib::*;
 use wasm_loader::*;
 use wasm_testbed::*;
 
+macro_rules! noquiet {
+	( $q:expr, $x:expr ) => {{
+		if !$q {
+			$x
+		}
+	}};
+}
+
 /// Main entry point of the `subwasm` cli.
 fn main() -> color_eyre::Result<()> {
 	let opts: Opts = Opts::parse();
+	noquiet!(opts.quiet, println!("Running {} v{}", crate_name!(), crate_version!()));
 
 	match opts.subcmd {
 		SubCommand::Get(get_opts) => {
@@ -23,12 +32,14 @@ fn main() -> color_eyre::Result<()> {
 				"kusama" => vec!["wss://kusama-rpc.polkadot.io"],
 				"westend" => vec!["wss://westend-rpc.polkadot.io"],
 				"rococo" => vec!["wss://rococo-rpc.polkadot.io"],
-				"wococo" => vec!["wss://wococo-rpc.polkadot.io"],
-				_ => vec![get_opts.url.as_ref()],
+				"local" => vec!["http://localhost:9933"],
+				_ => panic!("Unknown chain, please open a PR to list your chain/endpoints"),
 			};
 
-			let url = urls.choose(&mut rand::thread_rng()).expect("Picking a node");
-			println!("Getting runtime from a node at {:?}", url);
+			let random_url = urls.choose(&mut rand::thread_rng());
+			let url = if let Some(url) = random_url { *url } else { get_opts.url.as_ref() };
+
+			println!("Getting runtime from {:?}", url);
 			download_runtime(url, get_opts.block, get_opts.output)?;
 		}
 
