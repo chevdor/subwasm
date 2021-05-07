@@ -1,9 +1,9 @@
 = submeta
 :toc: right
-:prj: subwasm
+:prj: pass:q[`subwasm`]
 :cmd: subwasm
 
-image::resources/logos/Logo_512.png[align="center", width="50%"]
+image::resources/logos/Logo_1024.png[align="center", width="50%"]
 
 == Introduction
 
