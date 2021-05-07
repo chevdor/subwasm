@@ -10,4 +10,6 @@ FLAGS:
     -V, --version    Prints version information
 
 OPTIONS:
-    -i, --input <input>    The wasm file to load [default: runtime_000.wasm]
+    -s, --source <source>    The wasm file to load. It can be a path on your local filesystem such
+                             as /tmp/runtime.wasm or a node url such as http://localhost:9933 or
+                             ws://localhost:9944 [default: runtime_000.wasm]

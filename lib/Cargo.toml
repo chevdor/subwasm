@@ -9,6 +9,7 @@ repository = "https://gitlab.com/chevdor/subwasm"
 version = "0.4.0"
 
 [dependencies]
+calm_io = "0.1.1"
 color-eyre = "0.5.11"
 frame-metadata = {package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main"}
 num-format = "0.4.0"

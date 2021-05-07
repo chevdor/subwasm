@@ -14,6 +14,9 @@ OPTIONS:
                              older runtimes but you will need to connect to archive nodes.
                              Currently, you must pass a block hash. Passing the block numbers is not
                              supported
+        --chain <chain>      Provide the name of a chain and a random url amongst a list of known
+                             nodes will be used. If you pass a valid --chain, --url will be ignored
+                             --chain local = http://localhost:9933
     -o, --output <output>    You may specifiy the output filename where the runtime will be saved.
                              If not provided, we will figure out an appropriate default name based
                              on a counter: runtime_NNN.wasm where NNN is incrementing to make sure

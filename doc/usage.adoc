@@ -7,6 +7,7 @@ USAGE:
 
 FLAGS:
     -h, --help       Prints help information
+    -q, --quiet      Less output
     -v, --verbose    A level of verbosity, and can be used multiple times
     -V, --version    Prints version information
 

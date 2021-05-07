@@ -6,10 +6,14 @@ USAGE:
     subwasm info [FLAGS] [OPTIONS]
 
 FLAGS:
-    -d, --details-level    The more `-d` you add and the more you see... Try `-d` or `-dd` or `-ddd`
-                           or ... `-dddd`
+    -d, --details-level    Shows the list of modules if you provide `-d`
     -h, --help             Prints help information
     -V, --version          Prints version information
 
 OPTIONS:
-    -i, --input <input>    The wasm file to load [default: runtime_000.wasm]
+        --chain <chain>      Provide the name of a chain and a random url amongst a list of known
+                             nodes will be used. If you pass a valid --chain, --url will be ignored
+                             --chain local = http://localhost:9933
+    -s, --source <source>    The wasm file to load. It can be a path on your local filesystem such
+                             as /tmp/runtime.wasm or a node url such as http://localhost:9933 or
+                             ws://localhost:9944 [default: runtime_000.wasm]

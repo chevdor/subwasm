@@ -16,16 +16,19 @@ macro_rules! noquiet {
 /// Main entry point of the `subwasm` cli.
 fn main() -> color_eyre::Result<()> {
 	let opts: Opts = Opts::parse();
-	noquiet!(opts.quiet, println!("Running {} v{}", crate_name!(), crate_version!()));
 
 	match opts.subcmd {
 		SubCommand::Get(get_opts) => {
+			noquiet!(opts.quiet, println!("Running {} v{}", crate_name!(), crate_version!()));
+
 			let url = &get_url(get_opts.chain.as_deref(), &get_opts.url);
 			println!("Getting runtime from {:?}", url);
 			download_runtime(url, get_opts.block, get_opts.output)?;
 		}
 
 		SubCommand::Info(info_opts) => {
+			noquiet!(opts.quiet, println!("Running {} v{}", crate_name!(), crate_version!()));
+
 			let src = get_source(info_opts.chain.as_deref(), info_opts.source);
 			println!("Loading from {}", src);
 
@@ -66,6 +69,8 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		SubCommand::Diff(diff_opts) => {
+			noquiet!(opts.quiet, println!("Running {} v{}", crate_name!(), crate_version!()));
+
 			diff(diff_opts.a, diff_opts.b);
 		}
 	};

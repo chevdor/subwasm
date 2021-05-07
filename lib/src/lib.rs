@@ -1,3 +1,4 @@
+use calm_io::stdoutln;
 use color_eyre::eyre;
 use frame_metadata::{v12, RuntimeMetadata, RuntimeMetadataPrefixed}; // TODO checkout v13
 use num_format::{Locale, ToFormattedString};
@@ -84,7 +85,21 @@ pub fn display_raw_metadata(metadata: &RuntimeMetadata) -> color_eyre::Result<()
 	} else {
 		serde_json::to_string_pretty(&metadata)?
 	};
-	println!("{}", serialized);
+
+	// The following fails if piped to another command that truncates the output.
+	// Typical use case here is: subwasm meta | head
+	// The failure is due to https://github.com/rust-lang/rust/issues/46016
+	// TODO: Once the above is fixed, we can remove the dependency on calm_io
+	// println!("{}", serialized);
+
+	match stdoutln!("{}", serialized) {
+		Ok(_) => Ok(()),
+		Err(e) => match e.kind() {
+			std::io::ErrorKind::BrokenPipe => Ok(()),
+			_ => Err(e),
+		},
+	}?;
+
 	Ok(())
 }
 
