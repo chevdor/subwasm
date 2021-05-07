@@ -14,10 +14,10 @@ Any node can be queried to provide its current metadata. This can be displayed i
 
 Here are a few sample runs:
 
-image::scripts/demos/svg/demo-get.svg[]
-image::scripts/demos/svg/demo-info.svg[]
-image::scripts/demos/svg/demo-meta.svg[]
-image::scripts/demos/svg/demo-diff.svg[]
+image::scripts/demos/gif/demo-get.gif[title="subwasm get"]
+image::scripts/demos/gif/demo-info.gif[title="subwasm info"]
+image::scripts/demos/gif/demo-meta.gif[title="subwasm meta"]
+image::scripts/demos/gif/demo-diff.gif[title="subwasm diff"]
 
 == Capabilities
 
