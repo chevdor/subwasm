@@ -1,3 +1,4 @@
+mod error;
 mod node_endpoint;
 mod onchain_block;
 mod source;

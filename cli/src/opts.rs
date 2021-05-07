@@ -1,6 +1,6 @@
 use clap::{crate_authors, crate_version, AppSettings, Clap};
 use std::path::PathBuf;
-use wasm_loader::Source;
+use wasm_loader::{OnchainBlock, Source};
 
 /// `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains.
 #[derive(Clap)]
@@ -38,11 +38,18 @@ pub enum SubCommand {
 /// The `info` command returns summarized information about a runtime.
 #[derive(Clap)]
 pub struct InfoOpts {
-	/// The wasm file to load.
-	#[clap(short, long, alias("in"), default_value = "runtime_000.wasm")]
-	pub input: PathBuf,
+	/// The wasm file to load. It can be a path on your local filesystem such as
+	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
+	#[clap(short, long, alias("src"), default_value = "runtime_000.wasm", required_unless_present = "chain")]
+	pub source: Source,
 
-	/// The more `-d` you add and the more you see... Try `-d` or `-dd` or `-ddd` or ... `-dddd`
+	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
+	/// If you pass a valid --chain, --url will be ignored
+	/// --chain local = http://localhost:9933
+	#[clap(long)]
+	pub chain: Option<String>,
+
+	/// Shows the list of modules if you provide `-d`
 	#[clap(short, long("details-level"), parse(from_occurrences))]
 	pub details_level: i32,
 }
@@ -50,9 +57,10 @@ pub struct InfoOpts {
 /// Returns the metadata as a json object. You may also use the "meta" alias.
 #[derive(Clap)]
 pub struct MetaOpts {
-	/// The wasm file to load
-	#[clap(short, long, alias("in"), default_value = "runtime_000.wasm")]
-	pub input: PathBuf,
+	/// The wasm file to load. It can be a path on your local filesystem such as
+	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
+	#[clap(short, long, alias("src"), default_value = "runtime_000.wasm")]
+	pub source: Source,
 }
 
 /// Get/Download the runtime wasm from a running node through rpc
@@ -60,13 +68,13 @@ pub struct MetaOpts {
 pub struct GetOpts {
 	/// The node url. Example: ws://localhost:9944 or http://localhost:9933.
 	#[clap(short, long, default_value = "http://localhost:9933", required_unless_present = "chain")]
-	pub url: String,
+	pub source: OnchainBlock,
 
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
 	#[clap(long)]
-	pub chain: String,
+	pub chain: Option<String>,
 
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.

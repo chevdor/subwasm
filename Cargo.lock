@@ -2878,7 +2878,6 @@ version = "0.4.0"
 dependencies = [
  "clap",
  "color-eyre",
- "rand 0.8.3",
  "substrate-runtime-proposal-hash",
  "subwasmlib",
  "wasm-loader",
@@ -2892,6 +2891,7 @@ dependencies = [
  "color-eyre",
  "frame-metadata 12.0.0 (git+https://github.com/paritytech/frame-metadata?branch=main)",
  "num-format",
+ "rand 0.8.3",
  "serde_json",
  "wasm-loader",
  "wasm-testbed",

@@ -2,10 +2,7 @@ mod opts;
 
 use clap::{crate_name, crate_version, Clap};
 use opts::*;
-use rand::seq::SliceRandom;
-use std::path::PathBuf;
 use subwasmlib::*;
-use wasm_loader::*;
 use wasm_testbed::*;
 
 macro_rules! noquiet {
@@ -23,28 +20,15 @@ fn main() -> color_eyre::Result<()> {
 
 	match opts.subcmd {
 		SubCommand::Get(get_opts) => {
-			let urls = match get_opts.chain.as_ref() {
-				"polkadot" => vec![
-					"wss://rpc.polkadot.io",
-					"wss://polkadot.api.onfinality.io/public-ws",
-					"wss://polkadot.elara.patract.io",
-				],
-				"kusama" => vec!["wss://kusama-rpc.polkadot.io"],
-				"westend" => vec!["wss://westend-rpc.polkadot.io"],
-				"rococo" => vec!["wss://rococo-rpc.polkadot.io"],
-				"local" => vec!["http://localhost:9933"],
-				_ => panic!("Unknown chain, please open a PR to list your chain/endpoints"),
-			};
-
-			let random_url = urls.choose(&mut rand::thread_rng());
-			let url = if let Some(url) = random_url { *url } else { get_opts.url.as_ref() };
-
+			let url = &get_url(get_opts.chain.as_deref(), &get_opts.source);
 			println!("Getting runtime from {:?}", url);
 			download_runtime(url, get_opts.block, get_opts.output)?;
 		}
 
 		SubCommand::Info(info_opts) => {
-			let src = Source::File(PathBuf::from(&info_opts.input));
+			let src = get_source(info_opts.chain.as_deref(), info_opts.source);
+			println!("Loading from {}", src);
+
 			let runtime = WasmTestBed::new(&src)
 				.map_err(|e| {
 					eprintln!("{}", e);
@@ -77,8 +61,7 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		SubCommand::Metadata(meta_opts) => {
-			let src = Source::File(PathBuf::from(&meta_opts.input));
-			let runtime = WasmTestBed::new(&src).expect("Loading runtime to testbed");
+			let runtime = WasmTestBed::new(&meta_opts.source).expect("Loading runtime to testbed");
 			display_raw_metadata(runtime.metadata())?;
 		}
 

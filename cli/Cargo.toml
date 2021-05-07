@@ -19,4 +19,3 @@ wasm-loader = { path = "../libs/wasm-loader" }
 
 # For the doc
 substrate-runtime-proposal-hash = { path = "../libs/substrate-runtime-proposal-hash", optional = true }
-rand = "0.8.3"
