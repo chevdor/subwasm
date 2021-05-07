@@ -68,7 +68,7 @@ pub struct MetaOpts {
 pub struct GetOpts {
 	/// The node url. Example: ws://localhost:9944 or http://localhost:9933.
 	#[clap(short, long, default_value = "http://localhost:9933", required_unless_present = "chain")]
-	pub source: OnchainBlock,
+	pub url: OnchainBlock,
 
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored

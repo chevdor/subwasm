@@ -20,7 +20,7 @@ fn main() -> color_eyre::Result<()> {
 
 	match opts.subcmd {
 		SubCommand::Get(get_opts) => {
-			let url = &get_url(get_opts.chain.as_deref(), &get_opts.source);
+			let url = &get_url(get_opts.chain.as_deref(), &get_opts.url);
 			println!("Getting runtime from {:?}", url);
 			download_runtime(url, get_opts.block, get_opts.output)?;
 		}

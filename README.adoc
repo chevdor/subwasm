@@ -12,7 +12,12 @@ It contains the exhaustive list of all the features publicly exposed by the runt
 
 Any node can be queried to provide its current metadata. This can be displayed in json format for instance. This is a great way to have a peek at what the runtime can do.
 
-NOTE: Substrate V12 is 16534 lines once its json representation is prettified.
+Here are a few sample runs:
+
+image::scripts/demos/svg/demo-get.svg[]
+image::scripts/demos/svg/demo-info.svg[]
+image::scripts/demos/svg/demo-meta.svg[]
+image::scripts/demos/svg/demo-diff.svg[]
 
 == Capabilities
 
@@ -22,7 +27,7 @@ NOTE: Substrate V12 is 16534 lines once its json representation is prettified.
 - getting the latest runtime (wasm) from a running node
 - getting runtime and metadata at any point of time using a Block hash as reference
 - getting the metadata from a a wasm file without any node
-- extracting a few information (those not requiring storage) from a runtime as wasm file
+- extracting information (those not requiring storage) from a runtime as wasm file
 
 == Install
 
