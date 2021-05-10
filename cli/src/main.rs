@@ -20,32 +20,19 @@ fn main() -> color_eyre::Result<()> {
 	match opts.subcmd {
 		SubCommand::Get(get_opts) => {
 			noquiet!(opts.quiet, println!("Running {} v{}", crate_name!(), crate_version!()));
-
-			let url = &get_url(get_opts.chain.as_deref(), &get_opts.url);
-			println!("Getting runtime from {:?}", url);
+			let chain_name = get_opts.chain.map(|some| some.name);
+			let url = &get_url(chain_name.as_deref(), &get_opts.url);
 			download_runtime(url, get_opts.block, get_opts.output)?;
 		}
 
 		SubCommand::Info(info_opts) => {
 			noquiet!(opts.quiet, println!("Running {} v{}", crate_name!(), crate_version!()));
+			let chain_name = info_opts.chain.map(|some| some.name);
+			let source = get_source(chain_name.as_deref(), info_opts.source);
 
-			let src = get_source(info_opts.chain.as_deref(), info_opts.source);
-			println!("Loading from {}", src);
-
-			let runtime = WasmTestBed::new(&src)
-				.map_err(|e| {
-					eprintln!("{}", e);
-					if let WasmTestbedError::Decoding(data) = e {
-						print_magic_and_version(&data);
-					}
-					const REPO: &str = env!("CARGO_PKG_REPOSITORY");
-					const NAME: &str = env!("CARGO_PKG_NAME");
-					const VERSION: &str = env!("CARGO_PKG_VERSION");
-					println!("🗣️ If you think it should have worked, please open an issue at {}/issues", REPO);
-					println!("and attach your runtime and mention using {} v{}", NAME, VERSION);
-					panic!("Could not load runtime");
-				})
-				.unwrap();
+			let subwasm = Subwasm::new(&source);
+			// let infos = subwasm.get_infos(); // good for json...
+			// subwasm.print_infos();
 
 			match info_opts.details_level {
 				0 => {
@@ -55,10 +42,10 @@ fn main() -> color_eyre::Result<()> {
 					// 	if runtime.is_supported() { "is" } else { "is NOT" }
 					// );
 					// display_infos(runtime.runtime_metadata_prefixed())?;
-					print_runtime_infos(src);
+					subwasm.print_runtime_infos();
 				}
 				_ => {
-					display_modules_list(runtime.runtime_metadata_prefixed())?;
+					subwasm.display_modules_list()?;
 				}
 			}
 		}
@@ -76,4 +63,41 @@ fn main() -> color_eyre::Result<()> {
 	};
 
 	Ok(())
+}
+
+#[cfg(test)]
+mod test {
+	use assert_cmd::Command;
+	use std::path::Path;
+
+	#[test]
+	fn it_shows_help() {
+		let mut cmd = Command::cargo_bin("subwasm").unwrap();
+		let assert = cmd.arg("--help").assert();
+		assert.success().code(0);
+	}
+
+	#[test]
+	fn it_fails_without_source() {
+		let mut cmd = Command::cargo_bin("subwasm").unwrap();
+		let assert = cmd.arg("info tcp://foo.bar").assert();
+		assert.failure().code(2);
+	}
+
+	#[test]
+	fn it_gets_a_runtime() {
+		let mut cmd = Command::cargo_bin("subwasm").unwrap();
+
+		let assert = cmd.args(&["get", "--output", "/tmp/runtime.wasm", "wss://rpc.polkadot.io"]).assert();
+		assert.success().code(0);
+		assert!(Path::new("/tmp/runtime.wasm").exists());
+	}
+
+	#[test]
+	fn it_fails_on_bad_chain() {
+		let mut cmd = Command::cargo_bin("subwasm").unwrap();
+
+		let assert = cmd.args(&["get", "--chain", "foobar"]).assert();
+		assert.failure().code(101);
+	}
 }

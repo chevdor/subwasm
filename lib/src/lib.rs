@@ -2,19 +2,24 @@ use calm_io::stdoutln;
 use color_eyre::eyre;
 use frame_metadata::{v12, RuntimeMetadata, RuntimeMetadataPrefixed}; // TODO checkout v13
 use num_format::{Locale, ToFormattedString};
-use rand::seq::SliceRandom;
+use wasm_testbed::WasmTestBed;
+// use rand::seq::SliceRandom;
 use std::path::Path;
 use std::{fs::File, path::PathBuf};
 use std::{io::prelude::*, str::FromStr};
 use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
 
-use crate::error::Error;
+// use crate::error::Error;
+mod chain_info;
 mod error;
+mod subwasm;
+pub use chain_info::*;
+pub use subwasm::*;
 
 /// Prints magic and version from a raw buffer
 pub fn print_magic_and_version(data: &[u8]) {
-	let is_substrate_wasm = wasm_testbed::WasmTestBed::is_substrate_wasm(data);
-	let version = wasm_testbed::WasmTestBed::get_metadata_version(data);
+	let is_substrate_wasm = WasmTestBed::is_substrate_wasm(data);
+	let version = WasmTestBed::get_metadata_version(data);
 
 	println!("✨ Magic number found: {}", if is_substrate_wasm { "YES" } else { "NO" });
 	println!("#️⃣ Extracted version : V{:?}", version);
@@ -103,33 +108,35 @@ pub fn display_raw_metadata(metadata: &RuntimeMetadata) -> color_eyre::Result<()
 	Ok(())
 }
 
-fn get_chain_url(chain: &str) -> Result<String, Error> {
-	let urls = match chain {
-		"polkadot" => Some(vec![
-			"wss://rpc.polkadot.io",
-			"wss://polkadot.api.onfinality.io/public-ws",
-			"wss://polkadot.elara.patract.io",
-		]),
-		"kusama" => Some(vec!["wss://kusama-rpc.polkadot.io"]),
-		"westend" => Some(vec!["wss://westend-rpc.polkadot.io"]),
-		"rococo" => Some(vec!["wss://rococo-rpc.polkadot.io"]),
-		"local" => Some(vec!["http://localhost:9933"]),
-		_ => None,
-	};
+// TODO: remove all of that and take it from ChainInfo
+// fn get_chain_url(chain: &str) -> Result<String, Error> {
+// 	let urls = match chain {
+// 		"polkadot" => Some(vec![
+// 			"wss://rpc.polkadot.io",
+// 			"wss://polkadot.api.onfinality.io/public-ws",
+// 			"wss://polkadot.elara.patract.io",
+// 		]),
+// 		"kusama" => Some(vec!["wss://kusama-rpc.polkadot.io"]),
+// 		"westend" => Some(vec!["wss://westend-rpc.polkadot.io"]),
+// 		"rococo" => Some(vec!["wss://rococo-rpc.polkadot.io"]),
+// 		"local" => Some(vec!["http://localhost:9933"]),
+// 		_ => None,
+// 	};
 
-	if let Some(urls) = urls {
-		let url = urls.choose(&mut rand::thread_rng()).ok_or(error::Error::Generic).unwrap();
-		Ok(String::from(*url))
-	} else {
-		Err(error::Error::Generic)
-	}
-}
+// 	if let Some(urls) = urls {
+// 		let url = urls.choose(&mut rand::thread_rng()).ok_or(error::Error::Generic).unwrap();
+// 		Ok(String::from(*url))
+// 	} else {
+// 		Err(error::Error::Generic)
+// 	}
+// }
 
 /// Returns Some node url if possible, None otherwise.
 pub fn get_node_url(chain: Option<&str>) -> Option<String> {
 	if let Some(chain) = chain {
-		let chain_url = get_chain_url(chain).unwrap();
-		Some(chain_url)
+		let chain_info = ChainInfo::from_str(chain).expect("Unknown chain");
+
+		chain_info.get_random_url(None)
 	} else {
 		None
 	}
@@ -163,39 +170,6 @@ pub fn get_source(chain: Option<&str>, source: Source) -> Source {
 	} else {
 		source
 	}
-}
-
-pub fn display_infos(metadata: &RuntimeMetadataPrefixed) -> color_eyre::Result<()> {
-	match &metadata.1 {
-		RuntimeMetadata::V12(_v12) => {
-			println!("Detected Substrate Runtime V12");
-		}
-		RuntimeMetadata::V13(_v13) => {
-			println!("Detected Substrate Runtime V13");
-		}
-		_ => return Err(eyre::eyre!("Unsupported metadata version")),
-	};
-	Ok(())
-}
-
-pub fn display_modules_list(metadata: &RuntimeMetadataPrefixed) -> color_eyre::Result<()> {
-	match &metadata.1 {
-		RuntimeMetadata::V12(v12) => {
-			let modules = match &v12.modules {
-				v12::DecodeDifferentArray::Decoded(modules) => modules,
-				v12::DecodeDifferentArray::Encode(_) => return Err(eyre::eyre!("Metadata should be Decoded")),
-			};
-
-			modules.iter().for_each(|module| println!(" - {:02}: {:?}", module.index, module.name));
-		}
-		RuntimeMetadata::V13(_v13) => {
-			// let _pallet = v13.modules.iter().inspect(|module| println!(" - {:?}{:?}", module.index, module.name));
-			// .find(|m| &m.name == pallet)
-			todo!("Not yet implemented");
-		}
-		_ => return Err(eyre::eyre!("Unsupported metadata version")),
-	}
-	Ok(())
 }
 
 /// Fetch the runtime from a node and store the wasm locally
@@ -236,29 +210,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 	Ok(())
 }
 
-pub fn print_runtime_infos(src: Source) {
-	let sizes = |x| -> (f32, usize) { (x as f32 / 1024.0 / 1024.0, x) };
 
-	println!("⏱️  Loading WASM from {:?}", src);
-	let runtime_a = wasm_testbed::WasmTestBed::new(&src).expect("Failed loading runtime");
-
-	// TODO: Fetch block numebr/hash so we know what we got when we called with block_ref = None
-
-	// RUNTIME SIZE
-	let size = runtime_a.size();
-
-	println!("🏋️  Runtime Size:\t{:.3?} MB ({} bytes)", sizes(size).0, sizes(size).1.to_formatted_string(&Locale::en));
-
-	// METADATA VERSION
-	let metadata_a_version = runtime_a.metadata_version();
-	println!("🎁 Metadata version:\tV{:?}", metadata_a_version);
-
-	// CORE VERSIONS
-	let version_a = runtime_a.core_version().as_ref().expect("Some version");
-	println!("🔥 Core version:\t{}", version_a);
-
-	println!("🗳️  Proposal hash:\t{}", runtime_a.proposal_hash());
-}
 
 /// Compare 2 runtimes. It compares their versions first
 /// then their metata.
@@ -267,9 +219,9 @@ pub fn diff(src_a: Source, src_b: Source) {
 
 	println!("Loading WASM runtimes:");
 	println!("  🅰️  {:?}", src_a);
-	let runtime_a = wasm_testbed::WasmTestBed::new(&src_a).expect("Can only diff if the 2 runtimes can load");
+	let runtime_a = WasmTestBed::new(&src_a).expect("Can only diff if the 2 runtimes can load");
 	println!("  🅱️  {:?}", src_b);
-	let runtime_b = wasm_testbed::WasmTestBed::new(&src_b).expect("Can only diff if the 2 runtimes can load");
+	let runtime_b = WasmTestBed::new(&src_b).expect("Can only diff if the 2 runtimes can load");
 
 	// RUNTIME SIZE
 	let size_a = runtime_a.size();
