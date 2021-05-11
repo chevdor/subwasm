@@ -14,7 +14,7 @@ for demo in ${demos[@]}; do
     echo Recoding demos:
     echo - $demo
     asciinema rec --overwrite casts/$demo.cast -c ./$demo.sh
-    
+
     # SVG do not play in the readme in gitlab...
     # termtosvg render -t window_frame_js casts/$demo.cast svg/$demo.svg -D 3000
 

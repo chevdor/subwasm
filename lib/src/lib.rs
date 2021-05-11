@@ -13,9 +13,11 @@ pub use chain_info::*;
 pub use runtime_info::*;
 pub use subwasm::*;
 
-/// Prints magic and version from a raw buffer
+/// Prints magic and version from a raw buffer.
+/// This is mainly used for troubleshooting when decoding
+/// a wasm fails.
 pub fn print_magic_and_version(data: &[u8]) {
-	let is_substrate_wasm = WasmTestBed::is_substrate_wasm(data);
+	let is_substrate_wasm = WasmTestBed::is_substrate_wasm(&data.to_vec());
 	let version = WasmTestBed::get_metadata_version(data);
 
 	println!("✨ Magic number found: {}", if is_substrate_wasm { "YES" } else { "NO" });

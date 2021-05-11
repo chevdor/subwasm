@@ -4,7 +4,7 @@ use frame_metadata::{v12, RuntimeMetadata};
 use wasm_loader::Source;
 use wasm_testbed::{WasmTestBed, WasmTestbedError};
 
-use crate::{print_magic_and_version, RuntimeInfo};
+use crate::{RuntimeInfo, print_magic_and_version};
 pub struct Subwasm {
 	testbed: WasmTestBed,
 	runtime_info: RuntimeInfo,
@@ -23,6 +23,8 @@ impl Subwasm {
 				const VERSION: &str = env!("CARGO_PKG_VERSION");
 				println!("🗣️ If you think it should have worked, please open an issue at {}/issues", REPO);
 				println!("and attach your runtime and mention using {} v{}", NAME, VERSION);
+				println!("The source was {} ", source);
+
 				panic!("Could not load runtime");
 			})
 			.unwrap();

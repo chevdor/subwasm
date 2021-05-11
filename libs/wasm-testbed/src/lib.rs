@@ -11,7 +11,7 @@ use substrate_runtime_proposal_hash::{get_result, SrhResult};
 use wasm_loader::*;
 
 /// This is a "magic" number signaling that out Wasm is a substrate wasm.
-type ReservedMeta = [u8; 4];
+pub type ReservedMeta = [u8; 4];
 const META: ReservedMeta = [0x6d, 0x65, 0x74, 0x61]; // 1635018093 in decimal, 'atem' as string...
 
 /// A Substrate wasm runtime testbed. This is a (very) minimum environment that allows loading and
@@ -23,6 +23,8 @@ pub struct WasmTestBed {
 
 	/// Prefixed version of the RuntimeMetadata.
 	runtime_metadata_prefixed: RuntimeMetadataPrefixed,
+
+	metadata: Vec<u8>,
 
 	/// Metadata version
 	metadata_version: u8,
@@ -45,22 +47,30 @@ impl WasmTestBed {
 		let loader = WasmLoader::load_from_source(source).map_err(|_| WasmTestbedError::Loading(source.to_string()))?;
 		let wasm = loader.bytes().to_vec();
 		let encoded = Self::call(&wasm, "Metadata_metadata", &[])?;
-		let decoded_metadata = <Vec<u8>>::decode(&mut &encoded[..]).map_err(|_| WasmTestbedError::Decoding(encoded))?;
-		if !WasmTestBed::is_substrate_wasm(&decoded_metadata) {
+		let metadata = <Vec<u8>>::decode(&mut &encoded[..]).map_err(|_| WasmTestbedError::Decoding(encoded))?;
+		if !WasmTestBed::is_substrate_wasm(&metadata) {
 			return Err(WasmTestbedError::Unsupported);
 		}
 
-		let runtime_metadata_prefixed: RuntimeMetadataPrefixed = codec::Decode::decode(&mut &decoded_metadata[..])
-			.map_err(|_| WasmTestbedError::Decoding(decoded_metadata.clone()))?;
+		let runtime_metadata_prefixed: RuntimeMetadataPrefixed =
+			codec::Decode::decode(&mut &metadata[..]).map_err(|_| WasmTestbedError::Decoding(metadata.clone()))?;
 
 		let core_version = Self::get_core_version(&wasm);
-		let metadata_version = Self::get_metadata_version(&decoded_metadata);
+		let metadata_version = Self::get_metadata_version(&metadata);
 
-		Ok(Self { wasm, runtime_metadata_prefixed, metadata_version, core_version })
+		Ok(Self { wasm, runtime_metadata_prefixed, metadata, metadata_version, core_version })
 	}
 
-	pub fn is_substrate_wasm(data: &[u8]) -> bool {
-		data[0..4] == META
+	pub fn is_substrate_wasm(metadata: &WasmBytes) -> bool {
+		[metadata[0], metadata[1], metadata[2], metadata[3]] == META
+	}
+
+	pub fn reserved_meta(&self) -> ReservedMeta {
+		[self.metadata[0], self.metadata[1], self.metadata[2], self.metadata[3]]
+	}
+
+	pub fn reserved_meta_valid(&self) -> bool {
+		self.reserved_meta() == META
 	}
 
 	pub fn get_metadata_version(data: &[u8]) -> u8 {
