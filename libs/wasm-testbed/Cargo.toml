@@ -6,7 +6,7 @@ keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "ku
 name = "wasm-testbed"
 readme = "README.md"
 repository = "https://gitlab.com/chevdor/subwasm"
-version = "0.4.0"
+version = "0.6.0"
 
 [dependencies]
 codec = {package = "parity-scale-codec", version = "2.0.0"}

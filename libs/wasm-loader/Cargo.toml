@@ -6,7 +6,7 @@ keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "ku
 name = "wasm-loader"
 readme = "README.md"
 repository = "https://gitlab.com/chevdor/subwasm"
-version = "0.5.0"
+version = "0.6.0"
 
 [dependencies]
 hex = "0.4.3"
