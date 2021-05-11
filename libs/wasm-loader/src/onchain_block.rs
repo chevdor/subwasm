@@ -18,7 +18,7 @@ impl FromStr for OnchainBlock {
 			url if url.starts_with("http") => Some(NodeEndpoint::Http(url.to_string())),
 			_ => None,
 		}
-		.expect(&format!("Invalid endpoint url: {}", s));
+		.unwrap_or_else(|| panic!("Invalid endpoint url: {}", s));
 
 		Ok(OnchainBlock { endpoint, block_ref: None })
 	}

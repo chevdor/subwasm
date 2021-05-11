@@ -1,6 +1,3 @@
-use calm_io::stdoutln;
-use color_eyre::eyre;
-use frame_metadata::{v12, RuntimeMetadata, RuntimeMetadataPrefixed}; // TODO checkout v13
 use num_format::{Locale, ToFormattedString};
 use std::path::Path;
 use std::{fs::File, path::PathBuf};
@@ -23,89 +20,6 @@ pub fn print_magic_and_version(data: &[u8]) {
 
 	println!("✨ Magic number found: {}", if is_substrate_wasm { "YES" } else { "NO" });
 	println!("#️⃣ Extracted version : V{:?}", version);
-}
-
-/// Display all the metadata or a part of it for a given pallet
-pub fn display_metadata(metadata: RuntimeMetadataPrefixed) -> color_eyre::Result<()> {
-	let pallet_filter: Option<String> = Some("Identity".to_string());
-	// let pallet_filter: Option<String> = None;
-
-	let serialized = if let Some(ref pallet) = pallet_filter {
-		match metadata.1 {
-			RuntimeMetadata::V12(v12) => {
-				let modules = match v12.modules {
-					v12::DecodeDifferentArray::Decoded(modules) => modules,
-					v12::DecodeDifferentArray::Encode(_) => return Err(eyre::eyre!("Metadata should be Decoded")),
-				};
-				let pallet_metadata = modules
-					.iter()
-					.find(|module| module.name == v12::DecodeDifferent::Decoded(pallet.into()))
-					.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
-				serde_json::to_string_pretty(&pallet_metadata)?
-			}
-			RuntimeMetadata::V13(_v13) => {
-				// let pallet = v13
-				// 	.modules
-				// 	.iter()
-				// 	.find(|m| &m.name == pallet)
-				// 	.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
-				// serde_json::to_string_pretty(&pallet)?
-				todo!("Not yet implemented");
-			}
-			_ => return Err(eyre::eyre!("Unsupported metadata version")),
-		}
-	} else {
-		serde_json::to_string_pretty(&metadata)?
-	};
-	println!("{}", serialized);
-	Ok(())
-}
-
-pub fn display_raw_metadata(metadata: &RuntimeMetadata) -> color_eyre::Result<()> {
-	let pallet_filter: Option<String> = None;
-
-	let serialized = if let Some(ref pallet) = pallet_filter {
-		match metadata {
-			RuntimeMetadata::V12(v12) => {
-				let modules = match &v12.modules {
-					v12::DecodeDifferentArray::Decoded(modules) => modules,
-					v12::DecodeDifferentArray::Encode(_) => return Err(eyre::eyre!("Metadata should be Decoded")),
-				};
-				let pallet_metadata = modules
-					.iter()
-					.find(|module| module.name == v12::DecodeDifferent::Decoded(pallet.into()))
-					.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
-				serde_json::to_string_pretty(&pallet_metadata)?
-			}
-			// RuntimeMetadata::V13(v13) => {
-			// 	let pallet = v13
-			// 		.modules
-			// 		.iter()
-			// 		.find(|m| &m.name == pallet)
-			// 		.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
-			// 	serde_json::to_string_pretty(&pallet)?
-			// }
-			_ => return Err(eyre::eyre!("Unsupported metadata version")),
-		}
-	} else {
-		serde_json::to_string_pretty(&metadata)?
-	};
-
-	// The following fails if piped to another command that truncates the output.
-	// Typical use case here is: subwasm meta | head
-	// The failure is due to https://github.com/rust-lang/rust/issues/46016
-	// TODO: Once the above is fixed, we can remove the dependency on calm_io
-	// println!("{}", serialized);
-
-	match stdoutln!("{}", serialized) {
-		Ok(_) => Ok(()),
-		Err(e) => match e.kind() {
-			std::io::ErrorKind::BrokenPipe => Ok(()),
-			_ => Err(e),
-		},
-	}?;
-
-	Ok(())
 }
 
 /// Returns Some node url if possible, None otherwise.

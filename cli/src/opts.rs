@@ -74,10 +74,6 @@ pub struct InfoOpts {
 	/// --chain local = http://localhost:9933
 	#[clap(long, parse(from_str), conflicts_with = "source")]
 	pub chain: Option<ChainInfo>,
-
-	/// Shows the list of modules if you provide `-d`
-	#[clap(short, long("details-level"), parse(from_occurrences))]
-	pub details_level: i32,
 }
 
 /// Returns the metadata as a json object. You may also use the "meta" alias.
@@ -85,8 +81,14 @@ pub struct InfoOpts {
 pub struct MetaOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such as
 	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
-	#[clap(alias("src"), default_value = "runtime_000.wasm", index = 1)]
+	#[clap(alias("src"), default_value = "runtime_000.wasm", required_unless_present = "chain", index = 1)]
 	pub source: Source,
+
+	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
+	/// If you pass a valid --chain, --url will be ignored
+	/// --chain local = http://localhost:9933
+	#[clap(long, parse(from_str), conflicts_with = "source")]
+	pub chain: Option<ChainInfo>,
 }
 
 /// Compare 2 runtimes

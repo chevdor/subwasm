@@ -3,7 +3,6 @@ mod opts;
 use clap::{crate_name, crate_version, Clap};
 use opts::*;
 use subwasmlib::*;
-use wasm_testbed::*;
 
 /// Simple macro that only execute $statement if $opts don#t contain neither the quiet nor the json flag
 macro_rules! noquiet {
@@ -36,15 +35,22 @@ fn main() -> color_eyre::Result<()> {
 			noquiet!(opts, println!("⏱️  Loading WASM from {:?}", &source));
 			let subwasm = Subwasm::new(&source);
 
-			match info_opts.details_level {
-				0 => subwasm.runtime_info().print(opts.json),
-				_ => subwasm.print_modules_list()?,
-			}
+			subwasm.runtime_info().print(opts.json);
 		}
 
 		SubCommand::Metadata(meta_opts) => {
-			let runtime = WasmTestBed::new(&meta_opts.source).expect("Loading runtime to testbed");
-			display_raw_metadata(runtime.metadata())?;
+			noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
+
+			let chain_name = meta_opts.chain.map(|some| some.name);
+			let source = get_source(chain_name.as_deref(), meta_opts.source);
+
+			noquiet!(opts, println!("⏱️  Loading WASM from {:?}", &source));
+			let subwasm = Subwasm::new(&source);
+
+			match opts.json {
+				true => subwasm.display_raw_metadata()?,
+				false => subwasm.print_modules_list()?, // false => subwasm.display_metadata()?,
+			}
 		}
 
 		SubCommand::Diff(diff_opts) => {

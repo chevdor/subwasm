@@ -1,3 +1,4 @@
+use calm_io::stdoutln;
 use color_eyre::eyre;
 use frame_metadata::{v12, RuntimeMetadata};
 use wasm_loader::Source;
@@ -49,30 +50,6 @@ impl Subwasm {
 		Ok(())
 	}
 
-	// pub fn print_runtime_infos(&self) {
-	// 	let sizes = |x| -> (f32, usize) { (x as f32 / 1024.0 / 1024.0, x) };
-	// 	// TODO: Fetch block number/hash so we know what we got when we called with block_ref = None
-
-	// 	// RUNTIME SIZE
-	// 	let size = self.testbed.size();
-
-	// 	println!(
-	// 		"🏋️  Runtime Size:\t{:.3?} MB ({} bytes)",
-	// 		sizes(size).0,
-	// 		sizes(size).1.to_formatted_string(&Locale::en)
-	// 	);
-
-	// 	// METADATA VERSION
-	// 	let metadata_version = self.testbed.metadata_version();
-	// 	println!("🎁 Metadata version:\tV{:?}", metadata_version);
-
-	// 	// CORE VERSIONS
-	// 	let version = self.testbed.core_version().as_ref().expect("Some version");
-	// 	println!("🔥 Core version:\t{}", version);
-
-	// 	println!("🗳️  Proposal hash:\t{}", self.testbed.proposal_hash());
-	// }
-
 	pub fn print_modules_list(&self) -> color_eyre::Result<()> {
 		let metadata = self.testbed.runtime_metadata_prefixed();
 
@@ -92,6 +69,93 @@ impl Subwasm {
 			}
 			_ => return Err(eyre::eyre!("Unsupported metadata version")),
 		}
+		Ok(())
+	}
+
+	/// Display all the metadata or a part of it for a given pallet
+	pub fn display_metadata(&self) -> color_eyre::Result<()> {
+		// let pallet_filter: Option<String> = Some("Identity".to_string());
+		let pallet_filter: Option<String> = None;
+		let metadata = self.testbed.runtime_metadata_prefixed();
+
+		let serialized = if let Some(ref pallet) = pallet_filter {
+			match &metadata.1 {
+				RuntimeMetadata::V12(v12) => {
+					let modules = match &v12.modules {
+						v12::DecodeDifferentArray::Decoded(modules) => modules,
+						v12::DecodeDifferentArray::Encode(_) => return Err(eyre::eyre!("Metadata should be Decoded")),
+					};
+					let pallet_metadata = modules
+						.iter()
+						.find(|module| module.name == v12::DecodeDifferent::Decoded(pallet.into()))
+						.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
+					serde_json::to_string_pretty(&pallet_metadata)?
+				}
+				RuntimeMetadata::V13(_v13) => {
+					// let pallet = v13
+					// 	.modules
+					// 	.iter()
+					// 	.find(|m| &m.name == pallet)
+					// 	.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
+					// serde_json::to_string_pretty(&pallet)?
+					todo!("Not yet implemented");
+				}
+				_ => return Err(eyre::eyre!("Unsupported metadata version")),
+			}
+		} else {
+			serde_json::to_string_pretty(&metadata)?
+		};
+		println!("{}", serialized);
+		Ok(())
+	}
+
+	/// Display the metadata as json
+	// TOOD: fix name
+	pub fn display_raw_metadata(&self) -> color_eyre::Result<()> {
+		let pallet_filter: Option<String> = None;
+		let metadata = self.testbed.metadata();
+
+		let serialized = if let Some(ref pallet) = pallet_filter {
+			match metadata {
+				RuntimeMetadata::V12(v12) => {
+					let modules = match &v12.modules {
+						v12::DecodeDifferentArray::Decoded(modules) => modules,
+						v12::DecodeDifferentArray::Encode(_) => return Err(eyre::eyre!("Metadata should be Decoded")),
+					};
+					let pallet_metadata = modules
+						.iter()
+						.find(|module| module.name == v12::DecodeDifferent::Decoded(pallet.into()))
+						.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
+					serde_json::to_string_pretty(&pallet_metadata)?
+				}
+				// RuntimeMetadata::V13(v13) => {
+				// 	let pallet = v13
+				// 		.modules
+				// 		.iter()
+				// 		.find(|m| &m.name == pallet)
+				// 		.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
+				// 	serde_json::to_string_pretty(&pallet)?
+				// }
+				_ => return Err(eyre::eyre!("Unsupported metadata version")),
+			}
+		} else {
+			serde_json::to_string_pretty(&metadata)?
+		};
+
+		// The following fails if piped to another command that truncates the output.
+		// Typical use case here is: subwasm meta | head
+		// The failure is due to https://github.com/rust-lang/rust/issues/46016
+		// TODO: Once the above is fixed, we can remove the dependency on calm_io
+		// println!("{}", serialized);
+
+		match stdoutln!("{}", serialized) {
+			Ok(_) => Ok(()),
+			Err(e) => match e.kind() {
+				std::io::ErrorKind::BrokenPipe => Ok(()),
+				_ => Err(e),
+			},
+		}?;
+
 		Ok(())
 	}
 }
