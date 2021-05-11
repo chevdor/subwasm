@@ -13,11 +13,3 @@ sleep 0.5
 echo -e "Did you see that the proposal hash is also displayed here?" | $human
 sleep 0.5
 echo -e
-
-cmd="subwasm info wss://rpc.polkadot.io -d"
-echo -e "We can also see the list of modules with:" | $human
-echo -e "$cmd" | $human
-$cmd
-sleep 0.5
-
-echo -e
