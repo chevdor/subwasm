@@ -56,7 +56,13 @@ fn main() -> color_eyre::Result<()> {
 		SubCommand::Diff(diff_opts) => {
 			noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
 
-			diff(diff_opts.a, diff_opts.b);
+			let chain_a = diff_opts.chain_a.map(|some| some.name);
+			let src_a = get_source(chain_a.as_deref(), diff_opts.src_a);
+
+			let chain_b = diff_opts.chain_b.map(|some| some.name);
+			let src_b = get_source(chain_b.as_deref(), diff_opts.src_b);
+
+			diff(src_a, src_b);
 		}
 	};
 

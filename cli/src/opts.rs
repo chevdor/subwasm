@@ -95,10 +95,22 @@ pub struct MetaOpts {
 #[derive(Clap)]
 pub struct DiffOpts {
 	/// The first source
-	#[clap(index = 1, required = true)]
-	pub a: Source,
+	#[clap(index = 1, alias = "src-a", default_value = "runtime_000.wasm", required_unless_present = "chain-a")]
+	pub src_a: Source,
+
+	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
+	/// If you pass a valid --chain, --url will be ignored
+	/// --chain local = http://localhost:9933
+	#[clap(long, parse(from_str), conflicts_with = "src-a")]
+	pub chain_a: Option<ChainInfo>,
 
 	/// The second source
-	#[clap(index = 2, required = true)]
-	pub b: Source,
+	#[clap(index = 2, alias = "src-b", default_value = "runtime_001.wasm", required_unless_present = "chain-b")]
+	pub src_b: Source,
+
+	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
+	/// If you pass a valid --chain, --url will be ignored
+	/// --chain local = http://localhost:9933
+	#[clap(long, parse(from_str), conflicts_with = "src-b")]
+	pub chain_b: Option<ChainInfo>,
 }

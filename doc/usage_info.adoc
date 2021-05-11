@@ -1,9 +1,9 @@
-subwasm-info 0.5.0
+subwasm-info 0.6.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 The `info` command returns summarized information about a runtime
 
 USAGE:
-    subwasm info [FLAGS] [OPTIONS] [source]
+    subwasm info [OPTIONS] [source]
 
 ARGS:
     <source>    The wasm file to load. It can be a path on your local filesystem such as
@@ -11,9 +11,8 @@ ARGS:
                 ws://localhost:9944 [default: runtime_000.wasm]
 
 FLAGS:
-    -d, --details-level    Shows the list of modules if you provide `-d`
-    -h, --help             Prints help information
-    -V, --version          Prints version information
+    -h, --help       Prints help information
+    -V, --version    Prints version information
 
 OPTIONS:
         --chain <chain>    Provide the name of a chain and a random url amongst a list of known

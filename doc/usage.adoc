@@ -1,4 +1,4 @@
-subwasm 0.5.0
+subwasm 0.6.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 You can find all available commands below
 

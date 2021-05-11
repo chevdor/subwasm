@@ -44,3 +44,11 @@ mac:
 	shasum -a 256 {{TARGET_DIR}}/subwasm-mac-v{{VERSION}}.tar.gz > {{TARGET_DIR}}/subwasm-mac-v{{VERSION}}.tar.gz.sha256
 	ls -al {{TARGET_DIR}}/*{{VERSION}}*
 	cat {{TARGET_DIR}}/*{{VERSION}}*.sha256
+
+# generate demos
+demos:
+	#!/usr/bin/env bash
+	cd scripts/demos
+	pwd
+	ls -al
+	./run-all.sh

@@ -5,13 +5,13 @@ source env.sh
 echo -e "The 'get' commnand allows fetching the runtime WASM from a live chain" | $human
 sleep 0.5
 
-echo -e "You can use either --url <...> or --chain <...>" | $human
+echo -e "You can use either <...> or --chain <...>" | $human
 sleep 0.5
 
 echo -e "First let's download the latest Polkadot runtime" | $human
 sleep 0.5
 
-cmd="subwasm get --url wss://rpc.polkadot.io --output runtime.wasm"
+cmd="subwasm get wss://rpc.polkadot.io --output runtime.wasm"
 echo -e "We use the following command:" | $human
 echo -e "$cmd" | $human
 $cmd

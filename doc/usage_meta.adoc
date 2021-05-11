@@ -1,9 +1,9 @@
-subwasm-metadata 0.5.0
+subwasm-metadata 0.6.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 Returns the metadata as a json object. You may also use the "meta" alias
 
 USAGE:
-    subwasm metadata [source]
+    subwasm metadata [OPTIONS] [source]
 
 ARGS:
     <source>    The wasm file to load. It can be a path on your local filesystem such as
@@ -13,3 +13,8 @@ ARGS:
 FLAGS:
     -h, --help       Prints help information
     -V, --version    Prints version information
+
+OPTIONS:
+        --chain <chain>    Provide the name of a chain and a random url amongst a list of known
+                           nodes will be used. If you pass a valid --chain, --url will be ignored
+                           --chain local = http://localhost:9933
