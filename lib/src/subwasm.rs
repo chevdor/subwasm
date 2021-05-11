@@ -1,23 +1,16 @@
 use color_eyre::eyre;
 use frame_metadata::{v12, RuntimeMetadata};
-use num_format::{Locale, ToFormattedString};
 use wasm_loader::Source;
 use wasm_testbed::{WasmTestBed, WasmTestbedError};
 
-use crate::print_magic_and_version;
+use crate::{print_magic_and_version, RuntimeInfo};
 pub struct Subwasm {
 	testbed: WasmTestBed,
-}
-
-#[derive(Debug)]
-pub struct RuntimeInfos {
-	size: usize,
+	runtime_info: RuntimeInfo,
 }
 
 impl Subwasm {
 	pub fn new(source: &Source) -> Self {
-		println!("⏱️  Loading WASM from {:?}", source);
-
 		let testbed = WasmTestBed::new(source)
 			.map_err(|e| {
 				eprintln!("{}", e);
@@ -32,23 +25,13 @@ impl Subwasm {
 				panic!("Could not load runtime");
 			})
 			.unwrap();
-		Self { testbed }
+
+		let runtime_info = RuntimeInfo::new(&testbed);
+		Self { testbed, runtime_info }
 	}
 
-	/// Builds the 'info' object
-	pub fn get_infos(&self) -> RuntimeInfos {
-		RuntimeInfos { size: 42 }
-	}
-
-	/// Print the infos
-	pub fn print_infos(&self) {
-		let infos = self.get_infos();
-		println!("infos: {:?}", infos);
-
-		// 🏋️  Runtime Size:        1.789 MB (1,876,380 bytes)
-		// 🎁 Metadata version:    V12
-		// 🔥 Core version:        polkadot-30 (parity-polkadot-0.tx7.au0)
-		// 🗳️  Proposal hash:       0x10cb56490e6a04927f74794433e071ba67c1504bd18b51e5aa36a3bacc8b94b6
+	pub fn runtime_info(&self) -> &RuntimeInfo {
+		&self.runtime_info
 	}
 
 	pub fn display_infos(&self) -> color_eyre::Result<()> {
@@ -66,31 +49,31 @@ impl Subwasm {
 		Ok(())
 	}
 
-	pub fn print_runtime_infos(&self) {
-		let sizes = |x| -> (f32, usize) { (x as f32 / 1024.0 / 1024.0, x) };
-		// TODO: Fetch block number/hash so we know what we got when we called with block_ref = None
+	// pub fn print_runtime_infos(&self) {
+	// 	let sizes = |x| -> (f32, usize) { (x as f32 / 1024.0 / 1024.0, x) };
+	// 	// TODO: Fetch block number/hash so we know what we got when we called with block_ref = None
 
-		// RUNTIME SIZE
-		let size = self.testbed.size();
+	// 	// RUNTIME SIZE
+	// 	let size = self.testbed.size();
 
-		println!(
-			"🏋️  Runtime Size:\t{:.3?} MB ({} bytes)",
-			sizes(size).0,
-			sizes(size).1.to_formatted_string(&Locale::en)
-		);
+	// 	println!(
+	// 		"🏋️  Runtime Size:\t{:.3?} MB ({} bytes)",
+	// 		sizes(size).0,
+	// 		sizes(size).1.to_formatted_string(&Locale::en)
+	// 	);
 
-		// METADATA VERSION
-		let metadata_a_version = self.testbed.metadata_version();
-		println!("🎁 Metadata version:\tV{:?}", metadata_a_version);
+	// 	// METADATA VERSION
+	// 	let metadata_version = self.testbed.metadata_version();
+	// 	println!("🎁 Metadata version:\tV{:?}", metadata_version);
 
-		// CORE VERSIONS
-		let version_a = self.testbed.core_version().as_ref().expect("Some version");
-		println!("🔥 Core version:\t{}", version_a);
+	// 	// CORE VERSIONS
+	// 	let version = self.testbed.core_version().as_ref().expect("Some version");
+	// 	println!("🔥 Core version:\t{}", version);
 
-		println!("🗳️  Proposal hash:\t{}", self.testbed.proposal_hash());
-	}
+	// 	println!("🗳️  Proposal hash:\t{}", self.testbed.proposal_hash());
+	// }
 
-	pub fn display_modules_list(&self) -> color_eyre::Result<()> {
+	pub fn print_modules_list(&self) -> color_eyre::Result<()> {
 		let metadata = self.testbed.runtime_metadata_prefixed();
 
 		match &metadata.1 {

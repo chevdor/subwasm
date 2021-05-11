@@ -27,7 +27,7 @@ impl ChainInfo {
 	pub fn get_random_url(&self, filter: Option<EndpointType>) -> Option<String> {
 		let endpoints = &self.endpoints;
 		let filtered = endpoints
-			.into_iter()
+			.iter()
 			.filter(|&ep| //true,
 						 if let Some(endpoint_type) = &filter {
 							endpoint_type == ep
@@ -75,9 +75,9 @@ impl FromStr for ChainInfo {
 		.map(|s| s.into_iter().map(|s| NodeEndpoint::from_str(s).expect("Valid chain name")).collect());
 
 		if let Some(endpoints) = urls {
-			Ok(Self { name: name.to_string(), endpoints })
+			Ok(Self { name, endpoints })
 		} else {
-			Err(Error::ChainUsupported(name.to_string()))
+			Err(Error::ChainUsupported(name))
 		}
 	}
 }

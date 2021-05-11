@@ -1,4 +1,4 @@
-use crate::{error::WasmTestbedError, NodeEndpoint};
+use crate::{error::WasmLoaderError, NodeEndpoint};
 use std::str::FromStr;
 pub type BlockRef = String; // TODO: to change
 
@@ -10,7 +10,7 @@ pub struct OnchainBlock {
 }
 
 impl FromStr for OnchainBlock {
-	type Err = WasmTestbedError;
+	type Err = WasmLoaderError;
 
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
 		let endpoint = match s {

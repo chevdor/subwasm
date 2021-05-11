@@ -2,18 +2,18 @@ use calm_io::stdoutln;
 use color_eyre::eyre;
 use frame_metadata::{v12, RuntimeMetadata, RuntimeMetadataPrefixed}; // TODO checkout v13
 use num_format::{Locale, ToFormattedString};
-use wasm_testbed::WasmTestBed;
-// use rand::seq::SliceRandom;
 use std::path::Path;
 use std::{fs::File, path::PathBuf};
 use std::{io::prelude::*, str::FromStr};
 use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
+use wasm_testbed::WasmTestBed;
 
-// use crate::error::Error;
 mod chain_info;
 mod error;
+mod runtime_info;
 mod subwasm;
 pub use chain_info::*;
+pub use runtime_info::*;
 pub use subwasm::*;
 
 /// Prints magic and version from a raw buffer
@@ -108,31 +108,8 @@ pub fn display_raw_metadata(metadata: &RuntimeMetadata) -> color_eyre::Result<()
 	Ok(())
 }
 
-// TODO: remove all of that and take it from ChainInfo
-// fn get_chain_url(chain: &str) -> Result<String, Error> {
-// 	let urls = match chain {
-// 		"polkadot" => Some(vec![
-// 			"wss://rpc.polkadot.io",
-// 			"wss://polkadot.api.onfinality.io/public-ws",
-// 			"wss://polkadot.elara.patract.io",
-// 		]),
-// 		"kusama" => Some(vec!["wss://kusama-rpc.polkadot.io"]),
-// 		"westend" => Some(vec!["wss://westend-rpc.polkadot.io"]),
-// 		"rococo" => Some(vec!["wss://rococo-rpc.polkadot.io"]),
-// 		"local" => Some(vec!["http://localhost:9933"]),
-// 		_ => None,
-// 	};
-
-// 	if let Some(urls) = urls {
-// 		let url = urls.choose(&mut rand::thread_rng()).ok_or(error::Error::Generic).unwrap();
-// 		Ok(String::from(*url))
-// 	} else {
-// 		Err(error::Error::Generic)
-// 	}
-// }
-
 /// Returns Some node url if possible, None otherwise.
-pub fn get_node_url(chain: Option<&str>) -> Option<String> {
+fn get_node_url(chain: Option<&str>) -> Option<String> {
 	if let Some(chain) = chain {
 		let chain_info = ChainInfo::from_str(chain).expect("Unknown chain");
 
@@ -181,7 +158,12 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 	};
 
 	let reference = OnchainBlock { endpoint: url, block_ref };
-	let wasm = wasm_loader::WasmLoader::fetch_wasm(&reference).expect("Getting wasm from the node");
+	// let wasm = wasm_loader::WasmLoader::fetch_wasm(&reference).expect("Getting wasm from the node");
+
+	let loader =
+		wasm_loader::WasmLoader::load_from_source(&Source::Chain(reference)).expect("Getting wasm from the node");
+	let wasm = loader.bytes();
+
 	println!("Got the runtime, its size is {:?}", wasm.len());
 
 	let outfile = match output {
@@ -209,8 +191,6 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 	buffer.write_all(&wasm)?;
 	Ok(())
 }
-
-
 
 /// Compare 2 runtimes. It compares their versions first
 /// then their metata.
@@ -253,8 +233,8 @@ pub fn diff(src_a: Source, src_b: Source) {
 
 	// CORE VERSIONS
 	println!("Checking core versions:");
-	let version_a = runtime_a.core_version().as_ref().expect("Some version");
-	let version_b = runtime_b.core_version().as_ref().expect("Some version");
+	let version_a = runtime_a.core_version().expect("Some version");
+	let version_b = runtime_b.core_version().expect("Some version");
 
 	if version_a == version_b {
 		print!("  ✅  The 2 core versions are identical: ");
@@ -276,17 +256,5 @@ pub fn diff(src_a: Source, src_b: Source) {
 		println!("  ✅  The metadata are identical");
 	} else {
 		println!("  ❌  The metadata are different");
-	}
-}
-
-#[cfg(test)]
-mod tests {
-	use super::*;
-
-	#[test]
-	fn it_gets_chain_urls() {
-		assert!(get_chain_url("local").is_ok());
-		assert!(get_chain_url("polkadot").is_ok());
-		assert!(get_chain_url("foobar").is_err());
 	}
 }

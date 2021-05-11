@@ -1,4 +1,4 @@
-subwasm 0.4.0
+subwasm 0.5.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 You can find all available commands below
 
@@ -7,8 +7,8 @@ USAGE:
 
 FLAGS:
     -h, --help       Prints help information
+    -j, --json       Whether we output json or something for 'humans'
     -q, --quiet      Less output
-    -v, --verbose    A level of verbosity, and can be used multiple times
     -V, --version    Prints version information
 
 SUBCOMMANDS:

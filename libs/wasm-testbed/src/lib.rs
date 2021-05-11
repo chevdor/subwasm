@@ -42,7 +42,8 @@ impl fmt::Debug for WasmTestBed {
 
 impl WasmTestBed {
 	pub fn new(source: &Source) -> Result<Self> {
-		let wasm = WasmLoader::load(source).map_err(|_| WasmTestbedError::Loading(source.to_string()))?;
+		let loader = WasmLoader::load_from_source(source).map_err(|_| WasmTestbedError::Loading(source.to_string()))?;
+		let wasm = loader.bytes().to_vec();
 		let encoded = Self::call(&wasm, "Metadata_metadata", &[])?;
 		let decoded_metadata = <Vec<u8>>::decode(&mut &encoded[..]).map_err(|_| WasmTestbedError::Decoding(encoded))?;
 		if !WasmTestBed::is_substrate_wasm(&decoded_metadata) {
@@ -56,6 +57,14 @@ impl WasmTestBed {
 		let metadata_version = Self::get_metadata_version(&decoded_metadata);
 
 		Ok(Self { wasm, runtime_metadata_prefixed, metadata_version, core_version })
+	}
+
+	pub fn is_substrate_wasm(data: &[u8]) -> bool {
+		data[0..4] == META
+	}
+
+	pub fn get_metadata_version(data: &[u8]) -> u8 {
+		data[4]
 	}
 
 	/// Call a function in the provided wasm. Note that we can only call a few limited set of functions
@@ -81,14 +90,6 @@ impl WasmTestBed {
 		executor
 			.call_in_wasm(&wasm, None, method, call_data, &mut ext, sp_core::traits::MissingHostFunctions::Allow)
 			.map_err(|_| WasmTestbedError::Calling(method.to_string()))
-	}
-
-	pub fn is_substrate_wasm(data: &[u8]) -> bool {
-		data[0..4] == META
-	}
-
-	pub fn get_metadata_version(data: &[u8]) -> u8 {
-		data[4]
 	}
 
 	pub fn get_core_version(wasm: &[u8]) -> Option<RuntimeVersion> {
@@ -123,8 +124,8 @@ impl WasmTestBed {
 	}
 
 	/// Get a reference to the substrate wasm's core version.
-	pub fn core_version(&self) -> &Option<RuntimeVersion> {
-		&self.core_version
+	pub fn core_version(&self) -> Option<&RuntimeVersion> {
+		self.core_version.as_ref()
 	}
 
 	/// Compute the proposal hash of the runtime

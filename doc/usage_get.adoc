@@ -1,9 +1,13 @@
-subwasm-get 0.4.0
+subwasm-get 0.5.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 Get/Download the runtime wasm from a running node through rpc
 
 USAGE:
-    subwasm get [OPTIONS]
+    subwasm get [OPTIONS] [url]
+
+ARGS:
+    <url>    The node url. Example: ws://localhost:9944 or http://localhost:9933 [default:
+             http://localhost:9933]
 
 FLAGS:
     -h, --help       Prints help information
@@ -22,5 +26,3 @@ OPTIONS:
                              on a counter: runtime_NNN.wasm where NNN is incrementing to make sure
                              you do not override previous runtime. If you specify an existing file
                              as output, it will be overwritten
-    -u, --url <url>          The node url. Example: ws://localhost:9944 or http://localhost:9933
-                             [default: http://localhost:9933]

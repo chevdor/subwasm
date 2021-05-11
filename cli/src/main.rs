@@ -5,48 +5,40 @@ use opts::*;
 use subwasmlib::*;
 use wasm_testbed::*;
 
+/// Simple macro that only execute $statement if $opts don#t contain neither the quiet nor the json flag
 macro_rules! noquiet {
-	( $q:expr, $x:expr ) => {{
-		if !$q {
-			$x
+	( $opts:ident, $statement:expr ) => {{
+		if !$opts.quiet && !$opts.json {
+			$statement
 		}
 	}};
 }
 
-/// Main entry point of the `subwasm` cli.
+/// Main entry point of the `subwasm` cli
 fn main() -> color_eyre::Result<()> {
 	let opts: Opts = Opts::parse();
 
 	match opts.subcmd {
 		SubCommand::Get(get_opts) => {
-			noquiet!(opts.quiet, println!("Running {} v{}", crate_name!(), crate_version!()));
+			noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
 			let chain_name = get_opts.chain.map(|some| some.name);
 			let url = &get_url(chain_name.as_deref(), &get_opts.url);
+
 			download_runtime(url, get_opts.block, get_opts.output)?;
 		}
 
 		SubCommand::Info(info_opts) => {
-			noquiet!(opts.quiet, println!("Running {} v{}", crate_name!(), crate_version!()));
+			noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
+
 			let chain_name = info_opts.chain.map(|some| some.name);
 			let source = get_source(chain_name.as_deref(), info_opts.source);
 
+			noquiet!(opts, println!("⏱️  Loading WASM from {:?}", &source));
 			let subwasm = Subwasm::new(&source);
-			// let infos = subwasm.get_infos(); // good for json...
-			// subwasm.print_infos();
 
 			match info_opts.details_level {
-				0 => {
-					// println!(
-					// 	"Version {:?} {} supported.",
-					// 	runtime.metadata_version(),
-					// 	if runtime.is_supported() { "is" } else { "is NOT" }
-					// );
-					// display_infos(runtime.runtime_metadata_prefixed())?;
-					subwasm.print_runtime_infos();
-				}
-				_ => {
-					subwasm.display_modules_list()?;
-				}
+				0 => subwasm.runtime_info().print(opts.json),
+				_ => subwasm.print_modules_list()?,
 			}
 		}
 
@@ -56,7 +48,7 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		SubCommand::Diff(diff_opts) => {
-			noquiet!(opts.quiet, println!("Running {} v{}", crate_name!(), crate_version!()));
+			noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
 
 			diff(diff_opts.a, diff_opts.b);
 		}

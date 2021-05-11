@@ -1,15 +1,15 @@
-subwasm-metadata 0.4.0
+subwasm-metadata 0.5.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 Returns the metadata as a json object. You may also use the "meta" alias
 
 USAGE:
-    subwasm metadata [OPTIONS]
+    subwasm metadata [source]
+
+ARGS:
+    <source>    The wasm file to load. It can be a path on your local filesystem such as
+                /tmp/runtime.wasm or a node url such as http://localhost:9933 or
+                ws://localhost:9944 [default: runtime_000.wasm]
 
 FLAGS:
     -h, --help       Prints help information
     -V, --version    Prints version information
-
-OPTIONS:
-    -s, --source <source>    The wasm file to load. It can be a path on your local filesystem such
-                             as /tmp/runtime.wasm or a node url such as http://localhost:9933 or
-                             ws://localhost:9944 [default: runtime_000.wasm]

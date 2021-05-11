@@ -1,14 +1,14 @@
-subwasm-diff 0.4.0
+subwasm-diff 0.5.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 Compare 2 runtimes
 
 USAGE:
-    subwasm diff --a <a> --b <b>
+    subwasm diff <a> <b>
+
+ARGS:
+    <a>    The first source
+    <b>    The second source
 
 FLAGS:
     -h, --help       Prints help information
     -V, --version    Prints version information
-
-OPTIONS:
-    -a, --a <a>    The first source
-    -b, --b <b>    The second source

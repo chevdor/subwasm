@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use crate::error::WasmTestbedError;
+use crate::error::WasmLoaderError;
 /// A [`NodeEndpoint`] can be either `Http` or `WebSocket`.
 #[derive(Debug, Clone, PartialEq)]
 pub enum NodeEndpoint {
@@ -18,13 +18,13 @@ impl ToString for NodeEndpoint {
 }
 
 impl FromStr for NodeEndpoint {
-	type Err = WasmTestbedError;
+	type Err = WasmLoaderError;
 
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
 		match s {
 			url if url.starts_with("ws") => Ok(NodeEndpoint::WebSocket(url.to_string())),
 			url if url.starts_with("http") => Ok(NodeEndpoint::Http(url.to_string())),
-			_ => Err(WasmTestbedError::NotSupported(format!("Unsuported endpoint: {}", s))),
+			_ => Err(WasmLoaderError::NotSupported(format!("Unsuported endpoint: {}", s))),
 		}
 
 		// if let Some(endpoint) = endpoint {

@@ -8,9 +8,9 @@ use wasm_loader::{OnchainBlock, Source};
 #[clap(version = crate_version!(), author = crate_authors!())]
 #[clap(setting = AppSettings::ColoredHelp)]
 pub struct Opts {
-	/// A level of verbosity, and can be used multiple times
-	#[clap(short, long, parse(from_occurrences))]
-	pub _verbose: i32,
+	/// Whether we output json or something for 'humans'
+	#[clap(short, long)]
+	pub json: bool,
 
 	/// Less output
 	#[clap(short, long)]
