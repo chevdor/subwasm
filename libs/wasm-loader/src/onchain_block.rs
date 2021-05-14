@@ -9,17 +9,17 @@ pub struct OnchainBlock {
 	pub block_ref: Option<BlockRef>,
 }
 
+impl OnchainBlock {
+	pub fn new(url: &str, block_ref: Option<BlockRef>) -> Self {
+		Self { endpoint: NodeEndpoint::from_str(url).unwrap(), block_ref }
+	}
+}
+
 impl FromStr for OnchainBlock {
 	type Err = WasmLoaderError;
 
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
-		let endpoint = match s {
-			url if url.starts_with("ws") => Some(NodeEndpoint::WebSocket(url.to_string())),
-			url if url.starts_with("http") => Some(NodeEndpoint::Http(url.to_string())),
-			_ => None,
-		}
-		.unwrap_or_else(|| panic!("Invalid endpoint url: {}", s));
-
+		let endpoint = NodeEndpoint::from_str(s).unwrap();
 		Ok(OnchainBlock { endpoint, block_ref: None })
 	}
 }

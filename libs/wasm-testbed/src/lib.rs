@@ -61,6 +61,7 @@ impl WasmTestBed {
 		Ok(Self { wasm, runtime_metadata_prefixed, metadata, metadata_version, core_version })
 	}
 
+	#[allow(clippy::ptr_arg)]
 	pub fn is_substrate_wasm(metadata: &WasmBytes) -> bool {
 		[metadata[0], metadata[1], metadata[2], metadata[3]] == META
 	}
@@ -71,6 +72,10 @@ impl WasmTestBed {
 
 	pub fn reserved_meta_valid(&self) -> bool {
 		self.reserved_meta() == META
+	}
+
+	pub fn wasm(&self) -> &WasmBytes {
+		&self.wasm
 	}
 
 	pub fn get_metadata_version(data: &[u8]) -> u8 {

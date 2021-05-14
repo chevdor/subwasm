@@ -1,0 +1,13 @@
+[package]
+authors = ["Wilfried Kopp <wilfried@parity.io>"]
+edition = "2018"
+name = "ipfs-hasher"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ipfs-unixfs = "0.2.0"
+
+[dev-dependencies]
+wasm-loader = {path = "../wasm-loader"}

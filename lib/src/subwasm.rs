@@ -4,7 +4,7 @@ use frame_metadata::{v12, RuntimeMetadata};
 use wasm_loader::Source;
 use wasm_testbed::{WasmTestBed, WasmTestbedError};
 
-use crate::{RuntimeInfo, print_magic_and_version};
+use crate::{print_magic_and_version, RuntimeInfo};
 pub struct Subwasm {
 	testbed: WasmTestBed,
 	runtime_info: RuntimeInfo,

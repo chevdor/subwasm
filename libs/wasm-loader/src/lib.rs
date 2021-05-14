@@ -136,12 +136,12 @@ mod tests {
 	#[test]
 	#[ignore = "needs node"]
 	fn it_fetches_wasm_from_a_given_block() {
-		const HASH: &str = "0x4d6a0bca208b85d41833a7f35cf73d1ae6974f4bad8ab576e2c3f751d691fe6c"; // Polkadot #20
+		const POLKADOT_BLOCK20: &str = "0x4d6a0bca208b85d41833a7f35cf73d1ae6974f4bad8ab576e2c3f751d691fe6c"; // Polkadot Block #20
 
 		let url = String::from(get_ws_node());
 		println!("Connecting to {:?}", &url);
 		let latest = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url.clone()), block_ref: None };
-		let older = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: Some(HASH.to_string()) };
+		let older = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: Some(POLKADOT_BLOCK20.to_string()) };
 
 		let loader_latest = WasmLoader::load_from_source(&Source::Chain(latest)).unwrap();
 		let wasm_latest = loader_latest.bytes();

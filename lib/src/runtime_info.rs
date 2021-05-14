@@ -1,7 +1,7 @@
-use std::fmt::Display;
-
+use ipfs_hasher::IpfsHasher;
 use num_format::{Locale, ToFormattedString};
 use serde::Serialize;
+use std::fmt::Display;
 use wasm_testbed::{ReservedMeta, WasmTestBed};
 
 #[derive(Debug, Serialize)]
@@ -12,6 +12,7 @@ pub struct RuntimeInfo {
 	metadata_version: u8,
 	core_version: String,
 	proposal_hash: String,
+	ipfs_hash: String,
 }
 
 impl RuntimeInfo {
@@ -21,6 +22,8 @@ impl RuntimeInfo {
 			None => String::from("n/a"),
 		};
 
+		let hasher = IpfsHasher::default();
+
 		Self {
 			size: testbed.size(),
 			reserved_meta: testbed.reserved_meta(),
@@ -28,6 +31,7 @@ impl RuntimeInfo {
 			metadata_version: *testbed.metadata_version(),
 			core_version,
 			proposal_hash: testbed.proposal_hash(),
+			ipfs_hash: hasher.compute(testbed.wasm()),
 		}
 	}
 
@@ -55,6 +59,9 @@ impl Display for RuntimeInfo {
 		)?;
 		writeln!(fmt, "🎁 Metadata version:\tV{:?}", self.metadata_version)?;
 		writeln!(fmt, "🔥 Core version:\t{}", self.core_version)?;
-		writeln!(fmt, "🗳️  Proposal hash:\t{}", self.proposal_hash)
+		writeln!(fmt, "🗳️  Proposal hash:\t{}", self.proposal_hash)?;
+		let ipfs_url = format!("https://www.ipfs.io/ipfs/{cid}", cid = self.ipfs_hash);
+		writeln!(fmt, "📦 IPFS hash:\t\t{} ({url})", self.ipfs_hash, url = ipfs_url)?;
+		Ok(())
 	}
 }

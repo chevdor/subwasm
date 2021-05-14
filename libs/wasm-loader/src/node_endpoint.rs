@@ -26,12 +26,5 @@ impl FromStr for NodeEndpoint {
 			url if url.starts_with("http") => Ok(NodeEndpoint::Http(url.to_string())),
 			_ => Err(WasmLoaderError::NotSupported(format!("Unsuported endpoint: {}", s))),
 		}
-
-		// if let Some(endpoint) = endpoint {
-		// 	let reference = OnchainBlock { endpoint, block_ref: None };
-		// 	Ok(Source::Chain(reference))
-		// } else {
-		// 	Ok(Source::File(PathBuf::from(s)))
-		// }
 	}
 }
