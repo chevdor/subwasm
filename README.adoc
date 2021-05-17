@@ -12,11 +12,18 @@ It contains the exhaustive list of all the features publicly exposed by the runt
 
 Any node can be queried to provide its current metadata. This can be displayed in json format for instance. This is a great way to have a peek at what the runtime can do.
 
-Here are a few sample runs:
+== Sample runs
 
+.Get a runtime
 image::scripts/demos/gif/demo-get.gif[title="subwasm get"]
+
+.info command
 image::scripts/demos/gif/demo-info.gif[title="subwasm info"]
+
+.meta command
 image::scripts/demos/gif/demo-meta.gif[title="subwasm meta"]
+
+.diff command
 image::scripts/demos/gif/demo-diff.gif[title="subwasm diff"]
 
 == Capabilities
@@ -42,40 +49,34 @@ MacOS Homebrew users can use:
     brew tap chevdor/subwasm
     brew install subwasm
 
-== Alternatives
-
-Here is a list of other projects allowing to get the raw metadata through a rpc call:
-
- - https://github.com/polkadot-js/apps[PolkadotJS] from Jaco / Parity
- - https://github.com/ascjones/subsee[subsee] from Andrew / Parity
- - https://github.com/scs/substrate-api-client[substrate-api-client] from SCS
- - https://github.com/paritytech/substrate-subxt[subxt] from Parity
-
-All those alternatives require a running node and access it via jsonrpc.
-
 == Usage
 
-.Get a quick overview of the functions and some help
-
+=== Command: --help
 ----
 include::doc/usage.adoc[]
 ----
 
+=== Command: get
 ----
 include::doc/usage_get.adoc[]
 ----
 
+=== Command: info
 ----
 include::doc/usage_info.adoc[]
 ----
 
+=== Command: meta
 ----
 include::doc/usage_meta.adoc[]
 ----
 
+=== Command: diff
 ----
 include::doc/usage_diff.adoc[]
 ----
+
+== Sample runs
 
 .Fetch a runtime from a running node
 
@@ -105,3 +106,14 @@ NOTE: By default, your runtime will be saved as `runtime_000.wasm`. Running this
 # Provide a few explanations and exit with a status that is not 0
 {cmd} info --input tictactoe.wasm
 ----
+
+== Alternatives
+
+Here is a list of other projects allowing to get the raw metadata through a rpc call:
+
+ - https://github.com/polkadot-js/apps[PolkadotJS] from Jaco / Parity
+ - https://github.com/ascjones/subsee[subsee] from Andrew / Parity
+ - https://github.com/scs/substrate-api-client[substrate-api-client] from SCS
+ - https://github.com/paritytech/substrate-subxt[subxt] from Parity
+
+All those alternatives require a running node and access it via jsonrpc.
