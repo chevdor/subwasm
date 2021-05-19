@@ -10,6 +10,7 @@ mod error;
 mod runtime_info;
 mod subwasm;
 pub use chain_info::*;
+use log::{debug, info};
 pub use runtime_info::*;
 pub use subwasm::*;
 
@@ -80,7 +81,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 		wasm_loader::WasmLoader::load_from_source(&Source::Chain(reference)).expect("Getting wasm from the node");
 	let wasm = loader.bytes();
 
-	println!("Got the runtime, its size is {:?}", wasm.len());
+	info!("Got the runtime, its size is {:?}", wasm.len());
 
 	let outfile = match output {
 		Some(path) => path,
@@ -102,7 +103,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 		}
 	};
 
-	println!("Saving runtime to {:?}", outfile);
+	info!("Saving runtime to {:?}", outfile);
 	let mut buffer = File::create(outfile)?;
 	buffer.write_all(&wasm)?;
 	Ok(())
@@ -113,7 +114,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 pub fn diff(src_a: Source, src_b: Source) {
 	let size = |x| -> (f32, usize) { (x as f32 / 1024.0 / 1024.0, x) };
 
-	println!("Loading WASM runtimes:");
+	debug!("Loading WASM runtimes:");
 	println!("  🅰️  {:?}", src_a);
 	let runtime_a = WasmTestBed::new(&src_a).expect("Can only diff if the 2 runtimes can load");
 	println!("  🅱️  {:?}", src_b);
@@ -123,7 +124,7 @@ pub fn diff(src_a: Source, src_b: Source) {
 	let size_a = runtime_a.size();
 	let size_b = runtime_b.size();
 
-	println!("Checking runtime sizes:");
+	info!("Checking runtime sizes:");
 	if size_a == size_b {
 		println!(
 			"  ✅  Both size are identical: {:.3?} MB ({} bytes)",

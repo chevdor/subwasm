@@ -1,6 +1,8 @@
 mod opts;
 
 use clap::{crate_name, crate_version, Clap};
+use env_logger::Env;
+use log::info;
 use opts::*;
 use subwasmlib::*;
 
@@ -15,11 +17,13 @@ macro_rules! noquiet {
 
 /// Main entry point of the `subwasm` cli
 fn main() -> color_eyre::Result<()> {
+	env_logger::Builder::from_env(Env::default().default_filter_or("none")).init();
+
 	let opts: Opts = Opts::parse();
 
 	match opts.subcmd {
 		SubCommand::Get(get_opts) => {
-			noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
+			info!("Running {} v{}", crate_name!(), crate_version!());
 			let chain_name = get_opts.chain.map(|some| some.name);
 			let url = &get_url(chain_name.as_deref(), &get_opts.url);
 
@@ -27,24 +31,24 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		SubCommand::Info(info_opts) => {
-			noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
+			info!("Running {} v{}", crate_name!(), crate_version!());
 
 			let chain_name = info_opts.chain.map(|some| some.name);
 			let source = get_source(chain_name.as_deref(), info_opts.source);
 
-			noquiet!(opts, println!("⏱️  Loading WASM from {:?}", &source));
+			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
 
 			subwasm.runtime_info().print(opts.json);
 		}
 
 		SubCommand::Metadata(meta_opts) => {
-			noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
+			info!("Running {} v{}", crate_name!(), crate_version!());
 
 			let chain_name = meta_opts.chain.map(|some| some.name);
 			let source = get_source(chain_name.as_deref(), meta_opts.source);
 
-			noquiet!(opts, println!("⏱️  Loading WASM from {:?}", &source));
+			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
 
 			match opts.json {

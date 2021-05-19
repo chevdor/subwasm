@@ -19,3 +19,4 @@ serde_json = "1.0.64"
 wasm-loader = {path = "../libs/wasm-loader"}
 wasm-testbed = {path = "../libs/wasm-testbed"}
 ipfs-hasher = {path = "../libs/ipfs-hasher"}
+log = "0.4.14"

@@ -141,7 +141,8 @@ mod tests {
 		let url = String::from(get_ws_node());
 		println!("Connecting to {:?}", &url);
 		let latest = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url.clone()), block_ref: None };
-		let older = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: Some(POLKADOT_BLOCK20.to_string()) };
+		let older =
+			OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: Some(POLKADOT_BLOCK20.to_string()) };
 
 		let loader_latest = WasmLoader::load_from_source(&Source::Chain(latest)).unwrap();
 		let wasm_latest = loader_latest.bytes();
