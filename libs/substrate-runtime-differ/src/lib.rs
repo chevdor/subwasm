@@ -1,5 +1,3 @@
-// use frame_metadata_subsee::RuntimeMetadataPrefixed; // TODO: Check v12, v13,
-
 pub struct MetadataDiffer {}
 
 // struct MedatataDiff;
