@@ -67,10 +67,16 @@ impl Subwasm {
 
 				modules.iter().for_each(|module| println!(" - {:02}: {:?}", module.index, module.name));
 			}
-			RuntimeMetadata::V13(_v13) => {
-				// let _pallet = v13.modules.iter().inspect(|module| println!(" - {:?}{:?}", module.index, module.name));
-				// .find(|m| &m.name == pallet)
-				todo!("Not yet implemented");
+			RuntimeMetadata::V13(v13) => {
+				let modules = match &v13.modules {
+					DecodeDifferentArray::Decoded(modules) => modules,
+					DecodeDifferentArray::Encode(_) => return Err(eyre::eyre!("Metadata should be Decoded")),
+				};
+
+				modules.iter().for_each(|module| println!(" - {:02}: {:?}", module.index, module.name));
+			}
+			RuntimeMetadata::V14(v14) => {
+				v14.pallets.iter().for_each(|pallet| println!(" - {:?}", pallet));
 			}
 			_ => return Err(eyre::eyre!("Unsupported metadata version")),
 		}

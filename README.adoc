@@ -107,6 +107,15 @@ NOTE: By default, your runtime will be saved as `runtime_000.wasm`. Running this
 {cmd} info --input tictactoe.wasm
 ----
 
+=== Metadata JSON and jq tricks
+
+`jq` can be used to reprocess the json output. For instance, removing all the documentation from the metadata makes it significantly smaller. The example below shows how to remove `documentation`, `value` and `default` for a version easier on the eyes for human parsing...
+
+[subs="attributes+"]
+----
+    {cmd} --json meta runtime.wasm | jq 'del( .. | .documentation?, .default?, .value? )'
+----
+
 == Alternatives
 
 Here is a list of other projects allowing to get the raw metadata through a rpc call:
