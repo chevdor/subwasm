@@ -7,7 +7,7 @@ use frame_metadata::{
 use wasm_loader::Source;
 use wasm_testbed::{WasmTestBed, WasmTestbedError};
 
-use crate::{print_magic_and_version, RuntimeInfo};
+use crate::{RuntimeInfo, metadata_wrapper::MetadataWrapper, module_wrapper::{ModuleMetadata, ModuleWrapper}, print_magic_and_version};
 pub struct Subwasm {
 	testbed: WasmTestBed,
 	runtime_info: RuntimeInfo,
@@ -50,79 +50,52 @@ impl Subwasm {
 			RuntimeMetadata::V13(_v13) => {
 				println!("Detected Substrate Runtime V13");
 			}
+			RuntimeMetadata::V14(_v14) => {
+				println!("Detected Substrate Runtime V14");
+			}
 			_ => return Err(eyre::eyre!("Unsupported metadata version")),
 		};
 		Ok(())
 	}
 
-	pub fn print_modules_list(&self) -> color_eyre::Result<()> {
+	pub fn display_module(&self, name: String) {
 		let metadata = self.testbed.runtime_metadata_prefixed();
+		let wrapper = MetadataWrapper(&metadata.1);
+		wrapper.display_module(&name);
+	}
+
+	pub fn display_modules_list(&self) {
+		let metadata = self.testbed.runtime_metadata_prefixed();
+		let wrapper = MetadataWrapper(&metadata.1);
+		wrapper.display_modules_list();
 
 		match &metadata.1 {
 			RuntimeMetadata::V12(v12) => {
 				let modules = match &v12.modules {
 					DecodeDifferentArray::Decoded(modules) => modules,
-					DecodeDifferentArray::Encode(_) => return Err(eyre::eyre!("Metadata should be Decoded")),
+					DecodeDifferentArray::Encode(_) => panic!("Metadata should be Decoded"),
 				};
-
-				modules.iter().for_each(|module| println!(" - {:02}: {:?}", module.index, module.name));
+				let module = modules.first().unwrap();
+				let wrapper = ModuleWrapper(ModuleMetadata::V12(module));
+				wrapper.display_module();
 			}
 			RuntimeMetadata::V13(v13) => {
 				let modules = match &v13.modules {
 					DecodeDifferentArray::Decoded(modules) => modules,
-					DecodeDifferentArray::Encode(_) => return Err(eyre::eyre!("Metadata should be Decoded")),
+					DecodeDifferentArray::Encode(_) => panic!("Metadata should be Decoded"),
 				};
+				let module = modules.first().unwrap();
+				let wrapper = ModuleWrapper(ModuleMetadata::V13(&module));
 
-				modules.iter().for_each(|module| println!(" - {:02}: {:?}", module.index, module.name));
+				wrapper.display_module();
 			}
-			RuntimeMetadata::V14(v14) => {
-				v14.pallets.iter().for_each(|pallet| println!(" - {:?}", pallet));
-			}
-			_ => return Err(eyre::eyre!("Unsupported metadata version")),
+			_ => panic!("Unsupported metadata version"),
 		}
-		Ok(())
-	}
-
-	/// Display all the metadata or a part of it for a given pallet
-	pub fn display_metadata(&self) -> color_eyre::Result<()> {
-		// let pallet_filter: Option<String> = Some("Identity".to_string());
-		let pallet_filter: Option<String> = None;
-		let metadata = self.testbed.runtime_metadata_prefixed();
-
-		let serialized = if let Some(ref pallet) = pallet_filter {
-			match &metadata.1 {
-				RuntimeMetadata::V12(v12) => {
-					let modules = match &v12.modules {
-						DecodeDifferentArray::Decoded(modules) => modules,
-						DecodeDifferentArray::Encode(_) => return Err(eyre::eyre!("Metadata should be Decoded")),
-					};
-					let pallet_metadata = modules
-						.iter()
-						.find(|module| module.name == DecodeDifferent::Decoded(pallet.into()))
-						.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
-					serde_json::to_string_pretty(&pallet_metadata)?
-				}
-				RuntimeMetadata::V13(_v13) => {
-					// let pallet = v13
-					// 	.modules
-					// 	.iter()
-					// 	.find(|m| &m.name == pallet)
-					// 	.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
-					// serde_json::to_string_pretty(&pallet)?
-					todo!("Not yet implemented");
-				}
-				_ => return Err(eyre::eyre!("Unsupported metadata version")),
-			}
-		} else {
-			serde_json::to_string_pretty(&metadata)?
-		};
-		println!("{}", serialized);
-		Ok(())
 	}
 
 	/// Display the metadata as json
 	// TOOD: fix name
-	pub fn display_raw_metadata(&self) -> color_eyre::Result<()> {
+	pub fn display_metadata_json(&self) {
 		let pallet_filter: Option<String> = None;
 		let metadata = self.testbed.metadata();
 
@@ -131,13 +104,13 @@ impl Subwasm {
 				RuntimeMetadata::V12(v12) => {
 					let modules = match &v12.modules {
 						DecodeDifferentArray::Decoded(modules) => modules,
-						DecodeDifferentArray::Encode(_) => return Err(eyre::eyre!("Metadata should be Decoded")),
+						DecodeDifferentArray::Encode(_) => panic!("Metadata should be Decoded"),
 					};
 					let pallet_metadata = modules
 						.iter()
 						.find(|module| module.name == DecodeDifferent::Decoded(pallet.into()))
-						.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
-					serde_json::to_string_pretty(&pallet_metadata)?
+						.expect("pallet not found in metadata");
+					serde_json::to_string_pretty(&pallet_metadata)
 				}
 				// RuntimeMetadata::V13(v13) => {
 				// 	let pallet = v13
@@ -147,10 +120,10 @@ impl Subwasm {
 				// 		.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
 				// 	serde_json::to_string_pretty(&pallet)?
 				// }
-				_ => return Err(eyre::eyre!("Unsupported metadata version")),
+				_ => panic!("Unsupported metadata version"),
 			}
 		} else {
-			serde_json::to_string_pretty(&metadata)?
+			serde_json::to_string_pretty(&metadata)
 		};
 
 		// The following fails if piped to another command that truncates the output.
@@ -159,14 +132,13 @@ impl Subwasm {
 		// TODO: Once the above is fixed, we can remove the dependency on calm_io
 		// println!("{}", serialized);
 
-		match stdoutln!("{}", serialized) {
+		let serialized = serialized.unwrap();
+		let _ = match stdoutln!("{}", serialized) {
 			Ok(_) => Ok(()),
 			Err(e) => match e.kind() {
 				std::io::ErrorKind::BrokenPipe => Ok(()),
 				_ => Err(e),
 			},
-		}?;
-
-		Ok(())
+		};
 	}
 }

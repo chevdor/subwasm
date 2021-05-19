@@ -89,6 +89,9 @@ pub struct MetaOpts {
 	/// --chain local = http://localhost:9933
 	#[clap(long, parse(from_str), conflicts_with = "source")]
 	pub chain: Option<ChainInfo>,
+
+	#[clap(long, short)]
+	pub module: Option<String>,
 }
 
 /// Compare 2 runtimes

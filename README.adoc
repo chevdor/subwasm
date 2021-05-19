@@ -109,7 +109,7 @@ NOTE: By default, your runtime will be saved as `runtime_000.wasm`. Running this
 
 === Metadata JSON and jq tricks
 
-`jq` can be used to reprocess the json output. For instance, removing all the documentation from the metadata makes it significantly smaller. The example below shows how to remove `documentation`, `value` and `default` for a version easier on the eyes for human parsing...
+TIP: `jq` can be used to reprocess the json output. For instance, removing all the documentation from the metadata makes it significantly smaller. The example below shows how to remove `documentation`, `value` and `default` for a version easier on the eyes for human parsing...
 
 [subs="attributes+"]
 ----
@@ -126,3 +126,4 @@ Here is a list of other projects allowing to get the raw metadata through a rpc 
  - https://github.com/paritytech/substrate-subxt[subxt] from Parity
 
 All those alternatives require a running node and access it via jsonrpc.
+

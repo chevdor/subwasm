@@ -4,6 +4,8 @@ use std::{fs::File, path::PathBuf};
 use std::{io::prelude::*, str::FromStr};
 use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
 use wasm_testbed::WasmTestBed;
+mod metadata_wrapper;
+mod module_wrapper;
 
 mod chain_info;
 mod error;

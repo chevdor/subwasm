@@ -51,9 +51,14 @@ fn main() -> color_eyre::Result<()> {
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
 
-			match opts.json {
-				true => subwasm.display_raw_metadata()?,
-				false => subwasm.print_modules_list()?, // false => subwasm.display_metadata()?,
+			if let Some(name) = meta_opts.module {
+				subwasm.display_module(name);
+			} else {
+				if opts.json {
+					subwasm.display_metadata_json()
+				} else {
+					subwasm.display_modules_list()
+				}
 			}
 		}
 
