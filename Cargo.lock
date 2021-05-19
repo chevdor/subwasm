@@ -942,22 +942,22 @@ dependencies = [
 [[package]]
 name = "frame-metadata"
 version = "12.0.0"
-source = "git+https://github.com/paritytech/frame-metadata?branch=main#f4b1727ec933545f3d34f30f4537c0820671c52c"
-dependencies = [
- "cfg-if 1.0.0",
- "parity-scale-codec",
- "scale-info 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "serde",
-]
-
-[[package]]
-name = "frame-metadata"
-version = "12.0.0"
 source = "git+https://github.com/paritytech/frame-metadata?branch=subsee#b02894949737a7b1e462af282330c3cf1f43acf9"
 dependencies = [
  "cfg-if 1.0.0",
  "parity-scale-codec",
  "scale-info 0.6.0 (git+https://github.com/paritytech/scale-info?branch=aj-substrate)",
+ "serde",
+]
+
+[[package]]
+name = "frame-metadata"
+version = "14.0.0"
+source = "git+https://github.com/paritytech/frame-metadata?branch=main#385bbbd82a648ed2a60576f87dbf141813f96642"
+dependencies = [
+ "cfg-if 1.0.0",
+ "parity-scale-codec",
+ "scale-info 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
 ]
 
@@ -1403,7 +1403,7 @@ dependencies = [
 
 [[package]]
 name = "ipfs-hasher"
-version = "0.1.0"
+version = "0.7.0"
 dependencies = [
  "ipfs-unixfs",
  "wasm-loader",
@@ -1441,7 +1441,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#74d9d77eafceed6d5fcfb31ae67f2bd0199b935e"
+source = "git+https://github.com/paritytech/jsonrpsee#4f51e2f224dd8c7531ae8f414b18d8c6811af509"
 dependencies = [
  "jsonrpsee-http-client",
  "jsonrpsee-http-server",
@@ -1454,7 +1454,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-http-client"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#74d9d77eafceed6d5fcfb31ae67f2bd0199b935e"
+source = "git+https://github.com/paritytech/jsonrpsee#4f51e2f224dd8c7531ae8f414b18d8c6811af509"
 dependencies = [
  "async-trait",
  "fnv",
@@ -1472,7 +1472,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-http-server"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#74d9d77eafceed6d5fcfb31ae67f2bd0199b935e"
+source = "git+https://github.com/paritytech/jsonrpsee#4f51e2f224dd8c7531ae8f414b18d8c6811af509"
 dependencies = [
  "anyhow",
  "futures-channel",
@@ -1493,7 +1493,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-proc-macros"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#74d9d77eafceed6d5fcfb31ae67f2bd0199b935e"
+source = "git+https://github.com/paritytech/jsonrpsee#4f51e2f224dd8c7531ae8f414b18d8c6811af509"
 dependencies = [
  "Inflector",
  "proc-macro-crate 1.0.0",
@@ -1505,7 +1505,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-types"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#74d9d77eafceed6d5fcfb31ae67f2bd0199b935e"
+source = "git+https://github.com/paritytech/jsonrpsee#4f51e2f224dd8c7531ae8f414b18d8c6811af509"
 dependencies = [
  "async-trait",
  "beef",
@@ -1520,7 +1520,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-utils"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#74d9d77eafceed6d5fcfb31ae67f2bd0199b935e"
+source = "git+https://github.com/paritytech/jsonrpsee#4f51e2f224dd8c7531ae8f414b18d8c6811af509"
 dependencies = [
  "anyhow",
  "futures-channel",
@@ -1528,6 +1528,8 @@ dependencies = [
  "hyper",
  "jsonrpsee-types",
  "log",
+ "parking_lot",
+ "rand 0.8.3",
  "rustc-hash",
  "serde",
  "serde_json",
@@ -1536,7 +1538,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-ws-client"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#74d9d77eafceed6d5fcfb31ae67f2bd0199b935e"
+source = "git+https://github.com/paritytech/jsonrpsee#4f51e2f224dd8c7531ae8f414b18d8c6811af509"
 dependencies = [
  "async-std",
  "async-tls",
@@ -1546,6 +1548,8 @@ dependencies = [
  "jsonrpsee-types",
  "log",
  "pin-project",
+ "rustls",
+ "rustls-native-certs",
  "serde",
  "serde_json",
  "soketto",
@@ -1557,7 +1561,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-ws-server"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#74d9d77eafceed6d5fcfb31ae67f2bd0199b935e"
+source = "git+https://github.com/paritytech/jsonrpsee#4f51e2f224dd8c7531ae8f414b18d8c6811af509"
 dependencies = [
  "anyhow",
  "futures-channel",
@@ -1565,8 +1569,6 @@ dependencies = [
  "jsonrpsee-types",
  "jsonrpsee-utils",
  "log",
- "parking_lot",
- "rand 0.8.3",
  "rustc-hash",
  "serde",
  "serde_json",
@@ -3144,7 +3146,7 @@ dependencies = [
 name = "substrate-runtime-differ"
 version = "0.4.0"
 dependencies = [
- "frame-metadata 12.0.0 (git+https://github.com/paritytech/frame-metadata?branch=subsee)",
+ "frame-metadata 12.0.0",
 ]
 
 [[package]]
@@ -3152,7 +3154,7 @@ name = "substrate-runtime-proposal-hash"
 version = "0.5.0"
 dependencies = [
  "blake2",
- "frame-metadata 12.0.0 (git+https://github.com/paritytech/frame-metadata?branch=main)",
+ "frame-metadata 14.0.0",
  "hex",
  "parity-scale-codec",
  "sc-executor",
@@ -3176,7 +3178,7 @@ checksum = "1e81da0851ada1f3e9d4312c704aa4f8806f0f9d69faaf8df2f3464b4a9437c2"
 
 [[package]]
 name = "subwasm"
-version = "0.6.0"
+version = "0.7.0"
 dependencies = [
  "assert_cmd",
  "clap",
@@ -3191,11 +3193,11 @@ dependencies = [
 
 [[package]]
 name = "subwasmlib"
-version = "0.6.0"
+version = "0.7.0"
 dependencies = [
  "calm_io",
  "color-eyre",
- "frame-metadata 12.0.0 (git+https://github.com/paritytech/frame-metadata?branch=main)",
+ "frame-metadata 14.0.0",
  "ipfs-hasher",
  "log",
  "num-format",
@@ -3756,7 +3758,7 @@ checksum = "d9a543ae66aa233d14bb765ed9af4a33e81b8b58d1584cf1b47ff8cd0b9e4489"
 
 [[package]]
 name = "wasm-loader"
-version = "0.6.0"
+version = "0.7.0"
 dependencies = [
  "hex",
  "jsonrpsee",
@@ -3767,9 +3769,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-testbed"
-version = "0.6.0"
+version = "0.7.0"
 dependencies = [
- "frame-metadata 12.0.0 (git+https://github.com/paritytech/frame-metadata?branch=main)",
+ "frame-metadata 14.0.0",
  "parity-scale-codec",
  "sc-executor",
  "sp-core",

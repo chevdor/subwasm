@@ -6,7 +6,7 @@ keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "ku
 name = "subwasmlib"
 readme = "README.md"
 repository = "https://gitlab.com/chevdor/subwasm"
-version = "0.6.0"
+version = "0.7.0"
 
 [dependencies]
 calm_io = "0.1.1"
