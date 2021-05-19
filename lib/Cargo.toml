@@ -11,7 +11,7 @@ version = "0.7.0"
 [dependencies]
 calm_io = "0.1.1"
 color-eyre = "0.5.11"
-frame-metadata = {package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main"}
+frame-metadata = {package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main", features= ["v12", "v13", "v14", "std"]}
 num-format = "0.4.0"
 rand = "0.8.3"
 serde = { version = "1.0", features = ["derive"] }
