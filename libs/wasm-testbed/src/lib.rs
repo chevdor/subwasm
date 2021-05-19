@@ -5,6 +5,8 @@ use codec::Decode;
 pub use error::{Result, WasmTestbedError};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadataPrefixed}; // TODO: Check v13,
 use sc_executor::{CallInWasm, RuntimeVersion, WasmExecutionMethod, WasmExecutor};
+use sp_core::Hasher;
+use sp_runtime::traits::BlakeTwo256;
 use sp_wasm_interface::HostFunctions;
 use std::fmt;
 use substrate_runtime_proposal_hash::{get_result, SrhResult};
@@ -147,6 +149,12 @@ impl WasmTestBed {
 	pub fn proposal_hash(&self) -> String {
 		let result: SrhResult = get_result(&self.wasm);
 		format!("0x{}", &result.encodedd_hash)
+	}
+
+	/// Compute the blake2-256 hash of the runtime
+	pub fn blake2_256_hash(&self) -> String {
+		let result = BlakeTwo256::hash(&self.wasm);
+		format!("{:?}", result)
 	}
 }
 

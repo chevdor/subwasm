@@ -1,16 +1,11 @@
 VERSION := `toml get cli/Cargo.toml package.version | jq -r`
 TARGET_DIR := "target/release"
-run:
-	cargo run
 
 test:
 	cargo watch -x "test -- --no-capture"
 
 test_all:
 	cargo test -- --include-ignored
-
-get:
-	cargo run -- get --url http://localhost:9933
 
 usage:
 	cargo run -q -- --help > doc/usage.adoc
@@ -22,6 +17,14 @@ usage:
 doc:usage
 	cargo doc -p subwasm -p subwasmlib -p wasm-loader -p wasm-testbed -p substrate-runtime-proposal-hash --all-features --no-deps
 
+# generate demos
+demos:
+	#!/usr/bin/env bash
+	cd scripts/demos
+	pwd
+	ls -al
+	./run-all.sh
+	
 bump:
 	cargo workspaces version minor --no-individual-tags
 
@@ -44,11 +47,3 @@ mac:
 	shasum -a 256 {{TARGET_DIR}}/subwasm-mac-v{{VERSION}}.tar.gz > {{TARGET_DIR}}/subwasm-mac-v{{VERSION}}.tar.gz.sha256
 	ls -al {{TARGET_DIR}}/*{{VERSION}}*
 	cat {{TARGET_DIR}}/*{{VERSION}}*.sha256
-
-# generate demos
-demos:
-	#!/usr/bin/env bash
-	cd scripts/demos
-	pwd
-	ls -al
-	./run-all.sh

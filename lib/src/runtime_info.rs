@@ -13,6 +13,7 @@ pub struct RuntimeInfo {
 	core_version: String,
 	proposal_hash: String,
 	ipfs_hash: String,
+	blake2_256: String,
 }
 
 impl RuntimeInfo {
@@ -32,6 +33,7 @@ impl RuntimeInfo {
 			core_version,
 			proposal_hash: testbed.proposal_hash(),
 			ipfs_hash: hasher.compute(testbed.wasm()),
+			blake2_256: testbed.blake2_256_hash(),
 		}
 	}
 
@@ -50,7 +52,7 @@ impl RuntimeInfo {
 impl Display for RuntimeInfo {
 	fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		let size_mb: f64 = self.size as f64 / 1024.0 / 1024.0;
-		writeln!(fmt, "🏋️  Runtime Size:\t{:.3?} MB ({} bytes)", size_mb, self.size.to_formatted_string(&Locale::en))?;
+		writeln!(fmt, "🏋️  Runtime size:\t{:.3?} MB ({} bytes)", size_mb, self.size.to_formatted_string(&Locale::en))?;
 		writeln!(
 			fmt,
 			"✨ Reserved meta:\t{} - {:02X?}",
@@ -60,6 +62,7 @@ impl Display for RuntimeInfo {
 		writeln!(fmt, "🎁 Metadata version:\tV{:?}", self.metadata_version)?;
 		writeln!(fmt, "🔥 Core version:\t{}", self.core_version)?;
 		writeln!(fmt, "🗳️  Proposal hash:\t{}", self.proposal_hash)?;
+		writeln!(fmt, "#️⃣  Blake2-256 hash:\t{}", self.blake2_256)?;
 		let ipfs_url = format!("https://www.ipfs.io/ipfs/{cid}", cid = self.ipfs_hash);
 		writeln!(fmt, "📦 IPFS hash:\t\t{} ({url})", self.ipfs_hash, url = ipfs_url)?;
 		Ok(())
