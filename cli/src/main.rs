@@ -1,4 +1,6 @@
 mod opts;
+#[cfg(test)]
+mod test;
 
 use clap::{crate_name, crate_version, Clap};
 use env_logger::Env;
@@ -51,14 +53,12 @@ fn main() -> color_eyre::Result<()> {
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
 
-			if let Some(name) = meta_opts.module {
-				subwasm.display_module(name);
+			if let Some(filter) = meta_opts.module {
+				subwasm.display_module(filter);
+			} else if opts.json {
+				subwasm.display_metadata_json()
 			} else {
-				if opts.json {
-					subwasm.display_metadata_json()
-				} else {
-					subwasm.display_modules_list()
-				}
+				subwasm.display_modules_list()
 			}
 		}
 
@@ -76,45 +76,4 @@ fn main() -> color_eyre::Result<()> {
 	};
 
 	Ok(())
-}
-
-#[cfg(test)]
-mod test {
-	use assert_cmd::Command;
-	use std::path::Path;
-
-	#[test]
-	#[ignore = "assert_cmd bug, see https://github.com/assert-rs/assert_cmd/issues/117"]
-	fn it_shows_help() {
-		let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
-		let assert = cmd.arg("--help").assert();
-		assert.success().code(0);
-	}
-
-	#[test]
-	#[ignore = "assert_cmd bug, see https://github.com/assert-rs/assert_cmd/issues/117"]
-	fn it_fails_without_source() {
-		let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
-		let assert = cmd.arg("info tcp://foo.bar").assert();
-		assert.failure().code(2);
-	}
-
-	#[test]
-	#[ignore = "assert_cmd bug, see https://github.com/assert-rs/assert_cmd/issues/117"]
-	fn it_gets_a_runtime() {
-		let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
-
-		let assert = cmd.args(&["get", "--output", "/tmp/runtime.wasm", "wss://rpc.polkadot.io"]).assert();
-		assert.success().code(0);
-		assert!(Path::new("/tmp/runtime.wasm").exists());
-	}
-
-	#[test]
-	#[ignore = "assert_cmd bug, see https://github.com/assert-rs/assert_cmd/issues/117"]
-	fn it_fails_on_bad_chain() {
-		let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
-
-		let assert = cmd.args(&["get", "--chain", "foobar"]).assert();
-		assert.failure().code(101);
-	}
 }

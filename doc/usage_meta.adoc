@@ -1,4 +1,4 @@
-subwasm-metadata 0.6.0
+subwasm-metadata 0.7.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 Returns the metadata as a json object. You may also use the "meta" alias
 
@@ -15,6 +15,9 @@ FLAGS:
     -V, --version    Prints version information
 
 OPTIONS:
-        --chain <chain>    Provide the name of a chain and a random url amongst a list of known
-                           nodes will be used. If you pass a valid --chain, --url will be ignored
-                           --chain local = http://localhost:9933
+        --chain <chain>      Provide the name of a chain and a random url amongst a list of known
+                             nodes will be used. If you pass a valid --chain, --url will be ignored
+                             --chain local = http://localhost:9933
+    -m, --module <module>    Without this flag, the metadata command display the list of all
+                             modules. Using this flag, you will only see the module of your choice
+                             and a few details about it

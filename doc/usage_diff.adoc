@@ -1,4 +1,4 @@
-subwasm-diff 0.6.0
+subwasm-diff 0.7.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 Compare 2 runtimes
 

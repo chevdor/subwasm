@@ -4,17 +4,20 @@ use std::{fs::File, path::PathBuf};
 use std::{io::prelude::*, str::FromStr};
 use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
 use wasm_testbed::WasmTestBed;
+mod convert;
 mod metadata_wrapper;
-mod module_wrapper;
 
 mod chain_info;
 mod error;
+mod macros;
 mod runtime_info;
 mod subwasm;
+mod types;
 pub use chain_info::*;
 use log::{debug, info};
 pub use runtime_info::*;
 pub use subwasm::*;
+pub use types::*;
 
 /// Prints magic and version from a raw buffer.
 /// This is mainly used for troubleshooting when decoding

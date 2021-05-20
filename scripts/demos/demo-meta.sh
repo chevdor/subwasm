@@ -11,8 +11,22 @@ echo -e "$cmd" | $human
 $cmd
 sleep 0.5
 
-echo -e "Let's ask subwasm to call into the runtime and show us the metadata:" | $human
+echo -e "Let's ask subwasm to call into the runtime and show us the list of modules from the metadata:" | $human
 cmd="subwasm meta runtime.wasm"
+echo -e "We use the following command:" | $human
+echo -e "$cmd" | $human
+$cmd
+sleep 0.5
+
+echo -e "Do you prefer the output as json ?:" | $human
+cmd="subwasm meta --json runtime.wasm | tail"
+echo -e "We use the following command:" | $human
+echo -e "$cmd" | $human
+$cmd
+sleep 0.5
+
+echo -e "We can also zoom in and see some information about a specific module:" | $human
+cmd="subwasm meta runtime.wasm --module system"
 echo -e "We use the following command:" | $human
 echo -e "$cmd" | $human
 $cmd

@@ -90,6 +90,8 @@ pub struct MetaOpts {
 	#[clap(long, parse(from_str), conflicts_with = "source")]
 	pub chain: Option<ChainInfo>,
 
+	/// Without this flag, the metadata command display the list of all modules.
+	/// Using this flag, you will only see the module of your choice and a few details about it.
 	#[clap(long, short)]
 	pub module: Option<String>,
 }
