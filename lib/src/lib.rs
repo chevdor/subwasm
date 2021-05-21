@@ -1,9 +1,7 @@
 use std::path::Path;
 use std::{fs::File, path::PathBuf};
 use std::{io::prelude::*, str::FromStr};
-use substrate_differ::{
-	partial_differ::MetadataPartialDiffer, raw_differ::MetadataRawDiffer, summary_differ::RuntimeSummaryDiffer,
-};
+use substrate_differ::{raw_differ::MetadataRawDiffer, summary_differ::RuntimeSummaryDiffer};
 use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
 use wasm_testbed::WasmTestBed;
 mod convert;

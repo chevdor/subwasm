@@ -2,6 +2,8 @@ use frame_metadata::RuntimeMetadata;
 // use rustc_serialize::json::Json;
 use treediff::{diff, tools::Recorder};
 
+use crate::call_wrapper::CallWrapper;
+
 pub struct MetadataRawDiffer<'a> {
 	r1: &'a RuntimeMetadata,
 	r2: &'a RuntimeMetadata,
@@ -77,13 +79,21 @@ impl<'a> MetadataRawDiffer<'a> {
 		}
 
 		for call in &recorder.calls {
+			let wrapped_call = CallWrapper(call);
 			match call {
-				treediff::tools::ChangeType::Removed(k, _) | treediff::tools::ChangeType::Modified(k, _, _) => {
-					let key = treediff::value::Key::String("documentation".to_string());
-					if k.contains(&key) {
-						// skipping doc
-					} else {
-						println!("{:?}", call)
+				treediff::tools::ChangeType::Removed(k, _) => {
+					let doc = treediff::value::Key::String("documentation".to_string());
+					// skipping doc
+					if !k.contains(&doc) {
+						println!("{}", wrapped_call.to_string())
+					}
+				}
+
+				treediff::tools::ChangeType::Modified(k, _, _) => {
+					let doc = treediff::value::Key::String("documentation".to_string());
+					// skipping doc
+					if !k.contains(&doc) {
+						println!("{}", wrapped_call.to_string())
 					}
 				}
 				_ => {}
@@ -106,6 +116,7 @@ mod tests {
 	use wasm_testbed::WasmTestBed;
 
 	#[test]
+	#[ignore = "local data"]
 	fn it_constructs() {
 		const RTM1: &str = "../../data/kusama/kusama-2030.wasm";
 		const RTM2: &str = "../../data/kusama/kusama_runtime-v9000.compact.wasm";
