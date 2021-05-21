@@ -19,7 +19,7 @@ $cmd
 sleep 0.5
 
 echo -e "Do you prefer the output as json ?:" | $human
-cmd="subwasm meta --json runtime.wasm | tail"
+cmd="subwasm --json meta runtime.wasm | tail"
 echo -e "We use the following command:" | $human
 echo -e "$cmd" | $human
 $cmd
