@@ -19,6 +19,6 @@ wasm-loader = { path = "../libs/wasm-loader" }
 
 # For the doc
 substrate-runtime-proposal-hash = { path = "../libs/substrate-runtime-proposal-hash", optional = true }
-assert_cmd = "1.0.3"
+assert_cmd = "1.0.4"
 log = "0.4.14"
 env_logger = "0.8.3"

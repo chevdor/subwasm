@@ -1,9 +1,0 @@
-[package]
-edition = "2018"
-name = "substrate-runtime-differ"
-version = "0.4.0"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-frame-metadata = {package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main", features = ["v12", "v13", "v14", "std"]}

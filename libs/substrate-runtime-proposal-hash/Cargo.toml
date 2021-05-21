@@ -9,10 +9,10 @@ repository = "https://gitlab.com/chevdor/subwasm"
 version = "0.5.0"
 
 [dependencies]
-blake2 = "0.9.0"
-codec = {package = "parity-scale-codec", version = "2.0.0"}
+blake2 = "0.9.1"
+codec = { package = "parity-scale-codec", version = "2.1.1" }
 frame-metadata = {package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main"}
-hex = "0.4.2"
+hex = "0.4.3"
 sc-executor = "0.9.0"
 sp-core = "3.0.0"
 sp-io = "3.0.0"

@@ -3,7 +3,7 @@ mod logger_mock;
 
 use codec::Decode;
 pub use error::{Result, WasmTestbedError};
-use frame_metadata::{RuntimeMetadata, RuntimeMetadataPrefixed}; // TODO: Check v13,
+use frame_metadata::{RuntimeMetadata, RuntimeMetadataPrefixed};
 use sc_executor::{CallInWasm, RuntimeVersion, WasmExecutionMethod, WasmExecutor};
 use sp_core::Hasher;
 use sp_runtime::traits::BlakeTwo256;
@@ -94,7 +94,7 @@ impl WasmTestBed {
 		// host_functions
 		// 	.clone()
 		// 	.into_iter()
-		// 	.for_each(|host_fn| println!("{:?}", host_fn.name()));
+		// 	.for_each(|host_fn| debug!("{:?}", host_fn.name()));
 
 		let executor = WasmExecutor::new(
 			WasmExecutionMethod::Interpreted,

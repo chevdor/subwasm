@@ -13,5 +13,5 @@ multihash = "0.13.2"
 hex = "0.4.3"
 jsonrpsee = {git = "https://github.com/paritytech/jsonrpsee", features = ["full"]}
 multibase = "0.9.1"
-tokio = {version = "1", features = ["full"]}
+tokio = { version = "1.6.0", features = ["full"] }
 

@@ -1,7 +1,9 @@
-use num_format::{Locale, ToFormattedString};
 use std::path::Path;
 use std::{fs::File, path::PathBuf};
 use std::{io::prelude::*, str::FromStr};
+use substrate_differ::{
+	partial_differ::MetadataPartialDiffer, raw_differ::MetadataRawDiffer, summary_differ::RuntimeSummaryDiffer,
+};
 use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
 use wasm_testbed::WasmTestBed;
 mod convert;
@@ -117,66 +119,21 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 /// Compare 2 runtimes. It compares their versions first
 /// then their metata.
 pub fn diff(src_a: Source, src_b: Source) {
-	let size = |x| -> (f32, usize) { (x as f32 / 1024.0 / 1024.0, x) };
-
 	debug!("Loading WASM runtimes:");
 	println!("  🅰️  {:?}", src_a);
 	let runtime_a = WasmTestBed::new(&src_a).expect("Can only diff if the 2 runtimes can load");
 	println!("  🅱️  {:?}", src_b);
 	let runtime_b = WasmTestBed::new(&src_b).expect("Can only diff if the 2 runtimes can load");
 
-	// RUNTIME SIZE
-	let size_a = runtime_a.size();
-	let size_b = runtime_b.size();
+	// ==== RUNTIME
+	let runtime_diff = RuntimeSummaryDiffer::new(&runtime_a, &runtime_b);
+	runtime_diff.compare();
 
-	info!("Checking runtime sizes:");
-	if size_a == size_b {
-		println!(
-			"  ✅  Both size are identical: {:.3?} MB ({} bytes)",
-			size(size_a).0,
-			size(size_a).1.to_formatted_string(&Locale::en)
-		);
-	} else {
-		println!("  🅰️  {:.3?} MB ({} bytes)", size(size_a).0, size(size_a).1.to_formatted_string(&Locale::en));
-		println!("  🅱️  {:.3?} MB ({} bytes)", size(size_b).0, size(size_b).1.to_formatted_string(&Locale::en));
-	}
+	// ==== RAW
+	let metadiff = MetadataRawDiffer::new(runtime_a.metadata(), runtime_b.metadata());
+	metadiff.compare();
 
-	// METADATA VERSIONS
-	let metadata_a_version = runtime_a.metadata_version();
-	let metadata_b_version = runtime_b.metadata_version();
-	println!("Checking metadata versions:");
-	if metadata_a_version == metadata_b_version {
-		println!("  ✅ Both metadata versions are identical: V{:?}", metadata_a_version);
-	} else {
-		println!("Found different metadata versions:");
-		println!("  🅰️  V{:?}", metadata_a_version);
-		println!("  🅱️  V{:?}", metadata_b_version);
-	}
-
-	// CORE VERSIONS
-	println!("Checking core versions:");
-	let version_a = runtime_a.core_version().expect("Some version");
-	let version_b = runtime_b.core_version().expect("Some version");
-
-	if version_a == version_b {
-		print!("  ✅  The 2 core versions are identical: ");
-		println!("{}", version_a);
-	} else {
-		println!("  ❌ The 2 core versions are different: ");
-		// println!("{:#?}", version_a);
-		println!("  🅰️  {}", version_a);
-		// println!("{:#?}", version_b);
-		println!("  🅱️  {}", version_b);
-	}
-
-	println!("Checking runtime metadata:");
-	let metadata_a = runtime_a.metadata();
-	let metadata_b = runtime_b.metadata();
-
-	if metadata_a == metadata_b {
-		// println!("  {}", version_a);
-		println!("  ✅  The metadata are identical");
-	} else {
-		println!("  ❌  The metadata are different");
-	}
+	// ==== PARTIAL
+	// let partial = MetadataPartialDiffer::new(runtime_a.metadata(), runtime_b.metadata());
+	// partial.compare();
 }

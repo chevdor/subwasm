@@ -1,0 +1,19 @@
+[package]
+edition = "2018"
+name = "substrate-differ"
+version = "0.4.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+frame-metadata = {package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main", features = ["v12", "v13", "v14", "std"]}
+log = "0.4.14"
+num-format = "0.4.0"
+rustc-serialize = "0.3.24"
+serde = { version = "1.0.126", features = ["derive"] }
+serde_json = "1.0.64"
+treediff = { version = "4.0.0", features = ["with-serde-json", "with-rustc-serialize"] }
+wasm-testbed = {path = "../wasm-testbed"}
+
+[dev-dependencies]
+wasm-loader = {path = "../wasm-loader"}
