@@ -61,9 +61,7 @@ impl FromStr for ChainInfo {
 		let urls: Option<Vec<_>> = match name.as_str() {
 			"polkadot" => Some(vec![
 				"wss://rpc.polkadot.io",
-				// Disabled until the following is fixed:
-				// https://github.com/paritytech/jsonrpsee/issues/306
-				// "wss://polkadot.api.onfinality.io/public-ws",
+				"wss://polkadot.api.onfinality.io/public-ws",
 				"wss://polkadot.elara.patract.io",
 			]),
 			"kusama" => Some(vec!["wss://kusama-rpc.polkadot.io"]),

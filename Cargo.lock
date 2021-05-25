@@ -368,9 +368,9 @@ dependencies = [
 
 [[package]]
 name = "blake3"
-version = "0.3.7"
+version = "0.3.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e9ff35b701f3914bdb8fad3368d822c766ef2858b2583198e41639b936f09d3f"
+checksum = "b64485778c4f16a6a5a9d335e80d449ac6c70cdd6a06d2af18a6f6f775a125b3"
 dependencies = [
  "arrayref",
  "arrayvec 0.5.2",
@@ -1286,9 +1286,9 @@ checksum = "9a3a5bfb195931eeb336b2a7b4d761daec841b97f947d34394601737a7bba5e4"
 
 [[package]]
 name = "hyper"
-version = "0.14.7"
+version = "0.14.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1e5f105c494081baa3bf9e200b279e27ec1623895cd504c7dbef8d0b080fcf54"
+checksum = "d3f71a7eea53a3f8257a7b4795373ff886397178cd634430ea94e12d7fe4fe34"
 dependencies = [
  "bytes 1.0.1",
  "futures-channel",
@@ -1439,7 +1439,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
+source = "git+https://github.com/paritytech/jsonrpsee#a60896e16c192b2fb4f3efea166ebcb4d9d1ba3b"
 dependencies = [
  "jsonrpsee-http-client",
  "jsonrpsee-http-server",
@@ -1452,7 +1452,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-http-client"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
+source = "git+https://github.com/paritytech/jsonrpsee#a60896e16c192b2fb4f3efea166ebcb4d9d1ba3b"
 dependencies = [
  "async-trait",
  "fnv",
@@ -1470,7 +1470,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-http-server"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
+source = "git+https://github.com/paritytech/jsonrpsee#a60896e16c192b2fb4f3efea166ebcb4d9d1ba3b"
 dependencies = [
  "futures-channel",
  "futures-util",
@@ -1491,7 +1491,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-proc-macros"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
+source = "git+https://github.com/paritytech/jsonrpsee#a60896e16c192b2fb4f3efea166ebcb4d9d1ba3b"
 dependencies = [
  "Inflector",
  "proc-macro-crate 1.0.0",
@@ -1503,7 +1503,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-types"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
+source = "git+https://github.com/paritytech/jsonrpsee#a60896e16c192b2fb4f3efea166ebcb4d9d1ba3b"
 dependencies = [
  "async-trait",
  "beef",
@@ -1520,7 +1520,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-utils"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
+source = "git+https://github.com/paritytech/jsonrpsee#a60896e16c192b2fb4f3efea166ebcb4d9d1ba3b"
 dependencies = [
  "futures-channel",
  "futures-util",
@@ -1538,7 +1538,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-ws-client"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
+source = "git+https://github.com/paritytech/jsonrpsee#a60896e16c192b2fb4f3efea166ebcb4d9d1ba3b"
 dependencies = [
  "async-std",
  "async-tls",
@@ -1561,7 +1561,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-ws-server"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
+source = "git+https://github.com/paritytech/jsonrpsee#a60896e16c192b2fb4f3efea166ebcb4d9d1ba3b"
 dependencies = [
  "futures-channel",
  "futures-util",
@@ -1601,9 +1601,9 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "libc"
-version = "0.2.94"
+version = "0.2.95"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "18794a8ad5b29321f790b55d93dfba91e125cb1a9edbd4f8e3150acc771c1a5e"
+checksum = "789da6d93f1b866ffe175afc5322a4d76c038605a1c3319bb57b06967ca98a36"
 
 [[package]]
 name = "libsecp256k1"

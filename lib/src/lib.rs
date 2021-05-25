@@ -81,7 +81,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 	};
 
 	let reference = OnchainBlock { endpoint: url, block_ref };
-	// let wasm = wasm_loader::WasmLoader::fetch_wasm(&reference).expect("Getting wasm from the node");
+	info!("Downloading runtime from  {:?}", reference);
 
 	let loader =
 		wasm_loader::WasmLoader::load_from_source(&Source::Chain(reference)).expect("Getting wasm from the node");
