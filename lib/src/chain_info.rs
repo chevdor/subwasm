@@ -64,9 +64,22 @@ impl FromStr for ChainInfo {
 				"wss://polkadot.api.onfinality.io/public-ws",
 				"wss://polkadot.elara.patract.io",
 			]),
-			"kusama" => Some(vec!["wss://kusama-rpc.polkadot.io"]),
-			"westend" => Some(vec!["wss://westend-rpc.polkadot.io"]),
-			"rococo" => Some(vec!["wss://rococo-rpc.polkadot.io"]),
+			"kusama" => Some(vec![
+				"wss://kusama-rpc.polkadot.io",
+				"wss://kusama.api.onfinality.io/public-ws",
+				"wss://kusama.elara.patract.io",
+			]),
+			"westend" => Some(vec![
+				"wss://westend-rpc.polkadot.io",
+				"wss://westend.api.onfinality.io/public-ws",
+				"wss://westend.elara.patract.io",
+			]),
+			"rococo" => Some(vec![
+				"wss://rococo-rpc.polkadot.io",
+				"wss://rococo.api.onfinality.io/public-ws",
+				// TODO: enable again once https://github.com/paritytech/jsonrpsee/issues/337 is fixed
+				// "wss://rococo.elara.patract.io",
+			]),
 			"local" => Some(vec!["http://localhost:9933"]),
 			_ => None,
 		}

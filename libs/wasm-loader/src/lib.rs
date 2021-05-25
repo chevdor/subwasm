@@ -45,8 +45,10 @@ impl WasmLoader {
 				rt.block_on(client.request("state_getStorage", params.into()))
 			}
 			NodeEndpoint::WebSocket(url) => {
-				let client =
-					rt.block_on(WsClientBuilder::default().build(&url)).map_err(|_e| WasmLoaderError::WsClient())?;
+				let client = rt.block_on(WsClientBuilder::default().build(&url)).map_err(|_e| {
+					println!("{:?}", _e);
+					WasmLoaderError::WsClient()
+				})?;
 				rt.block_on(client.request("state_getStorage", params.into()))
 			}
 		};
