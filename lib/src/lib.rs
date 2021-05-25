@@ -1,15 +1,16 @@
 use std::path::Path;
 use std::{fs::File, path::PathBuf};
 use std::{io::prelude::*, str::FromStr};
-use substrate_differ::{raw_differ::MetadataRawDiffer, summary_differ::RuntimeSummaryDiffer};
+use substrate_differ::differs::raw_differ::RawDiffer;
+use substrate_differ::differs::raw_differ_options::RawDifferOptions;
+use substrate_differ::differs::summary_differ::RuntimeSummaryDiffer;
 use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
 use wasm_testbed::WasmTestBed;
-mod convert;
-mod metadata_wrapper;
-
 mod chain_info;
+mod convert;
 mod error;
 mod macros;
+mod metadata_wrapper;
 mod runtime_info;
 mod subwasm;
 mod types;
@@ -128,8 +129,8 @@ pub fn diff(src_a: Source, src_b: Source) {
 	runtime_diff.compare();
 
 	// ==== RAW
-	let metadiff = MetadataRawDiffer::new(runtime_a.metadata(), runtime_b.metadata());
-	metadiff.compare();
+	let metadiff = RawDiffer::new(runtime_a.metadata(), runtime_b.metadata());
+	metadiff.compare(RawDifferOptions::default());
 
 	// ==== PARTIAL
 	// let partial = MetadataPartialDiffer::new(runtime_a.metadata(), runtime_b.metadata());

@@ -1,4 +1,2 @@
 pub mod call_wrapper;
-pub mod partial_differ;
-pub mod raw_differ;
-pub mod summary_differ;
+pub mod differs;

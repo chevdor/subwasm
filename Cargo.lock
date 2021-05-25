@@ -506,9 +506,9 @@ dependencies = [
 
 [[package]]
 name = "cc"
-version = "1.0.67"
+version = "1.0.68"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e3c69b077ad434294d3ce9f1f6143a2a4b89a8a2d54ef813d85003a4fd1137fd"
+checksum = "4a72c244c1ff497a746a7e1fb3d14bd08420ecda70c8f25c7112f2781652d787"
 
 [[package]]
 name = "cfg-if"
@@ -1274,9 +1274,9 @@ checksum = "f3a87b616e37e93c22fb19bcd386f02f3af5ea98a25670ad0fce773de23c5e68"
 
 [[package]]
 name = "httpdate"
-version = "1.0.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "05842d0d43232b23ccb7060ecb0f0626922c21f30012e97b767b30afd4a5d4b9"
+checksum = "6456b8a6c8f33fee7d958fcd1b60d55b11940a79e63ae87013e6d22e26034440"
 
 [[package]]
 name = "humantime"
@@ -1439,7 +1439,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#99413edecc2a87648644ce7274247f514edb8b19"
+source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
 dependencies = [
  "jsonrpsee-http-client",
  "jsonrpsee-http-server",
@@ -1452,7 +1452,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-http-client"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#99413edecc2a87648644ce7274247f514edb8b19"
+source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
 dependencies = [
  "async-trait",
  "fnv",
@@ -1470,9 +1470,8 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-http-server"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#99413edecc2a87648644ce7274247f514edb8b19"
+source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
 dependencies = [
- "anyhow",
  "futures-channel",
  "futures-util",
  "globset",
@@ -1484,6 +1483,7 @@ dependencies = [
  "serde",
  "serde_json",
  "socket2",
+ "thiserror",
  "tokio",
  "unicase",
 ]
@@ -1491,7 +1491,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-proc-macros"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#99413edecc2a87648644ce7274247f514edb8b19"
+source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
 dependencies = [
  "Inflector",
  "proc-macro-crate 1.0.0",
@@ -1503,24 +1503,25 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-types"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#99413edecc2a87648644ce7274247f514edb8b19"
+source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
 dependencies = [
  "async-trait",
  "beef",
  "futures-channel",
  "futures-util",
+ "hyper",
  "log",
  "serde",
  "serde_json",
+ "soketto",
  "thiserror",
 ]
 
 [[package]]
 name = "jsonrpsee-utils"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#99413edecc2a87648644ce7274247f514edb8b19"
+source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
 dependencies = [
- "anyhow",
  "futures-channel",
  "futures-util",
  "hyper",
@@ -1531,12 +1532,13 @@ dependencies = [
  "rustc-hash",
  "serde",
  "serde_json",
+ "thiserror",
 ]
 
 [[package]]
 name = "jsonrpsee-ws-client"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#99413edecc2a87648644ce7274247f514edb8b19"
+source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
 dependencies = [
  "async-std",
  "async-tls",
@@ -1559,9 +1561,8 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-ws-server"
 version = "0.2.0-alpha.6"
-source = "git+https://github.com/paritytech/jsonrpsee#99413edecc2a87648644ce7274247f514edb8b19"
+source = "git+https://github.com/paritytech/jsonrpsee#bfe158296ede04c83cf2d2e7750494f14f34a41f"
 dependencies = [
- "anyhow",
  "futures-channel",
  "futures-util",
  "jsonrpsee-types",
@@ -1571,6 +1572,7 @@ dependencies = [
  "serde",
  "serde_json",
  "soketto",
+ "thiserror",
  "tokio",
  "tokio-stream",
  "tokio-util",
@@ -3247,18 +3249,18 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "1.0.24"
+version = "1.0.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e0f4a65597094d4483ddaed134f409b2cb7c1beccf25201a9f73c719254fa98e"
+checksum = "fa6f76457f59514c7eeb4e59d891395fab0b2fd1d40723ae737d64153392e9c6"
 dependencies = [
  "thiserror-impl",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.24"
+version = "1.0.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7765189610d8241a44529806d6fd1f2e0a08734313a35d5b3a556f92b381f3c0"
+checksum = "8a36768c0fbf1bb15eca10defa29526bda730a2376c2ab4393ccfa16fb1a318d"
 dependencies = [
  "proc-macro2",
  "quote",
