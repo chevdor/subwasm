@@ -1,45 +1,50 @@
 VERSION := `toml get cli/Cargo.toml package.version | jq -r`
 TARGET_DIR := "target/release"
 
+default:
+  @just --choose
+
+# Test / watch
 test:
 	cargo watch -x "test -- --no-capture"
 
+# Test including ignored tests
 test_all:
 	cargo test -- --include-ignored
 
-usage:
+# Generate usage samples
+_usage:
 	cargo run -q -- --help > doc/usage.adoc
 	cargo run -q -- get --help > doc/usage_get.adoc
 	cargo run -q -- info --help > doc/usage_info.adoc
 	cargo run -q -- meta --help > doc/usage_meta.adoc
 	cargo run -q -- diff --help > doc/usage_diff.adoc
 
-doc:usage
+# Generate documentation
+doc:_usage
 	cargo doc -p subwasm -p subwasmlib -p wasm-loader -p wasm-testbed -p substrate-runtime-proposal-hash --all-features --no-deps
 
-# generate demos
+# Generate demos
 demos:
 	#!/usr/bin/env bash
 	cd scripts/demos
 	pwd
 	ls -al
 	./run-all.sh
-	
+
+# Run rustfmt
+fmt:
+	cargo fmt --all
+
+# Run clippy
+clippy:
+	cargo clippy
+
+# Minor bump, can be used once the release is ready
 bump:
 	cargo workspaces version minor --no-individual-tags
 
-fetch-kusama:
-	echo 'Fetching latest runtime from Kusama'
-	cargo run -- get --url wss://kusama-rpc.polkadot.io -o kusama.wasm
-
-fetch-polkadot:
-	echo 'Fetching latest runtime from Polkadot'
-	cargo run -- get --url wss://rpc.polkadot.io -o polkadot.wasm
-
-fetch-westend:
-	echo 'Fetching latest runtime from Westend'
-	cargo run -- get --url wss://westend-rpc.polkadot.io -o westend.wasm
-
+# Prepare a MacOS Binary
 mac:
 	@echo Preparing artifacts for MacOS for v{{VERSION}}
 	cargo build --release
