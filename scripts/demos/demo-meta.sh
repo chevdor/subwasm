@@ -19,10 +19,11 @@ $cmd
 sleep 0.5
 
 echo -e "Do you prefer the output as json ?:" | $human
-cmd="subwasm --json meta runtime.wasm | tail"
+cmd="subwasm --json meta runtime.wasm"
 echo -e "We use the following command:" | $human
 echo -e "$cmd" | $human
-$cmd
+$cmd | head 
+echo ...
 sleep 0.5
 
 echo -e "We can also zoom in and see some information about a specific module:" | $human
