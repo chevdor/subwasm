@@ -74,6 +74,9 @@ pub struct InfoOpts {
 	/// --chain local = http://localhost:9933
 	#[clap(long, parse(from_str), conflicts_with = "source")]
 	pub chain: Option<ChainInfo>,
+
+	#[clap(short, long)]
+	pub block: Option<String>, // TODO: can do better...
 }
 
 /// Returns the metadata as a json object. You may also use the "meta" alias.
@@ -94,6 +97,9 @@ pub struct MetaOpts {
 	/// Using this flag, you will only see the module of your choice and a few details about it.
 	#[clap(long, short)]
 	pub module: Option<String>,
+
+	#[clap(short, long)]
+	pub block: Option<String>, // TODO: can do better...
 }
 
 /// Compare 2 runtimes

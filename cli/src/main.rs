@@ -36,7 +36,7 @@ fn main() -> color_eyre::Result<()> {
 			info!("Running {} v{}", crate_name!(), crate_version!());
 
 			let chain_name = info_opts.chain.map(|some| some.name);
-			let source = get_source(chain_name.as_deref(), info_opts.source);
+			let source = get_source(chain_name.as_deref(), info_opts.source, info_opts.block);
 
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
@@ -48,7 +48,7 @@ fn main() -> color_eyre::Result<()> {
 			info!("Running {} v{}", crate_name!(), crate_version!());
 
 			let chain_name = meta_opts.chain.map(|some| some.name);
-			let source = get_source(chain_name.as_deref(), meta_opts.source);
+			let source = get_source(chain_name.as_deref(), meta_opts.source, meta_opts.block);
 
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
@@ -66,10 +66,10 @@ fn main() -> color_eyre::Result<()> {
 			noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
 
 			let chain_a = diff_opts.chain_a.map(|some| some.name);
-			let src_a = get_source(chain_a.as_deref(), diff_opts.src_a);
+			let src_a = get_source(chain_a.as_deref(), diff_opts.src_a, None);
 
 			let chain_b = diff_opts.chain_b.map(|some| some.name);
-			let src_b = get_source(chain_b.as_deref(), diff_opts.src_b);
+			let src_b = get_source(chain_b.as_deref(), diff_opts.src_b, None);
 
 			diff(src_a, src_b);
 		}

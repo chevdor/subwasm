@@ -61,12 +61,12 @@ pub fn get_url(chain: Option<&str>, reference: &OnchainBlock) -> String {
 /// If --chain NAME is passed and NAME is a supported chain
 /// we return a random node from the known list for chain NAME.
 /// If not, we fall back to the `source`
-pub fn get_source(chain: Option<&str>, source: Source) -> Source {
+pub fn get_source(chain: Option<&str>, source: Source, block_ref: Option<String>) -> Source {
 	let node_url = get_node_url(chain);
 
 	if let Some(chain_url) = node_url {
 		let endpoint = NodeEndpoint::from_str(&chain_url).unwrap();
-		Source::Chain(OnchainBlock { endpoint, block_ref: None })
+		Source::Chain(OnchainBlock { endpoint, block_ref })
 	} else {
 		source
 	}
