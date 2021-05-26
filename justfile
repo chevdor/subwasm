@@ -1,8 +1,9 @@
 VERSION := `toml get cli/Cargo.toml package.version | jq -r`
 TARGET_DIR := "target/release"
 
+# List available commands
 default:
-  @just --choose
+  @just --list --unsorted
 
 # Test / watch
 test:
@@ -33,12 +34,15 @@ demos:
 	./run-all.sh
 
 # Run rustfmt
-fmt:
+_fmt:
 	cargo fmt --all
 
 # Run clippy
-clippy:
+_clippy:
 	cargo clippy
+
+# Run checks such as clippy, rustfmt, etc...
+check: _clippy _fmt
 
 # Minor bump, can be used once the release is ready
 bump:
