@@ -1,5 +1,11 @@
-use super::raw_differ_options::RawDifferOptions;
-use crate::{call_wrapper::CallWrapper, differs::json_utils::json_collapse_byte_arrays};
+use super::{raw_differ_options::RawDifferOptions, skip_counter::SkipCounter};
+use crate::{
+	call_wrapper::CallWrapper,
+	differs::{
+		change_counter::{ChangeCounter, ChangeType},
+		json_utils::json_collapse_byte_arrays,
+	},
+};
 use log::debug;
 use serde::Serialize;
 use treediff::{diff, tools::Recorder};
@@ -7,43 +13,6 @@ use treediff::{diff, tools::Recorder};
 pub struct RawDiffer<'a, T: Serialize> {
 	r1: &'a T,
 	r2: &'a T,
-}
-
-enum ChangeType {
-	Removed,
-	Added,
-	Unchanged,
-	Modified,
-}
-
-#[derive(Debug, Default)]
-struct ChangeCounter {
-	removed: u64,
-	added: u64,
-	unchanged: u64,
-	modified: u64,
-}
-
-impl ChangeCounter {
-	pub fn inc(&mut self, ty: ChangeType) {
-		match ty {
-			ChangeType::Removed => self.removed += 1,
-			ChangeType::Added => self.added += 1,
-			ChangeType::Unchanged => self.unchanged += 1,
-			ChangeType::Modified => self.modified += 1,
-		}
-	}
-
-	pub fn percent(&self, ty: ChangeType) -> f64 {
-		let sum = (self.unchanged + self.modified + self.removed + self.added) as f64;
-		let relevant = match ty {
-			ChangeType::Removed => self.removed as f64,
-			ChangeType::Added => self.added as f64,
-			ChangeType::Unchanged => self.unchanged as f64,
-			ChangeType::Modified => self.modified as f64,
-		};
-		relevant / sum
-	}
 }
 
 impl<'a, T: Serialize> RawDiffer<'a, T> {
@@ -55,6 +24,7 @@ impl<'a, T: Serialize> RawDiffer<'a, T> {
 	/// This is a raw comparison based on the json serialization of the metadata
 	pub fn compare(&self, options: RawDifferOptions) {
 		let mut recorder = Recorder::default();
+		let mut skip_counter = SkipCounter::default();
 
 		let mut jsona = serde_json::value::to_value(self.r1).unwrap();
 		let mut jsonb = serde_json::value::to_value(self.r2).unwrap();
@@ -64,16 +34,47 @@ impl<'a, T: Serialize> RawDiffer<'a, T> {
 			json_collapse_byte_arrays(&mut jsonb);
 		}
 
-		diff(&jsona, &jsonb, &mut recorder);
+		if options.ignore_version {
+			let va = jsona.as_object().expect("Shoud be a json object").iter().next().expect("Should have a version").0;
+			let vb = jsonb.as_object().expect("Shoud be a json object").iter().next().expect("Should have a version").0;
+			println!("Comparing {} with {}", va, vb);
+
+			diff(&jsona[va], &jsonb[vb], &mut recorder);
+		} else {
+			diff(&jsona, &jsonb, &mut recorder);
+		}
 
 		for call in &recorder.calls {
 			let wrapped_call = CallWrapper(call);
 			match call {
-				treediff::tools::ChangeType::Removed(k, _) | treediff::tools::ChangeType::Modified(k, _, _) => {
+				treediff::tools::ChangeType::Removed(k, val) | treediff::tools::ChangeType::Modified(k, val, _) => {
 					let doc = treediff::value::Key::String("documentation".to_string());
-					if !k.contains(&doc) || k.contains(&doc) && !options.skip_doc {
+					let value = treediff::value::Key::String("value".to_string());
+					let default = treediff::value::Key::String("default".to_string());
+
+					if k.contains(&doc) && options.skip_doc {
+						skip_counter.documentation += 1;
+					} else if (k.contains(&value) && (val.is_array() || options.collapse) && options.skip_bytes)
+						|| (k.contains(&default) && (val.is_array() || options.collapse) && options.skip_bytes)
+					{
+						skip_counter.bytes += 1;
+					} else {
 						println!("{}", wrapped_call.to_string())
 					}
+
+					// if !k.contains(&doc) || k.contains(&doc) && !options.skip_doc {
+					// 	println!("{}", wrapped_call.to_string())
+					// } else {
+					// 	skip_counter.documentation += 1;
+					// }
+
+					// if (!k.contains(&value) || k.contains(&value) && val.is_array() && !options.skip_bytes)
+					// 	&& (!k.contains(&default) || k.contains(&default) && val.is_array() && !options.skip_bytes)
+					// {
+					// 	println!("{}", wrapped_call.to_string())
+					// } else {
+					// 	skip_counter.bytes += 1;
+					// }
 				}
 				_ => {}
 			}
@@ -92,14 +93,9 @@ impl<'a, T: Serialize> RawDiffer<'a, T> {
 			}
 
 			debug!("counter\t\t= {:?}", counter);
-			println!(
-				"unmodified\t= {:>5.02}% ({})",
-				counter.percent(ChangeType::Unchanged) * 100_f64,
-				counter.unchanged
-			);
-			println!("added\t\t= {:>5.02}% ({})", counter.percent(ChangeType::Added) * 100_f64, counter.added);
-			println!("modified\t= {:>5.02}% ({})", counter.percent(ChangeType::Modified) * 100_f64, counter.modified);
-			println!("removed\t\t= {:>5.02}% ({})", counter.percent(ChangeType::Removed) * 100_f64, counter.removed);
+			counter.print();
+
+			skip_counter.print();
 		}
 	}
 }
