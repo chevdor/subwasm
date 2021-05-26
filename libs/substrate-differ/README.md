@@ -57,6 +57,8 @@ This method is rather robust for upcoming versions that are not known yet as the
 
 ### `partial_differ`
 
+NOTE: Not implemented yet
+
 Here we are diffing **the metadata**.
 
 The partial_differ on the other hand will look for specific aspects between the 2 metadata. That makes the partial_differ more consive and easier to read and analyse. This method however, may not work without code changes for upcoming versions.
