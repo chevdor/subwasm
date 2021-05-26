@@ -1,4 +1,4 @@
-subwasm-info 0.7.0
+subwasm-info 0.8.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 The `info` command returns summarized information about a runtime
 
@@ -15,6 +15,7 @@ FLAGS:
     -V, --version    Prints version information
 
 OPTIONS:
+    -b, --block <block>    
         --chain <chain>    Provide the name of a chain and a random url amongst a list of known
                            nodes will be used. If you pass a valid --chain, --url will be ignored
                            --chain local = http://localhost:9933
