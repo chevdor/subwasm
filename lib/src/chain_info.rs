@@ -59,17 +59,17 @@ impl FromStr for ChainInfo {
 	fn from_str(name: &str) -> Result<Self, Self::Err> {
 		let name = name.to_lowercase();
 		let urls: Option<Vec<_>> = match name.as_str() {
-			"polkadot" => Some(vec![
+			"polkadot" | "dot" => Some(vec![
 				"wss://rpc.polkadot.io",
 				"wss://polkadot.api.onfinality.io/public-ws",
 				"wss://polkadot.elara.patract.io",
 			]),
-			"kusama" => Some(vec![
+			"kusama" | "ksm" => Some(vec![
 				"wss://kusama-rpc.polkadot.io",
 				"wss://kusama.api.onfinality.io/public-ws",
 				"wss://kusama.elara.patract.io",
 			]),
-			"westend" => Some(vec![
+			"westend" | "wnd" => Some(vec![
 				"wss://westend-rpc.polkadot.io",
 				"wss://westend.api.onfinality.io/public-ws",
 				"wss://westend.elara.patract.io",
