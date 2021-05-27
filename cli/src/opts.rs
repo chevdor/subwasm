@@ -8,7 +8,7 @@ use wasm_loader::{OnchainBlock, Source};
 #[clap(version = crate_version!(), author = crate_authors!())]
 #[clap(setting = AppSettings::ColoredHelp)]
 pub struct Opts {
-	/// Whether we output json or something for 'humans'
+	/// Output as json
 	#[clap(short, long)]
 	pub json: bool,
 
@@ -100,6 +100,10 @@ pub struct MetaOpts {
 
 	#[clap(short, long)]
 	pub block: Option<String>, // TODO: can do better...
+
+	/// Output as json
+	#[clap(short, long)]
+	pub json: bool,
 }
 
 /// Compare 2 runtimes
@@ -112,7 +116,7 @@ pub struct DiffOpts {
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
-	#[clap(long, parse(from_str), conflicts_with = "src-a")]
+	#[clap(long, short('a'), parse(from_str), conflicts_with = "src-a")]
 	pub chain_a: Option<ChainInfo>,
 
 	/// The second source
@@ -122,6 +126,6 @@ pub struct DiffOpts {
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
-	#[clap(long, parse(from_str), conflicts_with = "src-b")]
+	#[clap(long, short('b'), parse(from_str), conflicts_with = "src-b")]
 	pub chain_b: Option<ChainInfo>,
 }

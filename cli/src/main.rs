@@ -55,7 +55,7 @@ fn main() -> color_eyre::Result<()> {
 
 			if let Some(filter) = meta_opts.module {
 				subwasm.display_module(filter);
-			} else if opts.json {
+			} else if opts.json || meta_opts.json {
 				subwasm.display_metadata_json()
 			} else {
 				subwasm.display_modules_list()
