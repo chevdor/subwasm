@@ -80,6 +80,8 @@ impl FromStr for ChainInfo {
 				// TODO: enable again once https://github.com/paritytech/jsonrpsee/issues/337 is fixed
 				// "wss://rococo.elara.patract.io",
 			]),
+			"statemine" => Some(vec!["wss://kusama-shell-rpc.parity.io"]),
+			"westmint" => Some(vec!["wss://westmint-rpc.polkadot.io"]),
 			"local" => Some(vec!["http://localhost:9933"]),
 			_ => None,
 		}
