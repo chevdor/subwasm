@@ -6,7 +6,7 @@ on:
   push
 
 jobs:
-  check:
+  quick_check:
     runs-on: ubuntu-latest
     steps:
       - name: Install Rust stable toolchain

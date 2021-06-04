@@ -21,14 +21,7 @@ jobs:
           shasum --version
 
       - name: Extract tag name
-        id: tag
-        uses: actions/github-script@0.2.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            return context.payload.ref.replace(/\/refs\/tags\//, '');
-      - name: Tag name to ENV
-        run: echo "TAG=${{ steps.tag.outputs.result }}" >> $GITHUB_ENV
+        run: echo "TAG=${GITHUB_REF/\/refs\/tag\//}" >> $GITHUB_ENV
 
       - uses: actions/checkout@v2
 

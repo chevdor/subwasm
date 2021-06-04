@@ -7,7 +7,7 @@ on:
     - "0 3 * * *"
 
 jobs:
-  check:
+  daily_check:
     strategy:
       fail-fast: false
       matrix:
