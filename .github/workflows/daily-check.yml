@@ -4,7 +4,7 @@ name: Daily Check
 
 on:
   schedule:
-    - "0 3 * * *"
+    - cron: "0 3 * * *"
 
 jobs:
   daily_check:
