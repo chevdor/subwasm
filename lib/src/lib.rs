@@ -7,6 +7,7 @@ use substrate_differ::differs::summary_differ::RuntimeSummaryDiffer;
 use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
 use wasm_testbed::WasmTestBed;
 mod chain_info;
+mod chain_urls;
 mod convert;
 mod error;
 mod macros;
