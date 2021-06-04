@@ -56,7 +56,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: subwasm-macos-package-${{ github.sha }}
-          path: artifact
+          path: artifacts
 
       - name: Compute sha256
         run: |
