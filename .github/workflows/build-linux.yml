@@ -8,11 +8,11 @@ on:
       - "v*"
 
 jobs:
-  macos:
+  linux:
     env:
       TARGET_DIR: target/release
 
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Check tooling
         shell: bash
@@ -27,8 +27,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             return context.payload.ref.replace(/\/refs\/tags\//, '');
-      - name: Tag name to ENV
-        run: echo "TAG=${{ steps.tag.outputs.result }}" >> $GITHUB_ENV
 
       - uses: actions/checkout@v2
 
@@ -38,14 +36,9 @@ jobs:
           command: build
           args: --release --locked
 
-      - name: Compress
+      - name: Echo
         shell: bash
         run: |
-          tar -czf ${{ env.TARGET_DIR }}/subwasm-macos-${{ env.TAG }}.tar.gz -C ${{ env.TARGET_DIR }} subwasm
+           echo ${{ steps.tag.outputs.result }}
 
-      - name: Compute checksum
-        shell: bash
-        run: |
-          shasum -a 256 ${{ env.TARGET_DIR }}/subwasm-macos-${{ env.TAG }}.tar.gz > ${{ env.TARGET_DIR }}/subwasm-macos-${{ env.TAG }}.tar.gz.sha256
-          ls -al
-          cat ${{ env.TARGET_DIR }}/*{{VERSION}}*.sha256
+    
