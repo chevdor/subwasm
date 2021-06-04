@@ -1,6 +1,6 @@
 # This workflow runs on every push and checks whether everything looks good
 
-name: Quick check
+name: Build Linux Binaries
 
 on:
   push:
@@ -29,4 +29,5 @@ jobs:
       - name: Build deb
         shell: bash
         run: |
-          cargo deb
+          cargo deb -p subwasm
+          

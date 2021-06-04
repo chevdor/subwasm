@@ -1,6 +1,6 @@
 # This workflow runs on every push and checks whether everything looks good
 
-name: Quick check
+name: Build MacOS Binaries
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
         run: |
           TAG=${GITHUB_REF/refs\/tags\//}
           echo "TAG=$TAG" >> $GITHUB_ENV
-          
+
       - uses: actions/checkout@v2
 
       - name: Build release
@@ -33,14 +33,36 @@ jobs:
           command: build
           args: --release --locked
 
-      - name: Compress
-        shell: bash
-        run: |
-          tar -czf ${{ env.TARGET_DIR }}/subwasm-macos-${{ env.TAG }}.tar.gz -C ${{ env.TARGET_DIR }} subwasm
+      # - name: Compress
+      #   shell: bash
+      #   run: |
+      #     tar -czf ${{ env.TARGET_DIR }}/subwasm-macos-${{ env.TAG }}.tar.gz -C ${{ env.TARGET_DIR }} subwasm
 
-      - name: Compute checksum
-        shell: bash
+      # - name: Compute checksum
+      #   shell: bash
+      #   run: |
+      #     shasum -a 256 ${{ env.TARGET_DIR }}/subwasm-macos-${{ env.TAG }}.tar.gz > ${{ env.TARGET_DIR }}/subwasm-macos-${{ env.TAG }}.tar.gz.sha256
+      #     ls -al
+      #     cat ${{ env.TARGET_DIR }}/*${{ env.TAG }}*.sha256
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: subwasm-macos-package-${{ github.sha }}
+          path: |
+            ${{ env.TARGET_DIR }}/subwasm
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: subwasm-macos-package-${{ github.sha }}
+          path: artifact
+
+      - name: Compute sha256
         run: |
-          shasum -a 256 ${{ env.TARGET_DIR }}/subwasm-macos-${{ env.TAG }}.tar.gz > ${{ env.TARGET_DIR }}/subwasm-macos-${{ env.TAG }}.tar.gz.sha256
-          ls -al
-          cat ${{ env.TARGET_DIR }}/*{{VERSION}}*.sha256
+          ls -al artifacts
+          ZIP=`ls artifacts/*.zip | head -n 1`
+          echo $ZIP
+          shasum -a 256 artifacts/$ZIP > artifacts/$ZIP.sha256
+          cat artifacts/$ZIP.sha256
+      
