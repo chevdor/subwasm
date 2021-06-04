@@ -20,7 +20,7 @@ jobs:
           echo "TAG=$TAG" >> $GITHUB_ENV
       - uses: actions/checkout@v2
 
-      - name: Build release
+      - name: Install cargo deb
         uses: actions-rs/cargo@v1
         with:
           command: install
@@ -30,4 +30,11 @@ jobs:
         shell: bash
         run: |
           cargo deb -p subwasm
-          
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: subwasm-linux-deb-${{ github.sha }}
+          path: |
+            target/debian/*.deb
+  
