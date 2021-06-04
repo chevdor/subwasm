@@ -14,24 +14,19 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Check tooling
-        shell: bash
-        run: |
-          tar --version
-          shasum --version
-
       - name: Extract tag name
-        run: echo "TAG=${GITHUB_REF/\/refs\/tag\//}" >> $GITHUB_ENV
-
+        run: |
+          TAG=${GITHUB_REF/refs\/tags\//}
+          echo "TAG=$TAG" >> $GITHUB_ENV
       - uses: actions/checkout@v2
 
       - name: Build release
         uses: actions-rs/cargo@v1
         with:
-          command: build
-          args: --release --locked
+          command: install
+          args: cargo-deb
 
-      - name: Echo
+      - name: Build deb
         shell: bash
         run: |
-           echo ${{ env.TAG }}
+          cargo deb

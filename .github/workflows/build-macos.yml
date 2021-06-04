@@ -21,8 +21,10 @@ jobs:
           shasum --version
 
       - name: Extract tag name
-        run: echo "TAG=${GITHUB_REF/\/refs\/tag\//}" >> $GITHUB_ENV
-
+        run: |
+          TAG=${GITHUB_REF/refs\/tags\//}
+          echo "TAG=$TAG" >> $GITHUB_ENV
+          
       - uses: actions/checkout@v2
 
       - name: Build release
