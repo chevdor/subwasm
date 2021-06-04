@@ -1,0 +1,49 @@
+# This workflow runs on every push and checks whether everything looks good
+
+name: Quick check
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  macos:
+    env:
+      TARGET_DIR: target/release
+
+    runs-on: macos-latest
+    steps:
+      - name: Check tooling
+        shell: bash
+        run: |
+          tar --version
+          shasum --version
+
+      - name: Extract tag name
+        id: tag
+        uses: actions/github-script@0.2.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            return context.payload.ref.replace(/\/refs\/tags\//, '');
+
+      - uses: actions/checkout@v2
+
+      - name: Build release
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --locked
+
+      - name: Compress
+        shell: bash
+        run: |
+          tar -czf ${{ env.TARGET_DIR }}/subwasm-macos-${{ steps.tag.outputs.result }}.tar.gz -C ${{ env.TARGET_DIR }} subwasm
+
+      - name: Compute checksum
+        shell: bash
+        run: |
+          shasum -a 256 ${{ env.TARGET_DIR }}/subwasm-macos-${{ steps.tag.outputs.result }}.tar.gz > ${{ env.TARGET_DIR }}/subwasm-macos-${{ steps.tag.outputs.result }}.tar.gz.sha256
+          ls -al
+          cat ${{ env.TARGET_DIR }}/*{{VERSION}}*.sha256

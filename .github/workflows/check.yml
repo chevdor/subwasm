@@ -6,7 +6,7 @@ on:
   push
 
 jobs:
-  setup:
+  check:
     strategy:
       fail-fast: false
       matrix:
