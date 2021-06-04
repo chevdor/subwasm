@@ -32,9 +32,9 @@ mod cli_tests {
 		fn it_gets_a_runtime() {
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
 
-			let assert = cmd.args(&["get", "--output", "/tmp/runtime.wasm", "wss://rpc.polkadot.io"]).assert();
+			let assert = cmd.args(&["get", "--output", "runtime.wasm", "wss://rpc.polkadot.io"]).assert();
 			assert.success().code(0);
-			assert!(Path::new("/tmp/runtime.wasm").exists());
+			assert!(Path::new("runtime.wasm").exists());
 		}
 
 		#[test]
@@ -53,11 +53,11 @@ mod cli_tests {
 		#[test]
 		fn it_shows_meta_v12() {
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
-			let assert = cmd.args(&["get", "--chain", "polkadot"]).assert();
+			let assert = cmd.args(&["get", "--chain", "polkadot", "--output", "runtime.wasm"]).assert();
 			assert.success().code(0);
 
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
-			let assert = cmd.args(&["meta", "/tmp/runtime.wasm"]).assert();
+			let assert = cmd.args(&["meta", "runtime.wasm"]).assert();
 			assert.success().code(0);
 		}
 	}
