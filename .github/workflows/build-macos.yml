@@ -52,17 +52,16 @@ jobs:
           path: |
             ${{ env.TARGET_DIR }}/subwasm
 
-      - name: Download Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: subwasm-macos-package-${{ github.sha }}
-          path: artifacts
+      # - name: Download Artifact
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: subwasm-macos-package-${{ github.sha }}
+      #     path: artifacts
 
-      - name: Compute sha256
-        run: |
-          ls -al artifacts
-          ZIP=`ls artifacts/*.zip | head -n 1`
-          echo $ZIP
-          shasum -a 256 artifacts/$ZIP > artifacts/$ZIP.sha256
-          cat artifacts/$ZIP.sha256
-      
+      # - name: Compute sha256
+      #   run: |
+      #     ls -al artifacts
+      #     ZIP=`ls artifacts/*.zip | head -n 1`
+      #     echo $ZIP
+      #     shasum -a 256 artifacts/$ZIP > artifacts/$ZIP.sha256
+      #     cat artifacts/$ZIP.sha256
