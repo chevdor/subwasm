@@ -1,6 +1,4 @@
 mod opts;
-#[cfg(test)]
-mod test;
 
 use clap::{crate_name, crate_version, Clap};
 use env_logger::Env;

@@ -6,7 +6,6 @@ mod cli_tests {
 		use assert_cmd::Command;
 
 		#[test]
-		#[ignore = "assert_cmd bug, see https://github.com/assert-rs/assert_cmd/issues/117"]
 		fn it_shows_help() {
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
 			let assert = cmd.arg("--help").assert();
@@ -18,7 +17,6 @@ mod cli_tests {
 	mod info {
 		use assert_cmd::Command;
 		#[test]
-		#[ignore = "assert_cmd bug, see https://github.com/assert-rs/assert_cmd/issues/117"]
 		fn it_fails_without_source() {
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
 			let assert = cmd.arg("info tcp://foo.bar").assert();
@@ -31,7 +29,6 @@ mod cli_tests {
 		use assert_cmd::Command;
 		use std::path::Path;
 		#[test]
-		#[ignore = "assert_cmd bug, see https://github.com/assert-rs/assert_cmd/issues/117"]
 		fn it_gets_a_runtime() {
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
 
@@ -41,7 +38,6 @@ mod cli_tests {
 		}
 
 		#[test]
-		#[ignore = "assert_cmd bug, see https://github.com/assert-rs/assert_cmd/issues/117"]
 		fn it_fails_on_bad_chain() {
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
 
@@ -55,10 +51,12 @@ mod cli_tests {
 		use assert_cmd::Command;
 
 		#[test]
-		#[ignore = "assert_cmd bug, see https://github.com/assert-rs/assert_cmd/issues/117"]
 		fn it_shows_meta_v12() {
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
+			let assert = cmd.args(&["get", "--chain", "polkadot"]).assert();
+			assert.success().code(0);
 
+			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
 			let assert = cmd.args(&["meta", "/tmp/runtime.wasm"]).assert();
 			assert.success().code(0);
 		}
