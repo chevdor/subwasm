@@ -25,6 +25,7 @@ pub fn get_chain_urls(name: &str) -> Option<Vec<NodeEndpoint>> {
 		]),
 		"statemine" => Some(vec!["wss://kusama-shell-rpc.parity.io"]),
 		"westmint" => Some(vec!["wss://westmint-rpc.polkadot.io"]),
+		"karura" | "kar" => Some(vec!["wss://karura-rpc-0.aca-api.network"]),
 		"local" => Some(vec!["http://localhost:9933"]),
 		_ => None,
 	}
