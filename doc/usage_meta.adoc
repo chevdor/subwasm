@@ -1,9 +1,9 @@
-subwasm-metadata 0.8.0
+subwasm-metadata 0.10.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 Returns the metadata as a json object. You may also use the "meta" alias
 
 USAGE:
-    subwasm metadata [OPTIONS] [source]
+    subwasm metadata [FLAGS] [OPTIONS] [source]
 
 ARGS:
     <source>    The wasm file to load. It can be a path on your local filesystem such as
@@ -12,6 +12,7 @@ ARGS:
 
 FLAGS:
     -h, --help       Prints help information
+    -j, --json       Output as json
     -V, --version    Prints version information
 
 OPTIONS:

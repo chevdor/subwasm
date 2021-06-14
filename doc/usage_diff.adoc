@@ -1,4 +1,4 @@
-subwasm-diff 0.8.0
+subwasm-diff 0.10.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 Compare 2 runtimes
 
@@ -14,9 +14,9 @@ FLAGS:
     -V, --version    Prints version information
 
 OPTIONS:
-        --chain-a <chain-a>    Provide the name of a chain and a random url amongst a list of known
+    -a, --chain-a <chain-a>    Provide the name of a chain and a random url amongst a list of known
                                nodes will be used. If you pass a valid --chain, --url will be
                                ignored --chain local = http://localhost:9933
-        --chain-b <chain-b>    Provide the name of a chain and a random url amongst a list of known
+    -b, --chain-b <chain-b>    Provide the name of a chain and a random url amongst a list of known
                                nodes will be used. If you pass a valid --chain, --url will be
                                ignored --chain local = http://localhost:9933

@@ -2938,7 +2938,7 @@ checksum = "1e81da0851ada1f3e9d4312c704aa4f8806f0f9d69faaf8df2f3464b4a9437c2"
 
 [[package]]
 name = "subwasm"
-version = "0.9.0"
+version = "0.10.0"
 dependencies = [
  "assert_cmd",
  "clap",
@@ -2953,7 +2953,7 @@ dependencies = [
 
 [[package]]
 name = "subwasmlib"
-version = "0.9.0"
+version = "0.10.0"
 dependencies = [
  "calm_io",
  "color-eyre",
@@ -3508,7 +3508,7 @@ checksum = "d7cff876b8f18eed75a66cf49b65e7f967cb354a7aa16003fb55dbfd25b44b4f"
 
 [[package]]
 name = "wasm-loader"
-version = "0.9.0"
+version = "0.10.0"
 dependencies = [
  "hex",
  "jsonrpsee",
@@ -3522,7 +3522,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-testbed"
-version = "0.9.0"
+version = "0.10.0"
 dependencies = [
  "frame-metadata",
  "parity-scale-codec",

@@ -46,7 +46,7 @@ check: _clippy _fmt
 
 # Minor bump, can be used once the release is ready
 bump:
-	cargo workspaces version minor --no-individual-tags
+	cargo workspaces version minor --no-individual-tags --no-git-push
 
 # Prepare a MacOS Binary
 mac:
