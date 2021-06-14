@@ -2,11 +2,13 @@ use ipfs_hasher::IpfsHasher;
 use num_format::{Locale, ToFormattedString};
 use serde::Serialize;
 use std::fmt::Display;
+use wasm_loader::Compression;
 use wasm_testbed::{ReservedMeta, WasmTestBed};
 
 #[derive(Debug, Serialize)]
 pub struct RuntimeInfo {
 	size: usize,
+	compression: Compression,
 	reserved_meta: ReservedMeta,
 	reserved_meta_valid: bool,
 	metadata_version: u8,
@@ -27,6 +29,7 @@ impl RuntimeInfo {
 
 		Self {
 			size: testbed.size(),
+			compression: testbed.compression(),
 			reserved_meta: testbed.reserved_meta(),
 			reserved_meta_valid: testbed.reserved_meta_valid(),
 			metadata_version: *testbed.metadata_version(),
@@ -52,7 +55,14 @@ impl RuntimeInfo {
 impl Display for RuntimeInfo {
 	fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		let size_mb: f64 = self.size as f64 / 1024.0 / 1024.0;
+
 		writeln!(fmt, "🏋️  Runtime size:\t{:.3?} MB ({} bytes)", size_mb, self.size.to_formatted_string(&Locale::en))?;
+		if self.compression.compressed() {
+			writeln!(fmt, "🗜  Compressed:\t\tYes, {:.2}%", 100f32 - self.compression.compression_ratio() * 100f32)?;
+		} else {
+			writeln!(fmt, "🗜  Compressed:\t\tNo")?;
+		}
+
 		writeln!(
 			fmt,
 			"✨ Reserved meta:\t{} - {:02X?}",

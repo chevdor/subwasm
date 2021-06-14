@@ -9,9 +9,11 @@ repository = "https://gitlab.com/chevdor/subwasm"
 version = "0.9.0"
 
 [dependencies]
-multihash = "0.13.2"
 hex = "0.4.3"
 jsonrpsee = {git = "https://github.com/paritytech/jsonrpsee", features = ["full"]}
+log = "0.4.14"
 multibase = "0.9.1"
-tokio = { version = "1.6.0", features = ["full"] }
-
+multihash = "0.14.0"
+sp-maybe-compressed-blob = {version = "3.0.0", git = "https://github.com/paritytech/substrate/"}
+tokio = {version = "1.6.0", features = ["full"]}
+serde = {version = "1.0.126", features = ["derive"]}

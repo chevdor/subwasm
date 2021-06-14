@@ -1,24 +1,22 @@
 [package]
-name = "subwasm"
-version = "0.9.0"
 authors = ["chevdor <chevdor@gmail.com>", "Wilfried Kopp <wilfried@parity.io"]
-edition = "2018"
-license = "MIT"
 description = "subwasm is a utility that works on WASM Runtime of Substrate based chains"
+edition = "2018"
 homepage = "https://gitlab.com/chevdor/subwasm"
-repository = "https://gitlab.com/chevdor/subwasm"
-readme = "README.md"
 keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "kusama"]
+license = "MIT"
+name = "subwasm"
+readme = "README.md"
+repository = "https://gitlab.com/chevdor/subwasm"
+version = "0.9.0"
 
 [dependencies]
-color-eyre = "0.5.11"
-clap = "3.0.0-beta.2"
-subwasmlib = { path = "../lib" }
-wasm-testbed = { path = "../libs/wasm-testbed" }
-wasm-loader = { path = "../libs/wasm-loader" }
-
-# For the doc
-substrate-runtime-proposal-hash = { path = "../libs/substrate-runtime-proposal-hash", optional = true }
 assert_cmd = "1.0.4"
-log = "0.4.14"
+clap = "3.0.0-beta.2"
+color-eyre = "0.5.11"
 env_logger = "0.8.3"
+log = "0.4.14"
+substrate-runtime-proposal-hash = {path = "../libs/substrate-runtime-proposal-hash", optional = true}
+subwasmlib = {path = "../lib"}
+wasm-loader = {path = "../libs/wasm-loader"}
+wasm-testbed = {path = "../libs/wasm-testbed"}

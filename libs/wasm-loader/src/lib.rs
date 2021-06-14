@@ -1,13 +1,16 @@
+mod compression;
 mod error;
 mod node_endpoint;
 mod onchain_block;
 mod source;
 
+pub use compression::Compression;
 use error::WasmLoaderError;
 use jsonrpsee::{
 	http_client::{traits::Client, Error, HttpClientBuilder, JsonValue},
 	ws_client::WsClientBuilder,
 };
+use log::debug;
 pub use node_endpoint::NodeEndpoint;
 pub use onchain_block::{BlockRef, OnchainBlock};
 pub use source::Source;
@@ -17,7 +20,7 @@ use std::{fs, fs::File, path::Path};
 use tokio::runtime::Runtime;
 
 const CODE: &str = "0x3a636f6465"; // :code in hex
-
+pub const CODE_BLOB_BOMB_LIMIT: usize = 50 * 1024 * 1024;
 pub type WasmBytes = Vec<u8>;
 
 /// The WasmLoader is there to load wasm whether from a file, a node
@@ -25,6 +28,7 @@ pub type WasmBytes = Vec<u8>;
 ///
 pub struct WasmLoader {
 	bytes: WasmBytes,
+	compression: Compression,
 }
 
 impl WasmLoader {
@@ -68,6 +72,10 @@ impl WasmLoader {
 		buffer
 	}
 
+	pub fn compression(&self) -> Compression {
+		self.compression
+	}
+
 	/// Load wasm from a node
 	fn load_from_node(reference: &OnchainBlock) -> Result<WasmBytes, WasmLoaderError> {
 		match WasmLoader::fetch_wasm(reference) {
@@ -80,9 +88,9 @@ impl WasmLoader {
 		&self.bytes
 	}
 
-	pub fn load_from_bytes(bytes: WasmBytes) -> Result<Self, WasmLoaderError> {
+	pub fn load_from_bytes(bytes: WasmBytes, compression: Compression) -> Result<Self, WasmLoaderError> {
 		// TODO: Check the bytes for magic number and version
-		Ok(Self { bytes })
+		Ok(Self { bytes, compression })
 	}
 
 	/// Load the binary wasm from a file or from a running node via rpc
@@ -92,7 +100,18 @@ impl WasmLoader {
 			Source::Chain(n) => Self::load_from_node(n),
 		}?;
 
-		Self::load_from_bytes(bytes)
+		debug!("code size before decompression: {:?}", bytes.len());
+		let bytes_decompressed = sp_maybe_compressed_blob::decompress(&bytes, CODE_BLOB_BOMB_LIMIT).unwrap();
+
+		let compression = Compression::new(&bytes, &bytes_decompressed);
+
+		// .map_err(|e| format!("Decompression error: {:?}", e))?;
+		debug!(
+			"code size after decompression {:?}  {:?}",
+			bytes_decompressed.len(),
+			bytes_decompressed[0..64].to_vec()
+		);
+		Self::load_from_bytes(bytes_decompressed.to_vec(), compression)
 	}
 }
 

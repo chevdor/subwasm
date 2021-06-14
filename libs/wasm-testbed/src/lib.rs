@@ -23,6 +23,8 @@ pub struct WasmTestBed {
 	/// The WASM as bytes
 	wasm: Vec<u8>,
 
+	compression: Compression,
+
 	/// Prefixed version of the RuntimeMetadata.
 	runtime_metadata_prefixed: RuntimeMetadataPrefixed,
 
@@ -60,7 +62,18 @@ impl WasmTestBed {
 		let core_version = Self::get_core_version(&wasm);
 		let metadata_version = Self::get_metadata_version(&metadata);
 
-		Ok(Self { wasm, runtime_metadata_prefixed, metadata, metadata_version, core_version })
+		Ok(Self {
+			wasm,
+			runtime_metadata_prefixed,
+			metadata,
+			metadata_version,
+			core_version,
+			compression: loader.compression(),
+		})
+	}
+
+	pub fn compression(&self) -> Compression {
+		self.compression
 	}
 
 	#[allow(clippy::ptr_arg)]
