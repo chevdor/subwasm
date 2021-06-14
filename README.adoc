@@ -46,7 +46,7 @@ image::scripts/demos/gif/demo-diff.gif[title="subwasm diff"]
 
 MacOS Homebrew users can use:
 
-    brew tap chevdor/subwasm
+    brew tap chevdor/subwasm https://github.com/chevdor/subwasm
     brew install subwasm
 
 == Usage
