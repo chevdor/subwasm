@@ -60,3 +60,8 @@ mac:
 clean:
 	rm -f cli/*.wasm
 	rm -f *.wasm
+
+changelog:
+	#!/usr/bin/env bash
+	latest=$(git rev-list -n 1 latest)
+	cog changelog -f $latest
