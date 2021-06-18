@@ -14,22 +14,22 @@ Download the binary for your OS from below:
 ## From source
 
 ```
-cargo install --git https://github.com/chevdor/tera-cli
+cargo install --git https://github.com/chevdor/subwasm
 ```
 
 ## Linux
 ```
 wget {{ DEBIAN_URL }}
-dpkg -i tera-cli_linux_amd64.deb
+dpkg -i subwasm_linux_amd64.deb
 tera --help
 ```
 
 ## MacOS
 
 ```
-brew tap chevdor/tera-cli https://github.com/chevdor/tera-cli
+brew tap chevdor/subwasm https://github.com/chevdor/subwasm
 brew update
-brew install chevdor/tera-cli/tera
+brew install chevdor/subwasm/subwasm
 ```
 
 {{ CHANGELOG }}
