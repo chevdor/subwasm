@@ -1,4 +1,4 @@
-= submeta
+= subwasm
 :toc: right
 :prj: pass:q[`subwasm`]
 :cmd: subwasm

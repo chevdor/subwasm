@@ -1,4 +1,4 @@
-# submeta
+# subwasm
 
 ![Logo 1024](resources/logos/Logo_1024.png)
 
