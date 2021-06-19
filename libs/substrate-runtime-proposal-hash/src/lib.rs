@@ -31,7 +31,7 @@ pub fn concatenate_arrays<T: Clone>(x: &[T], y: &[T]) -> Vec<T> {
 
 /// Generate our result object
 pub fn get_result(buffer: &[u8]) -> SrhResult {
-	buffer.using_encoded(|ref wasm_blob| {
+	buffer.using_encoded(|wasm_blob| {
 		let hash = get_proposal_hash(wasm_blob);
 
 		SrhResult { hash, encodedd_hash: hex::encode(hash) }
@@ -46,7 +46,7 @@ pub fn get_result(buffer: &[u8]) -> SrhResult {
 /// * `ProposalHash` - The hash of the proposal as calculated on chain
 fn get_proposal_hash(wasm_blob: &[u8]) -> ProposalHash {
 	let mut hasher = VarBlake2b::new(SIZE).unwrap();
-	hasher.update(concatenate_arrays(&PREFIX, &wasm_blob));
+	hasher.update(concatenate_arrays(&PREFIX, wasm_blob));
 	let mut result: ProposalHash = [0; SIZE];
 	hasher.finalize_variable(|res| {
 		result = res.try_into().expect("slice with incorrect length");

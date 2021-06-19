@@ -9,7 +9,7 @@ fn all_numbers(v: &[Value]) -> bool {
 /// If not, return None.
 fn replace_byte_arrays(array: &mut Value) {
 	match array.as_array() {
-		Some(a) if all_numbers(&a) => *array = numbers_to_string(a),
+		Some(a) if all_numbers(a) => *array = numbers_to_string(a),
 		_ => {}
 	}
 }
@@ -23,7 +23,7 @@ fn numbers_to_string(v: &[Value]) -> Value {
 
 pub fn json_collapse_byte_arrays(json: &mut Value) {
 	match json {
-		Value::Array(a) if all_numbers(&a) => replace_byte_arrays(json),
+		Value::Array(a) if all_numbers(a) => replace_byte_arrays(json),
 		Value::Array(a) => {
 			for elem in a {
 				json_collapse_byte_arrays(elem);

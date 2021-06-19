@@ -112,7 +112,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 
 	info!("Saving runtime to {:?}", outfile);
 	let mut buffer = File::create(outfile)?;
-	buffer.write_all(&wasm)?;
+	buffer.write_all(wasm)?;
 	Ok(())
 }
 

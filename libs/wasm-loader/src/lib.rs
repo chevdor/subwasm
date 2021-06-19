@@ -49,7 +49,7 @@ impl WasmLoader {
 				rt.block_on(client.request("state_getStorage", params.into()))
 			}
 			NodeEndpoint::WebSocket(url) => {
-				let client = rt.block_on(WsClientBuilder::default().build(&url)).map_err(|_e| {
+				let client = rt.block_on(WsClientBuilder::default().build(url)).map_err(|_e| {
 					println!("{:?}", _e);
 					WasmLoaderError::WsClient()
 				})?;
@@ -96,7 +96,7 @@ impl WasmLoader {
 	/// Load the binary wasm from a file or from a running node via rpc
 	pub fn load_from_source(source: &Source) -> Result<Self, WasmLoaderError> {
 		let bytes = match source {
-			Source::File(f) => Ok(Self::load_from_file(&f)),
+			Source::File(f) => Ok(Self::load_from_file(f)),
 			Source::Chain(n) => Self::load_from_node(n),
 		}?;
 

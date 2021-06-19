@@ -118,12 +118,12 @@ impl WasmTestBed {
 		);
 
 		executor
-			.call_in_wasm(&wasm, None, method, call_data, &mut ext, sp_core::traits::MissingHostFunctions::Allow)
+			.call_in_wasm(wasm, None, method, call_data, &mut ext, sp_core::traits::MissingHostFunctions::Allow)
 			.map_err(|_| WasmTestbedError::Calling(method.to_string()))
 	}
 
 	pub fn get_core_version(wasm: &[u8]) -> Option<RuntimeVersion> {
-		let encoded = Self::call(&wasm, "Core_version", &[]).unwrap();
+		let encoded = Self::call(wasm, "Core_version", &[]).unwrap();
 		<RuntimeVersion>::decode(&mut &encoded[..]).ok()
 	}
 
