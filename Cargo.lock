@@ -1215,7 +1215,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee"
 version = "0.2.0"
-source = "git+https://github.com/paritytech/jsonrpsee#82b161424e47704048f77c909ac2f766ff6600be"
+source = "git+https://github.com/paritytech/jsonrpsee#8b65edf8ce083cd0239d6c2ffb0d6dc1a4bfd042"
 dependencies = [
  "jsonrpsee-http-client",
  "jsonrpsee-http-server",
@@ -1229,7 +1229,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-http-client"
 version = "0.2.0"
-source = "git+https://github.com/paritytech/jsonrpsee#82b161424e47704048f77c909ac2f766ff6600be"
+source = "git+https://github.com/paritytech/jsonrpsee#8b65edf8ce083cd0239d6c2ffb0d6dc1a4bfd042"
 dependencies = [
  "async-trait",
  "fnv",
@@ -1247,7 +1247,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-http-server"
 version = "0.2.0"
-source = "git+https://github.com/paritytech/jsonrpsee#82b161424e47704048f77c909ac2f766ff6600be"
+source = "git+https://github.com/paritytech/jsonrpsee#8b65edf8ce083cd0239d6c2ffb0d6dc1a4bfd042"
 dependencies = [
  "futures-channel",
  "futures-util",
@@ -1268,7 +1268,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-proc-macros"
 version = "0.2.0"
-source = "git+https://github.com/paritytech/jsonrpsee#82b161424e47704048f77c909ac2f766ff6600be"
+source = "git+https://github.com/paritytech/jsonrpsee#8b65edf8ce083cd0239d6c2ffb0d6dc1a4bfd042"
 dependencies = [
  "Inflector",
  "proc-macro-crate 1.0.0",
@@ -1280,7 +1280,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-types"
 version = "0.2.0"
-source = "git+https://github.com/paritytech/jsonrpsee#82b161424e47704048f77c909ac2f766ff6600be"
+source = "git+https://github.com/paritytech/jsonrpsee#8b65edf8ce083cd0239d6c2ffb0d6dc1a4bfd042"
 dependencies = [
  "async-trait",
  "beef",
@@ -1297,7 +1297,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-utils"
 version = "0.2.0"
-source = "git+https://github.com/paritytech/jsonrpsee#82b161424e47704048f77c909ac2f766ff6600be"
+source = "git+https://github.com/paritytech/jsonrpsee#8b65edf8ce083cd0239d6c2ffb0d6dc1a4bfd042"
 dependencies = [
  "futures-channel",
  "futures-util",
@@ -1315,7 +1315,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-ws-client"
 version = "0.2.0"
-source = "git+https://github.com/paritytech/jsonrpsee#82b161424e47704048f77c909ac2f766ff6600be"
+source = "git+https://github.com/paritytech/jsonrpsee#8b65edf8ce083cd0239d6c2ffb0d6dc1a4bfd042"
 dependencies = [
  "async-trait",
  "fnv",
@@ -1338,7 +1338,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-ws-server"
 version = "0.2.0"
-source = "git+https://github.com/paritytech/jsonrpsee#82b161424e47704048f77c909ac2f766ff6600be"
+source = "git+https://github.com/paritytech/jsonrpsee#8b65edf8ce083cd0239d6c2ffb0d6dc1a4bfd042"
 dependencies = [
  "futures-channel",
  "futures-util",
@@ -2478,9 +2478,9 @@ dependencies = [
 
 [[package]]
 name = "soketto"
-version = "0.5.0"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4919971d141dbadaa0e82b5d369e2d7666c98e4625046140615ca363e50d4daa"
+checksum = "a74e48087dbeed4833785c2f3352b59140095dc192dce966a3bfc155020a439f"
 dependencies = [
  "base64",
  "bytes",
@@ -2674,7 +2674,7 @@ dependencies = [
 [[package]]
 name = "sp-maybe-compressed-blob"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate/#f6b1197b2a773ed003fc46823cd47d82190c22b6"
+source = "git+https://github.com/paritytech/substrate/#3f7d2b7658cb87de61b75e3a782d17abd8a915d1"
 dependencies = [
  "ruzstd",
  "zstd",
@@ -2896,7 +2896,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-differ"
-version = "0.9.0"
+version = "0.12.0"
 dependencies = [
  "frame-metadata",
  "log",
@@ -2911,7 +2911,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-runtime-proposal-hash"
-version = "0.9.0"
+version = "0.12.0"
 dependencies = [
  "blake2",
  "frame-metadata",
@@ -2938,7 +2938,7 @@ checksum = "1e81da0851ada1f3e9d4312c704aa4f8806f0f9d69faaf8df2f3464b4a9437c2"
 
 [[package]]
 name = "subwasm"
-version = "0.11.0"
+version = "0.12.0"
 dependencies = [
  "assert_cmd",
  "clap",
@@ -2953,7 +2953,7 @@ dependencies = [
 
 [[package]]
 name = "subwasmlib"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "calm_io",
  "color-eyre",
@@ -3508,7 +3508,7 @@ checksum = "d7cff876b8f18eed75a66cf49b65e7f967cb354a7aa16003fb55dbfd25b44b4f"
 
 [[package]]
 name = "wasm-loader"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "hex",
  "jsonrpsee",
@@ -3522,7 +3522,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-testbed"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "frame-metadata",
  "parity-scale-codec",
