@@ -2,6 +2,7 @@
 :toc: right
 :prj: pass:q[`subwasm`]
 :cmd: subwasm
+:version: v0.12.0
 
 image::resources/logos/Logo_1024.png[align="center", width="50%"]
 
@@ -40,7 +41,10 @@ image::scripts/demos/gif/demo-diff.gif[title="subwasm diff"]
 
 === Using Cargo
 
-    cargo install --git https://github.com/chevdor/subwasm --tag <version>
+[subs="attributes+"]
+----
+cargo install --git https://github.com/chevdor/subwasm --tag {version}
+----
 
 === Homebrew
 
@@ -48,6 +52,15 @@ MacOS Homebrew users can use:
 
     brew tap chevdor/subwasm https://github.com/chevdor/subwasm
     brew install subwasm
+
+=== Linux
+
+[subs="attributes+"]
+----
+wget https://github.com/chevdor/subwasm/releases/download/{version}/subwasm_linux_amd64_{version} -O subwasm.deb
+sudo dpkg -i subwasm.deb
+subwasm --help
+----
 
 == Usage
 
