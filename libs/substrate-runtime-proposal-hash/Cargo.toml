@@ -1,11 +1,11 @@
 [package]
 authors = ["chevdor <chevdor@gmail.com>"]
 edition = "2018"
-homepage = "https://gitlab.com/chevdor/subwasm"
+homepage = "https://github.com/chevdor/subwasm"
 keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "kusama"]
 name = "substrate-runtime-proposal-hash"
 readme = "README.md"
-repository = "https://gitlab.com/chevdor/subwasm"
+repository = "https://github.com/chevdor/subwasm"
 version = "0.9.0"
 
 [dependencies]

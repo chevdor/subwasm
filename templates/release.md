@@ -20,8 +20,8 @@ cargo install --git https://github.com/chevdor/subwasm
 ## Linux
 ```
 wget {{ DEBIAN_URL }}
-dpkg -i subwasm_linux_amd64.deb
-tera --help
+sudo dpkg -i subwasm_linux_amd64*.deb
+subwasm --help
 ```
 
 ## MacOS
