@@ -23,11 +23,16 @@ const CODE: &str = "0x3a636f6465"; // :code in hex
 pub const CODE_BLOB_BOMB_LIMIT: usize = 50 * 1024 * 1024;
 pub type WasmBytes = Vec<u8>;
 
+pub enum CompressedMaybe {
+	Uncompressed(Vec<u8>),
+	Compressed((Vec<u8>, Vec<u8>)),
+}
+
 /// The WasmLoader is there to load wasm whether from a file, a node
 /// or from raw bytes. The WasmLoader cannot execute any call into the wasm.
 ///
 pub struct WasmLoader {
-	bytes: WasmBytes,
+	bytes: CompressedMaybe,
 	compression: Compression,
 }
 
@@ -84,11 +89,24 @@ impl WasmLoader {
 		}
 	}
 
+	/// Returns the 'usable' bytes. You get either the raw bytes if the
+	/// wasm was not compressed, or the decompressed bytes if the runtime
+	/// was compressed.
 	pub fn bytes(&self) -> &WasmBytes {
-		&self.bytes
+		match &self.bytes {
+			CompressedMaybe::Compressed(b) => &b.0,
+			CompressedMaybe::Uncompressed(b) => &b,
+		}
 	}
 
-	pub fn load_from_bytes(bytes: WasmBytes, compression: Compression) -> Result<Self, WasmLoaderError> {
+	pub fn uncompressed_bytes(&self) -> &WasmBytes {
+		match &self.bytes {
+			CompressedMaybe::Compressed(b) => &b.1,
+			CompressedMaybe::Uncompressed(b) => &b,
+		}
+	}
+
+	pub fn load_from_bytes(bytes: CompressedMaybe, compression: Compression) -> Result<Self, WasmLoaderError> {
 		// TODO: Check the bytes for magic number and version
 		Ok(Self { bytes, compression })
 	}
@@ -111,7 +129,14 @@ impl WasmLoader {
 			bytes_decompressed.len(),
 			bytes_decompressed[0..64].to_vec()
 		);
-		Self::load_from_bytes(bytes_decompressed.to_vec(), compression)
+
+		match compression.compressed() {
+			true => Self::load_from_bytes(
+				CompressedMaybe::Compressed((bytes_decompressed.to_vec(), bytes.to_vec())),
+				compression,
+			),
+			false => Self::load_from_bytes(CompressedMaybe::Uncompressed(bytes.to_vec()), compression),
+		}
 	}
 }
 
@@ -138,7 +163,7 @@ mod tests {
 		let loader = WasmLoader::load_from_source(&Source::Chain(reference)).unwrap();
 		let wasm = loader.bytes();
 
-		println!("wasm size: {:?}", wasm.len());
+		println!("uncompressed wasm size: {:?}", wasm.len());
 		assert!(wasm.len() > 1_000_000);
 	}
 
@@ -150,7 +175,7 @@ mod tests {
 		let reference = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: None };
 		let loader = WasmLoader::load_from_source(&Source::Chain(reference)).unwrap();
 		let wasm = loader.bytes();
-		println!("wasm size: {:?}", wasm.len());
+		println!("uncompressed wasm size: {:?}", wasm.len());
 		assert!(wasm.len() > 1_000_000);
 	}
 
