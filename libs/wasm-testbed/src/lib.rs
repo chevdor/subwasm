@@ -20,8 +20,11 @@ const META: ReservedMeta = [0x6d, 0x65, 0x74, 0x61]; // 1635018093 in decimal, '
 /// executing *some* calls into the wasm. Note that any call that most calls that requires storage will fail
 /// (for instance `balances.transfer`, `system.remark`, ...)
 pub struct WasmTestBed {
-	/// The WASM as bytes
+	/// The WASM as bytes, it has been uncompressed as needed here.
 	wasm: Vec<u8>,
+
+	/// Original bytes, before (de)compression
+	bytes: Vec<u8>,
 
 	compression: Compression,
 
@@ -64,6 +67,7 @@ impl WasmTestBed {
 
 		Ok(Self {
 			wasm,
+			bytes: loader.uncompressed_bytes().to_vec(),
 			runtime_metadata_prefixed,
 			metadata,
 			metadata_version,
@@ -91,6 +95,10 @@ impl WasmTestBed {
 
 	pub fn wasm(&self) -> &WasmBytes {
 		&self.wasm
+	}
+
+	pub fn raw_bytes(&self) -> &WasmBytes {
+		&self.bytes
 	}
 
 	pub fn get_metadata_version(data: &[u8]) -> u8 {

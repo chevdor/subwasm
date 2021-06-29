@@ -35,7 +35,7 @@ impl RuntimeInfo {
 			metadata_version: *testbed.metadata_version(),
 			core_version,
 			proposal_hash: testbed.proposal_hash(),
-			ipfs_hash: hasher.compute(testbed.wasm()),
+			ipfs_hash: hasher.compute(testbed.raw_bytes()),
 			blake2_256: testbed.blake2_256_hash(),
 		}
 	}
