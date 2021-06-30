@@ -95,14 +95,14 @@ impl WasmLoader {
 	pub fn bytes(&self) -> &WasmBytes {
 		match &self.bytes {
 			CompressedMaybe::Compressed(b) => &b.0,
-			CompressedMaybe::Uncompressed(b) => &b,
+			CompressedMaybe::Uncompressed(b) => b,
 		}
 	}
 
 	pub fn uncompressed_bytes(&self) -> &WasmBytes {
 		match &self.bytes {
 			CompressedMaybe::Compressed(b) => &b.1,
-			CompressedMaybe::Uncompressed(b) => &b,
+			CompressedMaybe::Uncompressed(b) => b,
 		}
 	}
 
