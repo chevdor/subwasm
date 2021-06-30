@@ -148,7 +148,7 @@ impl WasmTestBed {
 
 	/// Get the size of the runtime
 	pub fn size(&self) -> usize {
-		self.wasm.len()
+		self.bytes.len()
 	}
 
 	/// Get a reference to the substrate wasm's runtime metadata prefixed.
