@@ -46,16 +46,7 @@ check: _clippy _fmt
 
 # Minor bump, can be used once the release is ready
 bump:
-	cargo workspaces version minor --no-individual-tags --no-git-push
-
-# Prepare a MacOS Binary
-mac:
-	@echo Preparing artifacts for MacOS for v{{VERSION}}
-	cargo build --release
-	tar -czf {{TARGET_DIR}}/subwasm-mac-v{{VERSION}}.tar.gz -C {{TARGET_DIR}} subwasm
-	shasum -a 256 {{TARGET_DIR}}/subwasm-mac-v{{VERSION}}.tar.gz > {{TARGET_DIR}}/subwasm-mac-v{{VERSION}}.tar.gz.sha256
-	ls -al {{TARGET_DIR}}/*{{VERSION}}*
-	cat {{TARGET_DIR}}/*{{VERSION}}*.sha256
+	cargo workspaces version --no-individual-tags --no-git-push
 
 clean:
 	rm -f cli/*.wasm

@@ -768,7 +768,7 @@ dependencies = [
 [[package]]
 name = "frame-metadata"
 version = "14.0.0"
-source = "git+https://github.com/paritytech/frame-metadata?branch=main#32584873b4fc87044869bd55aa6908feb1d0084d"
+source = "git+https://github.com/paritytech/frame-metadata?branch=main#7bd13ff5059718cd0a6dbcac4dd22e1843aa5fff"
 dependencies = [
  "cfg-if 1.0.0",
  "parity-scale-codec",
@@ -2746,7 +2746,7 @@ dependencies = [
 [[package]]
 name = "sp-maybe-compressed-blob"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate/#7a3a0905eb0d8211a093f52f40b7fb8f4f034f49"
+source = "git+https://github.com/paritytech/substrate/#4e75f511e1357cf54c31d9e82d0cf3e39a2b8c28"
 dependencies = [
  "ruzstd",
  "zstd",
@@ -3010,7 +3010,7 @@ checksum = "1e81da0851ada1f3e9d4312c704aa4f8806f0f9d69faaf8df2f3464b4a9437c2"
 
 [[package]]
 name = "subwasm"
-version = "0.12.0"
+version = "0.12.1"
 dependencies = [
  "assert_cmd",
  "clap",
@@ -3025,7 +3025,7 @@ dependencies = [
 
 [[package]]
 name = "subwasmlib"
-version = "0.12.0"
+version = "0.12.1"
 dependencies = [
  "calm_io",
  "color-eyre",
@@ -3591,7 +3591,7 @@ checksum = "d7cff876b8f18eed75a66cf49b65e7f967cb354a7aa16003fb55dbfd25b44b4f"
 
 [[package]]
 name = "wasm-loader"
-version = "0.12.0"
+version = "0.12.1"
 dependencies = [
  "hex",
  "jsonrpsee",
@@ -3605,7 +3605,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-testbed"
-version = "0.12.0"
+version = "0.12.1"
 dependencies = [
  "frame-metadata",
  "parity-scale-codec",
