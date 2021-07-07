@@ -2,8 +2,11 @@
 
 name: Quick check
 
-on: push
-
+on:
+  push:
+    tags:
+      - "!v*"
+      
 jobs:
   quick_check:
     strategy:
