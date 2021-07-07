@@ -1,30 +1,24 @@
-# Description
-
-You can find the changelogs below.
-
-# Downloads
+## Downloads
 
 Download the binary for your OS from below:
-- **Linux**
-    - [Debian package]({{ DEBIAN_URL }})
-- **MacOS**
-    - [Archive]({{ MACOS_TGZ_URL }})
-# Install
+- **Linux**: [Debian package]({{ DEBIAN_URL }})
+- **MacOS**: [.tgz Archive]({{ MACOS_TGZ_URL }})
+## Install
 
-## From source
+### From source
 
 ```
 cargo install --git https://github.com/chevdor/subwasm
 ```
 
-## Linux
+### Linux
 ```
 wget {{ DEBIAN_URL }} -O subwasm.deb
 sudo dpkg -i subwasm.deb
 subwasm --help
 ```
 
-## MacOS
+### MacOS
 
 ```
 brew tap chevdor/subwasm https://github.com/chevdor/subwasm
