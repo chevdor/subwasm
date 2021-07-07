@@ -1,5 +1,7 @@
 # subwasm
 
+![badge](https://github.com/chevdor/subwasm/actions/workflows/quick-check.yml/badge.svg?branch=master)
+
 ![Logo 1024](resources/logos/Logo_1024.png)
 
 ## Introduction

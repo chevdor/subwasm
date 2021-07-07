@@ -4,6 +4,8 @@
 :cmd: subwasm
 :version: v0.12.0
 
+image::https://github.com/chevdor/subwasm/actions/workflows/quick-check.yml/badge.svg?branch=master[link="https://github.com/chevdor/subwasm/actions/workflows/quick-check.yml"]
+
 image::resources/logos/Logo_1024.png[align="center", width="50%"]
 
 == Introduction
