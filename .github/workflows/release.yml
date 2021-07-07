@@ -91,7 +91,6 @@ jobs:
         with:
           name: macos
           path: |
-            ${{ env.TARGET_DIR }}/subwasm
             ${{ env.TARGET_DIR }}/subwasm_macos.tar.gz
             ${{ env.TARGET_DIR }}/subwasm_macos.tar.gz.sha256
 
