@@ -2,12 +2,14 @@
 
 name: Quick check
 
-on:
-  push
+on: push
 
 jobs:
   quick_check:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Install Rust stable toolchain
         uses: actions-rs/toolchain@v1
@@ -24,7 +26,7 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: cargo-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-${{ matrix.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - uses: actions/checkout@v2
 
