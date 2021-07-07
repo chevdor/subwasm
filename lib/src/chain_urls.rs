@@ -23,9 +23,18 @@ pub fn get_chain_urls(name: &str) -> Option<Vec<NodeEndpoint>> {
 			"wss://rococo.api.onfinality.io/public-ws",
 			"wss://rococo.elara.patract.io",
 		]),
-		"statemine" => Some(vec!["wss://kusama-shell-rpc.parity.io"]),
-		"westmint" => Some(vec!["wss://westmint-rpc.polkadot.io"]),
-		"karura" | "kar" => Some(vec!["wss://karura-rpc-0.aca-api.network"]),
+		"statemint" => Some(vec!["wss://polkadot-statemint-rpc.paritytech.net"]),
+		"statemine" => Some(vec![
+			"wss://kusama-statemine-rpc.paritytech.net",
+			"wss://statemine.api.onfinality.io/public-ws",
+			"wss://statemine.kusama.elara.patract.io",
+		]),
+		"westmint" => Some(vec!["wss://westmint-rpc.polkadot.io", "wss://westmint.westend.elara.patract.io"]),
+		"karura" | "kar" => Some(vec![
+			"wss://karura-rpc-0.aca-api.network",
+			"wss://karura-rpc-1.aca-api.network",
+			"wss://karura-rpc-2.aca-api.network/ws",
+		]),
 		"local" => Some(vec!["http://localhost:9933"]),
 		_ => None,
 	}
