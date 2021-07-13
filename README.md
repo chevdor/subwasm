@@ -39,7 +39,7 @@ Any node can be queried to provide its current metadata. This can be displayed i
 
 ### Using Cargo
 
-    cargo install --git https://github.com/chevdor/subwasm --tag v0.12.0
+    cargo install --locked --git https://github.com/chevdor/subwasm --tag v0.12.1
 
 ### Homebrew
 
@@ -50,7 +50,7 @@ MacOS Homebrew users can use:
 
 ### Linux
 
-    wget https://github.com/chevdor/subwasm/releases/download/v0.12.0/subwasm_linux_amd64_v0.12.0 -O subwasm.deb
+    wget https://github.com/chevdor/subwasm/releases/download/v0.12.0/subwasm_linux_amd64_v0.12.1 -O subwasm.deb
     sudo dpkg -i subwasm.deb
     subwasm --help
 
@@ -58,7 +58,7 @@ MacOS Homebrew users can use:
 
 ### Command: --help
 
-    subwasm 0.12.0
+    subwasm 0.12.1
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     You can find all available commands below
 
@@ -80,7 +80,7 @@ MacOS Homebrew users can use:
 
 ### Command: get
 
-    subwasm-get 0.12.0
+    subwasm-get 0.12.1
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Get/Download the runtime wasm from a running node through rpc
 
@@ -111,7 +111,7 @@ MacOS Homebrew users can use:
 
 ### Command: info
 
-    subwasm-info 0.12.0
+    subwasm-info 0.12.1
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     The `info` command returns summarized information about a runtime
 
@@ -135,7 +135,7 @@ MacOS Homebrew users can use:
 
 ### Command: meta
 
-    subwasm-metadata 0.12.0
+    subwasm-metadata 0.12.1
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Returns the metadata as a json object. You may also use the "meta" alias
 
@@ -163,7 +163,7 @@ MacOS Homebrew users can use:
 
 ### Command: diff
 
-    subwasm-diff 0.12.0
+    subwasm-diff 0.12.1
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Compare 2 runtimes
 
