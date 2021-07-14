@@ -6,10 +6,9 @@ mod source;
 
 pub use compression::Compression;
 use error::WasmLoaderError;
-use jsonrpsee::{
-	http_client::{traits::Client, Error, HttpClientBuilder, JsonValue},
-	ws_client::WsClientBuilder,
-};
+use jsonrpsee::types::traits::Client;
+use jsonrpsee::types::{Error, JsonValue};
+use jsonrpsee::{http_client::HttpClientBuilder, ws_client::WsClientBuilder};
 use log::debug;
 pub use node_endpoint::NodeEndpoint;
 pub use onchain_block::{BlockRef, OnchainBlock};

@@ -10,10 +10,10 @@ version = "0.12.1"
 
 [dependencies]
 hex = "0.4.3"
-jsonrpsee = {git = "https://github.com/paritytech/jsonrpsee", features = ["full"]}
-log = "0.4.14"
-multibase = "0.9.1"
-multihash = "0.14.0"
-sp-maybe-compressed-blob = {version = "3.0.0", git = "https://github.com/paritytech/substrate/"}
+jsonrpsee = {git = "https://github.com/paritytech/jsonrpsee", version = "0.3.0", features = ["full"]}
+log = "0.4"
+multibase = "0.9"
+multihash = "0.14"
+serde = {version = "1.0", features = ["derive"]}
+sp-maybe-compressed-blob = {version = "4.0.0-dev", git = "https://github.com/paritytech/substrate/"}
 tokio = {version = "1.6.0", features = ["full"]}
-serde = {version = "1.0.126", features = ["derive"]}
