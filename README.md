@@ -50,7 +50,7 @@ MacOS Homebrew users can use:
 
 ### Linux
 
-    wget https://github.com/chevdor/subwasm/releases/download/v0.12.0/subwasm_linux_amd64_v0.12.1 -O subwasm.deb
+    wget https://github.com/chevdor/subwasm/releases/download/v0.12.1/subwasm_linux_amd64_v0.12.1 -O subwasm.deb
     sudo dpkg -i subwasm.deb
     subwasm --help
 
