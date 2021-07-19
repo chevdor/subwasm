@@ -9,7 +9,7 @@ repository = "https://github.com/chevdor/subwasm"
 version = "0.12.1"
 
 [dependencies]
-hex = "0.4.3"
+hex = "0.4"
 jsonrpsee = {git = "https://github.com/paritytech/jsonrpsee", version = "0.3.0", features = ["full"]}
 log = "0.4"
 multibase = "0.9"

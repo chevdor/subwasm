@@ -9,13 +9,13 @@ repository = "https://github.com/chevdor/subwasm"
 version = "0.12.1"
 
 [dependencies]
-codec = { package = "parity-scale-codec", version = "2.1.1" }
+codec = { package = "parity-scale-codec", version = "2.2" }
 frame-metadata = {package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main"}
-sc-executor = "0.9.0"
-sp-core = "3.0.0"
-sp-io = "3.0.0"
-sp-runtime = "3.0.0"
-sp-state-machine = "0.9.0"
-sp-wasm-interface = "3.0.0"
+sc-executor = "0.9"
+sp-core = "3.0"
+sp-io = "3.0"
+sp-runtime = "3.0"
+sp-state-machine = "0.9"
+sp-wasm-interface = "3.0"
 substrate-runtime-proposal-hash = {path = "../substrate-runtime-proposal-hash"}
 wasm-loader = {path = "../wasm-loader"}

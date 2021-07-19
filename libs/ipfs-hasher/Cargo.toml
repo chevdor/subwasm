@@ -7,7 +7,7 @@ version = "0.7.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ipfs-unixfs = "0.2.0"
+ipfs-unixfs = "0.2"
 
 [dev-dependencies]
 wasm-loader = {path = "../wasm-loader"}

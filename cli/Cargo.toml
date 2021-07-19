@@ -11,11 +11,11 @@ repository = "https://github.com/chevdor/subwasm"
 version = "0.12.1"
 
 [dependencies]
-assert_cmd = "1.0.4"
+assert_cmd = "1.0"
 clap = "3.0.0-beta.2"
-color-eyre = "0.5.11"
-env_logger = "0.8.3"
-log = "0.4.14"
+color-eyre = "0.5"
+env_logger = "0.9"
+log = "0.4"
 substrate-runtime-proposal-hash = {path = "../libs/substrate-runtime-proposal-hash", optional = true}
 subwasmlib = {path = "../lib"}
 wasm-loader = {path = "../libs/wasm-loader"}
