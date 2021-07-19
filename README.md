@@ -39,7 +39,7 @@ Any node can be queried to provide its current metadata. This can be displayed i
 
 ### Using Cargo
 
-    cargo install --locked --git https://github.com/chevdor/subwasm --tag v0.12.1
+    cargo install --git https://github.com/chevdor/subwasm --tag v0.12.1
 
 ### Homebrew
 
