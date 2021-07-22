@@ -74,7 +74,7 @@ impl Display for RuntimeInfo {
 		writeln!(fmt, "🎁 Metadata version:\t\tV{:?}", self.metadata_version)?;
 		writeln!(fmt, "🔥 Core version:\t\t{}", self.core_version)?;
 		writeln!(fmt, "🗳️  system.setCode hash:\t\t{}", self.proposal_hash)?;
-		writeln!(fmt, "🗳️  authorizedUpgrade hash:\t{}", self.parachain_authorize_upgrade_hash)?;
+		writeln!(fmt, "🗳️  authorizeUpgrade hash:\t{}", self.parachain_authorize_upgrade_hash)?;
 		writeln!(fmt, "#️⃣  Blake2-256 hash:\t\t{}", self.blake2_256)?;
 		let ipfs_url = format!("https://www.ipfs.io/ipfs/{cid}", cid = self.ipfs_hash);
 		writeln!(fmt, "📦 IPFS hash:\t\t\t{} ({url})", self.ipfs_hash, url = ipfs_url)?;
