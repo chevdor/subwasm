@@ -9,7 +9,7 @@ use sp_core::Hasher;
 use sp_runtime::traits::BlakeTwo256;
 use sp_wasm_interface::HostFunctions;
 use std::fmt;
-use substrate_runtime_proposal_hash::{get_result, SrhResult};
+use substrate_runtime_proposal_hash::{get_parachainsystem_authorize_upgrade, get_result, SrhResult};
 use wasm_loader::*;
 
 /// This is a "magic" number signaling that out Wasm is a substrate wasm.
@@ -168,8 +168,14 @@ impl WasmTestBed {
 
 	/// Compute the proposal hash of the runtime
 	pub fn proposal_hash(&self) -> String {
-		let result: SrhResult = get_result(&self.bytes);
+		let result: SrhResult = get_result(substrate_runtime_proposal_hash::PREFIX_SYSTEM_SETCODE, &self.wasm);
 		format!("0x{}", &result.encodedd_hash)
+	}
+
+	/// Compute the proposal hash of the runtime
+	pub fn parachain_authorize_upgrade_hash(&self) -> String {
+		let result = get_parachainsystem_authorize_upgrade(&self.bytes);
+		format!("0x{}", hex::encode(result))
 	}
 
 	/// Compute the blake2-256 hash of the runtime
