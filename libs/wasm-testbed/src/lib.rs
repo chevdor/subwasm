@@ -168,13 +168,13 @@ impl WasmTestBed {
 
 	/// Compute the proposal hash of the runtime
 	pub fn proposal_hash(&self) -> String {
-		let result: SrhResult = get_result(&self.wasm);
+		let result: SrhResult = get_result(&self.bytes);
 		format!("0x{}", &result.encodedd_hash)
 	}
 
 	/// Compute the blake2-256 hash of the runtime
 	pub fn blake2_256_hash(&self) -> String {
-		let result = BlakeTwo256::hash(&self.wasm);
+		let result = BlakeTwo256::hash(&self.bytes);
 		format!("{:?}", result)
 	}
 }
