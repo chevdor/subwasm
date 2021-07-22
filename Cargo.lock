@@ -1202,7 +1202,7 @@ dependencies = [
 
 [[package]]
 name = "ipfs-hasher"
-version = "0.7.0"
+version = "0.13.0"
 dependencies = [
  "ipfs-unixfs",
  "wasm-loader",
@@ -2785,7 +2785,7 @@ dependencies = [
 [[package]]
 name = "sp-maybe-compressed-blob"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate/#61a1d9c0587037d2df46c94d4feb7e971efaf790"
+source = "git+https://github.com/paritytech/substrate/#5b55e01046cc78e0fd2dec962f73aabce676e8c4"
 dependencies = [
  "ruzstd",
  "zstd",
@@ -3007,7 +3007,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-differ"
-version = "0.12.0"
+version = "0.13.0"
 dependencies = [
  "frame-metadata",
  "log",
@@ -3022,7 +3022,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-runtime-proposal-hash"
-version = "0.12.0"
+version = "0.13.0"
 dependencies = [
  "blake2",
  "frame-metadata",
@@ -3049,7 +3049,7 @@ checksum = "6bdef32e8150c2a081110b42772ffe7d7c9032b606bc226c8260fd97e0976601"
 
 [[package]]
 name = "subwasm"
-version = "0.12.1"
+version = "0.13.0"
 dependencies = [
  "assert_cmd",
  "clap",
@@ -3064,7 +3064,7 @@ dependencies = [
 
 [[package]]
 name = "subwasmlib"
-version = "0.12.1"
+version = "0.13.0"
 dependencies = [
  "calm_io",
  "color-eyre",
@@ -3636,7 +3636,7 @@ checksum = "d7cff876b8f18eed75a66cf49b65e7f967cb354a7aa16003fb55dbfd25b44b4f"
 
 [[package]]
 name = "wasm-loader"
-version = "0.12.1"
+version = "0.13.0"
 dependencies = [
  "hex",
  "jsonrpsee",
@@ -3650,7 +3650,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-testbed"
-version = "0.12.1"
+version = "0.13.0"
 dependencies = [
  "frame-metadata",
  "hex",

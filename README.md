@@ -58,7 +58,7 @@ MacOS Homebrew users can use:
 
 ### Command: --help
 
-    subwasm 0.12.1
+    subwasm 0.13.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     You can find all available commands below
 
@@ -80,7 +80,7 @@ MacOS Homebrew users can use:
 
 ### Command: get
 
-    subwasm-get 0.12.1
+    subwasm-get 0.13.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Get/Download the runtime wasm from a running node through rpc
 
@@ -111,7 +111,7 @@ MacOS Homebrew users can use:
 
 ### Command: info
 
-    subwasm-info 0.12.1
+    subwasm-info 0.13.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     The `info` command returns summarized information about a runtime
 
@@ -135,7 +135,7 @@ MacOS Homebrew users can use:
 
 ### Command: meta
 
-    subwasm-metadata 0.12.1
+    subwasm-metadata 0.13.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Returns the metadata as a json object. You may also use the "meta" alias
 
@@ -163,7 +163,7 @@ MacOS Homebrew users can use:
 
 ### Command: diff
 
-    subwasm-diff 0.12.1
+    subwasm-diff 0.13.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Compare 2 runtimes
 

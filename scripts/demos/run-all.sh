@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 . env.sh
 
+pushd ../../
+cargo install --path cli
+popd
+
 mkdir -p casts gif
 
 demos=( \
@@ -18,7 +22,7 @@ for demo in ${demos[@]}; do
     # SVG do not play in the readme in gitlab...
     # termtosvg render -t window_frame_js casts/$demo.cast svg/$demo.svg -D 3000
 
-    asciicast2gif casts/$demo.cast gif/$demo.gif
+    asciicast2gif -w 120 -s 1 casts/$demo.cast gif/$demo.gif
 done
 
 rm -f *.wasm
