@@ -168,7 +168,7 @@ impl WasmTestBed {
 
 	/// Compute the proposal hash of the runtime
 	pub fn proposal_hash(&self) -> String {
-		let result: SrhResult = get_result(substrate_runtime_proposal_hash::PREFIX_SYSTEM_SETCODE, &self.wasm);
+		let result: SrhResult = get_result(substrate_runtime_proposal_hash::PREFIX_SYSTEM_SETCODE, &self.bytes);
 		format!("0x{}", &result.encodedd_hash)
 	}
 
