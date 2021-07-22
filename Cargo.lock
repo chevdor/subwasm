@@ -3022,7 +3022,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-runtime-proposal-hash"
-version = "0.13.0"
+version = "0.12.0"
 dependencies = [
  "blake2",
  "frame-metadata",
