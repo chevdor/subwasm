@@ -40,6 +40,6 @@ mod test {
 		let v1 = vec![1, 2];
 		let v2 = vec![1, 2, 3, 4];
 		let c = Compression::new(&v1, &v2);
-		assert!(c.compression_ratio() == 0.50);
+		assert!((c.compression_ratio() - 0.50).abs() < 0.01);
 	}
 }

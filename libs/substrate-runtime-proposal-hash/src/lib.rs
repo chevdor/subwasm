@@ -60,7 +60,7 @@ pub fn get_system_setcode(wasm_blob: &[u8]) -> CalllHash {
 }
 
 pub fn get_parachainsystem_authorize_upgrade(wasm_blob: &[u8]) -> CalllHash {
-	let code_hash = BlakeTwo256::hash(&wasm_blob);
+	let code_hash = BlakeTwo256::hash(wasm_blob);
 	get_call_hash(PREFIX_PARACHAINSYSTEM_AUTHORIZE_UPGRADE, code_hash.as_bytes())
 }
 
