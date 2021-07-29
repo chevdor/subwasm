@@ -52,12 +52,10 @@ mod tests {
 		for url in urls {
 			let src = Source::from_str(url).unwrap();
 			match src {
-				Source::Chain(r) => {
-					match r.endpoint {
-						NodeEndpoint::WebSocket(ws) => assert_eq!(ws, url),
-						_ => unreachable!(),
-					}
-				}
+				Source::Chain(r) => match r.endpoint {
+					NodeEndpoint::WebSocket(ws) => assert_eq!(ws, url),
+					_ => unreachable!(),
+				},
 				_ => unreachable!(),
 			}
 		}

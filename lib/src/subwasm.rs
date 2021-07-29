@@ -1,4 +1,4 @@
-use crate::{convert::convert, metadata_wrapper::MetadataWrapper, print_magic_and_version, RuntimeInfo};
+use crate::{convert::convert, metadata_wrapper::MetadataWrapper, RuntimeInfo};
 use calm_io::stdoutln;
 use frame_metadata::{decode_different::DecodeDifferent, RuntimeMetadata};
 use wasm_loader::Source;
@@ -15,7 +15,7 @@ impl Subwasm {
 			.map_err(|e| {
 				eprintln!("{}", e);
 				if let WasmTestbedError::Decoding(data) = e {
-					print_magic_and_version(&data);
+					WasmTestBed::print_magic_and_version(&data);
 				}
 				const REPO: &str = env!("CARGO_PKG_REPOSITORY");
 				const NAME: &str = env!("CARGO_PKG_NAME");
@@ -36,6 +36,7 @@ impl Subwasm {
 		&self.runtime_info
 	}
 
+	// TODO: clean up
 	// pub fn display_infos(&self) -> color_eyre::Result<()> {
 	// 	let metadata = self.testbed.runtime_metadata_prefixed();
 

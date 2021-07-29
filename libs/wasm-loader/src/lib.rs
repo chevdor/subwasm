@@ -112,10 +112,12 @@ impl WasmLoader {
 
 	/// Load the binary wasm from a file or from a running node via rpc
 	pub fn load_from_source(source: &Source) -> Result<Self, WasmLoaderError> {
+		log::debug!("Loading from {:?}", source);
 		let bytes = match source {
 			Source::File(f) => Ok(Self::load_from_file(f)),
 			Source::Chain(n) => Self::load_from_node(n),
 		}?;
+		log::debug!("Loaded {:?} bytes", bytes.len());
 
 		debug!("code size before decompression: {:?}", bytes.len());
 		let bytes_decompressed = sp_maybe_compressed_blob::decompress(&bytes, CODE_BLOB_BOMB_LIMIT).unwrap();
