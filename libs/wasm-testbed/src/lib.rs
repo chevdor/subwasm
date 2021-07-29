@@ -139,7 +139,10 @@ impl WasmTestBed {
 
 		let executor = WasmExecutor::new(
 			WasmExecutionMethod::Interpreted,
-			Some(62), // at least 12 for polkadot V12/V13. V14 requires 34+.
+			// At least 12 for Polkadot V12/V13.
+			// Substrate V14 requires 34.
+			// Polkadot V14 requires 20.
+			Some(64),
 			host_functions,
 			8,
 			None,
