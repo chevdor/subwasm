@@ -64,6 +64,8 @@ impl WasmTestBed {
 			return Err(WasmTestbedError::Unsupported);
 		}
 
+		// Self::print_magic_and_version(&metadata);
+
 		let runtime_metadata_prefixed: RuntimeMetadataPrefixed =
 			scale::Decode::decode(&mut &metadata[..]).map_err(|e| {
 				log::error!("e = {:#?}", e);
@@ -251,6 +253,82 @@ mod tests {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14)));
 			// println!("runtime = {:?}", runtime);
 			assert!(runtime.is_ok());
+			println!("runtime = {:?}", &runtime);
+			let runtime = runtime.unwrap();
+			// println!("{:#?}", runtime);
+			assert!(runtime.metadata_version == 14);
+			// assert!(runtime.core_version.is_none());
+			assert!(runtime.is_supported());
+		}
+	}
+
+	#[cfg(test)]
+	mod runtime_versions {
+		use super::*;
+
+		#[test]
+		#[ignore = "local data"]
+		fn it_loads_v12() {
+			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap();
+			println!("{:#?}", runtime);
+			assert!(runtime.metadata_version == 12);
+			assert!(runtime.is_supported());
+		}
+
+		#[test]
+		#[ignore = "local data"]
+		fn it_loads_v13() {
+			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).unwrap();
+			println!("{:#?}", runtime);
+			assert!(runtime.metadata_version == 13);
+			assert!(runtime.is_supported());
+		}
+
+		#[test]
+		#[ignore = "local data"]
+		fn it_loads_v14() {
+			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14)));
+			// println!("runtime = {:?}", runtime);
+			assert!(runtime.is_ok());
+			println!("runtime = {:?}", &runtime);
+			let runtime = runtime.unwrap();
+			// println!("{:#?}", runtime);
+			assert!(runtime.metadata_version == 14);
+			// assert!(runtime.core_version.is_none());
+			assert!(runtime.is_supported());
+		}
+	}
+
+	#[cfg(test)]
+	mod runtime_versions {
+		use super::*;
+
+		#[test]
+		#[ignore = "local data"]
+		fn it_loads_v12() {
+			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap();
+			println!("{:#?}", runtime);
+			assert!(runtime.metadata_version == 12);
+			assert!(runtime.core_version.is_some());
+			assert!(runtime.is_supported());
+		}
+
+		#[test]
+		#[ignore = "local data"]
+		fn it_loads_v13() {
+			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).unwrap();
+			println!("{:#?}", runtime);
+			assert!(runtime.metadata_version == 13);
+			assert!(runtime.core_version.is_some());
+			assert!(runtime.is_supported());
+		}
+
+		#[test]
+		#[ignore = "local data"]
+		fn it_loads_v14() {
+			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14)));
+			// println!("runtime = {:?}", runtime);
+			assert!(!runtime.is_err());
 			println!("runtime = {:?}", &runtime);
 			let runtime = runtime.unwrap();
 			// println!("{:#?}", runtime);
