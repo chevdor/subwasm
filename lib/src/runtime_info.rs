@@ -77,7 +77,7 @@ impl Display for RuntimeInfo {
 		writeln!(fmt, "🗳️  authorizeUpgrade hash:\t{}", self.parachain_authorize_upgrade_hash)?;
 		writeln!(fmt, "#️⃣  Blake2-256 hash:\t\t{}", self.blake2_256)?;
 		let ipfs_url = format!("https://www.ipfs.io/ipfs/{cid}", cid = self.ipfs_hash);
-		writeln!(fmt, "📦 IPFS hash:\t\t\t{} ({url})", self.ipfs_hash, url = ipfs_url)?;
+		writeln!(fmt, "📦 IPFS:\t\t\t{url}", url = ipfs_url)?;
 		Ok(())
 	}
 }
