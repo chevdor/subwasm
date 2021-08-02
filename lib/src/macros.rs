@@ -9,7 +9,7 @@ macro_rules! display_module {
 			})
 			.expect("pallet not found in metadata");
 
-		println!("📦 {:02}: {}", meta.index, convert(&meta.name));
+		println!("Module {:02}: {}", meta.index, convert(&meta.name));
 
 		println!("🤙 Calls:");
 		if let Some(item) = meta.calls.as_ref() {
@@ -19,11 +19,32 @@ macro_rules! display_module {
 			}
 		}
 
-		println!("⚡️ Events:");
+		println!("📢 Events:");
 		if let Some(item) = meta.event.as_ref() {
 			let events = convert(&item);
 			for event in events {
 				println!("  - {}", convert(&event.name));
+			}
+		}
+	};
+}
+
+#[macro_export]
+macro_rules! display_v14_meta {
+	($v14: expr, $meta: expr, $type: ident) => {
+		if let Some(metadata) = &$meta.$type {
+			let type_id = metadata.ty.id();
+			// log::debug!("type_id: {:?}", type_id);
+			let registry = &$v14.types;
+
+			let type_info = registry.resolve(type_id).unwrap();
+			match type_info.type_def() {
+				scale_info::TypeDef::Variant(v) => {
+					for variant in v.variants() {
+						println!("- {:?}: {}", variant.index(), variant.name());
+					}
+				}
+				o => panic!("Unsupported variant: {:?}", o),
 			}
 		}
 	};

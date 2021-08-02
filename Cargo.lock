@@ -3074,6 +3074,7 @@ dependencies = [
  "log",
  "num-format",
  "rand 0.8.4",
+ "scale-info",
  "serde",
  "serde_json",
  "substrate-differ",
