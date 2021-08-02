@@ -67,6 +67,7 @@ changelog:
 md:
     #!/usr/bin/env bash
     asciidoctor -b docbook -a leveloffset=+1 -o - README_src.adoc | pandoc   --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook - > README.md
+<<<<<<< HEAD
 
 release: check test_all bump demos doc md
 
@@ -85,3 +86,16 @@ tag:
     echo Tagging version v$TAG
     git tag "v$TAG" -f
     git tag | sort -Vr | head
+||||||| parent of e976789 (test: add script for test coverage)
+=======
+
+coverage:
+	#!/usr/bin/env bash
+	export RUSTFLAGS="-Zinstrument-coverage"
+	export LLVM_PROFILE_FILE="chevdor-%p-%m.profraw"
+	cargo +nightly build
+	cargo +nightly test
+	grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./target/debug/coverage/
+	open target/debug/coverage/index.html
+	find . -type f -name '*.profraw' -exec rm '{}' \;
+>>>>>>> e976789 (test: add script for test coverage)
