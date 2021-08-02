@@ -2,8 +2,8 @@ VERSION := `toml get cli/Cargo.toml package.version | jq -r`
 TARGET_DIR := "target/release"
 
 # List available commands
-default:
-  @just --list --unsorted
+_default:
+  just --choose --chooser "fzf +s -x --tac --cycle"
 
 # Test / watch
 test:
@@ -61,3 +61,13 @@ changelog:
 md:
     #!/usr/bin/env bash
     asciidoctor -b docbook -a leveloffset=+1 -o - README_src.adoc | pandoc   --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook - > README.md
+
+coverage:
+	#!/usr/bin/env bash
+	export RUSTFLAGS="-Zinstrument-coverage"
+	export LLVM_PROFILE_FILE="chevdor-%p-%m.profraw"
+	cargo +nightly build
+	cargo +nightly test
+	grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./target/debug/coverage/
+	open target/debug/coverage/index.html
+	find . -type f -name '*.profraw' -exec rm '{}' \;
