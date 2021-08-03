@@ -119,12 +119,20 @@ pub fn diff(src_a: Source, src_b: Source) {
 	runtime_diff.compare();
 
 	// ==== RAW
-	let metadiff = RawDiffer::new(runtime_a.metadata(), runtime_b.metadata());
-	metadiff.compare(RawDifferOptions::default());
+	if runtime_a.metadata_version() == runtime_b.metadata_version() {
+		let metadiff = RawDiffer::new(runtime_a.metadata(), runtime_b.metadata());
+		metadiff.compare(RawDifferOptions::default());
+	} else {
+		println!("Raw comparison of runtimes with different version is not supported.");
+	}
 
 	// ==== PARTIAL
-	// let partial = MetadataPartialDiffer::new(runtime_a.metadata(), runtime_b.metadata());
-	// partial.compare();
+	if runtime_a.metadata_version() == runtime_b.metadata_version() {
+		// let partial = MetadataPartialDiffer::new(runtime_a.metadata(), runtime_b.metadata());
+		// partial.compare();
+	} else {
+		println!("Partial comparison of runtimes with different version is not supported.");
+	}
 }
 
 /// Compress a given runtime into a new file. You cannot compress
