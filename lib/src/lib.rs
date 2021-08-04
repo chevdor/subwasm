@@ -1,6 +1,7 @@
 use std::path::Path;
 use std::{fs::File, path::PathBuf};
 use std::{io::prelude::*, str::FromStr};
+use substrate_differ::differs::partial_differ::MetadataPartialDiffer;
 use substrate_differ::differs::raw_differ::RawDiffer;
 use substrate_differ::differs::raw_differ_options::RawDifferOptions;
 use substrate_differ::differs::summary_differ::RuntimeSummaryDiffer;
@@ -128,8 +129,8 @@ pub fn diff(src_a: Source, src_b: Source) {
 
 	// ==== PARTIAL
 	if runtime_a.metadata_version() == runtime_b.metadata_version() {
-		// let partial = MetadataPartialDiffer::new(runtime_a.metadata(), runtime_b.metadata());
-		// partial.compare();
+		let partial = MetadataPartialDiffer::new(runtime_a.metadata(), runtime_b.metadata());
+		partial.compare_reduced();
 	} else {
 		println!("Partial comparison of runtimes with different version is not supported.");
 	}
