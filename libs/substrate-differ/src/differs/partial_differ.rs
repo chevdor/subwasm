@@ -1,72 +1,16 @@
 use frame_metadata::{v13, v14, RuntimeMetadata, RuntimeMetadata::*};
-use serde_json::Value;
+use super::reduced_runtime::ReducedRuntime;
+
+/// Placeholder, here we can convert from V14 to V13
+pub fn convert(_r: &v14::RuntimeMetadataV14) -> Option<v13::RuntimeMetadataV13> {
+	todo!()
+}
 
 // TODO: not great, we could already enforce here getting the same variant
 pub struct MetadataPartialDiffer {
 	r1: ReducedRuntime,
 	r2: ReducedRuntime,
 	version: u8,
-}
-
-struct PalletItem {
-	index: Option<u32>,
-	name: String,
-	signature: Box<dyn Signature>,
-}
-
-enum PalletItemType {
-	Call(PalletItem),
-	Storage(PalletItem),
-	Event(PalletItem),
-	Error(PalletItem),
-	Constant(PalletItem),
-}
-
-// type Signature = Box<dyn MySerialize>;
-
-pub struct ReducedPallet {
-	items: Option<Vec<PalletItemType>>,
-}
-
-// Hasher / PartialEq / Serialize
-// Eq, Encode,
-
-pub struct ReducedRuntime {
-	pallets: Option<Vec<ReducedPallet>>,
-}
-
-impl ReducedRuntime {
-	pub fn from_v13(v13: &v13::RuntimeMetadataV13) -> Result<Self, String> {
-		todo!()
-	}
-	pub fn from_v14(v14: &v14::RuntimeMetadataV14) -> Result<Self, String> {
-		todo!()
-	}
-}
-
-impl From<&RuntimeMetadata> for ReducedRuntime {
-	fn from(runtime_metadata: &RuntimeMetadata) -> Self {
-		match &runtime_metadata {
-			V13(v13) => ReducedRuntime::from_v13(v13).unwrap(),
-			V14(v14) => ReducedRuntime::from_v14(v14).unwrap(),
-			_ => panic!("Unsupported metadata version"),
-		}
-	}
-}
-
-trait Signature {
-	fn serialize(&self) -> Value;
-}
-
-impl<S: serde::ser::Serialize> Signature for S {
-	fn serialize(&self) -> Value {
-		serde_json::to_value(self).unwrap()
-	}
-}
-
-/// Placeholder, here we can convert from V14 to V13
-pub fn convert(_r: &v14::RuntimeMetadataV14) -> Option<v13::RuntimeMetadataV13> {
-	todo!()
 }
 
 impl<'a> MetadataPartialDiffer {
@@ -108,7 +52,7 @@ impl<'a> MetadataPartialDiffer {
 }
 
 #[cfg(test)]
-mod test_super {
+mod test_load_runtimes {
 	use super::MetadataPartialDiffer;
 	use std::path::PathBuf;
 	use wasm_loader::Source;
@@ -121,37 +65,36 @@ mod test_super {
 
 	#[test]
 	#[ignore = "local data"]
-	#[should_panic]
 	fn test_different_variants() {
 		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).unwrap();
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
-		let _differ = MetadataPartialDiffer::new(a.metadata(),b.metadata());
+		let _differ = MetadataPartialDiffer::new(a.metadata(), b.metadata());
 	}
 
-// 	#[test]
-// 	#[ignore = "local data"]
-// 	fn test_v13() {
-// 		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).unwrap();
-// 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).unwrap();
-// 		let _differ = MetadataPartialDiffer::new(&a.metadata(), &b.metadata());
-// 	}
+	#[test]
+	#[ignore = "local data"]
+	fn test_v13() {
+		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).unwrap();
+		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).unwrap();
+		let _differ = MetadataPartialDiffer::new(a.metadata(), b.metadata());
+	}
 
-// 	#[test]
-// 	#[ignore = "local data"]
-// 	fn test_v14() {
-// 		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
-// 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
-// 		let _differ = MetadataPartialDiffer::new(&a.metadata(), &b.metadata());
-// 	}
+	#[test]
+	#[ignore = "local data"]
+	fn test_v14() {
+		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
+		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
+		let _differ = MetadataPartialDiffer::new(a.metadata(), b.metadata());
+	}
 
-// 	#[test]
-// 	#[ignore = "local data"]
-// 	#[should_panic]
-// 	fn test_unsupported_variants() {
-// 		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap();
-// 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap();
-// 		let _differ = MetadataPartialDiffer::new(&a.metadata(), &b.metadata());
-// 	}
+	#[test]
+	#[ignore = "local data"]
+	#[should_panic]
+	fn test_unsupported_variants() {
+		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap();
+		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap();
+		let _differ = MetadataPartialDiffer::new(a.metadata(), b.metadata());
+	}
 }
 
 // #[cfg(test)]
