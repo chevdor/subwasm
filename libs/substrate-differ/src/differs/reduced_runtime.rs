@@ -1,11 +1,10 @@
 use frame_metadata::{
-	v12::ModuleMetadata,
-	v13::{self, FunctionMetadata},
+	v13::{self},
 	v14, RuntimeMetadata,
 	RuntimeMetadata::*,
 };
 use serde_json::Value;
-use std::{convert::TryFrom, fmt::Debug};
+use std::fmt::Debug;
 
 use crate::differs::utils::convert;
 
@@ -17,7 +16,20 @@ struct PalletData {
 	name: String,
 	index: Option<u32>,
 	signature: Box<dyn Signature>,
-	// TODO: remove signature, add arguments + documentation
+	// TODO: remove signature, add arguments
+	// documentation: Option<Vec<String>>,
+}
+
+impl PartialEq for PalletData {
+	fn eq(&self, other: &Self) -> bool {
+		self.name == other.name
+			&& self.index == other.index
+			&& self.signature.serialize() == other.signature.serialize()
+	}
+
+	fn ne(&self, other: &Self) -> bool {
+		!self.eq(other)
+	}
 }
 
 impl Debug for dyn Signature {
@@ -26,7 +38,22 @@ impl Debug for dyn Signature {
 	}
 }
 
-#[derive(Debug)]
+trait Signature {
+	fn serialize(&self) -> Value;
+	// fn eq(&self, other: &dyn Signature) -> bool;
+}
+
+impl<S: serde::ser::Serialize> Signature for S {
+	fn serialize(&self) -> Value {
+		serde_json::to_value(self).unwrap()
+	}
+
+	// fn eq(&self, other: &dyn Signature) -> bool {
+	// 	serde_json::to_value(self) == serde_json::to_value(other)
+	// }
+}
+
+#[derive(Debug, PartialEq)]
 enum PalletItem {
 	Call(PalletData),
 	Event(PalletData),
@@ -41,6 +68,7 @@ impl From<&v13::FunctionMetadata> for PalletData {
 		let index = None;
 		let name = convert(&f.name).to_string();
 		let signature = Box::new(f.serialize());
+
 		PalletData { index, name, signature }
 	}
 }
@@ -113,7 +141,7 @@ impl From<&v13::StorageEntryMetadata> for PalletItem {
 
 // type Signature = Box<dyn MySerialize>;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct ReducedPallet {
 	/// Index of the pallet
 	index: u32,
@@ -285,16 +313,6 @@ impl From<&RuntimeMetadata> for ReducedRuntime {
 			V14(v14) => ReducedRuntime::from_v14(v14).unwrap(),
 			_ => panic!("Unsupported metadata version"),
 		}
-	}
-}
-
-trait Signature {
-	fn serialize(&self) -> Value;
-}
-
-impl<S: serde::ser::Serialize> Signature for S {
-	fn serialize(&self) -> Value {
-		serde_json::to_value(self).unwrap()
 	}
 }
 
