@@ -35,6 +35,7 @@ enum PalletItem {
 	Constant(PalletData),
 }
 
+// TODO those impl can be made with a macro
 impl From<&v13::FunctionMetadata> for PalletData {
 	fn from(f: &v13::FunctionMetadata) -> Self {
 		let index = None;
@@ -61,7 +62,52 @@ impl From<&v13::EventMetadata> for PalletData {
 
 impl From<&v13::EventMetadata> for PalletItem {
 	fn from(fn_meta: &v13::EventMetadata) -> Self {
-		PalletItem::Call(fn_meta.into())
+		PalletItem::Event(fn_meta.into())
+	}
+}
+
+impl From<&v13::ErrorMetadata> for PalletData {
+	fn from(f: &v13::ErrorMetadata) -> Self {
+		let index = None;
+		let name = convert(&f.name).to_string();
+		let signature = Box::new(f.serialize());
+		PalletData { index, name, signature }
+	}
+}
+
+impl From<&v13::ErrorMetadata> for PalletItem {
+	fn from(fn_meta: &v13::ErrorMetadata) -> Self {
+		PalletItem::Error(fn_meta.into())
+	}
+}
+
+impl From<&v13::ModuleConstantMetadata> for PalletData {
+	fn from(f: &v13::ModuleConstantMetadata) -> Self {
+		let index = None;
+		let name = convert(&f.name).to_string();
+		let signature = Box::new(f.serialize());
+		PalletData { index, name, signature }
+	}
+}
+
+impl From<&v13::ModuleConstantMetadata> for PalletItem {
+	fn from(fn_meta: &v13::ModuleConstantMetadata) -> Self {
+		PalletItem::Constant(fn_meta.into())
+	}
+}
+
+impl From<&v13::StorageEntryMetadata> for PalletData {
+	fn from(f: &v13::StorageEntryMetadata) -> Self {
+		let index = None;
+		let name = convert(&f.name).to_string();
+		let signature = Box::new(f.serialize());
+		PalletData { index, name, signature }
+	}
+}
+
+impl From<&v13::StorageEntryMetadata> for PalletItem {
+	fn from(fn_meta: &v13::StorageEntryMetadata) -> Self {
+		PalletItem::Storage(fn_meta.into())
 	}
 }
 
@@ -132,34 +178,30 @@ impl From<&v13::ModuleMetadata> for ReducedPallet {
 			items.append(&mut c);
 		}
 
-		// Errors
-		// let errors = match &v13.errors {
-		// 	Some(items) => {
-		// 		let pallet_items: Vec<PalletItem> = convert(items).iter().map(|c| c.into()).collect();
-		// 		Some(pallet_items)
-		// 	},
-		// 	None => None,
-		// };
-
-		// if let Some(mut c) = events {
-		// 	println!("events = {:?}", c.len());
-		// 	items.append(&mut c);
-		// }
-
-		// TODO
 		// Storage
-		// let storage_items = match &v13.storage.as_ref() {
-		// 	Some(items) => {
-		// 		let pallet_items: Vec<PalletItem> = convert(items).iter().map(|c| c.into()).collect();
-		// 		Some(pallet_items)
-		// 	}
-		// 	None => None,
-		// };
-		// if let Some(mut c) = storage_items {
-		// 	println!("storage = {:?}", c.len());
-		// 	items.append(&mut c);
-		// }
-		// println!("pallet_items = {:#?}", pallet_items);
+		let storage = match &v13.storage.as_ref() {
+			Some(items) => {
+				// let pallet_items: Vec<PalletItem> = convert(items).iter().map(|c| c.into()).collect();
+				let pallet_items: Vec<PalletItem> = convert(&convert(items).entries).iter().map(|c| c.into()).collect();
+				Some(pallet_items)
+			}
+			None => None,
+		};
+
+		if let Some(mut c) = storage {
+			println!("storage = {:?}", c.len());
+			items.append(&mut c);
+		}
+
+		// Errors
+		let mut errors: Vec<PalletItem> = convert(&v13.errors).iter().map(|c| c.into()).collect();
+		println!("errors = {:?}", errors.len());
+		items.append(&mut errors);
+
+		// Constants
+		let mut constants: Vec<PalletItem> = convert(&v13.constants).iter().map(|c| c.into()).collect();
+		println!("constants = {:?}", constants.len());
+		items.append(&mut constants);
 
 		let items = if items.is_empty() { None } else { Some(items) };
 
@@ -278,7 +320,7 @@ mod test_reduced_conversion {
 			V13(v13) => {
 				let rrtm = ReducedRuntime::new();
 				let rrtm = reduced_runtime::ReducedRuntime::from_v13(v13); // TODO: fix that
-				// println!("rrtm = {:#?}", rrtm);
+				println!("rrtm = {:#?}", rrtm);
 				assert!(rrtm.is_ok());
 			}
 			_ => unreachable!(),
