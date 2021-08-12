@@ -1,7 +1,7 @@
 use std::path::Path;
 use std::{fs::File, path::PathBuf};
 use std::{io::prelude::*, str::FromStr};
-use substrate_differ::differs::partial::partial_differ::MetadataPartialDiffer;
+use substrate_differ::differs::partial_differ::MetadataPartialDiffer;
 use substrate_differ::differs::raw_differ::RawDiffer;
 use substrate_differ::differs::raw_differ_options::RawDifferOptions;
 use substrate_differ::differs::summary_differ::RuntimeSummaryDiffer;
