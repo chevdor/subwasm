@@ -3,20 +3,30 @@ use frame_metadata::{
 	v14, RuntimeMetadata,
 	RuntimeMetadata::*,
 };
-use serde_json::{Map, Value};
-use std::{convert::TryInto, fmt::Debug};
+use serde_json::Value;
+use std::fmt::Debug;
 
 use crate::differs::utils::convert;
 
 pub type ReducedRuntimeError = String;
 pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
 
+/// PalletData is a a struct describing calls, events, constants, errors and storage.
+/// Those are mentioned as `items` below. Items/PalletData are usually handled through
+/// as a variant of `PalletItem`. The reduction however, gives them the same common struct.
 #[derive(Debug)]
 struct PalletData {
+	/// The name of the Pallet Item
 	name: String,
+
+	/// An optionnal index, some variants of `PalletItem` don't have an index
 	index: Option<u32>,
+
+	/// The signature contains what is relevant and critical to the item.
 	signature: Box<dyn Signature>,
-	// TODO: remove signature, add arguments
+
+	/// The documentation is usually not critical to the comparison
+	/// of runtimes, so it is kept aside.
 	documentation: Vec<String>,
 }
 
@@ -25,10 +35,6 @@ impl PartialEq for PalletData {
 		self.name == other.name
 			&& self.index == other.index
 			&& self.signature.serialize() == other.signature.serialize()
-	}
-
-	fn ne(&self, other: &Self) -> bool {
-		!self.eq(other)
 	}
 }
 
@@ -40,17 +46,12 @@ impl Debug for dyn Signature {
 
 trait Signature {
 	fn serialize(&self) -> Value;
-	// fn eq(&self, other: &dyn Signature) -> bool;
 }
 
 impl<S: serde::ser::Serialize> Signature for S {
 	fn serialize(&self) -> Value {
 		serde_json::to_value(self).unwrap()
 	}
-
-	// fn eq(&self, other: &dyn Signature) -> bool {
-	// 	serde_json::to_value(self) == serde_json::to_value(other)
-	// }
 }
 
 #[derive(Debug, PartialEq)]
@@ -61,11 +62,6 @@ enum PalletItem {
 	Storage(PalletData),
 	Constant(PalletData),
 }
-
-// fn is_documentation(v: &Map<String, Value>) -> bool {
-//     println!("v = {:?}", v);
-// 	true
-// }
 
 fn purge_v13_keys(value: Value) -> Value {
 	let mut serialized = value.serialize();
@@ -98,13 +94,6 @@ impl From<&v13::EventMetadata> for PalletData {
 	fn from(f: &v13::EventMetadata) -> Self {
 		let index = None;
 		let name = convert(&f.name).to_string();
-		// let mut serialized = f.serialize();
-		// let mut c = serialized.as_object_mut().unwrap().to_owned(); // TODO: could use a match and prevent the unwrap()
-		// println!("c before = {:?}", &c);
-		// let _ = c.remove("name");
-		// let _ = c.remove("documentation");
-		// println!("c after = {:?}", &c);
-
 		let signature = Box::new(purge_v13_keys(f.serialize()));
 		let documentation = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
 		PalletData { index, name, signature, documentation }
@@ -165,8 +154,6 @@ impl From<&v13::StorageEntryMetadata> for PalletItem {
 	}
 }
 
-// type Signature = Box<dyn MySerialize>;
-
 #[derive(Debug, PartialEq)]
 pub struct ReducedPallet {
 	/// Index of the pallet
@@ -180,17 +167,7 @@ pub struct ReducedPallet {
 }
 
 // TODO: impl Iterator
-impl ReducedPallet {
-	fn new(index: u32, name: String) -> Self {
-		Self { index, name, items: Some(Vec::new()) }
-	}
-
-	fn push(self, item: PalletItem) {
-		if let Some(mut items) = self.items {
-			items.push(item);
-		}
-	}
-}
+impl ReducedPallet {}
 
 #[cfg(test)]
 impl Default for ReducedPallet {
@@ -269,17 +246,10 @@ impl From<&v14::PalletMetadata> for ReducedPallet {
 	}
 }
 
-// impl TryFrom<ModuleMetadata> for ReducedPallet {
-//    	type Error = &'static str;
-
-//     fn try_from(m: ModuleMetadata) -> std::result::Result<Self, Self::Error> {
-//         todo!()
-//     }
-// }
-
 #[derive(Debug)]
 pub struct ReducedRuntime {
-	pallets: Option<Vec<ReducedPallet>>, // TODO: Could use a BTreeMap
+	// TODO: remove pub once we have the iterator
+	pub pallets: Option<Vec<ReducedPallet>>, // TODO: Could use a BTreeMap
 }
 
 impl From<Vec<ReducedPallet>> for ReducedRuntime {
@@ -290,39 +260,12 @@ impl From<Vec<ReducedPallet>> for ReducedRuntime {
 
 // TODO: impl Iterator
 impl ReducedRuntime {
-	fn new() -> Self {
-		Self { pallets: Some(Vec::new()) }
-	}
-
-	/// Add a reduced pallet to the reduced runtime
-	fn push(self, pallet: ReducedPallet) {
-		if let Some(mut pallets) = self.pallets {
-			pallets.push(pallet);
-		}
-	}
-
 	/// Reduce a RuntimeMetadataV13 into a normalized ReducedRuntime
 	pub fn from_v13(v13: &v13::RuntimeMetadataV13) -> Result<Self> {
-		// println!("v13 = {:?}", v13);
-		// let r_rtm = Self::new();
-
 		let mut pallets = convert(&v13.modules).clone();
 		pallets.sort_by(|a, b| a.index.cmp(&b.index)); // TODO: we may not need to sort
-
 		let reduced_pallets: Vec<ReducedPallet> = pallets.iter().map(|p| p.into()).collect();
 		let r_rtm: ReducedRuntime = reduced_pallets.into();
-
-		// 	let r_pallet = ReducedPallet::new(pallet.index.into(), convert(&pallet.name).clone());
-		// 	r_rtm.push(r_pallet);
-		// });
-
-		// pallets.iter().for_each(|pallet| {
-		// 	let r_pallet = ReducedPallet::new(pallet.index.into(), convert(&pallet.name).clone());
-		// 	r_rtm.push(r_pallet);
-		// });
-
-		// todo!("I am on it !")
-		// Err(String::from("tbd"))
 		Ok(r_rtm)
 	}
 
@@ -362,10 +305,9 @@ mod test_reduced_conversion {
 		let metadata = testbed.metadata();
 		match metadata {
 			V13(v13) => {
-				let rrtm = ReducedRuntime::new();
-				let rrtm = reduced_runtime::ReducedRuntime::from_v13(v13);
+				let rrtm = reduced_runtime::ReducedRuntime::from_v13(v13).unwrap();
 				println!("rrtm = {:#?}", rrtm);
-				assert!(rrtm.is_ok());
+				assert_eq!(rrtm.pallets.unwrap().len(), 9);
 			}
 			_ => unreachable!(),
 		}
