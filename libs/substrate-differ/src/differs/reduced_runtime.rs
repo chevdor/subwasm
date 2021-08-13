@@ -3,8 +3,8 @@ use frame_metadata::{
 	v14, RuntimeMetadata,
 	RuntimeMetadata::*,
 };
-use serde_json::Value;
-use std::fmt::Debug;
+use serde_json::{Map, Value};
+use std::{convert::TryInto, fmt::Debug};
 
 use crate::differs::utils::convert;
 
@@ -17,7 +17,7 @@ struct PalletData {
 	index: Option<u32>,
 	signature: Box<dyn Signature>,
 	// TODO: remove signature, add arguments
-	// documentation: Option<Vec<String>>,
+	documentation: Vec<String>,
 }
 
 impl PartialEq for PalletData {
@@ -62,14 +62,29 @@ enum PalletItem {
 	Constant(PalletData),
 }
 
+// fn is_documentation(v: &Map<String, Value>) -> bool {
+//     println!("v = {:?}", v);
+// 	true
+// }
+
+fn purge_v13_keys(value: Value) -> Value {
+	let mut serialized = value.serialize();
+	let mut c = serialized.as_object_mut().unwrap().to_owned(); // TODO: could use a match and prevent the unwrap()
+	println!("c before = {:?}", &c);
+	let _ = c.remove("name");
+	let _ = c.remove("documentation");
+	println!("c after = {:?}", &c);
+	Value::Object(c)
+}
+
 // TODO those impl can be made with a macro
 impl From<&v13::FunctionMetadata> for PalletData {
 	fn from(f: &v13::FunctionMetadata) -> Self {
 		let index = None;
 		let name = convert(&f.name).to_string();
-		let signature = Box::new(f.serialize());
-
-		PalletData { index, name, signature }
+		let signature = Box::new(purge_v13_keys(f.serialize()));
+		let documentation = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
+		PalletData { index, name, signature, documentation }
 	}
 }
 
@@ -83,8 +98,16 @@ impl From<&v13::EventMetadata> for PalletData {
 	fn from(f: &v13::EventMetadata) -> Self {
 		let index = None;
 		let name = convert(&f.name).to_string();
-		let signature = Box::new(f.serialize());
-		PalletData { index, name, signature }
+		// let mut serialized = f.serialize();
+		// let mut c = serialized.as_object_mut().unwrap().to_owned(); // TODO: could use a match and prevent the unwrap()
+		// println!("c before = {:?}", &c);
+		// let _ = c.remove("name");
+		// let _ = c.remove("documentation");
+		// println!("c after = {:?}", &c);
+
+		let signature = Box::new(purge_v13_keys(f.serialize()));
+		let documentation = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
+		PalletData { index, name, signature, documentation }
 	}
 }
 
@@ -98,8 +121,9 @@ impl From<&v13::ErrorMetadata> for PalletData {
 	fn from(f: &v13::ErrorMetadata) -> Self {
 		let index = None;
 		let name = convert(&f.name).to_string();
-		let signature = Box::new(f.serialize());
-		PalletData { index, name, signature }
+		let signature = Box::new(purge_v13_keys(f.serialize()));
+		let documentation = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
+		PalletData { index, name, signature, documentation }
 	}
 }
 
@@ -113,8 +137,9 @@ impl From<&v13::ModuleConstantMetadata> for PalletData {
 	fn from(f: &v13::ModuleConstantMetadata) -> Self {
 		let index = None;
 		let name = convert(&f.name).to_string();
-		let signature = Box::new(f.serialize());
-		PalletData { index, name, signature }
+		let signature = Box::new(purge_v13_keys(f.serialize()));
+		let documentation = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
+		PalletData { index, name, signature, documentation }
 	}
 }
 
@@ -128,8 +153,9 @@ impl From<&v13::StorageEntryMetadata> for PalletData {
 	fn from(f: &v13::StorageEntryMetadata) -> Self {
 		let index = None;
 		let name = convert(&f.name).to_string();
-		let signature = Box::new(f.serialize());
-		PalletData { index, name, signature }
+		let signature = Box::new(purge_v13_keys(f.serialize()));
+		let documentation = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
+		PalletData { index, name, signature, documentation }
 	}
 }
 
@@ -337,7 +363,7 @@ mod test_reduced_conversion {
 		match metadata {
 			V13(v13) => {
 				let rrtm = ReducedRuntime::new();
-				let rrtm = reduced_runtime::ReducedRuntime::from_v13(v13); // TODO: fix that
+				let rrtm = reduced_runtime::ReducedRuntime::from_v13(v13);
 				println!("rrtm = {:#?}", rrtm);
 				assert!(rrtm.is_ok());
 			}
