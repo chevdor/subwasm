@@ -112,10 +112,12 @@ impl WasmLoader {
 
 	/// Load the binary wasm from a file or from a running node via rpc
 	pub fn load_from_source(source: &Source) -> Result<Self, WasmLoaderError> {
+		log::debug!("Loading from {:?}", source);
 		let bytes = match source {
 			Source::File(f) => Ok(Self::load_from_file(f)),
 			Source::Chain(n) => Self::load_from_node(n),
 		}?;
+		log::debug!("Loaded {:?} bytes", bytes.len());
 
 		debug!("code size before decompression: {:?}", bytes.len());
 		let bytes_decompressed = sp_maybe_compressed_blob::decompress(&bytes, CODE_BLOB_BOMB_LIMIT).unwrap();
@@ -145,17 +147,17 @@ mod tests {
 	use std::env;
 
 	fn get_http_node() -> String {
-		env::var("POLKADOT_HTTP").unwrap_or("http://localhost:9933".to_string())
+		env::var("POLKADOT_HTTP").unwrap_or_else(|_| "http://localhost:9933".to_string())
 	}
 
 	fn get_ws_node() -> String {
-		env::var("POLKADOT_WS").unwrap_or("ws://localhost:9944".to_string())
+		env::var("POLKADOT_WS").unwrap_or_else(|_| "ws://localhost:9944".to_string())
 	}
 
 	#[test]
 	#[ignore = "needs node"]
 	fn it_fetches_a_wasm_from_node_via_http() {
-		let url = String::from(get_http_node());
+		let url = get_http_node();
 		println!("Connecting to {:?}", &url);
 		let reference = OnchainBlock { endpoint: NodeEndpoint::Http(url), block_ref: None };
 
@@ -169,7 +171,7 @@ mod tests {
 	#[test]
 	#[ignore = "needs node"]
 	fn it_fetches_a_wasm_from_node_via_ws() {
-		let url = String::from(get_ws_node());
+		let url = get_ws_node();
 		println!("Connecting to {:?}", &url);
 		let reference = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: None };
 		let loader = WasmLoader::load_from_source(&Source::Chain(reference)).unwrap();
@@ -183,7 +185,7 @@ mod tests {
 	fn it_fetches_wasm_from_a_given_block() {
 		const POLKADOT_BLOCK20: &str = "0x4d6a0bca208b85d41833a7f35cf73d1ae6974f4bad8ab576e2c3f751d691fe6c"; // Polkadot Block #20
 
-		let url = String::from(get_ws_node());
+		let url = get_ws_node();
 		println!("Connecting to {:?}", &url);
 		let latest = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url.clone()), block_ref: None };
 		let older =

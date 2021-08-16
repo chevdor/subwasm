@@ -16,4 +16,4 @@ multibase = "0.9"
 multihash = "0.14"
 serde = {version = "1.0", features = ["derive"]}
 sp-maybe-compressed-blob = {version = "4.0.0-dev", git = "https://github.com/paritytech/substrate/"}
-tokio = {version = "1.6.0", features = ["full"]}
+tokio = {version = "1.9", features = ["full"]}

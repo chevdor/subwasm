@@ -16,7 +16,7 @@ impl fmt::Display for WasmTestbedError {
 			WasmTestbedError::Unsupported => write!(f, "This runtime is not supported"),
 
 			WasmTestbedError::Decoding(bytes) => {
-				write!(f, "Runtime could not be decoded. Here are the first bytes:\n{:02x?}", bytes[0..64].to_vec())
+				write!(f, "The runtime could not be decoded. Here are the first bytes:\n{:02x?}", bytes[0..64].to_vec())
 			}
 
 			WasmTestbedError::Calling(method) => write!(f, "Failed calling: {:?}", method),

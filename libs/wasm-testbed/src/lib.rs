@@ -1,10 +1,10 @@
 mod error;
 mod logger_mock;
 
-use codec::Decode;
 pub use error::{Result, WasmTestbedError};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadataPrefixed};
 use sc_executor::{CallInWasm, RuntimeVersion, WasmExecutionMethod, WasmExecutor};
+use scale::Decode;
 use sp_core::Hasher;
 use sp_runtime::traits::BlakeTwo256;
 use sp_wasm_interface::HostFunctions;
@@ -52,15 +52,24 @@ impl fmt::Debug for WasmTestBed {
 impl WasmTestBed {
 	pub fn new(source: &Source) -> Result<Self> {
 		let loader = WasmLoader::load_from_source(source).map_err(|_| WasmTestbedError::Loading(source.to_string()))?;
+
 		let wasm = loader.bytes().to_vec();
-		let encoded = Self::call(&wasm, "Metadata_metadata", &[])?;
-		let metadata = <Vec<u8>>::decode(&mut &encoded[..]).map_err(|_| WasmTestbedError::Decoding(encoded))?;
+		let metadata_encoded = Self::call(&wasm, "Metadata_metadata", &[])?;
+		let metadata =
+			<Vec<u8>>::decode(&mut &metadata_encoded[..]).map_err(|_| WasmTestbedError::Decoding(metadata_encoded))?;
+
+		log::debug!("decoded_metadata bytes, length: {}", metadata.len());
 		if !WasmTestBed::is_substrate_wasm(&metadata) {
 			return Err(WasmTestbedError::Unsupported);
 		}
 
+		// Self::print_magic_and_version(&metadata);
+
 		let runtime_metadata_prefixed: RuntimeMetadataPrefixed =
-			codec::Decode::decode(&mut &metadata[..]).map_err(|_| WasmTestbedError::Decoding(metadata.clone()))?;
+			scale::Decode::decode(&mut &metadata[..]).map_err(|e| {
+				log::error!("e = {:#?}", e);
+				WasmTestbedError::Decoding(metadata[..128].to_vec())
+			})?;
 
 		let core_version = Self::get_core_version(&wasm);
 		let metadata_version = Self::get_metadata_version(&metadata);
@@ -74,6 +83,17 @@ impl WasmTestBed {
 			core_version,
 			compression: loader.compression(),
 		})
+	}
+
+	/// Prints magic and version from a raw buffer.
+	/// This is mainly used for troubleshooting when decoding
+	/// a wasm fails.
+	pub fn print_magic_and_version(data: &[u8]) {
+		let is_substrate_wasm = WasmTestBed::is_substrate_wasm(&data.to_vec());
+		let version = WasmTestBed::get_metadata_version(data);
+
+		println!("✨ Magic number found: {}", if is_substrate_wasm { "YES" } else { "NO" });
+		println!("#️⃣ Extracted version : V{:?}", version);
 	}
 
 	pub fn compression(&self) -> Compression {
@@ -119,7 +139,10 @@ impl WasmTestBed {
 
 		let executor = WasmExecutor::new(
 			WasmExecutionMethod::Interpreted,
-			Some(32), // at least 12 for polkadot v12
+			// At least 12 for Polkadot V12/V13.
+			// Substrate V14 requires 34.
+			// Polkadot V14 requires 20.
+			Some(64),
 			host_functions,
 			8,
 			None,
@@ -199,14 +222,56 @@ mod tests {
 	const POLKADOT_29_V12: &str = "../../data/polkadot/polkadot-29.wasm";
 	const WESTEND_V30_V12: &str = "../../data/westend/westend_runtime-v900-rc2.compact.wasm";
 	const POLKADOT_DEV: &str = "../../data/v900/polkadot-dev-v900-rc1.wasm";
+	const RUNTIME_V12: &str = "../../data/runtime_v12.wasm";
+	const RUNTIME_V13: &str = "../../data/runtime_v13.wasm";
+	const RUNTIME_V14: &str = "../../data/runtime_v14.wasm";
 
 	#[cfg(test)]
 	mod common {
 		use super::*;
 		#[test]
-		#[ignore = "need data"]
+		#[ignore = "local data"]
 		fn it_panics_on_non_substrate_wasm() {
 			assert!(WasmTestBed::new(&Source::File(PathBuf::from(WASM_NO_SUBSTRATE))).is_err());
+		}
+	}
+
+	#[cfg(test)]
+	mod runtime_versions {
+		use super::*;
+
+		#[test]
+		#[ignore = "local data"]
+		fn it_loads_v12() {
+			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap();
+			println!("{:#?}", runtime);
+			assert!(runtime.metadata_version == 12);
+			assert!(runtime.core_version.is_some());
+			assert!(runtime.is_supported());
+		}
+
+		#[test]
+		#[ignore = "local data"]
+		fn it_loads_v13() {
+			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).unwrap();
+			println!("{:#?}", runtime);
+			assert!(runtime.metadata_version == 13);
+			assert!(runtime.core_version.is_some());
+			assert!(runtime.is_supported());
+		}
+
+		#[test]
+		#[ignore = "local data"]
+		fn it_loads_v14() {
+			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14)));
+			// println!("runtime = {:?}", runtime);
+			assert!(!runtime.is_err());
+			println!("runtime = {:?}", &runtime);
+			let runtime = runtime.unwrap();
+			// println!("{:#?}", runtime);
+			assert!(runtime.metadata_version == 14);
+			// assert!(runtime.core_version.is_none());
+			assert!(runtime.is_supported());
 		}
 	}
 
@@ -216,7 +281,7 @@ mod tests {
 
 		#[test]
 		#[should_panic]
-		#[ignore = "need data"]
+		#[ignore = "local data"]
 		fn it_loads_kusama_1050() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_1050_VXX))).unwrap();
 			println!("{:#?}", runtime);
@@ -227,7 +292,7 @@ mod tests {
 
 		#[test]
 		#[should_panic]
-		#[ignore = "need data"]
+		#[ignore = "local data"]
 		fn it_loads_kusama_1062() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_1062_VXX))).unwrap();
 			println!("{:#?}", runtime);
@@ -244,7 +309,7 @@ mod tests {
 		}
 
 		#[test]
-		#[ignore = "need data"]
+		#[ignore = "local data"]
 		fn it_loads_kusama_metdata() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_2030_VXX))).unwrap();
 			println!("{:#?}", runtime);
@@ -253,7 +318,7 @@ mod tests {
 		}
 
 		#[test]
-		#[ignore = "need data"]
+		#[ignore = "local data"]
 		fn it_loads_kusama_2030() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_2030_VXX))).unwrap();
 			println!("{:#?}", runtime);
@@ -276,7 +341,7 @@ mod tests {
 
 		#[test]
 		#[should_panic]
-		#[ignore = "need data"]
+		#[ignore = "local data"]
 		fn it_loads_polkadot_01() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(POLKADOT_01_V11))).unwrap();
 			println!("{:#?}", runtime);
@@ -285,7 +350,7 @@ mod tests {
 		}
 
 		#[test]
-		#[ignore = "need data"]
+		#[ignore = "local data"]
 		fn it_loads_polkadot_29() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(POLKADOT_29_V12))).unwrap();
 
@@ -301,7 +366,7 @@ mod tests {
 		use super::*;
 
 		#[test]
-		#[ignore = "need data"]
+		#[ignore = "local data"]
 		fn it_loads_westend_30() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(WESTEND_V30_V12))).unwrap();
 			println!("{:#?}", runtime);
@@ -315,7 +380,7 @@ mod tests {
 		use super::*;
 
 		#[test]
-		#[ignore = "need data"]
+		#[ignore = "local data"]
 		fn it_loads_polkadot_dev() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(POLKADOT_DEV))).unwrap();
 			println!("{:#?}", runtime);

@@ -60,14 +60,14 @@ mod tests {
 	fn it_works_with_single_block() {
 		let hasher = IpfsHasher::default();
 		let ipfs = hasher.compute(b"foobar\n");
-		assert!(ipfs.to_string() == "QmRgutAxd8t7oGkSm4wmeuByG6M51wcTso6cubDdQtuEfL");
+		assert!(ipfs == "QmRgutAxd8t7oGkSm4wmeuByG6M51wcTso6cubDdQtuEfL");
 	}
 
 	#[test]
 	fn it_works_with_multiple_blocks() {
 		let hasher = IpfsHasher::new(2);
 		let ipfs = hasher.compute(b"foobar\n");
-		assert!(ipfs.to_string() == "QmRJHYTNvC3hmd9gJQARxLR1QMEincccBV53bBw524yyq6");
+		assert!(ipfs == "QmRJHYTNvC3hmd9gJQARxLR1QMEincccBV53bBw524yyq6");
 	}
 
 	#[test]

@@ -52,33 +52,27 @@ mod tests {
 		for url in urls {
 			let src = Source::from_str(url).unwrap();
 			match src {
-				Source::Chain(r) => {
-					match r.endpoint {
-						NodeEndpoint::WebSocket(_ws) => assert!(true),
-						_ => assert!(false),
-					}
-					assert!(true)
-				}
-				_ => assert!(false),
+				Source::Chain(r) => match r.endpoint {
+					NodeEndpoint::WebSocket(ws) => assert_eq!(ws, url),
+					_ => unreachable!(),
+				},
+				_ => unreachable!(),
 			}
 		}
 	}
 
 	#[test]
-	fn it_converts_from_ws_http() {
+	fn it_converts_from_http() {
 		let urls = vec!["http://localhost:9933", "https://localhost:9933"];
 
 		for url in urls {
 			let src = Source::from_str(url).unwrap();
 			match src {
-				Source::Chain(r) => {
-					match r.endpoint {
-						NodeEndpoint::Http(_http) => assert!(true),
-						_ => assert!(false),
-					}
-					assert!(true)
-				}
-				_ => assert!(false),
+				Source::Chain(r) => match r.endpoint {
+					NodeEndpoint::Http(http) => assert_eq!(http, url),
+					_ => unreachable!(),
+				},
+				_ => unreachable!(),
 			}
 		}
 	}

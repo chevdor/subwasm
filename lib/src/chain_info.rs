@@ -86,7 +86,7 @@ mod tests {
 		assert!(ChainInfo::from_str("local").unwrap().endpoints.len() == 1);
 		assert!(ChainInfo::from_str("polkadot").is_ok());
 		assert!(ChainInfo::from_str("PolkaDOT").is_ok());
-		assert!(ChainInfo::from_str("polkadot").unwrap().endpoints.len() > 0);
+		assert!(!ChainInfo::from_str("polkadot").unwrap().endpoints.is_empty());
 		assert!(ChainInfo::from_str("foobar").is_err());
 	}
 
