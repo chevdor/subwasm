@@ -1,25 +1,27 @@
-subwasm-metadata 0.13.1
+subwasm-metadata 0.14.0
+
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+
 Returns the metadata as a json object. You may also use the "meta" alias
 
 USAGE:
-    subwasm metadata [FLAGS] [OPTIONS] [source]
+    subwasm metadata [FLAGS] [OPTIONS] [SOURCE]
 
 ARGS:
-    <source>    The wasm file to load. It can be a path on your local filesystem such as
+    <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
                 /tmp/runtime.wasm or a node url such as http://localhost:9933 or
                 ws://localhost:9944 [default: runtime_000.wasm]
 
 FLAGS:
-    -h, --help       Prints help information
+    -h, --help       Print help information
     -j, --json       Output as json
-    -V, --version    Prints version information
+    -V, --version    Print version information
 
 OPTIONS:
-    -b, --block <block>      
-        --chain <chain>      Provide the name of a chain and a random url amongst a list of known
+    -b, --block <BLOCK>      
+        --chain <CHAIN>      Provide the name of a chain and a random url amongst a list of known
                              nodes will be used. If you pass a valid --chain, --url will be ignored
                              --chain local = http://localhost:9933
-    -m, --module <module>    Without this flag, the metadata command display the list of all
+    -m, --module <MODULE>    Without this flag, the metadata command display the list of all
                              modules. Using this flag, you will only see the module of your choice
                              and a few details about it

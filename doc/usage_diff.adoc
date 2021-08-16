@@ -1,22 +1,24 @@
-subwasm-diff 0.13.1
+subwasm-diff 0.14.0
+
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+
 Compare 2 runtimes
 
 USAGE:
     subwasm diff [OPTIONS] [ARGS]
 
 ARGS:
-    <src-a>    The first source [default: runtime_000.wasm]
-    <src-b>    The second source [default: runtime_001.wasm]
+    <SRC_A>    The first source [default: runtime_000.wasm]
+    <SRC_B>    The second source [default: runtime_001.wasm]
 
 FLAGS:
-    -h, --help       Prints help information
-    -V, --version    Prints version information
+    -h, --help       Print help information
+    -V, --version    Print version information
 
 OPTIONS:
-    -a, --chain-a <chain-a>    Provide the name of a chain and a random url amongst a list of known
+    -a, --chain-a <CHAIN_A>    Provide the name of a chain and a random url amongst a list of known
                                nodes will be used. If you pass a valid --chain, --url will be
                                ignored --chain local = http://localhost:9933
-    -b, --chain-b <chain-b>    Provide the name of a chain and a random url amongst a list of known
+    -b, --chain-b <CHAIN_B>    Provide the name of a chain and a random url amongst a list of known
                                nodes will be used. If you pass a valid --chain, --url will be
                                ignored --chain local = http://localhost:9933

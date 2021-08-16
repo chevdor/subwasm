@@ -58,52 +58,56 @@ MacOS Homebrew users can use:
 
 ### Command: --help
 
-    subwasm 0.13.1
+    subwasm 0.14.0
+
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+
     You can find all available commands below
 
     USAGE:
         subwasm [FLAGS] <SUBCOMMAND>
 
     FLAGS:
-        -h, --help       Prints help information
+        -h, --help       Print help information
         -j, --json       Output as json
         -q, --quiet      Less output
-        -V, --version    Prints version information
+        -V, --version    Print version information
 
     SUBCOMMANDS:
         diff        Compare 2 runtimes
         get         Get/Download the runtime wasm from a running node through rpc
-        help        Prints this message or the help of the given subcommand(s)
+        help        Print this message or the help of the given subcommand(s)
         info        The `info` command returns summarized information about a runtime
         metadata    Returns the metadata as a json object. You may also use the "meta" alias
 
 ### Command: get
 
-    subwasm-get 0.13.1
+    subwasm-get 0.14.0
+
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+
     Get/Download the runtime wasm from a running node through rpc
 
     USAGE:
-        subwasm get [OPTIONS] [url]
+        subwasm get [OPTIONS] [URL]
 
     ARGS:
-        <url>    The node url. Example: ws://localhost:9944 or http://localhost:9933 [default:
+        <URL>    The node url. Example: ws://localhost:9944 or http://localhost:9933 [default:
                  http://localhost:9933]
 
     FLAGS:
-        -h, --help       Prints help information
-        -V, --version    Prints version information
+        -h, --help       Print help information
+        -V, --version    Print version information
 
     OPTIONS:
-        -b, --block <block>      The optional block where to fetch the runtime. That allows fetching
+        -b, --block <BLOCK>      The optional block where to fetch the runtime. That allows fetching
                                  older runtimes but you will need to connect to archive nodes.
                                  Currently, you must pass a block hash. Passing the block numbers is not
                                  supported
-            --chain <chain>      Provide the name of a chain and a random url amongst a list of known
+            --chain <CHAIN>      Provide the name of a chain and a random url amongst a list of known
                                  nodes will be used. If you pass a valid --chain, --url will be ignored
                                  --chain local = http://localhost:9933
-        -o, --output <output>    You may specifiy the output filename where the runtime will be saved.
+        -o, --output <OUTPUT>    You may specifiy the output filename where the runtime will be saved.
                                  If not provided, we will figure out an appropriate default name based
                                  on a counter: runtime_NNN.wasm where NNN is incrementing to make sure
                                  you do not override previous runtime. If you specify an existing file
@@ -111,78 +115,84 @@ MacOS Homebrew users can use:
 
 ### Command: info
 
-    subwasm-info 0.13.1
+    subwasm-info 0.14.0
+
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+
     The `info` command returns summarized information about a runtime
 
     USAGE:
-        subwasm info [OPTIONS] [source]
+        subwasm info [OPTIONS] [SOURCE]
 
     ARGS:
-        <source>    The wasm file to load. It can be a path on your local filesystem such as
+        <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
                     /tmp/runtime.wasm or a node url such as http://localhost:9933 or
                     ws://localhost:9944 [default: runtime_000.wasm]
 
     FLAGS:
-        -h, --help       Prints help information
-        -V, --version    Prints version information
+        -h, --help       Print help information
+        -V, --version    Print version information
 
     OPTIONS:
-        -b, --block <block>
-            --chain <chain>    Provide the name of a chain and a random url amongst a list of known
+        -b, --block <BLOCK>
+            --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known
                                nodes will be used. If you pass a valid --chain, --url will be ignored
                                --chain local = http://localhost:9933
 
 ### Command: meta
 
-    subwasm-metadata 0.13.1
+    subwasm-metadata 0.14.0
+
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+
     Returns the metadata as a json object. You may also use the "meta" alias
 
     USAGE:
-        subwasm metadata [FLAGS] [OPTIONS] [source]
+        subwasm metadata [FLAGS] [OPTIONS] [SOURCE]
 
     ARGS:
-        <source>    The wasm file to load. It can be a path on your local filesystem such as
+        <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
                     /tmp/runtime.wasm or a node url such as http://localhost:9933 or
                     ws://localhost:9944 [default: runtime_000.wasm]
 
     FLAGS:
-        -h, --help       Prints help information
+        -h, --help       Print help information
         -j, --json       Output as json
-        -V, --version    Prints version information
+        -V, --version    Print version information
 
     OPTIONS:
-        -b, --block <block>
-            --chain <chain>      Provide the name of a chain and a random url amongst a list of known
+        -b, --block <BLOCK>
+            --chain <CHAIN>      Provide the name of a chain and a random url amongst a list of known
                                  nodes will be used. If you pass a valid --chain, --url will be ignored
                                  --chain local = http://localhost:9933
-        -m, --module <module>    Without this flag, the metadata command display the list of all
+        -m, --module <MODULE>    Without this flag, the metadata command display the list of all
                                  modules. Using this flag, you will only see the module of your choice
                                  and a few details about it
 
 ### Command: diff
 
-    subwasm-diff 0.13.1
+    subwasm-diff 0.14.0
+
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+
     Compare 2 runtimes
 
     USAGE:
         subwasm diff [OPTIONS] [ARGS]
 
     ARGS:
-        <src-a>    The first source [default: runtime_000.wasm]
-        <src-b>    The second source [default: runtime_001.wasm]
+        <SRC_A>    The first source [default: runtime_000.wasm]
+        <SRC_B>    The second source [default: runtime_001.wasm]
 
     FLAGS:
-        -h, --help       Prints help information
-        -V, --version    Prints version information
+        -h, --help       Print help information
+        -V, --version    Print version information
 
     OPTIONS:
-        -a, --chain-a <chain-a>    Provide the name of a chain and a random url amongst a list of known
+        -a, --chain-a <CHAIN_A>    Provide the name of a chain and a random url amongst a list of known
                                    nodes will be used. If you pass a valid --chain, --url will be
                                    ignored --chain local = http://localhost:9933
-        -b, --chain-b <chain-b>    Provide the name of a chain and a random url amongst a list of known
+        -b, --chain-b <CHAIN_B>    Provide the name of a chain and a random url amongst a list of known
                                    nodes will be used. If you pass a valid --chain, --url will be
                                    ignored --chain local = http://localhost:9933
 

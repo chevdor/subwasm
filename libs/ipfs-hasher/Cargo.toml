@@ -2,7 +2,7 @@
 authors = ["Wilfried Kopp <wilfried@parity.io>"]
 edition = "2018"
 name = "ipfs-hasher"
-version = "0.13.0"
+version = "0.14.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

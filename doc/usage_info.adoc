@@ -1,21 +1,23 @@
-subwasm-info 0.13.1
+subwasm-info 0.14.0
+
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+
 The `info` command returns summarized information about a runtime
 
 USAGE:
-    subwasm info [OPTIONS] [source]
+    subwasm info [OPTIONS] [SOURCE]
 
 ARGS:
-    <source>    The wasm file to load. It can be a path on your local filesystem such as
+    <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
                 /tmp/runtime.wasm or a node url such as http://localhost:9933 or
                 ws://localhost:9944 [default: runtime_000.wasm]
 
 FLAGS:
-    -h, --help       Prints help information
-    -V, --version    Prints version information
+    -h, --help       Print help information
+    -V, --version    Print version information
 
 OPTIONS:
-    -b, --block <block>    
-        --chain <chain>    Provide the name of a chain and a random url amongst a list of known
+    -b, --block <BLOCK>    
+        --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known
                            nodes will be used. If you pass a valid --chain, --url will be ignored
                            --chain local = http://localhost:9933
