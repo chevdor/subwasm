@@ -22,7 +22,7 @@ _usage:
 	cargo run -q -- diff --help > doc/usage_diff.adoc
 
 # Generate documentation
-doc:_usage
+doc: _usage
 	cargo doc -p subwasm -p subwasmlib -p wasm-loader -p wasm-testbed -p substrate-runtime-proposal-hash --all-features --no-deps
 
 # Generate demos
@@ -46,7 +46,7 @@ check: _clippy _fmt
 
 # Minor bump, can be used once the release is ready
 bump:
-	cargo workspaces version --no-individual-tags --no-git-push
+	cargo workspaces version --no-git-commit
 
 clean:
 	rm -f cli/*.wasm
@@ -61,6 +61,8 @@ changelog:
 md:
     #!/usr/bin/env bash
     asciidoctor -b docbook -a leveloffset=+1 -o - README_src.adoc | pandoc   --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook - > README.md
+
+release: check test_all bump doc md
 
 coverage:
 	#!/usr/bin/env bash
