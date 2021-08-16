@@ -3014,6 +3014,7 @@ dependencies = [
  "log",
  "num-format",
  "rustc-serialize",
+ "scale-info",
  "serde",
  "serde_json",
  "treediff",
