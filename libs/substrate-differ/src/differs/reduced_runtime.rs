@@ -1,8 +1,9 @@
 use frame_metadata::{
 	v13::{self},
-	v14, RuntimeMetadata,
+	v14, PalletCallMetadata, RuntimeMetadata,
 	RuntimeMetadata::*,
 };
+// use scale_info::form::{Form, PortableForm};
 use serde_json::Value;
 use std::fmt::Debug;
 
@@ -20,7 +21,7 @@ struct PalletData {
 	name: String,
 
 	/// An optionnal index, some variants of `PalletItem` don't have an index
-	index: Option<u32>,
+	index: Option<Index>,
 
 	/// The signature contains what is relevant and critical to the item.
 	signature: Box<dyn Signature>,
@@ -154,10 +155,32 @@ impl From<&v13::StorageEntryMetadata> for PalletItem {
 	}
 }
 
+impl From<&v14::PalletCallMetadata> for PalletData {
+	fn from(f: &v14::PalletCallMetadata) -> Self {
+		let meta_type = f.ty;
+		let ti= meta_type.type_info();
+		
+		let index = meta_type.type_id();
+		let name = String::new();
+
+
+		todo!();
+		// PalletData { index, name, signature, documentation }
+	}
+}
+
+impl From<&v14::PalletCallMetadata> for PalletItem {
+	fn from(fn_meta: &v14::PalletCallMetadata) -> Self {
+		PalletItem::Call(fn_meta.into())
+	}
+}
+
+type Index = u32;
+
 #[derive(Debug, PartialEq)]
 pub struct ReducedPallet {
 	/// Index of the pallet
-	index: u32,
+	index: Index,
 
 	/// Name of the pallet
 	name: String,
@@ -241,8 +264,16 @@ impl From<&v13::ModuleMetadata> for ReducedPallet {
 }
 
 impl From<&v14::PalletMetadata> for ReducedPallet {
-	fn from(_: &v14::PalletMetadata) -> Self {
-		todo!()
+	fn from(pallet: &v14::PalletMetadata) -> Self {
+		let index: Index = pallet.index.into();
+		let name = pallet.name.to_string();
+		let mut content: Vec<PalletItem> = Vec::new();
+
+		todo!("You are here :)");
+		// let calls = pallet.calls.as_ref().map(|call| call.into()).collect();
+
+		// let items = Some(calls); // TODO:
+		// Self { index, name, items }
 	}
 }
 
@@ -297,7 +328,7 @@ mod test_reduced_conversion {
 	// TODO: put that in a 	single file
 	// const RUNTIME_V12: &str = "../../data/runtime_v12.wasm";
 	const RUNTIME_V13: &str = "../../data/runtime_v13.wasm";
-	// const RUNTIME_V14: &str = "../../data/runtime_v14.wasm";
+	const RUNTIME_V14: &str = "../../data/runtime_v14.wasm";
 
 	#[test]
 	fn test_reduce_v13() {
@@ -314,8 +345,16 @@ mod test_reduced_conversion {
 	}
 
 	#[test]
-	#[ignore = "todo"]
 	fn test_reduce_v14() {
-		todo!();
+		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
+		let metadata = testbed.metadata();
+		match metadata {
+			V14(v14) => {
+				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
+				println!("rrtm = {:#?}", rrtm);
+				assert_eq!(rrtm.pallets.unwrap().len(), 9);
+			}
+			_ => unreachable!(),
+		}
 	}
 }

@@ -1,16 +1,18 @@
-use frame_metadata::{v13, v14, RuntimeMetadata, RuntimeMetadata::*};
 use super::reduced_runtime::ReducedRuntime;
+use frame_metadata::{v13, v14, RuntimeMetadata, RuntimeMetadata::*};
 
 /// Placeholder, here we can convert from V14 to V13
 pub fn convert(_r: &v14::RuntimeMetadataV14) -> Option<v13::RuntimeMetadataV13> {
 	todo!()
 }
 
+type MetadataVersion = u32;
+
 // TODO: not great, we could already enforce here getting the same variant
 pub struct MetadataPartialDiffer {
 	r1: ReducedRuntime,
 	r2: ReducedRuntime,
-	version: u8,
+	version: MetadataVersion,
 }
 
 impl<'a> MetadataPartialDiffer {
