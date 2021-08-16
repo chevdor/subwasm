@@ -39,7 +39,7 @@ pub enum SubCommand {
 /// Get/Download the runtime wasm from a running node through rpc
 #[derive(Clap)]
 pub struct GetOpts {
-	/// The node url. Example: ws://localhost:9944 or http://localhost:9933.
+	/// The node url. Example: ws://localhost:9944 or http://localhost:9933
 	#[clap(default_value = "http://localhost:9933", required_unless_present = "chain", index = 1)]
 	pub url: OnchainBlock,
 
