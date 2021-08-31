@@ -66,13 +66,19 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		SubCommand::Diff(diff_opts) => {
+			noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
+			log::debug!("Method: {:?}", diff_opts.method);
+
 			let chain_a = diff_opts.chain_a.map(|some| some.name);
 			let src_a = get_source(chain_a.as_deref(), diff_opts.src_a, None);
 
 			let chain_b = diff_opts.chain_b.map(|some| some.name);
 			let src_b = get_source(chain_b.as_deref(), diff_opts.src_b, None);
 
-			diff(src_a, src_b);
+			match diff_opts.method {
+				DiffMethod::Raw => diff(src_a, src_b),
+				DiffMethod::Reduced => reduced_diff(src_a, src_b),
+			}
 		}
 
 		SubCommand::Compress(copts) => {

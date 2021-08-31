@@ -1,15 +1,19 @@
-use super::{raw_differ_options::RawDifferOptions, skip_counter::SkipCounter};
+use super::{json_utils::json_collapse_byte_arrays, raw_differ_options::RawDifferOptions, skip_counter::SkipCounter};
 use crate::{
 	call_wrapper::CallWrapper,
-	differs::{
-		change_counter::{ChangeCounter, ChangeType},
-		json_utils::json_collapse_byte_arrays,
-	},
+	differs::raw::change_counter::{ChangeCounter, ChangeType},
 };
 use log::debug;
 use serde::Serialize;
 use treediff::{diff, tools::Recorder};
 
+/// The [RawDiffer](struct.RawDiffer.html) is serializing the metadata as a big json string and
+/// comparing the 2 Json representations. It has the benefit to be very generic
+/// and work accross Metadata versions but it is not very robust if the ordering
+/// of items (ie list of calls for instance) in an array is modified. In this case
+/// the RawDiffer will report a difference. This used to be interesting for Runtime
+/// prior to V12. Runtime V12 and above use indexes so the ordering no longer really
+/// matters that much.
 pub struct RawDiffer<'a, T: Serialize> {
 	r1: &'a T,
 	r2: &'a T,

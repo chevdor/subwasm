@@ -1,6 +1,6 @@
 use clap::{crate_authors, crate_version, Parser, Subcommand};
 use std::path::PathBuf;
-use subwasmlib::ChainInfo;
+use subwasmlib::{ChainInfo, DiffMethod};
 use wasm_loader::{OnchainBlock, Source};
 
 /// `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains.
@@ -156,6 +156,10 @@ pub struct DiffOpts {
 	/// --chain local = http://localhost:9933
 	#[clap(long, short('b'), parse(from_str), conflicts_with = "src-b")]
 	pub chain_b: Option<ChainInfo>,
+
+	/// Differ method. Raw is the legacy option. You probably want to use `Reduced` now.
+	#[clap(long, short, default_value = "reduced")]
+	pub method: DiffMethod,
 }
 
 /// Compress a given runtime wasm file.
