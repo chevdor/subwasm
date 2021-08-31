@@ -1,10 +1,12 @@
 use std::path::Path;
 use std::{fs::File, path::PathBuf};
 use std::{io::prelude::*, str::FromStr};
-use substrate_differ::differs::partial_differ::MetadataPartialDiffer;
-use substrate_differ::differs::raw_differ::RawDiffer;
-use substrate_differ::differs::raw_differ_options::RawDifferOptions;
+pub use substrate_differ::differs::diff_method::DiffMethod;
+use substrate_differ::differs::raw::raw_differ::RawDiffer;
+use substrate_differ::differs::raw::raw_differ_options::RawDifferOptions;
+use substrate_differ::differs::reduced::reduced_differ::ReducedDiffer;
 use substrate_differ::differs::summary_differ::RuntimeSummaryDiffer;
+use substrate_differ::differs::{DiffOptions, Differ};
 use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
 use wasm_testbed::WasmTestBed;
 mod chain_info;
@@ -17,7 +19,6 @@ mod runtime_info;
 mod subwasm;
 mod types;
 pub use chain_info::*;
-use log::{debug, info};
 pub use runtime_info::*;
 pub use subwasm::*;
 pub use types::*;
@@ -72,13 +73,13 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 	};
 
 	let reference = OnchainBlock { endpoint: url, block_ref };
-	info!("Downloading runtime from  {:?}", reference);
+	log::info!("Downloading runtime from  {:?}", reference);
 
 	let loader =
 		wasm_loader::WasmLoader::load_from_source(&Source::Chain(reference)).expect("Getting wasm from the node");
 	let wasm = loader.bytes();
 
-	info!("Got the runtime, its size is {:?}", wasm.len());
+	log::info!("Got the runtime, its size is {:?}", wasm.len());
 
 	let outfile = match output {
 		Some(path) => path,
@@ -100,7 +101,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 		}
 	};
 
-	info!("Saving runtime to {:?}", outfile);
+	log::info!("Saving runtime to {:?}", outfile);
 	let mut buffer = File::create(outfile)?;
 	buffer.write_all(wasm)?;
 	Ok(())
@@ -109,7 +110,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 /// Compare 2 runtimes. It compares their versions first
 /// then their metata.
 pub fn diff(src_a: Source, src_b: Source) {
-	debug!("Loading WASM runtimes:");
+	log::debug!("DIFF: Loading WASM runtimes:");
 	println!("  🅰️  {:?}", src_a);
 	let runtime_a = WasmTestBed::new(&src_a).expect("Can only diff if the 2 runtimes can load");
 	println!("  🅱️  {:?}", src_b);
@@ -127,11 +128,27 @@ pub fn diff(src_a: Source, src_b: Source) {
 		println!("Raw comparison of runtimes with different version is not supported.");
 	}
 
-	// ==== PARTIAL
-	if runtime_a.metadata_version() == runtime_b.metadata_version() {
-		let partial = MetadataPartialDiffer::new(runtime_a.metadata(), runtime_b.metadata());
-		partial.compare_reduced();
-	} else {
-		println!("Partial comparison of runtimes with different version is not supported.");
-	}
+	// // ==== PARTIAL
+	// if runtime_a.metadata_version() == runtime_b.metadata_version() {
+	// 	let partial = MetadataPartialDiffer::new(runtime_a.metadata(), runtime_b.metadata());
+	// 	partial.compare_reduced();
+	// } else {
+	// 	println!("Partial comparison of runtimes with different version is not supported.");
+	// }
+}
+
+pub fn reduced_diff(src_a: Source, src_b: Source) {
+	log::debug!("REDUCED: Loading WASM runtimes:");
+	println!("  🅰️  {:?}", src_a);
+	let runtime_a = WasmTestBed::new(&src_a).expect("Can only diff if the 2 runtimes can load");
+	println!("  🅱️  {:?}", src_b);
+	let runtime_b = WasmTestBed::new(&src_b).expect("Can only diff if the 2 runtimes can load");
+
+	log::trace!("TRACE1");
+
+	let partial = ReducedDiffer::new(runtime_a.metadata(), runtime_b.metadata());
+	log::trace!("TRACE2");
+	let opts = DiffOptions::default();
+	partial.diff(opts);
+	log::trace!("TRACE3");
 }
