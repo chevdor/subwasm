@@ -14,7 +14,7 @@ variables:                         &default-vars
 
 .build:                             &build
   script:
-    - cargo build --all
+    - cargo build --locked --all
     - cargo doc -p subwasm -p subwasmlib -p wasm-loader -p wasm-testbed -p substrate-runtime-proposal-hash --all-features --no-deps
 
 .only:                             &only

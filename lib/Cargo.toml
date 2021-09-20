@@ -6,19 +6,19 @@ keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "ku
 name = "subwasmlib"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
-version = "0.14.0"
+version = "0.14.1"
 
 [dependencies]
 calm_io = "0.1"
 color-eyre = "0.5"
-frame-metadata = {package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", tag = "v14.0.0-rc.1", features = ["v12", "v13", "v14", "std"]}
+frame-metadata = {version = "14", package = "frame-metadata", features = ["v12", "v13", "v14", "std"]}
 ipfs-hasher = {path = "../libs/ipfs-hasher"}
 log = "0.4"
 num-format = "0.4"
 rand = "0.8"
+scale-info = {version = "1.0", default-features = false, features = ["derive"]}
 serde = {version = "1.0", features = ["derive"]}
 serde_json = "1.0"
 substrate-differ = {path = "../libs/substrate-differ"}
 wasm-loader = {path = "../libs/wasm-loader"}
 wasm-testbed = {path = "../libs/wasm-testbed"}
-scale-info = { version = "0.10", default-features = false, features = ["derive"] }

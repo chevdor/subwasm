@@ -6,14 +6,14 @@ keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "ku
 name = "wasm-loader"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
-version = "0.14.0"
+version = "0.14.1"
 
 [dependencies]
 hex = "0.4"
-jsonrpsee = {git = "https://github.com/paritytech/jsonrpsee", version = "0.3.0", features = ["full"]}
+jsonrpsee = {version = "0.3", git = "https://github.com/paritytech/jsonrpsee", features = ["full"]}
 log = "0.4"
 multibase = "0.9"
 multihash = "0.14"
 serde = {version = "1.0", features = ["derive"]}
 sp-maybe-compressed-blob = {version = "4.0.0-dev", git = "https://github.com/paritytech/substrate/"}
-tokio = {version = "1.9", features = ["full"]}
+tokio = {version = "1.11", features = ["full"]}

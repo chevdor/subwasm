@@ -8,10 +8,10 @@ license = "MIT"
 name = "subwasm"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
-version = "0.14.0"
+version = "0.14.1"
 
 [dependencies]
-assert_cmd = "1.0"
+assert_cmd = "2.0.1"
 clap = "3.0.0-beta.2"
 color-eyre = "0.5"
 env_logger = "0.9"

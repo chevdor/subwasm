@@ -1,5 +1,6 @@
 VERSION := `toml get cli/Cargo.toml package.version | jq -r`
 TARGET_DIR := "target/release"
+export TAG:=`toml get cli/Cargo.toml "package.version" | jq -r .`
 
 # List available commands
 _default:
@@ -73,3 +74,9 @@ coverage:
 	grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./target/debug/coverage/
 	open target/debug/coverage/index.html
 	find . -type f -name '*.profraw' -exec rm '{}' \;
+
+tag:
+    #!/bin/sh
+    echo Tagging version v$TAG
+    git tag "v$TAG" -f
+    git tag
