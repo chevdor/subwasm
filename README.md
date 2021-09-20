@@ -39,7 +39,7 @@ Any node can be queried to provide its current metadata. This can be displayed i
 
 ### Using Cargo
 
-    cargo install --git https://github.com/chevdor/subwasm --tag v0.12.1
+    cargo install --git https://github.com/chevdor/subwasm --tag v0.14.1
 
 ### Homebrew
 
@@ -50,7 +50,7 @@ MacOS Homebrew users can use:
 
 ### Linux
 
-    wget https://github.com/chevdor/subwasm/releases/download/v0.12.1/subwasm_linux_amd64_v0.12.1 -O subwasm.deb
+    wget https://github.com/chevdor/subwasm/releases/download/v0.14.1/subwasm_linux_amd64_v0.14.1 -O subwasm.deb
     sudo dpkg -i subwasm.deb
     subwasm --help
 
@@ -58,7 +58,7 @@ MacOS Homebrew users can use:
 
 ### Command: --help
 
-    subwasm 0.14.0
+    subwasm 0.14.1
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
@@ -82,7 +82,7 @@ MacOS Homebrew users can use:
 
 ### Command: get
 
-    subwasm-get 0.14.0
+    subwasm-get 0.14.1
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
@@ -115,7 +115,7 @@ MacOS Homebrew users can use:
 
 ### Command: info
 
-    subwasm-info 0.14.0
+    subwasm-info 0.14.1
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
@@ -141,7 +141,7 @@ MacOS Homebrew users can use:
 
 ### Command: meta
 
-    subwasm-metadata 0.14.0
+    subwasm-metadata 0.14.1
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
@@ -171,7 +171,7 @@ MacOS Homebrew users can use:
 
 ### Command: diff
 
-    subwasm-diff 0.14.0
+    subwasm-diff 0.14.1
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
