@@ -13,7 +13,8 @@ frame-metadata = {package = "frame-metadata", git = "https://github.com/parityte
 hex = "0.4"
 log = "0.4"
 sc-executor = "0.9"
-scale = { package = "parity-scale-codec", version = "2.2", default-features = false }
+scale = {version = "2.3", package = "parity-scale-codec", default-features = false}
+scale-info = {version = "1.0", default-features = false, features = ["derive"]}
 sp-core = "3.0"
 sp-io = "3.0"
 sp-runtime = "3.0"
@@ -21,4 +22,3 @@ sp-state-machine = "0.9"
 sp-wasm-interface = "3.0"
 substrate-runtime-proposal-hash = {path = "../substrate-runtime-proposal-hash"}
 wasm-loader = {path = "../wasm-loader"}
-scale-info = { version = "0.10", default-features = false, features = ["derive"] }
