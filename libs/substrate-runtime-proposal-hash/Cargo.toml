@@ -6,12 +6,12 @@ keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "ku
 name = "substrate-runtime-proposal-hash"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
-version = "0.14.0"
+version = "0.14.1"
 
 [dependencies]
 blake2 = "0.9"
 codec = {version = "2.3", package = "parity-scale-codec"}
-frame-metadata = {package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main", features = ["v12", "v13", "v14", "std"]}
+frame-metadata = {version = "14", package = "frame-metadata", features = ["v12", "v13", "v14", "std"]}
 hex = "0.4"
 sc-executor = "0.9"
 sp-core = "3.0"

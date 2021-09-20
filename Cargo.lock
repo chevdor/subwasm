@@ -778,7 +778,8 @@ dependencies = [
 [[package]]
 name = "frame-metadata"
 version = "14.0.0"
-source = "git+https://github.com/paritytech/frame-metadata?branch=main#39fe3d8f279a37c7c414bf37db281a35e0ccd520"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "96616f82e069102b95a72c87de4c84d2f87ef7f0f20630e78ce3824436483110"
 dependencies = [
  "cfg-if 1.0.0",
  "parity-scale-codec",
@@ -3017,7 +3018,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-differ"
-version = "0.14.0"
+version = "0.14.1"
 dependencies = [
  "frame-metadata",
  "log",
@@ -3032,7 +3033,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-runtime-proposal-hash"
-version = "0.14.0"
+version = "0.14.1"
 dependencies = [
  "blake2",
  "frame-metadata",
@@ -3059,7 +3060,7 @@ checksum = "6bdef32e8150c2a081110b42772ffe7d7c9032b606bc226c8260fd97e0976601"
 
 [[package]]
 name = "subwasm"
-version = "0.14.0"
+version = "0.14.1"
 dependencies = [
  "assert_cmd",
  "clap",
@@ -3074,7 +3075,7 @@ dependencies = [
 
 [[package]]
 name = "subwasmlib"
-version = "0.14.0"
+version = "0.14.1"
 dependencies = [
  "calm_io",
  "color-eyre",
@@ -3644,7 +3645,7 @@ checksum = "0237232789cf037d5480773fe568aac745bfe2afbc11a863e97901780a6b47cc"
 
 [[package]]
 name = "wasm-loader"
-version = "0.14.0"
+version = "0.14.1"
 dependencies = [
  "hex",
  "jsonrpsee",
@@ -3658,7 +3659,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-testbed"
-version = "0.14.0"
+version = "0.14.1"
 dependencies = [
  "frame-metadata",
  "hex",
