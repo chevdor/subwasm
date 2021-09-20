@@ -39,6 +39,7 @@ macro_rules! display_v14_meta {
 
 			let type_info = registry.resolve(type_id).unwrap();
 			match type_info.type_def() {
+
 				scale_info::TypeDef::Variant(v) => {
 					for variant in v.variants() {
 						println!("- {:?}: {}", variant.index(), variant.name());
