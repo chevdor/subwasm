@@ -1,9 +1,5 @@
-pub enum ChangeType {
-	Removed,
-	Added,
-	Unchanged,
-	Modified,
-}
+use super::change_type::ChangeType;
+
 
 /// This struct keeps track of the various Changes detected by the `RawDiffer`.
 #[derive(Debug, Default)]
