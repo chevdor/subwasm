@@ -8,7 +8,7 @@ use serde_json::Value;
 use std::fmt::Debug;
 
 use super::{pallet_data::PalletData, pallet_item::PalletItem, reduced_pallet::ReducedPallet, signature::Signature};
-use crate::differs::{raw::change_counter::ChangeType, utils::convert};
+use crate::differs::utils::convert;
 
 pub type ReducedRuntimeError = String;
 pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
@@ -17,7 +17,8 @@ pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
 fn purge_v13_keys(value: Value) -> Value {
 	let mut serialized = value.serialize();
 	let mut c = serialized.as_object_mut().unwrap().to_owned(); // TODO: could use a match and prevent the unwrap()
-															// println!("c before = {:?}", &c);
+
+	// println!("c before = {:?}", &c);
 	let _ = c.remove("name");
 	let _ = c.remove("documentation");
 	// println!("c after = {:?}", &c);
@@ -124,20 +125,14 @@ impl From<&v14::PalletCallMetadata> for PalletItem {
 	}
 }
 
-pub struct DiffResult<T: PartialEq> {
-	_change_type: ChangeType,
-	_left: T,
-	_right: T,
-}
-
-pub trait Diff<T: Debug + PartialEq>: PartialEq + Debug {
-	fn diff(&self, other: T) -> DiffResult<T>;
-}
-
 #[derive(Debug, PartialEq)]
 pub struct ReducedRuntime {
 	// TODO: remove pub once we have an iterator
 	pub pallets: Vec<ReducedPallet>, // TODO: Could use a BTreeMap
+}
+
+impl SliceIndex<[ReducedPallet] for u32 {
+	
 }
 
 impl From<Vec<ReducedPallet>> for ReducedRuntime {

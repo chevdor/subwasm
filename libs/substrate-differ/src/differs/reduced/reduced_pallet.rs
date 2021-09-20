@@ -1,8 +1,6 @@
+use super::{diff_result::DiffResult, pallet_item::PalletItem, Index};
+use crate::differs::{raw::change_type::ChangeType, utils::convert};
 use frame_metadata::{v13, v14};
-
-use crate::differs::utils::convert;
-
-use super::{pallet_item::PalletItem, Index};
 
 #[derive(Debug, PartialEq)]
 pub struct ReducedPallet {
@@ -18,9 +16,19 @@ pub struct ReducedPallet {
 
 // TODO: impl Iterator
 impl ReducedPallet {
-	pub fn diff(&self, other: &Self) {
-		let _p1 = self;
-		let _p2 = other;
+	/// Computes the differences between 2 pallets
+	pub fn diff(pallet_a: &'static Self, pallet_b: &'static Self) -> DiffResult<ReducedPallet> {
+		assert_eq!(pallet_a.index, pallet_b.index, "Comparing different indexes does not make much sense");
+
+		if pallet_a.name != pallet_b.name {
+			return DiffResult::new(ChangeType::Modified, pallet_a, pallet_b);
+		}
+
+		if pallet_a.items != pallet_b.items {
+			return DiffResult::new(ChangeType::Modified, pallet_a, pallet_b);
+		}
+
+		DiffResult::new(ChangeType::Unchanged, pallet_a, pallet_b)
 	}
 }
 
