@@ -76,7 +76,7 @@ jobs:
       - name: Build MacOS binary
         shell: bash
         run: |
-          cargo build --release
+          cargo build --locked --release
           ls -al "${{ env.TARGET_DIR }}/subwasm"
 
       - name: Compress & sha256
