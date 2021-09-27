@@ -5,6 +5,7 @@ name: Daily Check
 on:
   schedule:
     - cron: "0 3 * * *"
+  workflow_dispatch:
 
 jobs:
   daily_check:
