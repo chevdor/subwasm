@@ -36,14 +36,17 @@ demos:
 
 # Run rustfmt
 _fmt:
-	cargo fmt --all
+	cargo +nightly fmt --all
 
 # Run clippy
 _clippy:
 	cargo +nightly clippy
 
+_deny:
+	cargo deny check
+
 # Run checks such as clippy, rustfmt, etc...
-check: _clippy _fmt
+check: _clippy _fmt _deny
 
 # Minor bump, can be used once the release is ready
 bump:

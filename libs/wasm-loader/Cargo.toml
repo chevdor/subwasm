@@ -3,6 +3,7 @@ authors = ["chevdor <chevdor@gmail.com>"]
 edition = "2018"
 homepage = "https://github.com/chevdor/subwasm"
 keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "kusama"]
+license = "MIT"
 name = "wasm-loader"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
