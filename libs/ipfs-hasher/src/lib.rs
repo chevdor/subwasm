@@ -12,15 +12,9 @@ use ipfs_unixfs::file::adder::FileAdder;
 /// If you need more control, check out the `cid` and the `ipfs-unixfs``
 /// crates.
 /// This crate procudes CidV0.
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct IpfsHasher {
 	chunk_size: Option<usize>,
-}
-
-impl Default for IpfsHasher {
-	fn default() -> Self {
-		Self { chunk_size: None }
-	}
 }
 
 impl IpfsHasher {

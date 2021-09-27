@@ -40,7 +40,7 @@ _fmt:
 
 # Run clippy
 _clippy:
-	cargo clippy
+	cargo +nightly clippy
 
 # Run checks such as clippy, rustfmt, etc...
 check: _clippy _fmt
