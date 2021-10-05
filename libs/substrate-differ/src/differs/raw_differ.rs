@@ -111,8 +111,8 @@ mod tests {
 	#[test]
 	#[ignore = "local data"]
 	fn it_constructs() {
-		const RTM1: &str = "../../data/kusama/kusama-2030.wasm";
-		const RTM2: &str = "../../data/kusama/kusama_runtime-v9000.compact.wasm";
+		const RTM1: &str = "../../data/kusama/V12/kusama-2030.wasm";
+		const RTM2: &str = "../../data/kusama/V12/kusama-9000.compact.wasm";
 
 		let runtime_a = WasmTestBed::new(&Source::File(PathBuf::from(RTM1))).unwrap();
 		let runtime_b = WasmTestBed::new(&Source::File(PathBuf::from(RTM2))).unwrap();

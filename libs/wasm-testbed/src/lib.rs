@@ -215,16 +215,16 @@ mod tests {
 	use std::path::PathBuf;
 
 	const WASM_NO_SUBSTRATE: &str = "../../data/wasm/qjs.wasm";
-	const KUSAMA_1050_VXX: &str = "../../data/kusama/kusama-1050.wasm";
-	const KUSAMA_1062_VXX: &str = "../../data/kusama/kusama-1062.wasm";
-	const KUSAMA_2030_VXX: &str = "../../data/kusama/kusama-2030.wasm";
-	const POLKADOT_01_V11: &str = "../../data/polkadot/polkadot-01.wasm";
-	const POLKADOT_29_V12: &str = "../../data/polkadot/polkadot-29.wasm";
+	const KUSAMA_1050_VXX: &str = "../../data/kusama/V11/kusama-1050.wasm";
+	const KUSAMA_1062_VXX: &str = "../../data/kusama/V11/kusama-1062.wasm";
+	const KUSAMA_2030_VXX: &str = "../../data/kusama/V12/kusama-2030.wasm";
+	const POLKADOT_01_V11: &str = "../../data/polkadot/V11/polkadot-01.wasm";
+	const POLKADOT_29_V12: &str = "../../data/polkadot/V12/polkadot-29.wasm";
 	const WESTEND_V30_V12: &str = "../../data/westend/westend_runtime-v900-rc2.compact.wasm";
 	const POLKADOT_DEV: &str = "../../data/v900/polkadot-dev-v900-rc1.wasm";
-	const RUNTIME_V12: &str = "../../data/runtime_v12.wasm";
-	const RUNTIME_V13: &str = "../../data/runtime_v13.wasm";
-	const RUNTIME_V14: &str = "../../data/runtime_v14.wasm";
+	const RUNTIME_V12: &str = "../../data/kusama/V12/kusama-2030.wasm";
+	const RUNTIME_V13: &str = "../../data/kusama/V13/kusama-9080.wasm";
+	const RUNTIME_V14: &str = "../../data/polkadot/V14/polkadot_runtime.compact.compressed.wasm";
 
 	#[cfg(test)]
 	mod common {
