@@ -11,7 +11,7 @@ version = "0.14.1"
 
 [dependencies]
 hex = "0.4"
-jsonrpsee = {version = "0.3", git = "https://github.com/paritytech/jsonrpsee", features = ["full"]}
+jsonrpsee = {version = "0.4", git = "https://github.com/paritytech/jsonrpsee", features = ["full"]}
 log = "0.4"
 multibase = "0.9"
 multihash = "0.15"

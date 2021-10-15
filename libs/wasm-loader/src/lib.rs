@@ -6,6 +6,7 @@ mod source;
 
 pub use compression::Compression;
 use error::WasmLoaderError;
+use jsonrpsee::rpc_params;
 use jsonrpsee::types::traits::Client;
 use jsonrpsee::types::{Error, JsonValue};
 use jsonrpsee::{http_client::HttpClientBuilder, ws_client::WsClientBuilder};
@@ -40,8 +41,8 @@ impl WasmLoader {
 	fn fetch_wasm(reference: &OnchainBlock) -> Result<WasmBytes, WasmLoaderError> {
 		let block_ref = reference.block_ref.as_ref();
 		let params = match block_ref {
-			Some(x) => vec![JsonValue::from(CODE), JsonValue::from(x.to_string())],
-			None => vec![CODE.into()],
+			Some(blockref) => rpc_params!(JsonValue::from(CODE), JsonValue::from(blockref.to_string())),
+			None => rpc_params!(JsonValue::from(CODE).as_str()),
 		};
 
 		// Create the runtime
@@ -50,14 +51,14 @@ impl WasmLoader {
 		let response: Result<String, Error> = match &reference.endpoint {
 			NodeEndpoint::Http(url) => {
 				let client = HttpClientBuilder::default().build(url).map_err(|_e| WasmLoaderError::HttpClient())?;
-				rt.block_on(client.request("state_getStorage", params.into()))
+				rt.block_on(client.request("state_getStorage", params))
 			}
 			NodeEndpoint::WebSocket(url) => {
 				let client = rt.block_on(WsClientBuilder::default().build(url)).map_err(|_e| {
 					println!("{:?}", _e);
 					WasmLoaderError::WsClient()
 				})?;
-				rt.block_on(client.request("state_getStorage", params.into()))
+				rt.block_on(client.request("state_getStorage", params))
 			}
 		};
 
