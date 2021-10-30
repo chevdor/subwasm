@@ -75,7 +75,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 
 	let loader =
 		wasm_loader::WasmLoader::load_from_source(&Source::Chain(reference)).expect("Getting wasm from the node");
-	let wasm = loader.bytes();
+	let wasm = loader.original_bytes();
 
 	info!("Got the runtime, its size is {:?}", wasm.len());
 

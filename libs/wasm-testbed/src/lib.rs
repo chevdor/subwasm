@@ -53,7 +53,7 @@ impl WasmTestBed {
 	pub fn new(source: &Source) -> Result<Self> {
 		let loader = WasmLoader::load_from_source(source).map_err(|_| WasmTestbedError::Loading(source.to_string()))?;
 
-		let wasm = loader.bytes().to_vec();
+		let wasm = loader.uncompressed_bytes().to_vec();
 		let metadata_encoded = Self::call(&wasm, "Metadata_metadata", &[])?;
 		let metadata =
 			<Vec<u8>>::decode(&mut &metadata_encoded[..]).map_err(|_| WasmTestbedError::Decoding(metadata_encoded))?;
@@ -76,7 +76,7 @@ impl WasmTestBed {
 
 		Ok(Self {
 			wasm,
-			bytes: loader.uncompressed_bytes().to_vec(),
+			bytes: loader.original_bytes().to_vec(),
 			runtime_metadata_prefixed,
 			metadata,
 			metadata_version,

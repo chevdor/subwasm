@@ -89,17 +89,20 @@ impl WasmLoader {
 		}
 	}
 
-	/// Returns the 'usable' bytes. You get either the raw bytes if the
+	/// Returns the 'usable' uncompressed bytes. You get either the raw bytes if the
 	/// wasm was not compressed, or the decompressed bytes if the runtime
 	/// was compressed.
-	pub fn bytes(&self) -> &WasmBytes {
+	/// See also `original_bytes` if you need the compressed bytes.
+	pub fn uncompressed_bytes(&self) -> &WasmBytes {
 		match &self.bytes {
 			CompressedMaybe::Compressed(b) => &b.0,
 			CompressedMaybe::Uncompressed(b) => b,
 		}
 	}
 
-	pub fn uncompressed_bytes(&self) -> &WasmBytes {
+	/// Return the wasm bytes as retrieved.
+	/// See `uncompressed_bytes` if you need to use the WASM.
+	pub fn original_bytes(&self) -> &WasmBytes {
 		match &self.bytes {
 			CompressedMaybe::Compressed(b) => &b.1,
 			CompressedMaybe::Uncompressed(b) => b,
@@ -163,7 +166,7 @@ mod tests {
 		let reference = OnchainBlock { endpoint: NodeEndpoint::Http(url), block_ref: None };
 
 		let loader = WasmLoader::load_from_source(&Source::Chain(reference)).unwrap();
-		let wasm = loader.bytes();
+		let wasm = loader.uncompressed_bytes();
 
 		println!("uncompressed wasm size: {:?}", wasm.len());
 		assert!(wasm.len() > 1_000_000);
@@ -176,9 +179,24 @@ mod tests {
 		println!("Connecting to {:?}", &url);
 		let reference = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: None };
 		let loader = WasmLoader::load_from_source(&Source::Chain(reference)).unwrap();
-		let wasm = loader.bytes();
+		let wasm = loader.uncompressed_bytes();
 		println!("uncompressed wasm size: {:?}", wasm.len());
 		assert!(wasm.len() > 1_000_000);
+	}
+
+	#[test]
+	#[ignore = "needs node"]
+	fn it_fetches_the_compressed_runtime() {
+		let url = get_ws_node();
+		println!("Connecting to {:?}", &url);
+		let reference = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: None };
+		let loader = WasmLoader::load_from_source(&Source::Chain(reference)).unwrap();
+		let uncompressed_bytes = loader.uncompressed_bytes();
+		let original_bytes = loader.original_bytes();
+		println!("uncompressed wasm size: {:?}", uncompressed_bytes.len());
+		println!("original wasm size: {:?}", original_bytes.len());
+		assert!(uncompressed_bytes.len() > 1_000_000);
+		assert!(uncompressed_bytes.len() >= original_bytes.len());
 	}
 
 	#[test]
@@ -193,10 +211,10 @@ mod tests {
 			OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: Some(POLKADOT_BLOCK20.to_string()) };
 
 		let loader_latest = WasmLoader::load_from_source(&Source::Chain(latest)).unwrap();
-		let wasm_latest = loader_latest.bytes();
+		let wasm_latest = loader_latest.uncompressed_bytes();
 
 		let loader_older = WasmLoader::load_from_source(&Source::Chain(older)).unwrap();
-		let wasm_older = loader_older.bytes();
+		let wasm_older = loader_older.uncompressed_bytes();
 
 		println!("wasm latest size: {:?}", wasm_latest.len());
 		println!("wasm older size: {:?}", wasm_older.len());
