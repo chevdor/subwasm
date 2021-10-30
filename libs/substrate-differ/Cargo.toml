@@ -2,7 +2,7 @@
 edition = "2018"
 license = "MIT"
 name = "substrate-differ"
-version = "0.14.1"
+version = "0.15.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
