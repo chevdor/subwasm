@@ -9,7 +9,7 @@ use wasm_loader::{OnchainBlock, Source};
 #[clap(setting = AppSettings::ColoredHelp)]
 pub struct Opts {
 	/// Output as json
-	#[clap(short, long)]
+	#[clap(short, long, global = true)]
 	pub json: bool,
 
 	/// Less output
@@ -100,10 +100,6 @@ pub struct MetaOpts {
 
 	#[clap(short, long)]
 	pub block: Option<String>, // TODO: can do better...
-
-	/// Output as json
-	#[clap(short, long)]
-	pub json: bool,
 }
 
 /// Compare 2 runtimes
