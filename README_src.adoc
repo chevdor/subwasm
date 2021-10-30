@@ -45,7 +45,7 @@ image::scripts/demos/gif/demo-diff.gif[title="subwasm diff"]
 
 [subs="attributes+"]
 ----
-cargo install --git https://github.com/chevdor/subwasm --tag {version}
+cargo install --locked --git https://github.com/chevdor/subwasm --tag {version}
 ----
 
 === Homebrew
