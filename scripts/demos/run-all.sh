@@ -2,7 +2,7 @@
 . env.sh
 
 pushd ../../
-cargo install --path cli
+cargo install --locked --path cli
 popd
 
 mkdir -p casts gif

@@ -1,18 +1,19 @@
-subwasm-get 0.14.1
+subwasm-get 0.15.0
 
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
 Get/Download the runtime wasm from a running node through rpc
 
 USAGE:
-    subwasm get [OPTIONS] [URL]
+    subwasm get [FLAGS] [OPTIONS] [URL]
 
 ARGS:
-    <URL>    The node url. Example: ws://localhost:9944 or http://localhost:9933 [default:
-             http://localhost:9933]
+    <URL>    The node url including (mandatory) the port number. Example: ws://localhost:9944 or
+             http://localhost:9933 [default: http://localhost:9933]
 
 FLAGS:
     -h, --help       Print help information
+    -j, --json       Output as json
     -V, --version    Print version information
 
 OPTIONS:

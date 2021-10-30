@@ -75,6 +75,8 @@ pub struct InfoOpts {
 	#[clap(long, parse(from_str), conflicts_with = "source")]
 	pub chain: Option<ChainInfo>,
 
+	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
+	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
 	pub block: Option<String>, // TODO: can do better...
 }
@@ -98,6 +100,8 @@ pub struct MetaOpts {
 	#[clap(long, short)]
 	pub module: Option<String>,
 
+	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
+	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
 	pub block: Option<String>, // TODO: can do better...
 }

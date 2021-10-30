@@ -1,11 +1,11 @@
-subwasm-diff 0.14.1
+subwasm-diff 0.15.0
 
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
 Compare 2 runtimes
 
 USAGE:
-    subwasm diff [OPTIONS] [ARGS]
+    subwasm diff [FLAGS] [OPTIONS] [ARGS]
 
 ARGS:
     <SRC_A>    The first source [default: runtime_000.wasm]
@@ -13,6 +13,7 @@ ARGS:
 
 FLAGS:
     -h, --help       Print help information
+    -j, --json       Output as json
     -V, --version    Print version information
 
 OPTIONS:

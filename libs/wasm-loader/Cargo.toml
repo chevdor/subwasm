@@ -7,7 +7,7 @@ license = "MIT"
 name = "wasm-loader"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
-version = "0.14.1"
+version = "0.15.0"
 
 [dependencies]
 hex = "0.4"
