@@ -12,7 +12,7 @@ impl<'a, K: Display, V: Display + 'a> Display for CallWrapper<'a, K, V> {
 					res.push_str(&format!("{}.", key));
 				}
 
-				write!(f, "🛠  {:<50} {:>20} --> {}", res, v_before.to_string(), v_after.to_string())
+				write!(f, "🛠  {:<50} {:>20} --> {}", res, v_before, v_after)
 			}
 			ChangeType::Removed(keys, val) => {
 				let mut res = String::new();
