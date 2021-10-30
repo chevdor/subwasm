@@ -6,8 +6,7 @@
 
 ## Introduction
 
-The metadata of a given runtime is a critical piece of information: it can be seen as the signature of a runtime.
-It contains the exhaustive list of all the features publicly exposed by the runtime.
+The metadata of a given runtime is a critical piece of information as it describes how one can interact with the runtime, what operations are possible and what are the signatures of the calls. It contains the exhaustive list of all the features publicly exposed by the runtime.
 
 Any node can be queried to provide its current metadata. This can be displayed in json format for instance. This is a great way to have a peek at what the runtime can do.
 
@@ -39,7 +38,7 @@ Any node can be queried to provide its current metadata. This can be displayed i
 
 ### Using Cargo
 
-    cargo install --git https://github.com/chevdor/subwasm --tag v0.14.1 --locked
+    cargo install --locked --git https://github.com/chevdor/subwasm --tag v0.14.1
 
 ### Homebrew
 
