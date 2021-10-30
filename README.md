@@ -38,7 +38,7 @@ Any node can be queried to provide its current metadata. This can be displayed i
 
 ### Using Cargo
 
-    cargo install --locked --git https://github.com/chevdor/subwasm --tag v0.14.1
+    cargo install --locked --git https://github.com/chevdor/subwasm --tag v0.15.0
 
 ### Homebrew
 
@@ -49,7 +49,7 @@ MacOS Homebrew users can use:
 
 ### Linux
 
-    wget https://github.com/chevdor/subwasm/releases/download/v0.14.1/subwasm_linux_amd64_v0.14.1 -O subwasm.deb
+    wget https://github.com/chevdor/subwasm/releases/download/v0.15.0/subwasm_linux_amd64_v0.15.0 -O subwasm.deb
     sudo dpkg -i subwasm.deb
     subwasm --help
 
@@ -57,7 +57,7 @@ MacOS Homebrew users can use:
 
 ### Command: --help
 
-    subwasm 0.14.1
+    subwasm 0.15.0
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
@@ -81,21 +81,22 @@ MacOS Homebrew users can use:
 
 ### Command: get
 
-    subwasm-get 0.14.1
+    subwasm-get 0.15.0
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
     Get/Download the runtime wasm from a running node through rpc
 
     USAGE:
-        subwasm get [OPTIONS] [URL]
+        subwasm get [FLAGS] [OPTIONS] [URL]
 
     ARGS:
-        <URL>    The node url. Example: ws://localhost:9944 or http://localhost:9933 [default:
-                 http://localhost:9933]
+        <URL>    The node url including (mandatory) the port number. Example: ws://localhost:9944 or
+                 http://localhost:9933 [default: http://localhost:9933]
 
     FLAGS:
         -h, --help       Print help information
+        -j, --json       Output as json
         -V, --version    Print version information
 
     OPTIONS:
@@ -114,14 +115,14 @@ MacOS Homebrew users can use:
 
 ### Command: info
 
-    subwasm-info 0.14.1
+    subwasm-info 0.15.0
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
     The `info` command returns summarized information about a runtime
 
     USAGE:
-        subwasm info [OPTIONS] [SOURCE]
+        subwasm info [FLAGS] [OPTIONS] [SOURCE]
 
     ARGS:
         <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
@@ -130,17 +131,20 @@ MacOS Homebrew users can use:
 
     FLAGS:
         -h, --help       Print help information
+        -j, --json       Output as json
         -V, --version    Print version information
 
     OPTIONS:
-        -b, --block <BLOCK>
+        -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older
+                               runtimes but you will need to connect to archive nodes. Currently, you
+                               must pass a block hash. Passing the block numbers is not supported
             --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known
                                nodes will be used. If you pass a valid --chain, --url will be ignored
                                --chain local = http://localhost:9933
 
 ### Command: meta
 
-    subwasm-metadata 0.14.1
+    subwasm-metadata 0.15.0
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
@@ -160,7 +164,10 @@ MacOS Homebrew users can use:
         -V, --version    Print version information
 
     OPTIONS:
-        -b, --block <BLOCK>
+        -b, --block <BLOCK>      The optional block where to fetch the runtime. That allows fetching
+                                 older runtimes but you will need to connect to archive nodes.
+                                 Currently, you must pass a block hash. Passing the block numbers is not
+                                 supported
             --chain <CHAIN>      Provide the name of a chain and a random url amongst a list of known
                                  nodes will be used. If you pass a valid --chain, --url will be ignored
                                  --chain local = http://localhost:9933
@@ -170,14 +177,14 @@ MacOS Homebrew users can use:
 
 ### Command: diff
 
-    subwasm-diff 0.14.1
+    subwasm-diff 0.15.0
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
     Compare 2 runtimes
 
     USAGE:
-        subwasm diff [OPTIONS] [ARGS]
+        subwasm diff [FLAGS] [OPTIONS] [ARGS]
 
     ARGS:
         <SRC_A>    The first source [default: runtime_000.wasm]
@@ -185,6 +192,7 @@ MacOS Homebrew users can use:
 
     FLAGS:
         -h, --help       Print help information
+        -j, --json       Output as json
         -V, --version    Print version information
 
     OPTIONS:

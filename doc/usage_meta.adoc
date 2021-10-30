@@ -1,4 +1,4 @@
-subwasm-metadata 0.14.1
+subwasm-metadata 0.15.0
 
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
@@ -18,7 +18,10 @@ FLAGS:
     -V, --version    Print version information
 
 OPTIONS:
-    -b, --block <BLOCK>      
+    -b, --block <BLOCK>      The optional block where to fetch the runtime. That allows fetching
+                             older runtimes but you will need to connect to archive nodes.
+                             Currently, you must pass a block hash. Passing the block numbers is not
+                             supported
         --chain <CHAIN>      Provide the name of a chain and a random url amongst a list of known
                              nodes will be used. If you pass a valid --chain, --url will be ignored
                              --chain local = http://localhost:9933

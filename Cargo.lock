@@ -3053,6 +3053,7 @@ version = "0.15.0"
 dependencies = [
  "assert_cmd",
  "clap",
+ "clap_derive",
  "color-eyre",
  "env_logger",
  "log",
