@@ -1,6 +1,6 @@
 [package]
 authors = ["chevdor <chevdor@gmail.com>"]
-edition = "2018"
+edition = "2021"
 homepage = "https://github.com/chevdor/subwasm"
 keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "kusama"]
 license = "MIT"

@@ -1,6 +1,6 @@
 [package]
 authors = ["Wilfried Kopp <wilfried@parity.io>"]
-edition = "2018"
+edition = "2021"
 license = "MIT"
 name = "ipfs-hasher"
 version = "0.15.0"

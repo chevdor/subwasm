@@ -1,5 +1,5 @@
 [package]
-edition = "2018"
+edition = "2021"
 license = "MIT"
 name = "substrate-differ"
 version = "0.15.0"
