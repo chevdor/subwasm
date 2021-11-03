@@ -7,7 +7,7 @@ license = "MIT"
 name = "substrate-runtime-proposal-hash"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
-version = "0.15.0"
+version = "0.16.0"
 
 [dependencies]
 blake2 = "0.9"
