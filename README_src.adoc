@@ -37,6 +37,7 @@ image::scripts/demos/gif/demo-diff.gif[title="subwasm diff"]
 - getting runtime and metadata at any point of time using a Block hash as reference
 - getting the metadata from a a wasm file without any node
 - extracting information (those not requiring storage) from a runtime as wasm file
+- (de)compress a given runtime WASM
 
 == Install
 

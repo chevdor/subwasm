@@ -136,26 +136,30 @@ pub struct DiffOpts {
 	pub chain_b: Option<ChainInfo>,
 }
 
-/// Compress a runtime
+/// Compress a given runtime wasm file.
+/// You will get an error if you try compressing a runtime that is already compressed.
 #[derive(Clap)]
 pub struct CompressOpts {
-	/// The wasm file to load.
+	/// The path of uncompressed wasm file to load.
 	#[clap(alias("in"), index = 1)]
 	pub input: PathBuf,
 
-	/// The output.
+	/// The path of the file where the compressed runtime will be stored.
 	#[clap(alias("out"), index = 2)]
 	pub output: PathBuf,
 }
 
-/// Decompress a runtime
+/// Decompress a given runtime wasm file. You may pass a runtime that is uncompressed
+/// already. In that case, you will get the same content as output. This is useful
+/// if you want to decompress "no matter what" and don't really know whether the input
+/// will be compressed or not.
 #[derive(Clap)]
 pub struct DecompressOpts {
-	/// The wasm file to load.
+	/// The path of the compressed or uncompressed wasm file to load.
 	#[clap(alias("in"), index = 1)]
 	pub input: PathBuf,
 
-	/// The output.
+	/// The path of the file where the uncompressed runtime will be stored.
 	#[clap(alias("out"), index = 2)]
 	pub output: PathBuf,
 }

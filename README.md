@@ -34,6 +34,8 @@ Any node can be queried to provide its current metadata. This can be displayed i
 
 -   extracting information (those not requiring storage) from a runtime as wasm file
 
+-   (de)compress a given runtime WASM
+
 ## Install
 
 ### Using Cargo
@@ -73,8 +75,12 @@ MacOS Homebrew users can use:
         -V, --version    Print version information
 
     SUBCOMMANDS:
-        compress      Compress a runtime
-        decompress    Decompress a runtime
+        compress      Compress a given runtime wasm file. You will get an error if you try
+                      compressing a runtime that is already compressed
+        decompress    Decompress a given runtime wasm file. You may pass a runtime that is
+                      uncompressed already. In that case, you will get the same content as output.
+                      This is useful if you want to decompress "no matter what" and don't really
+                      know whether the input will be compressed or not
         diff          Compare 2 runtimes
         get           Get/Download the runtime wasm from a running node through rpc
         help          Print this message or the help of the given subcommand(s)
@@ -211,14 +217,15 @@ MacOS Homebrew users can use:
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
-    Compress a runtime
+    Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is
+    already compressed
 
     USAGE:
         subwasm compress [FLAGS] <INPUT> <OUTPUT>
 
     ARGS:
-        <INPUT>     The wasm file to load
-        <OUTPUT>    The output
+        <INPUT>     The path of uncompressed wasm file to load
+        <OUTPUT>    The path of the file where the compressed runtime will be stored
 
     FLAGS:
         -h, --help       Print help information
@@ -231,14 +238,16 @@ MacOS Homebrew users can use:
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
-    Decompress a runtime
+    Decompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that
+    case, you will get the same content as output. This is useful if you want to decompress "no matter
+    what" and don't really know whether the input will be compressed or not
 
     USAGE:
         subwasm decompress [FLAGS] <INPUT> <OUTPUT>
 
     ARGS:
-        <INPUT>     The wasm file to load
-        <OUTPUT>    The output
+        <INPUT>     The path of the compressed or uncompressed wasm file to load
+        <OUTPUT>    The path of the file where the uncompressed runtime will be stored
 
     FLAGS:
         -h, --help       Print help information
