@@ -4,7 +4,7 @@ use std::{io::prelude::*, str::FromStr};
 use substrate_differ::differs::raw_differ::RawDiffer;
 use substrate_differ::differs::raw_differ_options::RawDifferOptions;
 use substrate_differ::differs::summary_differ::RuntimeSummaryDiffer;
-use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source, WasmLoader, CODE_BLOB_BOMB_LIMIT};
+use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, WasmLoader};
 use wasm_testbed::WasmTestBed;
 mod chain_info;
 mod chain_urls;
@@ -134,8 +134,7 @@ pub fn compress(input: PathBuf, output: PathBuf) -> Result<(), String> {
 		return Err("Input already compressed".into());
 	}
 
-	let bytes_compressed =
-		sp_maybe_compressed_blob::compress(wasm.original_bytes(), CODE_BLOB_BOMB_LIMIT).unwrap().to_vec();
+	let bytes_compressed = Compression::compress(wasm.original_bytes()).unwrap();
 
 	debug!("original   = {:?}", wasm.original_bytes().len());
 	debug!("compressed = {:?}", bytes_compressed.len());
@@ -154,8 +153,7 @@ pub fn decompress(input: PathBuf, output: PathBuf) -> Result<(), String> {
 		return Err("Input already uncompressed".into());
 	}
 
-	let bytes_decompressed =
-		sp_maybe_compressed_blob::decompress(wasm.original_bytes(), CODE_BLOB_BOMB_LIMIT).unwrap().to_vec();
+	let bytes_decompressed = Compression::decompress(wasm.original_bytes()).unwrap();
 
 	debug!("original     = {:?}", wasm.original_bytes().len());
 	debug!("decompressed = {:?}", bytes_decompressed.len());

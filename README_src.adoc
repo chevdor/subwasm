@@ -90,6 +90,16 @@ include::doc/usage_meta.adoc[]
 include::doc/usage_diff.adoc[]
 ----
 
+=== Command: compress
+----
+include::doc/usage_compress.adoc[]
+----
+
+=== Command: decompress
+----
+include::doc/usage_decompress.adoc[]
+----
+
 == Sample runs
 
 .Fetch a runtime from a running node

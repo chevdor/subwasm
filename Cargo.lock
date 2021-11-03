@@ -3077,7 +3077,6 @@ dependencies = [
  "scale-info",
  "serde",
  "serde_json",
- "sp-maybe-compressed-blob",
  "substrate-differ",
  "wasm-loader",
  "wasm-testbed",

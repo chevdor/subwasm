@@ -21,6 +21,8 @@ _usage:
 	cargo run -q -- info --help > doc/usage_info.adoc
 	cargo run -q -- meta --help > doc/usage_meta.adoc
 	cargo run -q -- diff --help > doc/usage_diff.adoc
+	cargo run -q -- compress --help > doc/usage_compress.adoc
+	cargo run -q -- decompress --help > doc/usage_decompress.adoc
 
 # Generate documentation
 doc: _usage

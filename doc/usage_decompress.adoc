@@ -1,0 +1,17 @@
+subwasm-decompress 0.15.0
+
+chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+
+Decompress a runtime
+
+USAGE:
+    subwasm decompress [FLAGS] <INPUT> <OUTPUT>
+
+ARGS:
+    <INPUT>     The wasm file to load
+    <OUTPUT>    The output
+
+FLAGS:
+    -h, --help       Print help information
+    -j, --json       Output as json
+    -V, --version    Print version information

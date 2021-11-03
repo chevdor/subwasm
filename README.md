@@ -73,11 +73,13 @@ MacOS Homebrew users can use:
         -V, --version    Print version information
 
     SUBCOMMANDS:
-        diff        Compare 2 runtimes
-        get         Get/Download the runtime wasm from a running node through rpc
-        help        Print this message or the help of the given subcommand(s)
-        info        The `info` command returns summarized information about a runtime
-        metadata    Returns the metadata as a json object. You may also use the "meta" alias
+        compress      Compress a runtime
+        decompress    Decompress a runtime
+        diff          Compare 2 runtimes
+        get           Get/Download the runtime wasm from a running node through rpc
+        help          Print this message or the help of the given subcommand(s)
+        info          The `info` command returns summarized information about a runtime
+        metadata      Returns the metadata as a json object. You may also use the "meta" alias
 
 ### Command: get
 
@@ -202,6 +204,46 @@ MacOS Homebrew users can use:
         -b, --chain-b <CHAIN_B>    Provide the name of a chain and a random url amongst a list of known
                                    nodes will be used. If you pass a valid --chain, --url will be
                                    ignored --chain local = http://localhost:9933
+
+### Command: compress
+
+    subwasm-compress 0.15.0
+
+    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+
+    Compress a runtime
+
+    USAGE:
+        subwasm compress [FLAGS] <INPUT> <OUTPUT>
+
+    ARGS:
+        <INPUT>     The wasm file to load
+        <OUTPUT>    The output
+
+    FLAGS:
+        -h, --help       Print help information
+        -j, --json       Output as json
+        -V, --version    Print version information
+
+### Command: decompress
+
+    subwasm-decompress 0.15.0
+
+    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+
+    Decompress a runtime
+
+    USAGE:
+        subwasm decompress [FLAGS] <INPUT> <OUTPUT>
+
+    ARGS:
+        <INPUT>     The wasm file to load
+        <OUTPUT>    The output
+
+    FLAGS:
+        -h, --help       Print help information
+        -j, --json       Output as json
+        -V, --version    Print version information
 
 ## Sample runs
 

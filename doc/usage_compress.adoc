@@ -1,0 +1,17 @@
+subwasm-compress 0.15.0
+
+chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+
+Compress a runtime
+
+USAGE:
+    subwasm compress [FLAGS] <INPUT> <OUTPUT>
+
+ARGS:
+    <INPUT>     The wasm file to load
+    <OUTPUT>    The output
+
+FLAGS:
+    -h, --help       Print help information
+    -j, --json       Output as json
+    -V, --version    Print version information
