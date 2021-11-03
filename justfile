@@ -84,4 +84,4 @@ tag:
     #!/bin/sh
     echo Tagging version v$TAG
     git tag "v$TAG" -f
-    git tag
+    git tag | sort -Vr | head
