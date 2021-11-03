@@ -34,11 +34,13 @@ Any node can be queried to provide its current metadata. This can be displayed i
 
 -   extracting information (those not requiring storage) from a runtime as wasm file
 
+-   (de)compress a given runtime WASM
+
 ## Install
 
 ### Using Cargo
 
-    cargo install --locked --git https://github.com/chevdor/subwasm --tag v0.15.0
+    cargo install --locked --git https://github.com/chevdor/subwasm --tag v0.16.0
 
 ### Homebrew
 
@@ -49,7 +51,7 @@ MacOS Homebrew users can use:
 
 ### Linux
 
-    wget https://github.com/chevdor/subwasm/releases/download/v0.15.0/subwasm_linux_amd64_v0.15.0 -O subwasm.deb
+    wget https://github.com/chevdor/subwasm/releases/download/v0.16.0/subwasm_linux_amd64_v0.16.0 -O subwasm.deb
     sudo dpkg -i subwasm.deb
     subwasm --help
 
@@ -57,7 +59,7 @@ MacOS Homebrew users can use:
 
 ### Command: --help
 
-    subwasm 0.15.0
+    subwasm 0.16.0
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
@@ -73,15 +75,21 @@ MacOS Homebrew users can use:
         -V, --version    Print version information
 
     SUBCOMMANDS:
-        diff        Compare 2 runtimes
-        get         Get/Download the runtime wasm from a running node through rpc
-        help        Print this message or the help of the given subcommand(s)
-        info        The `info` command returns summarized information about a runtime
-        metadata    Returns the metadata as a json object. You may also use the "meta" alias
+        compress      Compress a given runtime wasm file. You will get an error if you try
+                      compressing a runtime that is already compressed
+        decompress    Decompress a given runtime wasm file. You may pass a runtime that is
+                      uncompressed already. In that case, you will get the same content as output.
+                      This is useful if you want to decompress "no matter what" and don't really
+                      know whether the input will be compressed or not
+        diff          Compare 2 runtimes
+        get           Get/Download the runtime wasm from a running node through rpc
+        help          Print this message or the help of the given subcommand(s)
+        info          The `info` command returns summarized information about a runtime
+        metadata      Returns the metadata as a json object. You may also use the "meta" alias
 
 ### Command: get
 
-    subwasm-get 0.15.0
+    subwasm-get 0.16.0
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
@@ -115,7 +123,7 @@ MacOS Homebrew users can use:
 
 ### Command: info
 
-    subwasm-info 0.15.0
+    subwasm-info 0.16.0
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
@@ -144,7 +152,7 @@ MacOS Homebrew users can use:
 
 ### Command: meta
 
-    subwasm-metadata 0.15.0
+    subwasm-metadata 0.16.0
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
@@ -177,7 +185,7 @@ MacOS Homebrew users can use:
 
 ### Command: diff
 
-    subwasm-diff 0.15.0
+    subwasm-diff 0.16.0
 
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 
@@ -202,6 +210,49 @@ MacOS Homebrew users can use:
         -b, --chain-b <CHAIN_B>    Provide the name of a chain and a random url amongst a list of known
                                    nodes will be used. If you pass a valid --chain, --url will be
                                    ignored --chain local = http://localhost:9933
+
+### Command: compress
+
+    subwasm-compress 0.16.0
+
+    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+
+    Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is
+    already compressed
+
+    USAGE:
+        subwasm compress [FLAGS] <INPUT> <OUTPUT>
+
+    ARGS:
+        <INPUT>     The path of uncompressed wasm file to load
+        <OUTPUT>    The path of the file where the compressed runtime will be stored
+
+    FLAGS:
+        -h, --help       Print help information
+        -j, --json       Output as json
+        -V, --version    Print version information
+
+### Command: decompress
+
+    subwasm-decompress 0.16.0
+
+    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+
+    Decompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that
+    case, you will get the same content as output. This is useful if you want to decompress "no matter
+    what" and don't really know whether the input will be compressed or not
+
+    USAGE:
+        subwasm decompress [FLAGS] <INPUT> <OUTPUT>
+
+    ARGS:
+        <INPUT>     The path of the compressed or uncompressed wasm file to load
+        <OUTPUT>    The path of the file where the uncompressed runtime will be stored
+
+    FLAGS:
+        -h, --help       Print help information
+        -j, --json       Output as json
+        -V, --version    Print version information
 
 ## Sample runs
 

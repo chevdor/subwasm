@@ -34,6 +34,12 @@ pub enum SubCommand {
 
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Diff(DiffOpts),
+
+	#[clap(version = crate_version!(), author = crate_authors!())]
+	Compress(CompressOpts),
+
+	#[clap(version = crate_version!(), author = crate_authors!())]
+	Decompress(DecompressOpts),
 }
 
 /// Get/Download the runtime wasm from a running node through rpc
@@ -128,4 +134,32 @@ pub struct DiffOpts {
 	/// --chain local = http://localhost:9933
 	#[clap(long, short('b'), parse(from_str), conflicts_with = "src-b")]
 	pub chain_b: Option<ChainInfo>,
+}
+
+/// Compress a given runtime wasm file.
+/// You will get an error if you try compressing a runtime that is already compressed.
+#[derive(Clap)]
+pub struct CompressOpts {
+	/// The path of uncompressed wasm file to load.
+	#[clap(alias("in"), index = 1)]
+	pub input: PathBuf,
+
+	/// The path of the file where the compressed runtime will be stored.
+	#[clap(alias("out"), index = 2)]
+	pub output: PathBuf,
+}
+
+/// Decompress a given runtime wasm file. You may pass a runtime that is uncompressed
+/// already. In that case, you will get the same content as output. This is useful
+/// if you want to decompress "no matter what" and don't really know whether the input
+/// will be compressed or not.
+#[derive(Clap)]
+pub struct DecompressOpts {
+	/// The path of the compressed or uncompressed wasm file to load.
+	#[clap(alias("in"), index = 1)]
+	pub input: PathBuf,
+
+	/// The path of the file where the uncompressed runtime will be stored.
+	#[clap(alias("out"), index = 2)]
+	pub output: PathBuf,
 }

@@ -71,6 +71,17 @@ fn main() -> color_eyre::Result<()> {
 
 			diff(src_a, src_b);
 		}
+
+		SubCommand::Compress(copts) => {
+			noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
+			compress(copts.input, copts.output).unwrap();
+		}
+
+		SubCommand::Decompress(dopts) => {
+			noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
+
+			decompress(dopts.input, dopts.output).unwrap();
+		}
 	};
 
 	Ok(())

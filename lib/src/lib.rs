@@ -4,7 +4,7 @@ use std::{io::prelude::*, str::FromStr};
 use substrate_differ::differs::raw_differ::RawDiffer;
 use substrate_differ::differs::raw_differ_options::RawDifferOptions;
 use substrate_differ::differs::summary_differ::RuntimeSummaryDiffer;
-use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
+use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, WasmLoader};
 use wasm_testbed::WasmTestBed;
 mod chain_info;
 mod chain_urls;
@@ -125,4 +125,45 @@ pub fn diff(src_a: Source, src_b: Source) {
 	// ==== PARTIAL
 	// let partial = MetadataPartialDiffer::new(runtime_a.metadata(), runtime_b.metadata());
 	// partial.compare();
+}
+
+/// Compress a given runtime into a new file. You cannot compress
+/// a runtime that is already compressed.
+pub fn compress(input: PathBuf, output: PathBuf) -> Result<(), String> {
+	let wasm = WasmLoader::load_from_source(&Source::File(input)).unwrap();
+
+	if wasm.compression().compressed() {
+		return Err("The input is already compressed".into());
+	}
+
+	let bytes_compressed = Compression::compress(wasm.original_bytes()).unwrap();
+
+	debug!("original   = {:?}", wasm.original_bytes().len());
+	debug!("compressed = {:?}", bytes_compressed.len());
+	info!("Saving compressed runtime to {:?}", output);
+
+	let mut buffer = File::create(output).unwrap();
+	buffer.write_all(&bytes_compressed.to_vec()).unwrap();
+
+	Ok(())
+}
+
+/// Decompress a given runtime file. It is fine decompressing an already
+/// decompressed runtime, you will just get the same.
+pub fn decompress(input: PathBuf, output: PathBuf) -> Result<(), String> {
+	let wasm = WasmLoader::load_from_source(&Source::File(input)).unwrap();
+
+	let bytes_decompressed = match wasm.compression().compressed() {
+		false => wasm.original_bytes().clone(),
+		true => Compression::decompress(wasm.original_bytes()).unwrap(),
+	};
+
+	debug!("original     = {:?}", wasm.original_bytes().len());
+	debug!("decompressed = {:?}", bytes_decompressed.len());
+
+	info!("Saving decompressed runtime to {:?}", output);
+	let mut buffer = File::create(output).unwrap();
+	buffer.write_all(&bytes_decompressed.to_vec()).unwrap();
+
+	Ok(())
 }

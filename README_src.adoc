@@ -2,7 +2,7 @@
 :toc: right
 :prj: pass:q[`subwasm`]
 :cmd: subwasm
-:version: v0.15.0
+:version: v0.16.0
 
 image::https://github.com/chevdor/subwasm/actions/workflows/quick-check.yml/badge.svg?branch=master[link="https://github.com/chevdor/subwasm/actions/workflows/quick-check.yml"]
 
@@ -37,6 +37,7 @@ image::scripts/demos/gif/demo-diff.gif[title="subwasm diff"]
 - getting runtime and metadata at any point of time using a Block hash as reference
 - getting the metadata from a a wasm file without any node
 - extracting information (those not requiring storage) from a runtime as wasm file
+- (de)compress a given runtime WASM
 
 == Install
 
@@ -88,6 +89,16 @@ include::doc/usage_meta.adoc[]
 === Command: diff
 ----
 include::doc/usage_diff.adoc[]
+----
+
+=== Command: compress
+----
+include::doc/usage_compress.adoc[]
+----
+
+=== Command: decompress
+----
+include::doc/usage_decompress.adoc[]
 ----
 
 == Sample runs
