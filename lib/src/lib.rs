@@ -128,23 +128,17 @@ pub fn diff(src_a: Source, src_b: Source) {
 }
 
 pub fn compress(input: PathBuf, output: PathBuf) -> Result<(), String> {
-	debug!("Compress");
-	debug!("input: {:?}", input);
-	debug!("output: {:?}", output);
-
 	let wasm = WasmLoader::load_from_source(&Source::File(input)).unwrap();
 
 	if wasm.compression().compressed() {
 		return Err("Input already compressed".into());
 	}
 
-	debug!("{:?}", wasm.compression());
-
 	let bytes_compressed =
 		sp_maybe_compressed_blob::compress(wasm.original_bytes(), CODE_BLOB_BOMB_LIMIT).unwrap().to_vec();
 
-	debug!("original = {:?}", wasm.original_bytes().len());
-	debug!("decomp = {:?}", bytes_compressed.len());
+	debug!("original   = {:?}", wasm.original_bytes().len());
+	debug!("compressed = {:?}", bytes_compressed.len());
 
 	info!("Saving compressed runtime to {:?}", output);
 	let mut buffer = File::create(output).unwrap();
@@ -154,21 +148,17 @@ pub fn compress(input: PathBuf, output: PathBuf) -> Result<(), String> {
 }
 
 pub fn decompress(input: PathBuf, output: PathBuf) -> Result<(), String> {
-	debug!("Decompress");
-	debug!("input: {:?}", input);
-	debug!("output: {:?}", output);
-
 	let wasm = WasmLoader::load_from_source(&Source::File(input)).unwrap();
 
 	if !wasm.compression().compressed() {
 		return Err("Input already uncompressed".into());
 	}
 
-	debug!("{:?}", wasm.compression());
 	let bytes_decompressed =
 		sp_maybe_compressed_blob::decompress(wasm.original_bytes(), CODE_BLOB_BOMB_LIMIT).unwrap().to_vec();
-	debug!("original = {:?}", wasm.original_bytes().len());
-	debug!("decomp = {:?}", bytes_decompressed.len());
+
+	debug!("original     = {:?}", wasm.original_bytes().len());
+	debug!("decompressed = {:?}", bytes_decompressed.len());
 
 	info!("Saving decompressed runtime to {:?}", output);
 	let mut buffer = File::create(output).unwrap();
