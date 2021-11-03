@@ -23,3 +23,4 @@ serde_json = "1.0"
 substrate-differ = {path = "../libs/substrate-differ"}
 wasm-loader = {path = "../libs/wasm-loader"}
 wasm-testbed = {path = "../libs/wasm-testbed"}
+sp-maybe-compressed-blob = {version = "4.0.0-dev", git = "https://github.com/paritytech/substrate/"}

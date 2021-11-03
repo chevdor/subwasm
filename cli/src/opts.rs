@@ -34,6 +34,12 @@ pub enum SubCommand {
 
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Diff(DiffOpts),
+
+	#[clap(version = crate_version!(), author = crate_authors!())]
+	Compress(CompressOpts),
+
+	#[clap(version = crate_version!(), author = crate_authors!())]
+	Decompress(DecompressOpts),
 }
 
 /// Get/Download the runtime wasm from a running node through rpc
@@ -128,4 +134,28 @@ pub struct DiffOpts {
 	/// --chain local = http://localhost:9933
 	#[clap(long, short('b'), parse(from_str), conflicts_with = "src-b")]
 	pub chain_b: Option<ChainInfo>,
+}
+
+/// Compress a runtime
+#[derive(Clap)]
+pub struct CompressOpts {
+	/// The wasm file to load.
+	#[clap(alias("in"), index = 1)]
+	pub input: PathBuf,
+
+	/// The output.
+	#[clap(alias("out"), index = 2)]
+	pub output: PathBuf,
+}
+
+/// Decompress a runtime
+#[derive(Clap)]
+pub struct DecompressOpts {
+	/// The wasm file to load.
+	#[clap(alias("in"), index = 1)]
+	pub input: PathBuf,
+
+	/// The output.
+	#[clap(alias("out"), index = 2)]
+	pub output: PathBuf,
 }

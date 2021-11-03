@@ -4,7 +4,7 @@ use std::{io::prelude::*, str::FromStr};
 use substrate_differ::differs::raw_differ::RawDiffer;
 use substrate_differ::differs::raw_differ_options::RawDifferOptions;
 use substrate_differ::differs::summary_differ::RuntimeSummaryDiffer;
-use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
+use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source, WasmLoader, CODE_BLOB_BOMB_LIMIT};
 use wasm_testbed::WasmTestBed;
 mod chain_info;
 mod chain_urls;
@@ -125,4 +125,54 @@ pub fn diff(src_a: Source, src_b: Source) {
 	// ==== PARTIAL
 	// let partial = MetadataPartialDiffer::new(runtime_a.metadata(), runtime_b.metadata());
 	// partial.compare();
+}
+
+pub fn compress(input: PathBuf, output: PathBuf) -> Result<(), String> {
+	debug!("Compress");
+	debug!("input: {:?}", input);
+	debug!("output: {:?}", output);
+
+	let wasm = WasmLoader::load_from_source(&Source::File(input)).unwrap();
+
+	if wasm.compression().compressed() {
+		return Err("Input already compressed".into());
+	}
+
+	debug!("{:?}", wasm.compression());
+
+	let bytes_compressed =
+		sp_maybe_compressed_blob::compress(wasm.original_bytes(), CODE_BLOB_BOMB_LIMIT).unwrap().to_vec();
+
+	debug!("original = {:?}", wasm.original_bytes().len());
+	debug!("decomp = {:?}", bytes_compressed.len());
+
+	info!("Saving compressed runtime to {:?}", output);
+	let mut buffer = File::create(output).unwrap();
+	buffer.write_all(&bytes_compressed.to_vec()).unwrap();
+
+	Ok(())
+}
+
+pub fn decompress(input: PathBuf, output: PathBuf) -> Result<(), String> {
+	debug!("Decompress");
+	debug!("input: {:?}", input);
+	debug!("output: {:?}", output);
+
+	let wasm = WasmLoader::load_from_source(&Source::File(input)).unwrap();
+
+	if !wasm.compression().compressed() {
+		return Err("Input already uncompressed".into());
+	}
+
+	debug!("{:?}", wasm.compression());
+	let bytes_decompressed =
+		sp_maybe_compressed_blob::decompress(wasm.original_bytes(), CODE_BLOB_BOMB_LIMIT).unwrap().to_vec();
+	debug!("original = {:?}", wasm.original_bytes().len());
+	debug!("decomp = {:?}", bytes_decompressed.len());
+
+	info!("Saving decompressed runtime to {:?}", output);
+	let mut buffer = File::create(output).unwrap();
+	buffer.write_all(&bytes_decompressed.to_vec()).unwrap();
+
+	Ok(())
 }

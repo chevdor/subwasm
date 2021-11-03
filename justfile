@@ -40,7 +40,7 @@ _fmt:
 
 # Run clippy
 _clippy:
-	cargo +nightly clippy
+	cargo +nightly clippy --all-features --all-targets
 
 _deny:
 	cargo deny check
