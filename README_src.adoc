@@ -2,7 +2,7 @@
 :toc: right
 :prj: pass:q[`subwasm`]
 :cmd: subwasm
-:version: v0.16.0
+:version: v0.16.1
 
 image::https://github.com/chevdor/subwasm/actions/workflows/quick-check.yml/badge.svg?branch=master[link="https://github.com/chevdor/subwasm/actions/workflows/quick-check.yml"]
 

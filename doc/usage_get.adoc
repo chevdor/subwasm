@@ -1,4 +1,4 @@
-subwasm-get 0.16.0
+subwasm-get 0.16.1
 
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 

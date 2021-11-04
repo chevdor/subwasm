@@ -1204,7 +1204,7 @@ dependencies = [
 
 [[package]]
 name = "ipfs-hasher"
-version = "0.16.0"
+version = "0.16.1"
 dependencies = [
  "ipfs-unixfs",
  "wasm-loader",
@@ -3007,7 +3007,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-differ"
-version = "0.16.0"
+version = "0.16.1"
 dependencies = [
  "frame-metadata",
  "log",
@@ -3022,7 +3022,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-runtime-proposal-hash"
-version = "0.16.0"
+version = "0.16.1"
 dependencies = [
  "blake2",
  "frame-metadata",
@@ -3049,7 +3049,7 @@ checksum = "6bdef32e8150c2a081110b42772ffe7d7c9032b606bc226c8260fd97e0976601"
 
 [[package]]
 name = "subwasm"
-version = "0.16.0"
+version = "0.16.1"
 dependencies = [
  "assert_cmd",
  "clap",
@@ -3065,7 +3065,7 @@ dependencies = [
 
 [[package]]
 name = "subwasmlib"
-version = "0.16.0"
+version = "0.16.1"
 dependencies = [
  "calm_io",
  "color-eyre",
@@ -3625,7 +3625,7 @@ checksum = "0237232789cf037d5480773fe568aac745bfe2afbc11a863e97901780a6b47cc"
 
 [[package]]
 name = "wasm-loader"
-version = "0.16.0"
+version = "0.16.1"
 dependencies = [
  "hex",
  "jsonrpsee",
@@ -3639,7 +3639,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-testbed"
-version = "0.16.0"
+version = "0.16.1"
 dependencies = [
  "frame-metadata",
  "hex",
