@@ -60,24 +60,32 @@ jobs:
           echo "RAW_VERSION=$RAW_VERSION" >> $GITHUB_ENV
           echo "SHORT_SHA=${GITHUB_SHA::8}" >> $GITHUB_ENV
 
-      - name: Install latest nightly
+      - name: Install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: stable
           override: true
-          components: rustfmt, clippy
 
       - name: Check tooling
         shell: bash
         run: |
           tar --version
           shasum --version
+          cargo --version
+          rustc --version
 
       - name: Build MacOS binary
-        shell: bash
         run: |
           cargo build --locked --release
           ls -al "${{ env.TARGET_DIR }}/subwasm"
+
+      - name: Check binary
+        env:
+          BINARY: "${{ env.TARGET_DIR }}/subwasm"
+        run: |
+          file $BINARY
+          $BINARY --version
+          $BINARY --help
 
       - name: Compress & sha256
         run: |
