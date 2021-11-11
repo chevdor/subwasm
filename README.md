@@ -8,6 +8,8 @@
 
 The metadata of a given runtime is a critical piece of information as it describes how one can interact with the runtime, what operations are possible and what are the signatures of the calls. It contains the exhaustive list of all the features publicly exposed by the runtime.
 
+This tool only works with Substrate-based runtimes which are `>=V11`. For earlier versions, you’ll need to connect to an archive node.
+
 Any node can be queried to provide its current metadata. This can be displayed in json format for instance. This is a great way to have a peek at what the runtime can do.
 
 ## Sample runs
@@ -260,7 +262,7 @@ MacOS Homebrew users can use:
 
 We will start by fetching the runtime from a node.
 
-Please note that you will likely need to connect to an **archive** node to retrieve older runtime. A runtime takes around 2MB of storage on-chain and thus, older versions are pruned and will no longer be accessible if you are connectin to a non-archive node.
+Please note that you will likely need to connect to an **archive** node to retrieve an older runtime (`<V11`). A runtime takes around 2MB of storage on-chain and thus, older versions are pruned and will no longer be accessible if you are connecting to a non-archive node.
 
 **Here we get the latest version of the runtime, the 3 commands do the same since they all use the default values:**
 
@@ -284,7 +286,7 @@ By default, your runtime will be saved as `runtime_000.wasm`. Running this comma
 
 ### Metadata JSON and jq tricks
 
-`jq` can be used to reprocess the json output. For instance, removing all the documentation from the metadata makes it significantly smaller. The example below shows how to remove `documentation`, `value` and `default` for a version easier on the eyes for human parsing…​
+`jq` can be used to reprocess the json output. For instance, removing all the documentation from the metadata makes it significantly smaller. The example below shows how to remove `documentation`, `value` and `default` making it much easier on the eyes for human parsing…​
 
         subwasm --json meta runtime.wasm | jq 'del( .. | .documentation?, .default?, .value? )'
 
