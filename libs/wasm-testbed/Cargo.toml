@@ -21,5 +21,5 @@ sp-io = "3.0"
 sp-runtime = "3.0"
 sp-state-machine = "0.9"
 sp-wasm-interface = "3.0"
-substrate-runtime-proposal-hash = {path = "../substrate-runtime-proposal-hash"}
-wasm-loader = {path = "../wasm-loader"}
+substrate-runtime-proposal-hash = {version = "0.16", path = "../substrate-runtime-proposal-hash"}
+wasm-loader = {version = "0.16", path = "../wasm-loader"}

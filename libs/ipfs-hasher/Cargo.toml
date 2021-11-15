@@ -11,4 +11,4 @@ version = "0.16.1"
 ipfs-unixfs = "0.2"
 
 [dev-dependencies]
-wasm-loader = {path = "../wasm-loader"}
+wasm-loader = {version = "0.16", path = "../wasm-loader"}
