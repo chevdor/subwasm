@@ -16,5 +16,5 @@ log = "0.4"
 multibase = "0.9"
 multihash = "0.15"
 serde = {version = "1.0", features = ["derive"]}
-sp-maybe-compressed-blob = {version = "^4.0.0-dev", git = "https://github.com/paritytech/substrate/"}
+sp-maybe-compressed-blob = {version = "4.1.0-dev", git = "https://github.com/paritytech/substrate/"}
 tokio = {version = "1.11", features = ["full"]}
