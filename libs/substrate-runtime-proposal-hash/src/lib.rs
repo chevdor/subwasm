@@ -1,9 +1,8 @@
 use blake2::digest::{Update, VariableOutput};
-use blake2::VarBlake2b;
+use blake2::Blake2bVar;
 use codec::Encode;
 use sp_core::Hasher;
 use sp_runtime::traits::BlakeTwo256;
-use std::convert::TryInto;
 
 /// Expected size of the hash
 pub const SIZE: usize = 32;
@@ -65,12 +64,10 @@ pub fn get_parachainsystem_authorize_upgrade(wasm_blob: &[u8]) -> CalllHash {
 }
 
 fn get_call_hash(prefix: Prefix, wasm_blob: &[u8]) -> CalllHash {
-	let mut hasher = VarBlake2b::new(SIZE).unwrap();
-	hasher.update(concatenate_arrays(&[prefix.0, prefix.1], wasm_blob));
+	let mut hasher = Blake2bVar::new(SIZE).unwrap();
+	hasher.update(&concatenate_arrays(&[prefix.0, prefix.1], wasm_blob));
 	let mut result: CalllHash = [0; SIZE];
-	hasher.finalize_variable(|res| {
-		result = res.try_into().expect("slice with incorrect length");
-	});
+	hasher.finalize_variable(&mut result).unwrap();
 	result
 }
 

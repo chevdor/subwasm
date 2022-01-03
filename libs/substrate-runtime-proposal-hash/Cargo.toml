@@ -10,7 +10,7 @@ repository = "https://github.com/chevdor/subwasm"
 version = "0.16.1"
 
 [dependencies]
-blake2 = "0.9"
+blake2 = "0.10"
 codec = {version = "2.3", package = "parity-scale-codec"}
 frame-metadata = {version = "14", package = "frame-metadata", features = ["v12", "v13", "v14", "std"]}
 hex = "0.4"

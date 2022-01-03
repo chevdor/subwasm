@@ -6,9 +6,11 @@ mod source;
 
 pub use compression::Compression;
 use error::WasmLoaderError;
+use jsonrpsee::core::client::ClientT;
+use jsonrpsee::core::{Error, JsonValue};
 use jsonrpsee::rpc_params;
-use jsonrpsee::types::traits::Client;
-use jsonrpsee::types::{Error, JsonValue};
+
+// use jsonrpsee::types::types::{Error, JsonValue};
 use jsonrpsee::{http_client::HttpClientBuilder, ws_client::WsClientBuilder};
 use log::debug;
 pub use node_endpoint::NodeEndpoint;
