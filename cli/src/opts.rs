@@ -1,12 +1,11 @@
-use clap::{crate_authors, crate_version, AppSettings, Clap};
+use clap::{crate_authors, crate_version, Parser, Subcommand};
 use std::path::PathBuf;
 use subwasmlib::ChainInfo;
 use wasm_loader::{OnchainBlock, Source};
 
 /// `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains.
-#[derive(Clap)]
+#[derive(Parser)]
 #[clap(version = crate_version!(), author = crate_authors!())]
-#[clap(setting = AppSettings::ColoredHelp)]
 pub struct Opts {
 	/// Output as json
 	#[clap(short, long, global = true)]
@@ -21,8 +20,7 @@ pub struct Opts {
 }
 
 /// You can find all available commands below.
-#[derive(Clap)]
-#[clap(setting = AppSettings::ColoredHelp)]
+#[derive(Subcommand)]
 pub enum SubCommand {
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Get(GetOpts),
@@ -44,8 +42,7 @@ pub enum SubCommand {
 }
 
 /// Get/Download the runtime wasm from a running node through rpc
-#[derive(Clap)]
-#[clap(setting = AppSettings::ColoredHelp)]
+#[derive(Parser)]
 pub struct GetOpts {
 	/// The node url including (mandatory) the port number. Example: ws://localhost:9944 or http://localhost:9933
 	#[clap(default_value = "http://localhost:9933", required_unless_present = "chain", index = 1)]
@@ -70,8 +67,7 @@ pub struct GetOpts {
 }
 
 /// The `info` command returns summarized information about a runtime.
-#[derive(Clap)]
-#[clap(setting = AppSettings::ColoredHelp)]
+#[derive(Parser)]
 pub struct InfoOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such as
 	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
@@ -91,8 +87,7 @@ pub struct InfoOpts {
 }
 
 /// Returns the metadata as a json object. You may also use the "meta" alias.
-#[derive(Clap)]
-#[clap(setting = AppSettings::ColoredHelp)]
+#[derive(Parser)]
 pub struct MetaOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such as
 	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
@@ -117,8 +112,7 @@ pub struct MetaOpts {
 }
 
 /// Compare 2 runtimes
-#[derive(Clap)]
-#[clap(setting = AppSettings::ColoredHelp)]
+#[derive(Parser)]
 pub struct DiffOpts {
 	/// The first source
 	#[clap(index = 1, alias = "src-a", default_value = "runtime_000.wasm", required_unless_present = "chain-a")]
@@ -143,8 +137,7 @@ pub struct DiffOpts {
 
 /// Compress a given runtime wasm file.
 /// You will get an error if you try compressing a runtime that is already compressed.
-#[derive(Clap)]
-#[clap(setting = AppSettings::ColoredHelp)]
+#[derive(Parser)]
 pub struct CompressOpts {
 	/// The path of uncompressed wasm file to load.
 	#[clap(alias("in"), index = 1)]
@@ -159,8 +152,7 @@ pub struct CompressOpts {
 /// already. In that case, you will get the same content as output. This is useful
 /// if you want to decompress "no matter what" and don't really know whether the input
 /// will be compressed or not.
-#[derive(Clap)]
-#[clap(setting = AppSettings::ColoredHelp)]
+#[derive(Parser)]
 pub struct DecompressOpts {
 	/// The path of the compressed or uncompressed wasm file to load.
 	#[clap(alias("in"), index = 1)]
