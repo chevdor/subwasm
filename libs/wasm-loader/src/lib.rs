@@ -22,7 +22,7 @@ use std::{fs, fs::File, path::Path};
 use tokio::runtime::Runtime;
 
 const CODE: &str = "0x3a636f6465"; // :code in hex
-pub const CODE_BLOB_BOMB_LIMIT: usize = 50 * 1024 * 1024;
+pub const CODE_BLOB_BOMB_LIMIT: usize = 1024 * 1024 * 1024;
 pub type WasmBytes = Vec<u8>;
 
 pub enum CompressedMaybe {
