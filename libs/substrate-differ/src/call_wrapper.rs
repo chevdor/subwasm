@@ -19,7 +19,7 @@ impl<'a, K: Display, V: Display + 'a> Display for CallWrapper<'a, K, V> {
 				for key in keys {
 					res.push_str(&format!("{}.", key));
 				}
-				write!(f, "🗑  {:<50} {:>20}", res, val.to_string())
+				write!(f, "🗑  {:<50} {:>20}", res, val)
 			}
 
 			ChangeType::Unchanged(_, _) => write!(f, "Unchanged"),
