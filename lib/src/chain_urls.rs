@@ -5,17 +5,17 @@ pub fn get_chain_urls(name: &str) -> Option<Vec<NodeEndpoint>> {
 	match name {
 		"polkadot" | "dot" => Some(vec![
 			"wss://rpc.polkadot.io:443",
-			"wss://polkadot.api.onfinality.io:443/public-ws",
+			// "wss://polkadot.api.onfinality.io:443/public-ws",
 			// "wss://polkadot.elara.patract.io",
 		]),
 		"kusama" | "ksm" => Some(vec![
 			"wss://kusama-rpc.polkadot.io:443",
-			"wss://kusama.api.onfinality.io:443/public-ws",
+			// "wss://kusama.api.onfinality.io:443/public-ws",
 			// "wss://kusama.elara.patract.io",
 		]),
 		"westend" | "wnd" => Some(vec![
 			"wss://westend-rpc.polkadot.io:443",
-			"wss://westend.api.onfinality.io:443/public-ws",
+			// "wss://westend.api.onfinality.io:443/public-ws",
 			// "wss://westend.elara.patract.io",
 		]),
 		"rococo" => Some(vec![
