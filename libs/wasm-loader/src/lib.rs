@@ -85,10 +85,7 @@ impl WasmLoader {
 
 	/// Load wasm from a node
 	fn load_from_node(reference: &OnchainBlock) -> Result<WasmBytes, WasmLoaderError> {
-		match WasmLoader::fetch_wasm(reference) {
-			Ok(wasm) => Ok(wasm),
-			Err(e) => Err(e),
-		}
+		WasmLoader::fetch_wasm(reference)
 	}
 
 	/// Returns the 'usable' uncompressed bytes. You get either the raw bytes if the

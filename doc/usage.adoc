@@ -1,13 +1,12 @@
-subwasm 0.16.1
-
+subwasm 0.17.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-
-You can find all available commands below
+`subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based
+chains
 
 USAGE:
-    subwasm [FLAGS] <SUBCOMMAND>
+    subwasm [OPTIONS] <SUBCOMMAND>
 
-FLAGS:
+OPTIONS:
     -h, --help       Print help information
     -j, --json       Output as json
     -q, --quiet      Less output
@@ -15,11 +14,11 @@ FLAGS:
 
 SUBCOMMANDS:
     compress      Compress a given runtime wasm file. You will get an error if you try
-                  compressing a runtime that is already compressed
+                      compressing a runtime that is already compressed
     decompress    Decompress a given runtime wasm file. You may pass a runtime that is
-                  uncompressed already. In that case, you will get the same content as output.
-                  This is useful if you want to decompress "no matter what" and don't really
-                  know whether the input will be compressed or not
+                      uncompressed already. In that case, you will get the same content as output.
+                      This is useful if you want to decompress "no matter what" and don't really
+                      know whether the input will be compressed or not
     diff          Compare 2 runtimes
     get           Get/Download the runtime wasm from a running node through rpc
     help          Print this message or the help of the given subcommand(s)
