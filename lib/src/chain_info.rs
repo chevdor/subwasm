@@ -51,7 +51,9 @@ pub enum Error {
 
 impl Display for Error {
 	fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(fmt, "Chain not supported: {}", self)
+		match self {
+			Error::ChainUsupported(s) => write!(fmt, "Chain not supported: {}", s),
+		}
 	}
 }
 
