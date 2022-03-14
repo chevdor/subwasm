@@ -5,12 +5,12 @@ pub fn get_chain_urls(name: &str) -> Option<Vec<NodeEndpoint>> {
 	match name {
 		"polkadot" | "dot" => Some(vec![
 			"wss://rpc.polkadot.io:443",
-			// "wss://polkadot.api.onfinality.io:443/public-ws",
+			"wss://polkadot.api.onfinality.io:443/public-ws",
 			// "wss://polkadot.elara.patract.io",
 		]),
 		"kusama" | "ksm" => Some(vec![
 			"wss://kusama-rpc.polkadot.io:443",
-			// "wss://kusama.api.onfinality.io:443/public-ws",
+			"wss://kusama.api.onfinality.io:443/public-ws",
 			// "wss://kusama.elara.patract.io",
 		]),
 		"westend" | "wnd" => Some(vec![
@@ -20,14 +20,18 @@ pub fn get_chain_urls(name: &str) -> Option<Vec<NodeEndpoint>> {
 		]),
 		"rococo" => Some(vec![
 			"wss://rococo-rpc.polkadot.io:443",
-			// "wss://rococo.api.onfinality.io:443/public-ws",
+			"wss://rococo.api.onfinality.io:443/public-ws",
 			// "wss://rococo.elara.patract.io",
 		]),
-		"statemint" => Some(vec!["wss://polkadot-statemint-rpc.paritytech.net:443"]),
+		"statemint" => Some(vec![
+			"wss://statemint-rpc.polkadot.io:443",
+			"wss://statemint.api.onfinality.io:443/public-ws",
+			"wss://statemint-rpc.dwellir.com:443",
+		]),
 		"statemine" => Some(vec![
-			"wss://kusama-statemine-rpc.paritytech.net:443",
-			// "wss://statemine.api.onfinality.io:443/public-ws",
-			// "wss://statemine.kusama.elara.patract.io",
+			"wss://statemine-rpc.polkadot.io:443",
+			"wss://statemine.api.onfinality.io:443/public-ws",
+			"wss://statemine-rpc.dwellir.com:443",
 		]),
 		"westmint" => Some(vec![
 			"wss://westmint-rpc.polkadot.io:443",
