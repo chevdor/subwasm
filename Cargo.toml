@@ -10,3 +10,11 @@ members = [
     "libs/substrate-differ",
     "libs/ipfs-hasher",
 ]
+
+# 59.31s
+[profile.production]
+codegen-units = 1
+inherits = "release"
+lto = true
+opt-level = "z"
+panic = "abort"

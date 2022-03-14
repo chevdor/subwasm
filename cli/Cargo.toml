@@ -10,13 +10,6 @@ readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
 version = "0.16.1"
 
-[profile.release]
-codegen-units = 1
-inherits = "release"
-lto = true
-opt-level = "z"
-panic = "abort"
-
 [dependencies]
 assert_cmd = "2.0"
 clap = {version = "3.0", features = ["derive", "env", "unicode", "cargo"]}

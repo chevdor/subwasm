@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cargo run --release \
+cargo run --profile production \
     | jq '.[1]' \
     | jq 'map(del(.. | .documentation?))' \
     | jq 'map(del(.. | .default?))' \

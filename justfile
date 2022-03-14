@@ -1,5 +1,4 @@
 VERSION := `toml get cli/Cargo.toml package.version | jq -r`
-TARGET_DIR := "target/release"
 export TAG:=`toml get cli/Cargo.toml "package.version" | jq -r .`
 
 # List available commands
