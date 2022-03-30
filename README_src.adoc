@@ -8,6 +8,8 @@ image::https://github.com/chevdor/subwasm/actions/workflows/quick-check.yml/badg
 
 image::resources/logos/Logo_1024.png[align="center", width="50%"]
 
+WARNING: Unfortunately, the crate of the project and its dependencies are squatted on crates.io. The squatter remains unresponsive and the crates.io team does not care. I strongly recommend NOT to install the old version from crates.io. Check the <<Install>> chapter below to see how to install from this repo or use the official binary packages.
+
 == Introduction
 
 The metadata of a given runtime is a critical piece of information as it describes how one can interact with the runtime, what operations are possible and what are the signatures of the calls. It contains the exhaustive list of all the features publicly exposed by the runtime.

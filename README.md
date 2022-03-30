@@ -4,6 +4,8 @@
 
 ![Logo 1024](resources/logos/Logo_1024.png)
 
+Unfortunately, the crate of the project and its dependencies are squatted on crates.io. The squatter remains unresponsive and the crates.io team does not care. I strongly recommend NOT to install the old version from crates.io. Check the [Install](#_install) chapter below to see how to install from this repo or use the official binary packages.
+
 ## Introduction
 
 The metadata of a given runtime is a critical piece of information as it describes how one can interact with the runtime, what operations are possible and what are the signatures of the calls. It contains the exhaustive list of all the features publicly exposed by the runtime.
@@ -61,16 +63,15 @@ MacOS Homebrew users can use:
 
 ### Command: --help
 
-    subwasm 0.16.1
-
+    subwasm 0.17.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-
-    You can find all available commands below
+    `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based
+    chains
 
     USAGE:
-        subwasm [FLAGS] <SUBCOMMAND>
+        subwasm [OPTIONS] <SUBCOMMAND>
 
-    FLAGS:
+    OPTIONS:
         -h, --help       Print help information
         -j, --json       Output as json
         -q, --quiet      Less output
@@ -78,11 +79,11 @@ MacOS Homebrew users can use:
 
     SUBCOMMANDS:
         compress      Compress a given runtime wasm file. You will get an error if you try
-                      compressing a runtime that is already compressed
+                          compressing a runtime that is already compressed
         decompress    Decompress a given runtime wasm file. You may pass a runtime that is
-                      uncompressed already. In that case, you will get the same content as output.
-                      This is useful if you want to decompress "no matter what" and don't really
-                      know whether the input will be compressed or not
+                          uncompressed already. In that case, you will get the same content as output.
+                          This is useful if you want to decompress "no matter what" and don't really
+                          know whether the input will be compressed or not
         diff          Compare 2 runtimes
         get           Get/Download the runtime wasm from a running node through rpc
         help          Print this message or the help of the given subcommand(s)
@@ -91,23 +92,16 @@ MacOS Homebrew users can use:
 
 ### Command: get
 
-    subwasm-get 0.16.1
-
+    subwasm-get 0.17.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-
     Get/Download the runtime wasm from a running node through rpc
 
     USAGE:
-        subwasm get [FLAGS] [OPTIONS] [URL]
+        subwasm get [OPTIONS] [URL]
 
     ARGS:
         <URL>    The node url including (mandatory) the port number. Example: ws://localhost:9944 or
                  http://localhost:9933 [default: http://localhost:9933]
-
-    FLAGS:
-        -h, --help       Print help information
-        -j, --json       Output as json
-        -V, --version    Print version information
 
     OPTIONS:
         -b, --block <BLOCK>      The optional block where to fetch the runtime. That allows fetching
@@ -117,32 +111,28 @@ MacOS Homebrew users can use:
             --chain <CHAIN>      Provide the name of a chain and a random url amongst a list of known
                                  nodes will be used. If you pass a valid --chain, --url will be ignored
                                  --chain local = http://localhost:9933
+        -h, --help               Print help information
+        -j, --json               Output as json
         -o, --output <OUTPUT>    You may specifiy the output filename where the runtime will be saved.
                                  If not provided, we will figure out an appropriate default name based
                                  on a counter: runtime_NNN.wasm where NNN is incrementing to make sure
                                  you do not override previous runtime. If you specify an existing file
                                  as output, it will be overwritten
+        -V, --version            Print version information
 
 ### Command: info
 
-    subwasm-info 0.16.1
-
+    subwasm-info 0.17.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-
     The `info` command returns summarized information about a runtime
 
     USAGE:
-        subwasm info [FLAGS] [OPTIONS] [SOURCE]
+        subwasm info [OPTIONS] [SOURCE]
 
     ARGS:
         <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
                     /tmp/runtime.wasm or a node url such as http://localhost:9933 or
                     ws://localhost:9944 [default: runtime_000.wasm]
-
-    FLAGS:
-        -h, --help       Print help information
-        -j, --json       Output as json
-        -V, --version    Print version information
 
     OPTIONS:
         -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older
@@ -151,27 +141,23 @@ MacOS Homebrew users can use:
             --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known
                                nodes will be used. If you pass a valid --chain, --url will be ignored
                                --chain local = http://localhost:9933
+        -h, --help             Print help information
+        -j, --json             Output as json
+        -V, --version          Print version information
 
 ### Command: meta
 
-    subwasm-metadata 0.16.1
-
+    subwasm-metadata 0.17.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-
     Returns the metadata as a json object. You may also use the "meta" alias
 
     USAGE:
-        subwasm metadata [FLAGS] [OPTIONS] [SOURCE]
+        subwasm metadata [OPTIONS] [SOURCE]
 
     ARGS:
         <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
                     /tmp/runtime.wasm or a node url such as http://localhost:9933 or
                     ws://localhost:9944 [default: runtime_000.wasm]
-
-    FLAGS:
-        -h, --help       Print help information
-        -j, --json       Output as json
-        -V, --version    Print version information
 
     OPTIONS:
         -b, --block <BLOCK>      The optional block where to fetch the runtime. That allows fetching
@@ -181,29 +167,25 @@ MacOS Homebrew users can use:
             --chain <CHAIN>      Provide the name of a chain and a random url amongst a list of known
                                  nodes will be used. If you pass a valid --chain, --url will be ignored
                                  --chain local = http://localhost:9933
+        -h, --help               Print help information
+        -j, --json               Output as json
         -m, --module <MODULE>    Without this flag, the metadata command display the list of all
                                  modules. Using this flag, you will only see the module of your choice
                                  and a few details about it
+        -V, --version            Print version information
 
 ### Command: diff
 
-    subwasm-diff 0.16.1
-
+    subwasm-diff 0.17.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-
     Compare 2 runtimes
 
     USAGE:
-        subwasm diff [FLAGS] [OPTIONS] [ARGS]
+        subwasm diff [OPTIONS] [ARGS]
 
     ARGS:
         <SRC_A>    The first source [default: runtime_000.wasm]
         <SRC_B>    The second source [default: runtime_001.wasm]
-
-    FLAGS:
-        -h, --help       Print help information
-        -j, --json       Output as json
-        -V, --version    Print version information
 
     OPTIONS:
         -a, --chain-a <CHAIN_A>    Provide the name of a chain and a random url amongst a list of known
@@ -212,46 +194,45 @@ MacOS Homebrew users can use:
         -b, --chain-b <CHAIN_B>    Provide the name of a chain and a random url amongst a list of known
                                    nodes will be used. If you pass a valid --chain, --url will be
                                    ignored --chain local = http://localhost:9933
+        -h, --help                 Print help information
+        -j, --json                 Output as json
+        -V, --version              Print version information
 
 ### Command: compress
 
-    subwasm-compress 0.16.1
-
+    subwasm-compress 0.17.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-
     Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is
     already compressed
 
     USAGE:
-        subwasm compress [FLAGS] <INPUT> <OUTPUT>
+        subwasm compress [OPTIONS] <INPUT> <OUTPUT>
 
     ARGS:
         <INPUT>     The path of uncompressed wasm file to load
         <OUTPUT>    The path of the file where the compressed runtime will be stored
 
-    FLAGS:
+    OPTIONS:
         -h, --help       Print help information
         -j, --json       Output as json
         -V, --version    Print version information
 
 ### Command: decompress
 
-    subwasm-decompress 0.16.1
-
+    subwasm-decompress 0.17.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-
     Decompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that
     case, you will get the same content as output. This is useful if you want to decompress "no matter
     what" and don't really know whether the input will be compressed or not
 
     USAGE:
-        subwasm decompress [FLAGS] <INPUT> <OUTPUT>
+        subwasm decompress [OPTIONS] <INPUT> <OUTPUT>
 
     ARGS:
         <INPUT>     The path of the compressed or uncompressed wasm file to load
         <OUTPUT>    The path of the file where the uncompressed runtime will be stored
 
-    FLAGS:
+    OPTIONS:
         -h, --help       Print help information
         -j, --json       Output as json
         -V, --version    Print version information
