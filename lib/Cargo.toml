@@ -12,12 +12,12 @@ version = "0.18.0"
 [dependencies]
 calm_io = "0.1"
 color-eyre = "0.6"
-frame-metadata = {version = "14", package = "frame-metadata", features = ["v12", "v13", "v14", "std"]}
-ipfs-hasher = {version = "0.18.0", path = "../libs/ipfs-hasher"}
+frame-metadata = {version = "15", package = "frame-metadata", features = ["v12", "v13", "v14", "std"]}
+ipfs-hasher = {version = "0.17.0", path = "../libs/ipfs-hasher"}
 log = "0.4"
 num-format = "0.4"
 rand = "0.8"
-scale-info = {version = "1.0", default-features = false, features = ["derive"]}
+scale-info = {version = "2.1.1", default-features = false, features = ["derive"]}
 serde = {version = "1.0", features = ["derive"]}
 serde_json = "1.0"
 substrate-differ = {version = "0.18.0", path = "../libs/substrate-differ"}

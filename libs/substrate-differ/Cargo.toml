@@ -7,7 +7,7 @@ version = "0.18.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-frame-metadata = {version = "14", package = "frame-metadata", features = ["v12", "v13", "v14", "std"]}
+frame-metadata = {version = "15", package = "frame-metadata", features = ["v12", "v13", "v14", "std"]}
 log = "0.4"
 num-format = "0.4"
 rustc-serialize = "0.3"

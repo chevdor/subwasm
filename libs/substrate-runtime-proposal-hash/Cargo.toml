@@ -11,11 +11,11 @@ version = "0.18.0"
 
 [dependencies]
 blake2 = "0.10"
-codec = {version = "2.3", package = "parity-scale-codec"}
-frame-metadata = {version = "14", package = "frame-metadata", features = ["v12", "v13", "v14", "std"]}
-hex = "0.4.3"
+codec = {version = "3.1.2", package = "parity-scale-codec"}
+frame-metadata = {version = "15", package = "frame-metadata", features = ["v12", "v13", "v14", "std"]}
+hex = "0.4"
 sc-executor = "0.9"
-sp-core = "3.0"
-sp-io = "3.0"
-sp-runtime = "3.0"
-sp-wasm-interface = "3.0"
+sp-core = "6.0"
+sp-io = "6.0"
+sp-runtime = "6.0"
+sp-wasm-interface = "6.0"
