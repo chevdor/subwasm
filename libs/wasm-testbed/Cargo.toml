@@ -2,7 +2,15 @@
 authors = ["chevdor <chevdor@gmail.com>"]
 edition = "2021"
 homepage = "https://github.com/chevdor/subwasm"
-keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "kusama"]
+keywords = [
+    "wasm",
+    "cli",
+    "substrate",
+    "blockchain",
+    "runtime",
+    "polkadot",
+    "kusama",
+]
 license = "MIT"
 name = "wasm-testbed"
 readme = "README.md"
@@ -10,16 +18,24 @@ repository = "https://github.com/chevdor/subwasm"
 version = "0.18.0"
 
 [dependencies]
-frame-metadata = {version = "15", package = "frame-metadata", features = ["v12", "v13", "v14", "std"]}
+frame-metadata = { version = "15", package = "frame-metadata", features = [
+    "v12",
+    "v13",
+    "v14",
+    "std",
+] }
 hex = "0.4"
 log = "0.4"
-sc-executor = "0.9"
-scale = {version = "3.1.2", package = "parity-scale-codec", default-features = false}
-scale-info = {version = "2.1.1", default-features = false, features = ["derive"]}
-sp-core = "6.0"
-sp-io = "6.0"
-sp-runtime = "6.0"
+sc-executor = { version = "0.10.0-dev", git = "https://github.com/paritytech/substrate", branch = "master" }
+sc-executor-common = { version = "0.10.0-dev", git = "https://github.com/paritytech/substrate", branch = "master" }
+scale = { version = "3.1.2", package = "parity-scale-codec", default-features = false }
+scale-info = { version = "2.1.1", default-features = false, features = [
+    "derive",
+] }
+sp-core = { version = "6.0.0", git = "https://github.com/paritytech/substrate", branch = "master" }
+sp-io = { version = "6.0.0", git = "https://github.com/paritytech/substrate", branch = "master" }
+sp-runtime = { version = "6.0.0", git = "https://github.com/paritytech/substrate", branch = "master" }
 sp-state-machine = "0.12"
-sp-wasm-interface = "6.0"
-substrate-runtime-proposal-hash = {version = "0.17.0", path = "../substrate-runtime-proposal-hash"}
-wasm-loader = {version = "0.17.0", path = "../wasm-loader"}
+sp-wasm-interface = { version = "6.0.0", git = "https://github.com/paritytech/substrate", branch = "master" }
+substrate-runtime-proposal-hash = { version = "0.17.0", path = "../substrate-runtime-proposal-hash" }
+wasm-loader = { version = "0.17.0", path = "../wasm-loader" }
