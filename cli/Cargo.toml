@@ -11,7 +11,6 @@ repository = "https://github.com/chevdor/subwasm"
 version = "0.17.0"
 
 [dependencies]
-assert_cmd = "2.0"
 clap = {version = "3.0", features = ["derive", "env", "unicode", "cargo"]}
 color-eyre = "0.6"
 env_logger = "0.9"
@@ -20,6 +19,9 @@ substrate-runtime-proposal-hash = {version = "0.17.0", path = "../libs/substrate
 subwasmlib = {version = "0.17.0", path = "../lib"}
 wasm-loader = {version = "0.17.0", path = "../libs/wasm-loader"}
 wasm-testbed = {version = "0.17.0", path = "../libs/wasm-testbed"}
+
+[dev-dependencies]
+assert_cmd = "2.0"
 
 [package.metadata.deb]
 assets = [
