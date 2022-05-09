@@ -9,16 +9,16 @@ use error::WasmLoaderError;
 use jsonrpsee::core::client::ClientT;
 use jsonrpsee::core::{Error, JsonValue};
 use jsonrpsee::rpc_params;
+use log::*;
 
 // use jsonrpsee::types::types::{Error, JsonValue};
 use jsonrpsee::{http_client::HttpClientBuilder, ws_client::WsClientBuilder};
-use log::debug;
 pub use node_endpoint::NodeEndpoint;
 pub use onchain_block::{BlockRef, OnchainBlock};
 pub use source::Source;
 
 use std::io::Read;
-use std::{fs, fs::File, path::Path};
+use std::{fs::File, path::Path};
 use tokio::runtime::Runtime;
 
 const CODE: &str = "0x3a636f6465"; // :code in hex
@@ -72,10 +72,15 @@ impl WasmLoader {
 	/// Load some binary from a file
 	fn load_from_file(filename: &Path) -> WasmBytes {
 		let mut f = File::open(&filename).unwrap_or_else(|_| panic!("File {} not found", filename.to_string_lossy()));
-		let metadata = fs::metadata(&filename).expect("unable to read metadata");
-		let mut buffer = vec![0; metadata.len() as usize];
-		f.read_exact(&mut buffer).expect("buffer overflow");
-
+		// TODO: Remove the following once issues like https://github.com/chevdor/subwasm/actions/runs/2292032462
+		// are confirmed to be gone.
+		// let metadata = fs::metadata(&filename).expect("unable to read metadata");
+		// log::debug!("metadata size: {:?}", metadata.len());
+		// let mut buffer = vec![0; metadata.len() as usize];
+		// f.read_exact(&mut buffer).expect("buffer overflow");
+		let mut buffer = Vec::new();
+		f.read_to_end(&mut buffer).expect("failed loading file");
+		log::debug!("read data from file, buffer size: {:?}", buffer.len());
 		buffer
 	}
 
