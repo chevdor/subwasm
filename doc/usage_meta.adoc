@@ -1,4 +1,4 @@
-subwasm-metadata 0.17.0
+subwasm-metadata 0.17.1
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 Returns the metadata as a json object. You may also use the "meta" alias
 

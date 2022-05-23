@@ -1,4 +1,4 @@
-subwasm-info 0.17.0
+subwasm-info 0.17.1
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
 The `info` command returns summarized information about a runtime
 
