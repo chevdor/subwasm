@@ -36,18 +36,18 @@ demos:
 	./run-all.sh
 
 # Run rustfmt
-_fmt:
+fmt:
 	cargo +nightly fmt --all
 
 # Run clippy
-_clippy:
+clippy:
 	cargo +nightly clippy --all-features --all-targets
 
-_deny:
+deny:
 	cargo deny check
 
 # Run checks such as clippy, rustfmt, etc...
-check: _clippy _fmt _deny
+check: clippy fmt
 
 # Minor bump, can be used once the release is ready
 bump:

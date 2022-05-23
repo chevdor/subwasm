@@ -7,7 +7,7 @@ use std::{
 use crate::{NodeEndpoint, OnchainBlock};
 
 /// The source of the wasm. It can come from the local file system (`File`) or from a chain (`Chain`).
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Source {
 	File(PathBuf),
 	Chain(OnchainBlock),

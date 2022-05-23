@@ -3,7 +3,7 @@ use std::{fmt::Display, str::FromStr};
 use wasm_loader::NodeEndpoint;
 
 use crate::chain_urls::get_chain_urls;
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum EndpointType {
 	Http,
 	WesbSocket,
