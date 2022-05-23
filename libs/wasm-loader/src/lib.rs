@@ -154,27 +154,28 @@ mod tests {
 	use super::*;
 	use std::env;
 
-	fn get_http_node() -> String {
-		env::var("POLKADOT_HTTP").unwrap_or_else(|_| "http://localhost:9933".to_string())
-	}
+	// fn get_http_node() -> String {
+	// 	env::var("POLKADOT_HTTP").unwrap_or_else(|_| "http://localhost:9933".to_string())
+	// }
 
 	fn get_ws_node() -> String {
 		env::var("POLKADOT_WS").unwrap_or_else(|_| "ws://localhost:9944".to_string())
 	}
 
-	#[test]
-	#[ignore = "needs node"]
-	fn it_fetches_a_wasm_from_node_via_http() {
-		let url = get_http_node();
-		println!("Connecting to {:?}", &url);
-		let reference = OnchainBlock { endpoint: NodeEndpoint::Http(url), block_ref: None };
+	// No longer have an archive node available via http(s)
+	// #[test]
+	// #[ignore = "needs node"]
+	// fn it_fetches_a_wasm_from_node_via_http() {
+	// 	let url = get_http_node();
+	// 	println!("Connecting to {:?}", &url);
+	// 	let reference = OnchainBlock { endpoint: NodeEndpoint::Http(url), block_ref: None };
 
-		let loader = WasmLoader::load_from_source(&Source::Chain(reference)).unwrap();
-		let wasm = loader.uncompressed_bytes();
+	// 	let loader = WasmLoader::load_from_source(&Source::Chain(reference)).unwrap();
+	// 	let wasm = loader.uncompressed_bytes();
 
-		println!("uncompressed wasm size: {:?}", wasm.len());
-		assert!(wasm.len() > 1_000_000);
-	}
+	// 	println!("uncompressed wasm size: {:?}", wasm.len());
+	// 	assert!(wasm.len() > 1_000_000);
+	// }
 
 	#[test]
 	#[ignore = "needs node"]
