@@ -1,8 +1,10 @@
 use blake2::digest::{Update, VariableOutput};
 use blake2::Blake2bVar;
 use codec::Encode;
+use hex::FromHex;
 use sp_core::Hasher;
 use sp_runtime::traits::BlakeTwo256;
+use std::env;
 
 /// Expected size of the hash
 pub const SIZE: usize = 32;
@@ -14,7 +16,7 @@ type Prefix = (u8, u8);
 
 /// The PREFIX is prepended to the data before hashing
 pub const PREFIX_SYSTEM_SETCODE: Prefix = (0x00, 0x03);
-pub const PREFIX_PARACHAINSYSTEM_AUTHORIZE_UPGRADE: Prefix = (0x01, 0x03);
+const PARACHAIN_PALLET_ID_ENV: &str = "PARACHAIN_PALLET_ID";
 
 /// This struct is a container for whatever we calculated.
 #[derive(Debug)]
@@ -59,8 +61,12 @@ pub fn get_system_setcode(wasm_blob: &[u8]) -> CalllHash {
 }
 
 pub fn get_parachainsystem_authorize_upgrade(wasm_blob: &[u8]) -> CalllHash {
+	let s = env::var(PARACHAIN_PALLET_ID_ENV).unwrap_or_else(|_| String::from("0x01")).replace("0x", "");
+	let decoded = <[u8; 1]>::from_hex(s).expect("Decoding failed");
+	let parachain_pallet_id = *decoded.first().expect("Failure while fecthing the Parachain Pallet ID");
+	let prefix_parachainsystem_authorize_upgrade: Prefix = (parachain_pallet_id, 0x03);
 	let code_hash = BlakeTwo256::hash(wasm_blob);
-	get_call_hash(PREFIX_PARACHAINSYSTEM_AUTHORIZE_UPGRADE, code_hash.as_bytes())
+	get_call_hash(prefix_parachainsystem_authorize_upgrade, code_hash.as_bytes())
 }
 
 fn get_call_hash(prefix: Prefix, wasm_blob: &[u8]) -> CalllHash {
@@ -72,8 +78,9 @@ fn get_call_hash(prefix: Prefix, wasm_blob: &[u8]) -> CalllHash {
 }
 
 #[cfg(test)]
-mod tests {
+mod prop_hash_tests {
 	use super::*;
+	use std::env;
 
 	#[test]
 	fn test_proposal_hash() {
@@ -99,6 +106,7 @@ mod tests {
 
 	#[test]
 	fn test_parachain_upgrade() {
+		env::set_var(PARACHAIN_PALLET_ID_ENV, "0x01");
 		assert_eq!(
 			get_parachainsystem_authorize_upgrade(&[
 				0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f
@@ -106,6 +114,20 @@ mod tests {
 			[
 				136, 242, 183, 110, 31, 66, 126, 20, 192, 209, 151, 203, 156, 215, 131, 200, 97, 163, 230, 157, 86,
 				220, 102, 180, 58, 141, 176, 52, 178, 133, 149, 179
+			]
+		);
+	}
+
+	#[test]
+	fn test_custom_parachain_upgrade() {
+		env::set_var(PARACHAIN_PALLET_ID_ENV, "0x32");
+		assert_eq!(
+			get_parachainsystem_authorize_upgrade(&[
+				0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f
+			]),
+			[
+				29, 53, 127, 234, 110, 75, 67, 238, 243, 171, 65, 93, 187, 246, 0, 84, 166, 88, 161, 205, 95, 62, 135,
+				99, 121, 139, 154, 39, 207, 121, 98, 87
 			]
 		);
 	}
