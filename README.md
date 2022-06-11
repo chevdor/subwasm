@@ -145,7 +145,8 @@ MacOS Homebrew users can use:
         -j, --json             Output as json
         -V, --version          Print version information
 
-By default, the ID for the Parachain pallet is expected to be `0x01`. This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID_ENV` to the ID of your parachain pallet.
+By default, the ID for the Parachain pallet is expected to be `0x01` and the call ID for `authorize_upgrade` is expected to be `0x03`.
+This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to the ID of your parachain pallet and the `AUTHORIZE_UPGRADE_PREFIX` to the ID of your choice.
 
 ### Command: meta
 
@@ -238,6 +239,19 @@ By default, the ID for the Parachain pallet is expected to be `0x01`. This defau
         -h, --help       Print help information
         -j, --json       Output as json
         -V, --version    Print version information
+
+### Environment variables
+
+In addition to the command line flags, you can also pass one of the following ENV variables:
+
+    # This is a sample .env file. It is not needed if you
+    # are using defaults if you want to use the default defined
+    # below.
+
+    # POLKADOT_HTTP=http://localhost:9933
+    # POLKADOT_WS=ws://localhost:9944
+    # PARACHAIN_PALLET_ID=0x01
+    # AUTHORIZE_UPGRADE_PREFIX=0x03
 
 ## Sample runs
 
