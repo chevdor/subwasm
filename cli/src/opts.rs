@@ -116,6 +116,13 @@ pub struct DiffOpts {
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
+	#[clap(long, parse(from_str), conflicts_with = "src")]
+	pub chain: Option<ChainInfo>,
+
+
+	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
+	/// If you pass a valid --chain, --url will be ignored
+	/// --chain local = http://localhost:9933
 	#[clap(long, short('a'), parse(from_str), conflicts_with = "src-a")]
 	pub chain_a: Option<ChainInfo>,
 
