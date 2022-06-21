@@ -63,7 +63,7 @@ MacOS Homebrew users can use:
 
 ### Command: --help
 
-    subwasm 0.17.0
+    subwasm 0.17.1
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based
     chains
@@ -92,7 +92,7 @@ MacOS Homebrew users can use:
 
 ### Command: get
 
-    subwasm-get 0.17.0
+    subwasm-get 0.17.1
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Get/Download the runtime wasm from a running node through rpc
 
@@ -122,7 +122,7 @@ MacOS Homebrew users can use:
 
 ### Command: info
 
-    subwasm-info 0.17.0
+    subwasm-info 0.17.1
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     The `info` command returns summarized information about a runtime
 
@@ -145,9 +145,12 @@ MacOS Homebrew users can use:
         -j, --json             Output as json
         -V, --version          Print version information
 
+By default, the ID for the Parachain pallet is expected to be `0x01` and the call ID for `authorize_upgrade` is expected to be `0x03`.
+This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to the ID of your parachain pallet and the `AUTHORIZE_UPGRADE_PREFIX` to the ID of your choice.
+
 ### Command: meta
 
-    subwasm-metadata 0.17.0
+    subwasm-metadata 0.17.1
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Returns the metadata as a json object. You may also use the "meta" alias
 
@@ -176,7 +179,7 @@ MacOS Homebrew users can use:
 
 ### Command: diff
 
-    subwasm-diff 0.17.0
+    subwasm-diff 0.17.1
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Compare 2 runtimes
 
@@ -200,7 +203,7 @@ MacOS Homebrew users can use:
 
 ### Command: compress
 
-    subwasm-compress 0.17.0
+    subwasm-compress 0.17.1
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is
     already compressed
@@ -219,7 +222,7 @@ MacOS Homebrew users can use:
 
 ### Command: decompress
 
-    subwasm-decompress 0.17.0
+    subwasm-decompress 0.17.1
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Decompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that
     case, you will get the same content as output. This is useful if you want to decompress "no matter
@@ -236,6 +239,19 @@ MacOS Homebrew users can use:
         -h, --help       Print help information
         -j, --json       Output as json
         -V, --version    Print version information
+
+### Environment variables
+
+In addition to the command line flags, you can also pass one of the following ENV variables:
+
+    # This is a sample .env file. It is not needed if you
+    # are using defaults if you want to use the default defined
+    # below.
+
+    # POLKADOT_HTTP=http://localhost:9933
+    # POLKADOT_WS=ws://localhost:9944
+    # PARACHAIN_PALLET_ID=0x01
+    # AUTHORIZE_UPGRADE_PREFIX=0x03
 
 ## Sample runs
 
