@@ -1,9 +1,9 @@
-subwasm-info 0.18.0
+subwasm-version 0.18.0
 chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-The `info` command returns summarized information about a runtime
+The `version` command returns summarized information about the versions of a runtime
 
 USAGE:
-    subwasm info [OPTIONS] [SOURCE]
+    subwasm version [OPTIONS] [SOURCE]
 
 ARGS:
     <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
