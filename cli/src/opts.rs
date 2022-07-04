@@ -28,6 +28,9 @@ pub enum SubCommand {
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Info(InfoOpts),
 
+	#[clap(version = crate_version!(), author = crate_authors!())]
+	Version(VersionOpts),
+
 	#[clap(version = crate_version!(), author = crate_authors!(), alias("meta"))]
 	Metadata(MetaOpts),
 
@@ -69,6 +72,26 @@ pub struct GetOpts {
 /// The `info` command returns summarized information about a runtime.
 #[derive(Parser)]
 pub struct InfoOpts {
+	/// The wasm file to load. It can be a path on your local filesystem such as
+	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
+	#[clap(alias("src"), default_value = "runtime_000.wasm", required_unless_present = "chain", index = 1)]
+	pub source: Source,
+
+	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
+	/// If you pass a valid --chain, --url will be ignored
+	/// --chain local = http://localhost:9933
+	#[clap(long, parse(from_str), conflicts_with = "source")]
+	pub chain: Option<ChainInfo>,
+
+	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
+	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
+	#[clap(short, long)]
+	pub block: Option<String>, // TODO: can do better...
+}
+
+/// The `version` command returns summarized information about the versions of a runtime.
+#[derive(Parser)]
+pub struct VersionOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such as
 	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
 	#[clap(alias("src"), default_value = "runtime_000.wasm", required_unless_present = "chain", index = 1)]

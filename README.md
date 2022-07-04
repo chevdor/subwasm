@@ -63,7 +63,7 @@ MacOS Homebrew users can use:
 
 ### Command: --help
 
-    subwasm 0.17.1
+    subwasm 0.18.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based
     chains
@@ -89,10 +89,12 @@ MacOS Homebrew users can use:
         help          Print this message or the help of the given subcommand(s)
         info          The `info` command returns summarized information about a runtime
         metadata      Returns the metadata as a json object. You may also use the "meta" alias
+        version       The `version` command returns summarized information about the versions of a
+                          runtime
 
 ### Command: get
 
-    subwasm-get 0.17.1
+    subwasm-get 0.18.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Get/Download the runtime wasm from a running node through rpc
 
@@ -122,7 +124,7 @@ MacOS Homebrew users can use:
 
 ### Command: info
 
-    subwasm-info 0.17.1
+    subwasm-info 0.18.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     The `info` command returns summarized information about a runtime
 
@@ -148,9 +150,34 @@ MacOS Homebrew users can use:
 By default, the ID for the Parachain pallet is expected to be `0x01` and the call ID for `authorize_upgrade` is expected to be `0x03`.
 This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to the ID of your parachain pallet and the `AUTHORIZE_UPGRADE_PREFIX` to the ID of your choice.
 
+### Command: version
+
+    subwasm-version 0.18.0
+    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+    The `version` command returns summarized information about the versions of a runtime
+
+    USAGE:
+        subwasm version [OPTIONS] [SOURCE]
+
+    ARGS:
+        <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
+                    /tmp/runtime.wasm or a node url such as http://localhost:9933 or
+                    ws://localhost:9944 [default: runtime_000.wasm]
+
+    OPTIONS:
+        -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older
+                               runtimes but you will need to connect to archive nodes. Currently, you
+                               must pass a block hash. Passing the block numbers is not supported
+            --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known
+                               nodes will be used. If you pass a valid --chain, --url will be ignored
+                               --chain local = http://localhost:9933
+        -h, --help             Print help information
+        -j, --json             Output as json
+        -V, --version          Print version information
+
 ### Command: meta
 
-    subwasm-metadata 0.17.1
+    subwasm-metadata 0.18.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Returns the metadata as a json object. You may also use the "meta" alias
 
@@ -179,7 +206,7 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
 
 ### Command: diff
 
-    subwasm-diff 0.17.1
+    subwasm-diff 0.18.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Compare 2 runtimes
 
@@ -203,7 +230,7 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
 
 ### Command: compress
 
-    subwasm-compress 0.17.1
+    subwasm-compress 0.18.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is
     already compressed
@@ -222,7 +249,7 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
 
 ### Command: decompress
 
-    subwasm-decompress 0.17.1
+    subwasm-decompress 0.18.0
     chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Decompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that
     case, you will get the same content as output. This is useful if you want to decompress "no matter

@@ -7,7 +7,7 @@ license = "MIT"
 name = "wasm-testbed"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
-version = "0.17.0"
+version = "0.18.0"
 
 [dependencies]
 frame-metadata = {version = "14", package = "frame-metadata", features = ["v12", "v13", "v14", "std"]}
@@ -17,9 +17,10 @@ sc-executor = "0.9"
 scale = {version = "2.3", package = "parity-scale-codec", default-features = false}
 scale-info = {version = "1.0", default-features = false, features = ["derive"]}
 sp-core = "3.0"
+sp-version = "3.0"
 sp-io = "3.0"
 sp-runtime = "3.0"
 sp-state-machine = "0.9"
 sp-wasm-interface = "3.0"
-substrate-runtime-proposal-hash = {version = "0.17.0", path = "../substrate-runtime-proposal-hash"}
-wasm-loader = {version = "0.17.0", path = "../wasm-loader"}
+substrate-runtime-proposal-hash = {version = "0.18.0", path = "../substrate-runtime-proposal-hash"}
+wasm-loader = {version = "0.18.0", path = "../wasm-loader"}

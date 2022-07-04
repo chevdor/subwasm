@@ -88,6 +88,11 @@ include::doc/usage_info.adoc[]
 NOTE: By default, the ID for the Parachain pallet is expected to be `0x01` and the call ID for `authorize_upgrade` is expected to be `0x03`.
 This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to the ID of your parachain pallet and the `AUTHORIZE_UPGRADE_PREFIX` to the ID of your choice.
 
+=== Command: version
+----
+include::doc/usage_version.adoc[]
+----
+
 === Command: meta
 ----
 include::doc/usage_meta.adoc[]

@@ -18,6 +18,7 @@ _usage:
 	cargo run -q -- --help > doc/usage.adoc
 	cargo run -q -- get --help > doc/usage_get.adoc
 	cargo run -q -- info --help > doc/usage_info.adoc
+	cargo run -q -- version --help > doc/usage_version.adoc
 	cargo run -q -- meta --help > doc/usage_meta.adoc
 	cargo run -q -- diff --help > doc/usage_diff.adoc
 	cargo run -q -- compress --help > doc/usage_compress.adoc

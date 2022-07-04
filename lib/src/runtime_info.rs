@@ -1,6 +1,7 @@
 use ipfs_hasher::IpfsHasher;
 use num_format::{Locale, ToFormattedString};
 use serde::Serialize;
+use sp_version::RuntimeVersion as SubstrateRuntimeVersion;
 use std::fmt::Display;
 use wasm_loader::Compression;
 use wasm_testbed::{ReservedMeta, WasmTestBed};
@@ -12,7 +13,7 @@ pub struct RuntimeInfo {
 	reserved_meta: ReservedMeta,
 	reserved_meta_valid: bool,
 	metadata_version: u8,
-	core_version: String,
+	core_version: SubstrateRuntimeVersion,
 	proposal_hash: String,
 	parachain_authorize_upgrade_hash: String,
 	ipfs_hash: String,
@@ -21,10 +22,7 @@ pub struct RuntimeInfo {
 
 impl RuntimeInfo {
 	pub fn new(testbed: &WasmTestBed) -> Self {
-		let core_version = match testbed.core_version() {
-			Some(v) => v.to_string(),
-			None => String::from("n/a"),
-		};
+		let core_version = testbed.core_version();
 
 		let hasher = IpfsHasher::default();
 
@@ -50,6 +48,18 @@ impl RuntimeInfo {
 			println!("{}", serialized);
 		} else {
 			println!("{}", self);
+		}
+	}
+
+	pub fn print_version(&self, json: bool) {
+		if json {
+			let serialized = serde_json::to_string_pretty(&self.core_version).unwrap();
+			println!("{}", serialized);
+		} else {
+			println!("specifications : {} v{}", self.core_version.spec_name, self.core_version.spec_version);
+			println!("implementation : {} v{}", self.core_version.impl_name, self.core_version.impl_version);
+			println!("transaction    : v{}", self.core_version.transaction_version);
+			println!("authoring      : v{}", self.core_version.authoring_version);
 		}
 	}
 }
