@@ -3,10 +3,11 @@ mod logger_mock;
 
 pub use error::{Result, WasmTestbedError};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadataPrefixed};
-use sc_executor::{CallInWasm, RuntimeVersion, WasmExecutionMethod, WasmExecutor};
+use sc_executor::{CallInWasm, WasmExecutionMethod, WasmExecutor};
 use scale::Decode;
 use sp_core::Hasher;
 use sp_runtime::traits::BlakeTwo256;
+use sp_version::RuntimeVersion as SubstrateRuntimeVersion;
 use sp_wasm_interface::HostFunctions;
 use std::fmt;
 use substrate_runtime_proposal_hash::{get_parachainsystem_authorize_upgrade, get_result, SrhResult};
@@ -37,7 +38,7 @@ pub struct WasmTestBed {
 	metadata_version: u8,
 
 	/// Core version as reported by the runtime
-	core_version: Option<RuntimeVersion>,
+	core_version: SubstrateRuntimeVersion,
 }
 
 impl fmt::Debug for WasmTestBed {
@@ -153,9 +154,9 @@ impl WasmTestBed {
 			.map_err(|_| WasmTestbedError::Calling(method.to_string()))
 	}
 
-	pub fn get_core_version(wasm: &[u8]) -> Option<RuntimeVersion> {
+	pub fn get_core_version(wasm: &[u8]) -> SubstrateRuntimeVersion {
 		let encoded = Self::call(wasm, "Core_version", &[]).unwrap();
-		<RuntimeVersion>::decode(&mut &encoded[..]).ok()
+		<SubstrateRuntimeVersion>::decode(&mut &encoded[..]).expect("Failed decoding runtime version")
 	}
 
 	/// We probably don't need to maintain this as decoding the runtime will
@@ -185,8 +186,8 @@ impl WasmTestBed {
 	}
 
 	/// Get a reference to the substrate wasm's core version.
-	pub fn core_version(&self) -> Option<&RuntimeVersion> {
-		self.core_version.as_ref()
+	pub fn core_version(&self) -> SubstrateRuntimeVersion {
+		self.core_version.clone()
 	}
 
 	/// Compute the proposal hash of the runtime
@@ -246,7 +247,6 @@ mod tests {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap();
 			println!("{:#?}", runtime);
 			assert!(runtime.metadata_version == 12);
-			assert!(runtime.core_version.is_some());
 			assert!(runtime.is_supported());
 		}
 
@@ -256,7 +256,6 @@ mod tests {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).unwrap();
 			println!("{:#?}", runtime);
 			assert!(runtime.metadata_version == 13);
-			assert!(runtime.core_version.is_some());
 			assert!(runtime.is_supported());
 		}
 
@@ -286,7 +285,7 @@ mod tests {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_1050_VXX))).unwrap();
 			println!("{:#?}", runtime);
 			assert!(runtime.metadata_version == 11);
-			assert!(runtime.core_version.is_none());
+			// assert!(runtime.core_version.is_none());
 			assert!(runtime.is_supported());
 		}
 
@@ -299,7 +298,7 @@ mod tests {
 			assert!(runtime.metadata_version == 11);
 			assert!(runtime.is_supported());
 
-			let v = &runtime.core_version.unwrap();
+			let v = &runtime.core_version;
 			assert!(v.spec_name == RuntimeString::from("kusama"));
 			assert!(v.impl_name == RuntimeString::from("parity-kusama"));
 			assert!(v.authoring_version == 2);
@@ -325,7 +324,7 @@ mod tests {
 			assert!(runtime.metadata_version == 12);
 			assert!(runtime.is_supported());
 
-			let v = &runtime.core_version.unwrap();
+			let v = &runtime.core_version;
 			assert!(v.spec_name == RuntimeString::from("kusama"));
 			assert!(v.impl_name == RuntimeString::from("parity-kusama"));
 			assert!(v.authoring_version == 2);

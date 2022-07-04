@@ -17,6 +17,7 @@ sc-executor = "0.9"
 scale = {version = "2.3", package = "parity-scale-codec", default-features = false}
 scale-info = {version = "1.0", default-features = false, features = ["derive"]}
 sp-core = "3.0"
+sp-version = "3.0"
 sp-io = "3.0"
 sp-runtime = "3.0"
 sp-state-machine = "0.9"

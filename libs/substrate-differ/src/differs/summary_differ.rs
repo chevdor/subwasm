@@ -45,8 +45,8 @@ impl<'a> RuntimeSummaryDiffer<'a> {
 
 		// CORE VERSIONS
 		println!("Checking core versions:");
-		let version_a = self.r1.core_version().expect("Some version");
-		let version_b = self.r2.core_version().expect("Some version");
+		let version_a = self.r1.core_version();
+		let version_b = self.r2.core_version();
 
 		if version_a == version_b {
 			print!("  ✅  The 2 core versions are identical: ");
