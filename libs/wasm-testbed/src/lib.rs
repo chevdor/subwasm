@@ -285,7 +285,6 @@ mod tests {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_1050_VXX))).unwrap();
 			println!("{:#?}", runtime);
 			assert!(runtime.metadata_version == 11);
-			// assert!(runtime.core_version.is_none());
 			assert!(runtime.is_supported());
 		}
 
