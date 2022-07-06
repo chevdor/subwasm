@@ -69,14 +69,16 @@ impl Display for RuntimeInfo {
 		let size_mb: f64 = self.size as f64 / 1024.0 / 1024.0;
 		let width_emoji = 1;
 		let width_title = 25;
+		const MAX_SIZE_COMPRESSED: f64 = 2_f64;
 
 		writeln!(
 			fmt,
-			"{:<width_emoji$} {:<width_title$} {:.3?} MB ({} bytes)",
+			"{:<width_emoji$} {:<width_title$} {:.3?} MB ({} bytes) {warning}",
 			"🏋️ ",
 			"Runtime size:",
 			size_mb,
-			self.size.to_formatted_string(&Locale::en)
+			self.size.to_formatted_string(&Locale::en),
+			warning = if size_mb >= MAX_SIZE_COMPRESSED { "⚠️ HEAVY" } else { "" }
 		)?;
 		if self.compression.compressed() {
 			writeln!(
