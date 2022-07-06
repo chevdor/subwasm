@@ -64,8 +64,6 @@ impl WasmTestBed {
 			return Err(WasmTestbedError::Unsupported);
 		}
 
-		// Self::print_magic_and_version(&metadata);
-
 		let runtime_metadata_prefixed: RuntimeMetadataPrefixed =
 			scale::Decode::decode(&mut &metadata[..]).map_err(|e| {
 				log::error!("e = {:#?}", e);
@@ -132,11 +130,6 @@ impl WasmTestBed {
 		let mut ext = sp_state_machine::BasicExternalities::default();
 		let mut host_functions = sp_io::SubstrateHostFunctions::host_functions();
 		host_functions.push(&logger_mock::LoggerMock);
-
-		// host_functions
-		// 	.clone()
-		// 	.into_iter()
-		// 	.for_each(|host_fn| debug!("{:?}", host_fn.name()));
 
 		let executor = WasmExecutor::new(
 			WasmExecutionMethod::Interpreted,
