@@ -67,27 +67,48 @@ impl RuntimeInfo {
 impl Display for RuntimeInfo {
 	fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		let size_mb: f64 = self.size as f64 / 1024.0 / 1024.0;
+		let width_emoji = 1;
+		let width_title = 25;
 
-		writeln!(fmt, "🏋️  Runtime size:\t\t{:.3?} MB ({} bytes)", size_mb, self.size.to_formatted_string(&Locale::en))?;
+		writeln!(
+			fmt,
+			"{:<width_emoji$} {:<width_title$} {:.3?} MB ({} bytes)",
+			"🏋️ ",
+			"Runtime size:",
+			size_mb,
+			self.size.to_formatted_string(&Locale::en)
+		)?;
 		if self.compression.compressed() {
-			writeln!(fmt, "🗜  Compressed:\t\t\tYes, {:.2}%", 100f32 - self.compression.compression_ratio() * 100f32)?;
+			writeln!(
+				fmt,
+				"{:<width_emoji$} {:<width_title$} Yes, {:.2}%",
+				"🗜 ",
+				"Compressed:",
+				100f32 - self.compression.compression_ratio() * 100f32
+			)?;
 		} else {
-			writeln!(fmt, "🗜  Compressed:\t\t\tNo")?;
+			writeln!(fmt, "{:<width_emoji$} {:<width_title$} No", "🗜", "Compressed:")?;
 		}
 
 		writeln!(
 			fmt,
-			"✨ Reserved meta:\t\t{} - {:02X?}",
+			"{:<width_emoji$} {:<width_title$} {} - {:02X?}",
+			"✨",
+			"Reserved meta:",
 			if self.reserved_meta_valid { "OK" } else { "Unknown!" },
 			self.reserved_meta,
 		)?;
-		writeln!(fmt, "🎁 Metadata version:\t\tV{:?}", self.metadata_version)?;
-		writeln!(fmt, "🔥 Core version:\t\t{}", self.core_version)?;
-		writeln!(fmt, "🗳️  system.setCode hash:\t\t{}", self.proposal_hash)?;
-		writeln!(fmt, "🗳️  authorizeUpgrade hash:\t{}", self.parachain_authorize_upgrade_hash)?;
-		writeln!(fmt, "#️⃣  Blake2-256 hash:\t\t{}", self.blake2_256)?;
+		writeln!(fmt, "{:<width_emoji$} {:<width_title$} V{:?}", "🎁", "Metadata version:", self.metadata_version)?;
+		writeln!(fmt, "{:<width_emoji$} {:<width_title$} {}", "🔥", "Core version:", self.core_version)?;
+		writeln!(fmt, "{:<width_emoji$} {:<width_title$} {}", "🗳️ ", "system.setCode hash:", self.proposal_hash)?;
+		writeln!(
+			fmt,
+			"{:<width_emoji$} {:<width_title$} {}",
+			"🗳️ ", "authorizeUpgrade hash:", self.parachain_authorize_upgrade_hash
+		)?;
+		writeln!(fmt, "{:<width_emoji$} {:<width_title$} {}", "🗳️ ", "Blake2-256 hash:", self.blake2_256)?;
 		let ipfs_url = format!("https://www.ipfs.io/ipfs/{cid}", cid = self.ipfs_hash);
-		writeln!(fmt, "📦 IPFS:\t\t\t{url}", url = ipfs_url)?;
+		writeln!(fmt, "{:<width_emoji$} {:<width_title$} {url}", "📦", "IPFS:", url = ipfs_url)?;
 		Ok(())
 	}
 }
