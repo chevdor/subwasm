@@ -2,7 +2,15 @@
 authors = ["chevdor <chevdor@gmail.com>"]
 edition = "2021"
 homepage = "https://github.com/chevdor/subwasm"
-keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "kusama"]
+keywords = [
+    "wasm",
+    "cli",
+    "substrate",
+    "blockchain",
+    "runtime",
+    "polkadot",
+    "kusama",
+]
 license = "MIT"
 name = "subwasmlib"
 readme = "README.md"
@@ -12,15 +20,22 @@ version = "0.18.0"
 [dependencies]
 calm_io = "0.1"
 color-eyre = "0.6"
-frame-metadata = {version = "14", package = "frame-metadata", features = ["v12", "v13", "v14", "std"]}
-ipfs-hasher = {version = "0.18.0", path = "../libs/ipfs-hasher"}
+frame-metadata = { version = "15", package = "frame-metadata", features = [
+    "v12",
+    "v13",
+    "v14",
+    "std",
+] }
+ipfs-hasher = { version = "0.18.0", path = "../libs/ipfs-hasher" }
 log = "0.4"
 num-format = "0.4"
 rand = "0.8"
-scale-info = {version = "1.0", default-features = false, features = ["derive"]}
-serde = {version = "1.0", features = ["derive"]}
+scale-info = { version = "2.1", default-features = false, features = [
+    "derive",
+] }
+serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-substrate-differ = {version = "0.18.0", path = "../libs/substrate-differ"}
-wasm-loader = {version = "0.18.0", path = "../libs/wasm-loader"}
-wasm-testbed = {version = "0.18.0", path = "../libs/wasm-testbed"}
-sp-version = "3.0"
+substrate-differ = { version = "0.18.0", path = "../libs/substrate-differ" }
+wasm-loader = { version = "0.18.0", path = "../libs/wasm-loader" }
+wasm-testbed = { version = "0.18.0", path = "../libs/wasm-testbed" }
+sp-version = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }

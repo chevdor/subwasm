@@ -1,7 +1,5 @@
 use std::fmt;
 
-// pub type Result<T> = std::result::Result<T, WasmTestbedError>;
-
 #[derive(Debug, Clone)]
 pub enum WasmLoaderError {
 	EndpointParsing(String),

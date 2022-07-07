@@ -23,8 +23,6 @@ jsonrpsee = { version = "0.14", git = "https://github.com/paritytech/jsonrpsee",
     "client",
 ] }
 log = "0.4"
-multibase = "0.9"
-multihash = "0.16"
 serde = { version = "1.0", features = ["derive"] }
-sp-maybe-compressed-blob = { version = "4.1.0-dev", git = "https://github.com/paritytech/substrate/" }
-tokio = { version = "1.11", features = ["full"] }
+sp-maybe-compressed-blob = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate/" }
+tokio = { version = "1.19", features = ["full"] }

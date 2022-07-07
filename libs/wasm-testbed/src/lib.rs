@@ -3,12 +3,12 @@ mod logger_mock;
 
 pub use error::{Result, WasmTestbedError};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadataPrefixed};
-use sc_executor::{CallInWasm, WasmExecutionMethod, WasmExecutor};
+use sc_executor::{WasmExecutionMethod, WasmExecutor};
+use sc_executor_common::runtime_blob::RuntimeBlob;
 use scale::Decode;
 use sp_core::Hasher;
 use sp_runtime::traits::BlakeTwo256;
 use sp_version::RuntimeVersion as SubstrateRuntimeVersion;
-use sp_wasm_interface::HostFunctions;
 use std::fmt;
 use substrate_runtime_proposal_hash::{get_parachainsystem_authorize_upgrade, get_result, SrhResult};
 use wasm_loader::*;
@@ -128,22 +128,15 @@ impl WasmTestBed {
 	/// as we have no blocks, storage, etc...
 	fn call(wasm: &[u8], method: &str, call_data: &[u8]) -> Result<Vec<u8>> {
 		let mut ext = sp_state_machine::BasicExternalities::default();
-		let mut host_functions = sp_io::SubstrateHostFunctions::host_functions();
-		host_functions.push(&logger_mock::LoggerMock);
 
-		let executor = WasmExecutor::new(
-			WasmExecutionMethod::Interpreted,
-			// At least 12 for Polkadot V12/V13.
-			// Substrate V14 requires 34.
-			// Polkadot V14 requires 20.
-			Some(64),
-			host_functions,
-			8,
-			None,
-		);
+		// Substrate V14 requires a heap of ~34.
+		// Polkadot V14 requires a heap of ~20.
+		let executor: WasmExecutor<sp_io::SubstrateHostFunctions> =
+			WasmExecutor::new(WasmExecutionMethod::Interpreted, Some(64), 8, None, 2);
 
+		let runtime_blob = RuntimeBlob::new(wasm).unwrap();
 		executor
-			.call_in_wasm(wasm, None, method, call_data, &mut ext, sp_core::traits::MissingHostFunctions::Allow)
+			.uncached_call(runtime_blob, &mut ext, true, method, call_data)
 			.map_err(|_| WasmTestbedError::Calling(method.to_string()))
 	}
 
