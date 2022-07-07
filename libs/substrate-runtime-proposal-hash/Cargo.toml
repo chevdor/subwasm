@@ -19,7 +19,7 @@ version = "0.18.0"
 
 [dependencies]
 blake2 = "0.10"
-codec = { version = "3.1.2", package = "parity-scale-codec" }
+codec = { version = "3.1.5", package = "parity-scale-codec" }
 frame-metadata = { version = "15", package = "frame-metadata", features = [
     "v12",
     "v13",
@@ -27,8 +27,8 @@ frame-metadata = { version = "15", package = "frame-metadata", features = [
     "std",
 ] }
 hex = "0.4"
-sc-executor = { version = "0.10.0-dev", git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-core = { version = "6.0.0", git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-io = { version = "6.0.0", git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-runtime = { version = "6.0.0", git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-wasm-interface = { version = "6.0.0", git = "https://github.com/paritytech/substrate", branch = "master" }
+sc-executor = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate"  }
+sp-core = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
+sp-io = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
+sp-runtime = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
+sp-wasm-interface = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }

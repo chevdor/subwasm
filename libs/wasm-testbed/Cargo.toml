@@ -26,16 +26,14 @@ frame-metadata = { version = "15", package = "frame-metadata", features = [
 ] }
 hex = "0.4"
 log = "0.4"
-sc-executor = { version = "0.10.0-dev", git = "https://github.com/paritytech/substrate", branch = "master" }
-sc-executor-common = { version = "0.10.0-dev", git = "https://github.com/paritytech/substrate", branch = "master" }
-scale = { version = "3.1.2", package = "parity-scale-codec", default-features = false }
-scale-info = { version = "2.1.1", default-features = false, features = [
-    "derive",
-] }
-sp-core = { version = "6.0.0", git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-io = { version = "6.0.0", git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-runtime = { version = "6.0.0", git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-state-machine = "0.12"
-sp-wasm-interface = { version = "6.0.0", git = "https://github.com/paritytech/substrate", branch = "master" }
+sc-executor = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
+sc-executor-common = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
+scale = { version = "3.1", package = "parity-scale-codec", default-features = false }
+# scale-info = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate", default-features = false, features = ["derive"] }
+sp-core = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
+sp-io = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
+sp-runtime = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
+sp-state-machine = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
+sp-wasm-interface = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
 substrate-runtime-proposal-hash = { version = "0.17.0", path = "../substrate-runtime-proposal-hash" }
 wasm-loader = { version = "0.17.0", path = "../wasm-loader" }

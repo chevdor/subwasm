@@ -3,15 +3,12 @@ mod logger_mock;
 
 pub use error::{Result, WasmTestbedError};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadataPrefixed};
-use sc_executor::Externalities;
 use sc_executor::{RuntimeVersion, WasmExecutionMethod, WasmExecutor};
-use scale::Decode;
-// use sp_core::traits::CodeExecutor;
 use sc_executor_common::runtime_blob::RuntimeBlob;
+use scale::Decode;
 use sp_core::Hasher;
 use sp_runtime::traits::BlakeTwo256;
-use sp_version::RuntimeVersion as SubstrateRuntimeVersion;
-use sp_wasm_interface::HostFunctions;
+// use sp_wasm_interface::HostFunctions;
 use std::fmt;
 use substrate_runtime_proposal_hash::{get_parachainsystem_authorize_upgrade, get_result, SrhResult};
 use wasm_loader::*;
