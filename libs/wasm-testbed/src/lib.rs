@@ -128,9 +128,6 @@ impl WasmTestBed {
 	/// as we have no blocks, storage, etc...
 	fn call(wasm: &[u8], method: &str, call_data: &[u8]) -> Result<Vec<u8>> {
 		let mut ext = sp_state_machine::BasicExternalities::default();
-		// let mut ext = sp_state_machine::BasicExternalities::new_empty();
-		// let mut host_functions = sp_io::SubstrateHostFunctions::host_functions();
-		// host_functions.push(&logger_mock::LoggerMock);
 
 		// Substrate V14 requires a heap of ~34.
 		// Polkadot V14 requires a heap of ~20.

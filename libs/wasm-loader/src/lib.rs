@@ -11,7 +11,6 @@ use jsonrpsee::core::{Error, JsonValue};
 use jsonrpsee::rpc_params;
 use log::*;
 
-// use jsonrpsee::types::types::{Error, JsonValue};
 use jsonrpsee::{http_client::HttpClientBuilder, ws_client::WsClientBuilder};
 pub use node_endpoint::NodeEndpoint;
 pub use onchain_block::{BlockRef, OnchainBlock};
@@ -32,7 +31,6 @@ pub enum CompressedMaybe {
 
 /// The WasmLoader is there to load wasm whether from a file, a node
 /// or from raw bytes. The WasmLoader cannot execute any call into the wasm.
-///
 pub struct WasmLoader {
 	bytes: CompressedMaybe,
 	compression: Compression,
