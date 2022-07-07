@@ -8,7 +8,6 @@ use sc_executor_common::runtime_blob::RuntimeBlob;
 use scale::Decode;
 use sp_core::Hasher;
 use sp_runtime::traits::BlakeTwo256;
-// use sp_wasm_interface::HostFunctions;
 use std::fmt;
 use substrate_runtime_proposal_hash::{get_parachainsystem_authorize_upgrade, get_result, SrhResult};
 use wasm_loader::*;
@@ -132,16 +131,14 @@ impl WasmTestBed {
 		// let mut host_functions = sp_io::SubstrateHostFunctions::host_functions();
 		// host_functions.push(&logger_mock::LoggerMock);
 
-		// At least 12 for Polkadot V12/V13.
-		// Substrate V14 requires 34.
-		// Polkadot V14 requires 20.
-		let executor = WasmExecutor::new(WasmExecutionMethod::Interpreted, Some(64), 8, None, 2);
+		// Substrate V14 requires a heap of ~34.
+		// Polkadot V14 requires a heap of ~20.
+		let executor: WasmExecutor<sp_io::SubstrateHostFunctions> =
+			WasmExecutor::new(WasmExecutionMethod::Interpreted, Some(64), 8, None, 2);
 
 		let runtime_blob = RuntimeBlob::new(wasm).unwrap();
 		executor
 			.uncached_call(runtime_blob, &mut ext, true, method, call_data)
-			// .call(None, &wasm, method, call_data)
-			// .call_in_wasm(wasm, None, method, call_data, &mut ext, sp_core::traits::MissingHostFunctions::Allow)
 			.map_err(|_| WasmTestbedError::Calling(method.to_string()))
 	}
 
