@@ -1206,7 +1206,7 @@ dependencies = [
 
 [[package]]
 name = "ipfs-hasher"
-version = "0.17.0"
+version = "0.18.0"
 dependencies = [
  "ipfs-unixfs",
  "wasm-loader",
@@ -2949,7 +2949,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-differ"
-version = "0.17.0"
+version = "0.18.0"
 dependencies = [
  "frame-metadata",
  "log",
@@ -2963,13 +2963,11 @@ dependencies = [
 
 [[package]]
 name = "substrate-runtime-proposal-hash"
-version = "0.17.0"
+version = "0.18.0"
 dependencies = [
  "blake2",
- "frame-metadata",
  "hex",
  "parity-scale-codec",
- "sc-executor",
  "sp-core",
  "sp-io",
  "sp-runtime",
@@ -2984,7 +2982,7 @@ checksum = "6bdef32e8150c2a081110b42772ffe7d7c9032b606bc226c8260fd97e0976601"
 
 [[package]]
 name = "subwasm"
-version = "0.17.0"
+version = "0.18.0"
 dependencies = [
  "assert_cmd",
  "clap",
@@ -2999,7 +2997,7 @@ dependencies = [
 
 [[package]]
 name = "subwasmlib"
-version = "0.17.0"
+version = "0.18.0"
 dependencies = [
  "calm_io",
  "color-eyre",
@@ -3011,6 +3009,7 @@ dependencies = [
  "scale-info",
  "serde",
  "serde_json",
+ "sp-version",
  "substrate-differ",
  "wasm-loader",
  "wasm-testbed",
@@ -3554,7 +3553,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-loader"
-version = "0.17.0"
+version = "0.18.0"
 dependencies = [
  "hex",
  "jsonrpsee",
@@ -3566,7 +3565,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-testbed"
-version = "0.17.0"
+version = "0.18.0"
 dependencies = [
  "frame-metadata",
  "hex",
@@ -3578,6 +3577,7 @@ dependencies = [
  "sp-io",
  "sp-runtime",
  "sp-state-machine",
+ "sp-version",
  "sp-wasm-interface",
  "substrate-runtime-proposal-hash",
  "wasm-loader",

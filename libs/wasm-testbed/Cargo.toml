@@ -34,5 +34,6 @@ sp-io = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrat
 sp-runtime = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
 sp-state-machine = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
 sp-wasm-interface = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
-substrate-runtime-proposal-hash = { version = "0.17.0", path = "../substrate-runtime-proposal-hash" }
-wasm-loader = { version = "0.17.0", path = "../wasm-loader" }
+substrate-runtime-proposal-hash = { version = "0.18.0", path = "../substrate-runtime-proposal-hash" }
+wasm-loader = { version = "0.18.0", path = "../wasm-loader" }
+sp-version = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
