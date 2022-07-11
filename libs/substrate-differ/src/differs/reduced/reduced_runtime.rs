@@ -185,8 +185,8 @@ mod test_reduced_conversion {
 
 	// TODO: put that in a 	single file
 	// const RUNTIME_V12: &str = "../../data/runtime_v12.wasm";
-	const RUNTIME_V13: &str = "../../data/runtime_v13.wasm";
-	const RUNTIME_V14: &str = "../../data/runtime_v14.wasm";
+	const RUNTIME_V13: &str = "../../data/polkadot/V13/polkadot-9030.wasm";
+	const RUNTIME_V14: &str = "../../data/polkadot/V14/polkadot_runtime.compact.compressed.wasm";
 
 	#[test]
 	fn test_reduce_v13() {
@@ -196,7 +196,7 @@ mod test_reduced_conversion {
 			V13(v13) => {
 				let rrtm = reduced_runtime::ReducedRuntime::from_v13(v13).unwrap();
 				println!("rrtm = {:#?}", rrtm);
-				assert_eq!(rrtm.pallets.len(), 9);
+				assert_eq!(31, rrtm.pallets.len());
 			}
 			_ => unreachable!(),
 		}
