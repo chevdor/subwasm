@@ -2,16 +2,19 @@
 :toc: right
 :prj: pass:q[`subwasm`]
 :cmd: subwasm
-:version: v0.12.1
+:version: v0.16.1
 
 image::https://github.com/chevdor/subwasm/actions/workflows/quick-check.yml/badge.svg?branch=master[link="https://github.com/chevdor/subwasm/actions/workflows/quick-check.yml"]
 
 image::resources/logos/Logo_1024.png[align="center", width="50%"]
 
+WARNING: Unfortunately, the crate of the project and its dependencies are squatted on crates.io. The squatter remains unresponsive and the crates.io team does not care. I strongly recommend NOT to install the old version from crates.io. Check the <<Install>> chapter below to see how to install from this repo or use the official binary packages.
+
 == Introduction
 
-The metadata of a given runtime is a critical piece of information: it can be seen as the signature of a runtime.
-It contains the exhaustive list of all the features publicly exposed by the runtime.
+The metadata of a given runtime is a critical piece of information as it describes how one can interact with the runtime, what operations are possible and what are the signatures of the calls. It contains the exhaustive list of all the features publicly exposed by the runtime.
+
+NOTE: This tool only works with Substrate-based runtimes which are `>=V11`. For earlier versions, you'll need to connect to an archive node.
 
 Any node can be queried to provide its current metadata. This can be displayed in json format for instance. This is a great way to have a peek at what the runtime can do.
 
@@ -38,6 +41,7 @@ image::scripts/demos/gif/demo-diff.gif[title="subwasm diff"]
 - getting runtime and metadata at any point of time using a Block hash as reference
 - getting the metadata from a a wasm file without any node
 - extracting information (those not requiring storage) from a runtime as wasm file
+- (de)compress a given runtime WASM
 
 == Install
 
@@ -45,7 +49,7 @@ image::scripts/demos/gif/demo-diff.gif[title="subwasm diff"]
 
 [subs="attributes+"]
 ----
-cargo install --git https://github.com/chevdor/subwasm --tag {version}
+cargo install --locked --git https://github.com/chevdor/subwasm --tag {version}
 ----
 
 === Homebrew
@@ -81,6 +85,14 @@ include::doc/usage_get.adoc[]
 include::doc/usage_info.adoc[]
 ----
 
+NOTE: By default, the ID for the Parachain pallet is expected to be `0x01` and the call ID for `authorize_upgrade` is expected to be `0x03`.
+This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to the ID of your parachain pallet and the `AUTHORIZE_UPGRADE_PREFIX` to the ID of your choice.
+
+=== Command: version
+----
+include::doc/usage_version.adoc[]
+----
+
 === Command: meta
 ----
 include::doc/usage_meta.adoc[]
@@ -91,13 +103,31 @@ include::doc/usage_meta.adoc[]
 include::doc/usage_diff.adoc[]
 ----
 
+=== Command: compress
+----
+include::doc/usage_compress.adoc[]
+----
+
+=== Command: decompress
+----
+include::doc/usage_decompress.adoc[]
+----
+
+=== Environment variables
+
+In addition to the command line flags, you can also pass one of the following ENV variables:
+
+----
+include::.env-sample[]
+----
+
 == Sample runs
 
 .Fetch a runtime from a running node
 
 We will start by fetching the runtime from a node.
 
-NOTE: Please note that you will likely need to connect to an **archive** node to retrieve older runtime. A runtime takes around 2MB of storage on-chain and thus, older versions are pruned and will no longer be accessible if you are connectin to a non-archive node.
+NOTE: Please note that you will likely need to connect to an **archive** node to retrieve an older runtime (`<V11`). A runtime takes around 2MB of storage on-chain and thus, older versions are pruned and will no longer be accessible if you are connecting to a non-archive node.
 
 .Here we get the latest version of the runtime, the 3 commands do the same since they all use the default values:
 
@@ -124,7 +154,7 @@ NOTE: By default, your runtime will be saved as `runtime_000.wasm`. Running this
 
 === Metadata JSON and jq tricks
 
-TIP: `jq` can be used to reprocess the json output. For instance, removing all the documentation from the metadata makes it significantly smaller. The example below shows how to remove `documentation`, `value` and `default` for a version easier on the eyes for human parsing...
+TIP: `jq` can be used to reprocess the json output. For instance, removing all the documentation from the metadata makes it significantly smaller. The example below shows how to remove `documentation`, `value` and `default` making it much easier on the eyes for human parsing...
 
 [subs="attributes+"]
 ----

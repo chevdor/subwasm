@@ -3,11 +3,12 @@ mod logger_mock;
 
 pub use error::{Result, WasmTestbedError};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadataPrefixed};
-use sc_executor::{CallInWasm, RuntimeVersion, WasmExecutionMethod, WasmExecutor};
+use sc_executor::{WasmExecutionMethod, WasmExecutor};
+use sc_executor_common::runtime_blob::RuntimeBlob;
 use scale::Decode;
 use sp_core::Hasher;
 use sp_runtime::traits::BlakeTwo256;
-use sp_wasm_interface::HostFunctions;
+use sp_version::RuntimeVersion as SubstrateRuntimeVersion;
 use std::fmt;
 use substrate_runtime_proposal_hash::{get_parachainsystem_authorize_upgrade, get_result, SrhResult};
 use wasm_loader::*;
@@ -37,7 +38,7 @@ pub struct WasmTestBed {
 	metadata_version: u8,
 
 	/// Core version as reported by the runtime
-	core_version: Option<RuntimeVersion>,
+	core_version: SubstrateRuntimeVersion,
 }
 
 impl fmt::Debug for WasmTestBed {
@@ -53,7 +54,7 @@ impl WasmTestBed {
 	pub fn new(source: &Source) -> Result<Self> {
 		let loader = WasmLoader::load_from_source(source).map_err(|_| WasmTestbedError::Loading(source.to_string()))?;
 
-		let wasm = loader.bytes().to_vec();
+		let wasm = loader.uncompressed_bytes().to_vec();
 		let metadata_encoded = Self::call(&wasm, "Metadata_metadata", &[])?;
 		let metadata =
 			<Vec<u8>>::decode(&mut &metadata_encoded[..]).map_err(|_| WasmTestbedError::Decoding(metadata_encoded))?;
@@ -76,7 +77,7 @@ impl WasmTestBed {
 
 		Ok(Self {
 			wasm,
-			bytes: loader.uncompressed_bytes().to_vec(),
+			bytes: loader.original_bytes().to_vec(),
 			runtime_metadata_prefixed,
 			metadata,
 			metadata_version,
@@ -129,33 +130,21 @@ impl WasmTestBed {
 	/// as we have no blocks, storage, etc...
 	fn call(wasm: &[u8], method: &str, call_data: &[u8]) -> Result<Vec<u8>> {
 		let mut ext = sp_state_machine::BasicExternalities::default();
-		let mut host_functions = sp_io::SubstrateHostFunctions::host_functions();
-		host_functions.push(&logger_mock::LoggerMock);
 
-		// host_functions
-		// 	.clone()
-		// 	.into_iter()
-		// 	.for_each(|host_fn| debug!("{:?}", host_fn.name()));
+		// Substrate V14 requires a heap of ~34.
+		// Polkadot V14 requires a heap of ~20.
+		let executor: WasmExecutor<sp_io::SubstrateHostFunctions> =
+			WasmExecutor::new(WasmExecutionMethod::Interpreted, Some(64), 8, None, 2);
 
-		let executor = WasmExecutor::new(
-			WasmExecutionMethod::Interpreted,
-			// At least 12 for Polkadot V12/V13.
-			// Substrate V14 requires 34.
-			// Polkadot V14 requires 20.
-			Some(64),
-			host_functions,
-			8,
-			None,
-		);
-
+		let runtime_blob = RuntimeBlob::new(wasm).unwrap();
 		executor
-			.call_in_wasm(wasm, None, method, call_data, &mut ext, sp_core::traits::MissingHostFunctions::Allow)
+			.uncached_call(runtime_blob, &mut ext, true, method, call_data)
 			.map_err(|_| WasmTestbedError::Calling(method.to_string()))
 	}
 
-	pub fn get_core_version(wasm: &[u8]) -> Option<RuntimeVersion> {
+	pub fn get_core_version(wasm: &[u8]) -> SubstrateRuntimeVersion {
 		let encoded = Self::call(wasm, "Core_version", &[]).unwrap();
-		<RuntimeVersion>::decode(&mut &encoded[..]).ok()
+		<SubstrateRuntimeVersion>::decode(&mut &encoded[..]).expect("Failed decoding runtime version")
 	}
 
 	/// We probably don't need to maintain this as decoding the runtime will
@@ -185,8 +174,8 @@ impl WasmTestBed {
 	}
 
 	/// Get a reference to the substrate wasm's core version.
-	pub fn core_version(&self) -> Option<&RuntimeVersion> {
-		self.core_version.as_ref()
+	pub fn core_version(&self) -> SubstrateRuntimeVersion {
+		self.core_version.clone()
 	}
 
 	/// Compute the proposal hash of the runtime
@@ -215,16 +204,16 @@ mod tests {
 	use std::path::PathBuf;
 
 	const WASM_NO_SUBSTRATE: &str = "../../data/wasm/qjs.wasm";
-	const KUSAMA_1050_VXX: &str = "../../data/kusama/kusama-1050.wasm";
-	const KUSAMA_1062_VXX: &str = "../../data/kusama/kusama-1062.wasm";
-	const KUSAMA_2030_VXX: &str = "../../data/kusama/kusama-2030.wasm";
-	const POLKADOT_01_V11: &str = "../../data/polkadot/polkadot-01.wasm";
-	const POLKADOT_29_V12: &str = "../../data/polkadot/polkadot-29.wasm";
+	const KUSAMA_1050_VXX: &str = "../../data/kusama/V11/kusama-1050.wasm";
+	const KUSAMA_1062_VXX: &str = "../../data/kusama/V11/kusama-1062.wasm";
+	const KUSAMA_2030_VXX: &str = "../../data/kusama/V12/kusama-2030.wasm";
+	const POLKADOT_01_V11: &str = "../../data/polkadot/V11/polkadot-01.wasm";
+	const POLKADOT_29_V12: &str = "../../data/polkadot/V12/polkadot-29.wasm";
 	const WESTEND_V30_V12: &str = "../../data/westend/westend_runtime-v900-rc2.compact.wasm";
 	const POLKADOT_DEV: &str = "../../data/v900/polkadot-dev-v900-rc1.wasm";
-	const RUNTIME_V12: &str = "../../data/runtime_v12.wasm";
-	const RUNTIME_V13: &str = "../../data/runtime_v13.wasm";
-	const RUNTIME_V14: &str = "../../data/runtime_v14.wasm";
+	const RUNTIME_V12: &str = "../../data/kusama/V12/kusama-2030.wasm";
+	const RUNTIME_V13: &str = "../../data/kusama/V13/kusama-9080.wasm";
+	const RUNTIME_V14: &str = "../../data/polkadot/V14/polkadot_runtime.compact.compressed.wasm";
 
 	#[cfg(test)]
 	mod common {
@@ -246,7 +235,6 @@ mod tests {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap();
 			println!("{:#?}", runtime);
 			assert!(runtime.metadata_version == 12);
-			assert!(runtime.core_version.is_some());
 			assert!(runtime.is_supported());
 		}
 
@@ -256,7 +244,6 @@ mod tests {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).unwrap();
 			println!("{:#?}", runtime);
 			assert!(runtime.metadata_version == 13);
-			assert!(runtime.core_version.is_some());
 			assert!(runtime.is_supported());
 		}
 
@@ -265,7 +252,7 @@ mod tests {
 		fn it_loads_v14() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14)));
 			// println!("runtime = {:?}", runtime);
-			assert!(!runtime.is_err());
+			assert!(runtime.is_ok());
 			println!("runtime = {:?}", &runtime);
 			let runtime = runtime.unwrap();
 			// println!("{:#?}", runtime);
@@ -286,7 +273,6 @@ mod tests {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_1050_VXX))).unwrap();
 			println!("{:#?}", runtime);
 			assert!(runtime.metadata_version == 11);
-			assert!(runtime.core_version.is_none());
 			assert!(runtime.is_supported());
 		}
 
@@ -299,7 +285,7 @@ mod tests {
 			assert!(runtime.metadata_version == 11);
 			assert!(runtime.is_supported());
 
-			let v = &runtime.core_version.unwrap();
+			let v = &runtime.core_version;
 			assert!(v.spec_name == RuntimeString::from("kusama"));
 			assert!(v.impl_name == RuntimeString::from("parity-kusama"));
 			assert!(v.authoring_version == 2);
@@ -325,7 +311,7 @@ mod tests {
 			assert!(runtime.metadata_version == 12);
 			assert!(runtime.is_supported());
 
-			let v = &runtime.core_version.unwrap();
+			let v = &runtime.core_version;
 			assert!(v.spec_name == RuntimeString::from("kusama"));
 			assert!(v.impl_name == RuntimeString::from("parity-kusama"));
 			assert!(v.authoring_version == 2);

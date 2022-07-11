@@ -12,15 +12,9 @@ use ipfs_unixfs::file::adder::FileAdder;
 /// If you need more control, check out the `cid` and the `ipfs-unixfs``
 /// crates.
 /// This crate procudes CidV0.
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct IpfsHasher {
 	chunk_size: Option<usize>,
-}
-
-impl Default for IpfsHasher {
-	fn default() -> Self {
-		Self { chunk_size: None }
-	}
 }
 
 impl IpfsHasher {
@@ -75,10 +69,10 @@ mod tests {
 	fn it_computes_a_runtime_ipfs_hash() {
 		const POLKADOT_BLOCK20: &str = "0x4d6a0bca208b85d41833a7f35cf73d1ae6974f4bad8ab576e2c3f751d691fe6c"; // Polkadot Block #20
 
-		let ocb = OnchainBlock::new("wss://rpc.polkadot.io", Some(POLKADOT_BLOCK20.to_string()));
+		let ocb = OnchainBlock::new("wss://rpc.polkadot.io:443", Some(POLKADOT_BLOCK20.to_string()));
 		let loader = WasmLoader::load_from_source(&Source::Chain(ocb)).unwrap();
 		let hasher = IpfsHasher::default();
-		let cid = hasher.compute(loader.bytes());
+		let cid = hasher.compute(loader.uncompressed_bytes());
 		assert!(cid == "QmevKMGkRViXfQMSZ38DBdcJ1cXcXf9sXdfXie8Jkc7ZGs");
 	}
 }

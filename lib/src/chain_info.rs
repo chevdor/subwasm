@@ -3,7 +3,7 @@ use std::{fmt::Display, str::FromStr};
 use wasm_loader::NodeEndpoint;
 
 use crate::chain_urls::get_chain_urls;
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum EndpointType {
 	Http,
 	WesbSocket,
@@ -51,7 +51,9 @@ pub enum Error {
 
 impl Display for Error {
 	fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(fmt, "Chain not supported: {}", self)
+		match self {
+			Error::ChainUsupported(s) => write!(fmt, "Chain not supported: {}", s),
+		}
 	}
 }
 

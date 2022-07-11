@@ -1,6 +1,6 @@
 mod opts;
 
-use clap::{crate_name, crate_version, Clap};
+use clap::{crate_name, crate_version, StructOpt};
 use env_logger::Env;
 use log::info;
 use opts::*;
@@ -18,12 +18,11 @@ macro_rules! noquiet {
 /// Main entry point of the `subwasm` cli
 fn main() -> color_eyre::Result<()> {
 	env_logger::Builder::from_env(Env::default().default_filter_or("none")).init();
-
 	let opts: Opts = Opts::parse();
+	noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
 
 	match opts.subcmd {
 		SubCommand::Get(get_opts) => {
-			info!("Running {} v{}", crate_name!(), crate_version!());
 			let chain_name = get_opts.chain.map(|some| some.name);
 			let url = &get_url(chain_name.as_deref(), &get_opts.url);
 
@@ -31,8 +30,6 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		SubCommand::Info(info_opts) => {
-			info!("Running {} v{}", crate_name!(), crate_version!());
-
 			let chain_name = info_opts.chain.map(|some| some.name);
 			let source = get_source(chain_name.as_deref(), info_opts.source, info_opts.block);
 
@@ -42,9 +39,17 @@ fn main() -> color_eyre::Result<()> {
 			subwasm.runtime_info().print(opts.json);
 		}
 
-		SubCommand::Metadata(meta_opts) => {
-			info!("Running {} v{}", crate_name!(), crate_version!());
+		SubCommand::Version(version_opts) => {
+			let chain_name = version_opts.chain.map(|some| some.name);
+			let source = get_source(chain_name.as_deref(), version_opts.source, version_opts.block);
 
+			info!("⏱️  Loading WASM from {:?}", &source);
+			let subwasm = Subwasm::new(&source);
+
+			subwasm.runtime_info().print_version(opts.json);
+		}
+
+		SubCommand::Metadata(meta_opts) => {
 			let chain_name = meta_opts.chain.map(|some| some.name);
 			let source = get_source(chain_name.as_deref(), meta_opts.source, meta_opts.block);
 
@@ -53,7 +58,7 @@ fn main() -> color_eyre::Result<()> {
 
 			if let Some(filter) = meta_opts.module {
 				subwasm.display_module(filter);
-			} else if opts.json || meta_opts.json {
+			} else if opts.json {
 				subwasm.display_metadata_json()
 			} else {
 				subwasm.display_modules_list()
@@ -74,6 +79,14 @@ fn main() -> color_eyre::Result<()> {
 				DiffMethod::Raw => diff(src_a, src_b),
 				DiffMethod::Reduced => reduced_diff(src_a, src_b),
 			}
+		}
+
+		SubCommand::Compress(copts) => {
+			compress(copts.input, copts.output).unwrap();
+		}
+
+		SubCommand::Decompress(dopts) => {
+			decompress(dopts.input, dopts.output).unwrap();
 		}
 	};
 

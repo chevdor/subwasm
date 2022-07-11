@@ -1,6 +1,9 @@
 use std::collections::HashSet;
 
-use crate::differs::{DiffOptions, Differ, reduced::{Index, reduced_pallet::ReducedPallet}};
+use crate::differs::{
+	reduced::{reduced_pallet::ReducedPallet, Index},
+	DiffOptions, Differ,
+};
 
 use super::reduced_runtime::ReducedRuntime;
 use frame_metadata::{v13, v14, RuntimeMetadata, RuntimeMetadata::*};
@@ -76,13 +79,13 @@ impl Differ for ReducedDiffer {
 		assert_eq!(indexes_2.len(), 50);
 		assert_eq!(indexes.len(), 51);
 
-
 		indexes.iter().for_each(|index| {
-			let pallet_a = self.r1.pallets.get(index);
-			let pallet_b = self.r2.pallets.get(index);
+			// TODO
+			// let pallet_a = self.r1.pallets.get(index);
+			// let pallet_b = self.r2.pallets.get(index);
 
-			let d = ReducedPallet::diff(pallet_a, pallet_b);
-			println!("d = {:?}", d);
+			// let d = ReducedPallet::diff(pallet_a, pallet_b);
+			// println!("d = {:?}", d);
 		});
 
 		todo!();

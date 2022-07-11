@@ -1,7 +1,5 @@
 use std::fmt;
 
-// pub type Result<T> = std::result::Result<T, WasmTestbedError>;
-
 #[derive(Debug, Clone)]
 pub enum WasmLoaderError {
 	EndpointParsing(String),
@@ -22,5 +20,19 @@ impl fmt::Display for WasmLoaderError {
 			WasmLoaderError::HttpClient() => write!(f, "HttpClient Error"),
 			WasmLoaderError::WsClient() => write!(f, "WsClient Error"),
 		}
+	}
+}
+
+impl std::error::Error for WasmLoaderError {
+	fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+		None
+	}
+
+	fn description(&self) -> &str {
+		"description() is deprecated; use Display"
+	}
+
+	fn cause(&self) -> Option<&dyn std::error::Error> {
+		self.source()
 	}
 }

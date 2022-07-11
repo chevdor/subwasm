@@ -43,9 +43,9 @@ jobs:
 
   macos:
     env:
-      TARGET_DIR: target/release
+      TARGET_DIR: target/production
 
-    runs-on: macos-latest
+    runs-on: macos-10.15
     steps:
       - uses: actions/checkout@v2
         with:
@@ -60,24 +60,32 @@ jobs:
           echo "RAW_VERSION=$RAW_VERSION" >> $GITHUB_ENV
           echo "SHORT_SHA=${GITHUB_SHA::8}" >> $GITHUB_ENV
 
-      - name: Install latest nightly
+      - name: Install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: stable
           override: true
-          components: rustfmt, clippy
 
       - name: Check tooling
         shell: bash
         run: |
           tar --version
           shasum --version
+          cargo --version
+          rustc --version
 
       - name: Build MacOS binary
-        shell: bash
         run: |
-          cargo build --release
+          cargo build --locked --profile production
           ls -al "${{ env.TARGET_DIR }}/subwasm"
+
+      - name: Check binary
+        env:
+          BINARY: "${{ env.TARGET_DIR }}/subwasm"
+        run: |
+          file $BINARY
+          $BINARY --version
+          $BINARY --help
 
       - name: Compress & sha256
         run: |
@@ -140,9 +148,9 @@ jobs:
           echo "SHORT_SHA=${GITHUB_SHA::8}" >> $GITHUB_ENV
       - uses: actions/download-artifact@v2
 
-      - name: Install tera v0.1.3
+      - name: Install tera
         run: |
-          URL=https://github.com/chevdor/tera-cli/releases/download/v0.1.3/tera-cli_linux_amd64.deb
+          URL=https://github.com/chevdor/tera-cli/releases/download/v0.2.0/tera-cli_linux_amd64.deb
           wget $URL
           sudo dpkg -i tera-cli_linux_amd64.deb
           tera --version

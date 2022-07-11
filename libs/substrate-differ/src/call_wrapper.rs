@@ -1,4 +1,5 @@
 use std::fmt::Display;
+use std::fmt::Write as _;
 use treediff::tools::ChangeType;
 
 pub struct CallWrapper<'a, K, V: 'a>(pub &'a ChangeType<'a, K, V>);
@@ -9,17 +10,17 @@ impl<'a, K: Display, V: Display + 'a> Display for CallWrapper<'a, K, V> {
 			ChangeType::Modified(keys, v_before, v_after) => {
 				let mut res = String::new();
 				for key in keys {
-					res.push_str(&format!("{}.", key));
+					let _ = write!(res, "{}.", key);
 				}
 
-				write!(f, "🛠  {:<50} {:>20} --> {}", res, v_before.to_string(), v_after.to_string())
+				write!(f, "🛠  {:<50} {:>20} --> {}", res, v_before, v_after)
 			}
 			ChangeType::Removed(keys, val) => {
 				let mut res = String::new();
 				for key in keys {
-					res.push_str(&format!("{}.", key));
+					let _ = write!(res, "{}.", key);
 				}
-				write!(f, "🗑  {:<50} {:>20}", res, val.to_string())
+				write!(f, "🗑  {:<50} {:>20}", res, val)
 			}
 
 			ChangeType::Unchanged(_, _) => write!(f, "Unchanged"),

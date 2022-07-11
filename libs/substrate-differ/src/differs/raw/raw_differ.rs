@@ -1,5 +1,8 @@
 use super::{json_utils::json_collapse_byte_arrays, raw_differ_options::RawDifferOptions, skip_counter::SkipCounter};
-use crate::{call_wrapper::CallWrapper, differs::raw::{change_counter::{ChangeCounter}, change_type::ChangeType}};
+use crate::{
+	call_wrapper::CallWrapper,
+	differs::raw::{change_counter::ChangeCounter, change_type::ChangeType},
+};
 use log::debug;
 use serde::Serialize;
 use treediff::{diff, tools::Recorder};
@@ -60,7 +63,7 @@ impl<'a, T: Serialize> RawDiffer<'a, T> {
 					{
 						skip_counter.bytes += 1;
 					} else {
-						println!("{}", wrapped_call.to_string())
+						println!("{}", wrapped_call)
 					}
 
 					// if !k.contains(&doc) || k.contains(&doc) && !options.skip_doc {
@@ -112,8 +115,8 @@ mod tests {
 	#[test]
 	#[ignore = "local data"]
 	fn it_constructs() {
-		const RTM1: &str = "../../data/kusama/kusama-2030.wasm";
-		const RTM2: &str = "../../data/kusama/kusama_runtime-v9000.compact.wasm";
+		const RTM1: &str = "../../data/kusama/V12/kusama-2030.wasm";
+		const RTM2: &str = "../../data/kusama/V12/kusama-9000.compact.wasm";
 
 		let runtime_a = WasmTestBed::new(&Source::File(PathBuf::from(RTM1))).unwrap();
 		let runtime_b = WasmTestBed::new(&Source::File(PathBuf::from(RTM2))).unwrap();

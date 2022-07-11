@@ -1,8 +1,9 @@
 [package]
 authors = ["Wilfried Kopp <wilfried@parity.io>"]
-edition = "2018"
+edition = "2021"
+license = "MIT"
 name = "ipfs-hasher"
-version = "0.13.0"
+version = "0.18.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -10,4 +11,4 @@ version = "0.13.0"
 ipfs-unixfs = "0.2"
 
 [dev-dependencies]
-wasm-loader = {path = "../wasm-loader"}
+wasm-loader = { version = "0.18", path = "../wasm-loader" }

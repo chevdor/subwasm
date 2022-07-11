@@ -3,7 +3,7 @@ use std::str::FromStr;
 pub type BlockRef = String; // TODO: to change
 
 /// This structure points to a node url and an optional block reference.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct OnchainBlock {
 	pub endpoint: NodeEndpoint,
 	pub block_ref: Option<BlockRef>,

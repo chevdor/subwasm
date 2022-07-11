@@ -1,3 +1,4 @@
+use log::{debug, info};
 use std::path::Path;
 use std::{fs::File, path::PathBuf};
 use std::{io::prelude::*, str::FromStr};
@@ -7,7 +8,7 @@ use substrate_differ::differs::raw::raw_differ_options::RawDifferOptions;
 use substrate_differ::differs::reduced::reduced_differ::ReducedDiffer;
 use substrate_differ::differs::summary_differ::RuntimeSummaryDiffer;
 use substrate_differ::differs::{DiffOptions, Differ};
-use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
+use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, WasmLoader};
 use wasm_testbed::WasmTestBed;
 mod chain_info;
 mod chain_urls;
@@ -77,7 +78,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 
 	let loader =
 		wasm_loader::WasmLoader::load_from_source(&Source::Chain(reference)).expect("Getting wasm from the node");
-	let wasm = loader.bytes();
+	let wasm = loader.original_bytes();
 
 	log::info!("Got the runtime, its size is {:?}", wasm.len());
 
@@ -151,4 +152,45 @@ pub fn reduced_diff(src_a: Source, src_b: Source) {
 	let opts = DiffOptions::default();
 	partial.diff(opts);
 	log::trace!("TRACE3");
+}
+
+/// Compress a given runtime into a new file. You cannot compress
+/// a runtime that is already compressed.
+pub fn compress(input: PathBuf, output: PathBuf) -> Result<(), String> {
+	let wasm = WasmLoader::load_from_source(&Source::File(input)).unwrap();
+
+	if wasm.compression().compressed() {
+		return Err("The input is already compressed".into());
+	}
+
+	let bytes_compressed = Compression::compress(wasm.original_bytes()).unwrap();
+
+	debug!("original   = {:?}", wasm.original_bytes().len());
+	debug!("compressed = {:?}", bytes_compressed.len());
+	info!("Saving compressed runtime to {:?}", output);
+
+	let mut buffer = File::create(output).unwrap();
+	buffer.write_all(&bytes_compressed.to_vec()).unwrap();
+
+	Ok(())
+}
+
+/// Decompress a given runtime file. It is fine decompressing an already
+/// decompressed runtime, you will just get the same.
+pub fn decompress(input: PathBuf, output: PathBuf) -> Result<(), String> {
+	let wasm = WasmLoader::load_from_source(&Source::File(input)).unwrap();
+
+	let bytes_decompressed = match wasm.compression().compressed() {
+		false => wasm.original_bytes().clone(),
+		true => Compression::decompress(wasm.original_bytes()).unwrap(),
+	};
+
+	debug!("original     = {:?}", wasm.original_bytes().len());
+	debug!("decompressed = {:?}", bytes_decompressed.len());
+
+	info!("Saving decompressed runtime to {:?}", output);
+	let mut buffer = File::create(output).unwrap();
+	buffer.write_all(&bytes_decompressed.to_vec()).unwrap();
+
+	Ok(())
 }

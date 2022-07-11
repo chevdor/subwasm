@@ -1,15 +1,14 @@
-use clap::{crate_authors, crate_version, AppSettings, Clap};
+use clap::{crate_authors, crate_version, Parser, Subcommand};
 use std::path::PathBuf;
 use subwasmlib::{ChainInfo, DiffMethod};
 use wasm_loader::{OnchainBlock, Source};
 
 /// `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains.
-#[derive(Clap)]
+#[derive(Parser)]
 #[clap(version = crate_version!(), author = crate_authors!())]
-#[clap(setting = AppSettings::ColoredHelp)]
 pub struct Opts {
 	/// Output as json
-	#[clap(short, long)]
+	#[clap(short, long, global = true)]
 	pub json: bool,
 
 	/// Less output
@@ -21,7 +20,7 @@ pub struct Opts {
 }
 
 /// You can find all available commands below.
-#[derive(Clap)]
+#[derive(Subcommand)]
 pub enum SubCommand {
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Get(GetOpts),
@@ -29,17 +28,26 @@ pub enum SubCommand {
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Info(InfoOpts),
 
+	#[clap(version = crate_version!(), author = crate_authors!())]
+	Version(VersionOpts),
+
 	#[clap(version = crate_version!(), author = crate_authors!(), alias("meta"))]
 	Metadata(MetaOpts),
 
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Diff(DiffOpts),
+
+	#[clap(version = crate_version!(), author = crate_authors!())]
+	Compress(CompressOpts),
+
+	#[clap(version = crate_version!(), author = crate_authors!())]
+	Decompress(DecompressOpts),
 }
 
 /// Get/Download the runtime wasm from a running node through rpc
-#[derive(Clap)]
+#[derive(Parser)]
 pub struct GetOpts {
-	/// The node url. Example: ws://localhost:9944 or http://localhost:9933.
+	/// The node url including (mandatory) the port number. Example: ws://localhost:9944 or http://localhost:9933
 	#[clap(default_value = "http://localhost:9933", required_unless_present = "chain", index = 1)]
 	pub url: OnchainBlock,
 
@@ -62,7 +70,7 @@ pub struct GetOpts {
 }
 
 /// The `info` command returns summarized information about a runtime.
-#[derive(Clap)]
+#[derive(Parser)]
 pub struct InfoOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such as
 	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
@@ -75,12 +83,34 @@ pub struct InfoOpts {
 	#[clap(long, parse(from_str), conflicts_with = "source")]
 	pub chain: Option<ChainInfo>,
 
+	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
+	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
+	#[clap(short, long)]
+	pub block: Option<String>, // TODO: can do better...
+}
+
+/// The `version` command returns summarized information about the versions of a runtime.
+#[derive(Parser)]
+pub struct VersionOpts {
+	/// The wasm file to load. It can be a path on your local filesystem such as
+	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
+	#[clap(alias("src"), default_value = "runtime_000.wasm", required_unless_present = "chain", index = 1)]
+	pub source: Source,
+
+	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
+	/// If you pass a valid --chain, --url will be ignored
+	/// --chain local = http://localhost:9933
+	#[clap(long, parse(from_str), conflicts_with = "source")]
+	pub chain: Option<ChainInfo>,
+
+	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
+	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
 	pub block: Option<String>, // TODO: can do better...
 }
 
 /// Returns the metadata as a json object. You may also use the "meta" alias.
-#[derive(Clap)]
+#[derive(Parser)]
 pub struct MetaOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such as
 	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
@@ -98,16 +128,14 @@ pub struct MetaOpts {
 	#[clap(long, short)]
 	pub module: Option<String>,
 
+	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
+	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
 	pub block: Option<String>, // TODO: can do better...
-
-	/// Output as json
-	#[clap(short, long)]
-	pub json: bool,
 }
 
 /// Compare 2 runtimes
-#[derive(Clap)]
+#[derive(Parser)]
 pub struct DiffOpts {
 	/// The first source
 	#[clap(index = 1, alias = "src-a", default_value = "runtime_000.wasm", required_unless_present = "chain-a")]
@@ -132,4 +160,32 @@ pub struct DiffOpts {
 	/// Differ method. Raw is the legacy option. You probably want to use `Reduced` now.
 	#[clap(long, short, default_value = "reduced")]
 	pub method: DiffMethod,
+}
+
+/// Compress a given runtime wasm file.
+/// You will get an error if you try compressing a runtime that is already compressed.
+#[derive(Parser)]
+pub struct CompressOpts {
+	/// The path of uncompressed wasm file to load.
+	#[clap(alias("in"), index = 1)]
+	pub input: PathBuf,
+
+	/// The path of the file where the compressed runtime will be stored.
+	#[clap(alias("out"), index = 2)]
+	pub output: PathBuf,
+}
+
+/// Decompress a given runtime wasm file. You may pass a runtime that is uncompressed
+/// already. In that case, you will get the same content as output. This is useful
+/// if you want to decompress "no matter what" and don't really know whether the input
+/// will be compressed or not.
+#[derive(Parser)]
+pub struct DecompressOpts {
+	/// The path of the compressed or uncompressed wasm file to load.
+	#[clap(alias("in"), index = 1)]
+	pub input: PathBuf,
+
+	/// The path of the file where the uncompressed runtime will be stored.
+	#[clap(alias("out"), index = 2)]
+	pub output: PathBuf,
 }

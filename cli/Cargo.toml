@@ -1,25 +1,28 @@
 [package]
 authors = ["chevdor <chevdor@gmail.com>", "Wilfried Kopp <wilfried@parity.io"]
 description = "subwasm is a utility that works on WASM Runtime of Substrate based chains"
-edition = "2018"
+edition = "2021"
 homepage = "https://github.com/chevdor/subwasm"
 keywords = ["wasm", "cli", "substrate", "blockchain", "runtime", "polkadot", "kusama"]
 license = "MIT"
 name = "subwasm"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
-version = "0.13.2"
+version = "0.18.0"
 
 [dependencies]
-assert_cmd = "1.0"
-clap = "3.0.0-beta.2"
-color-eyre = "0.5"
+assert_cmd = "2.0"
+clap = {version = "3.2", features = ["derive", "env", "unicode", "cargo"]}
+color-eyre = "0.6"
 env_logger = "0.9"
 log = "0.4"
-substrate-runtime-proposal-hash = {path = "../libs/substrate-runtime-proposal-hash", optional = true}
-subwasmlib = {path = "../lib"}
-wasm-loader = {path = "../libs/wasm-loader"}
-wasm-testbed = {path = "../libs/wasm-testbed"}
+substrate-runtime-proposal-hash = {version = "0.18.0", path = "../libs/substrate-runtime-proposal-hash", optional = true}
+subwasmlib = {version = "0.18.0", path = "../lib"}
+wasm-loader = {version = "0.18.0", path = "../libs/wasm-loader"}
+wasm-testbed = {version = "0.18.0", path = "../libs/wasm-testbed"}
+
+[dev-dependencies]
+assert_cmd = "2.0"
 
 [package.metadata.deb]
 assets = [

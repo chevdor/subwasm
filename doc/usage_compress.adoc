@@ -1,0 +1,16 @@
+subwasm-compress 0.18.0
+chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
+Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is
+already compressed
+
+USAGE:
+    subwasm compress [OPTIONS] <INPUT> <OUTPUT>
+
+ARGS:
+    <INPUT>     The path of uncompressed wasm file to load
+    <OUTPUT>    The path of the file where the compressed runtime will be stored
+
+OPTIONS:
+    -h, --help       Print help information
+    -j, --json       Output as json
+    -V, --version    Print version information

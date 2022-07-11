@@ -131,9 +131,9 @@ pub struct ReducedRuntime {
 	pub pallets: Vec<ReducedPallet>, // TODO: Could use a BTreeMap
 }
 
-impl SliceIndex<[ReducedPallet] for u32 {
-	
-}
+// impl SliceIndex<[ReducedPallet] for u32 {
+
+// }
 
 impl From<Vec<ReducedPallet>> for ReducedRuntime {
 	fn from(pallets: Vec<ReducedPallet>) -> Self {

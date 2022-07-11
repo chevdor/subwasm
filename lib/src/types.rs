@@ -5,8 +5,8 @@ use std::{fmt::Display, str::FromStr};
 /// While module is implemented, the filter on call is not and
 /// if we filter on call, we may want to also filter on events, constants
 /// etc... and that becomes likely too complex to be comfortable and useful
-// when using the cli vs using json and filtering with jq.
-#[derive(Debug, PartialEq, Default)]
+/// when using the cli vs using json and filtering with jq.
+#[derive(Debug, PartialEq, Eq, Default)]
 pub struct Filter {
 	pub module: String,
 	pub call: Option<String>,
