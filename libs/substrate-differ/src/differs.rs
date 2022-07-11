@@ -18,15 +18,9 @@ impl Default for DiffOptionInclude {
 	}
 }
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct DiffOptions {
 	include: DiffOptionInclude,
-}
-
-impl Default for DiffOptions {
-	fn default() -> Self {
-		Self { include: Default::default() }
-	}
 }
 
 pub trait Differ {

@@ -23,7 +23,7 @@ pub struct ReducedDiffer {
 	version: MetadataVersion,
 }
 
-impl<'a> ReducedDiffer {
+impl ReducedDiffer {
 	pub fn new(r1: &RuntimeMetadata, r2: &RuntimeMetadata) -> Self {
 		log::debug!("++ReducedDiffer");
 		// if std::mem::discriminant(r1) != std::mem::discriminant(r2) {
@@ -32,12 +32,12 @@ impl<'a> ReducedDiffer {
 
 		match (&r1, &r2) {
 			(V13(_), V13(_)) => Self { r1: r1.into(), r2: r2.into(), version: 13 },
-			(V13(_), V14(b)) => {
-				Self { r1: r1.into(), r2: (&RuntimeMetadata::V13(convert(b).unwrap())).into(), version: 13 }
-			}
-			(V14(a), V13(_)) => {
-				Self { r1: (&RuntimeMetadata::V13(convert(a).unwrap())).into(), r2: r2.into(), version: 13 }
-			}
+			// (V13(_), V14(b)) => {
+			// 	Self { r1: r1.into(), r2: (RuntimeMetadata::V13(convert(b).unwrap())).into(), version: 13 }
+			// }
+			// (V14(a), V13(_)) => {
+			// 	Self { r1: (RuntimeMetadata::V13(convert(a).unwrap())).into(), r2: r2.into(), version: 13 }
+			// }
 			(V14(_), V14(_)) => Self { r1: r1.into(), r2: r2.into(), version: 14 },
 			_ => panic!("Unsupported versions set, we support only Vn/Vn or Vn/Vn+1"),
 		}
@@ -79,7 +79,7 @@ impl Differ for ReducedDiffer {
 		assert_eq!(indexes_2.len(), 50);
 		assert_eq!(indexes.len(), 51);
 
-		indexes.iter().for_each(|index| {
+		indexes.iter().for_each(|_index| {
 			// TODO
 			// let pallet_a = self.r1.pallets.get(index);
 			// let pallet_b = self.r2.pallets.get(index);
