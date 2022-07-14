@@ -1,9 +1,6 @@
 use std::collections::HashSet;
 
-use crate::differs::{
-	reduced::{reduced_pallet::ReducedPallet, Index},
-	DiffOptions, Differ,
-};
+use crate::differs::{reduced::*, DiffOptions, Differ};
 
 use super::reduced_runtime::ReducedRuntime;
 use frame_metadata::{v13, v14, RuntimeMetadata, RuntimeMetadata::*};

@@ -1,14 +1,18 @@
 use frame_metadata::{
 	v13::{self},
-	v14, RuntimeMetadata,
+	v14, PalletCallMetadata, RuntimeMetadata,
 	RuntimeMetadata::*,
 };
+use scale_info::form::PortableForm;
 // use scale_info::form::{Form, PortableForm};
 use serde_json::Value;
-use std::fmt::Debug;
+use std::{any::Any, fmt::Debug};
 
 use super::{pallet_data::PalletData, pallet_item::PalletItem, reduced_pallet::ReducedPallet, signature::Signature};
 use crate::differs::utils::convert;
+use scale_info::{IntoPortable as _, MetaType, PortableRegistry, Registry, TypeInfo};
+
+use scale_info::scale::{Decode, Encode};
 
 pub type ReducedRuntimeError = String;
 pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
@@ -119,9 +123,22 @@ impl From<&v14::PalletCallMetadata> for PalletData {
 	}
 }
 
-impl From<&v14::PalletCallMetadata> for PalletItem {
-	fn from(fn_meta: &v14::PalletCallMetadata) -> Self {
+// One of the following is wrong
+impl From<&PalletCallMetadata<PortableForm>> for PalletItem {
+	fn from(fn_meta: &PalletCallMetadata<PortableForm>) -> Self {
 		PalletItem::Call(fn_meta.into())
+	}
+}
+
+// impl From<&PalletCallMetadata<PortableForm>> for Vec<PalletItem> {
+// 	fn from(fn_meta: &PalletCallMetadata<PortableForm>) -> Self {
+// 		PalletItem::Call(fn_meta.into())
+// 	}
+// }
+
+impl From<&PalletCallMetadata<PortableForm>> for PalletData {
+	fn from(call: &PalletCallMetadata<PortableForm>) -> Self {
+		Self { name: "todo".to_string(), index: None, signature: Box::new(call.ty), documentation: vec![] }
 	}
 }
 
@@ -146,15 +163,62 @@ impl ReducedRuntime {
 	/// Reduce a RuntimeMetadataV13 into a normalized ReducedRuntime
 	pub fn from_v13(v13: &v13::RuntimeMetadataV13) -> Result<Self> {
 		let mut pallets = convert(&v13.modules).clone();
-		pallets.sort_by(|a, b| a.index.cmp(&b.index)); // TODO: we may not need to sort
+		// TODO: we may not need to sort
+		pallets.sort_by(|a, b| a.index.cmp(&b.index));
+
 		let reduced_pallets: Vec<ReducedPallet> = pallets.iter().map(|p| p.into()).collect();
 		let r_rtm: ReducedRuntime = reduced_pallets.into();
 		Ok(r_rtm)
 	}
 
 	/// Reduce a RuntimeMetadataV14 into a normalized ReducedRuntime
-	pub fn from_v14(_v14: &v14::RuntimeMetadataV14) -> Result<Self> {
-		todo!()
+	pub fn from_v14(v14: &v14::RuntimeMetadataV14) -> Result<Self> {
+		let registry = &v14.types;
+		let runtime_type = registry.resolve(v14.ty.id()).unwrap();
+		println!("runtime_type = {:?}", runtime_type);
+		println!("runtime_type = {:?}", runtime_type.path().segments());
+
+		// doc in  https://github.com/paritytech/subxt/tree/master/codegen
+		// and https://github.com/paritytech/scale-value
+
+		// TODO: deal with extrinsic
+		let _extrinsics = &v14.extrinsic;
+
+		let pallets = &v14.pallets;
+		let reduced_pallets: Vec<ReducedPallet> = pallets
+			.iter()
+			.map(|p| {
+				let name = &p.name;
+				println!("{:?}: {:?}", &p.index, name);
+				let calls_maybe = &p.calls;
+
+				if let Some(calls) = calls_maybe {
+					let id = calls.ty.id();
+					let tt = registry.resolve(id.to_owned()).unwrap();
+
+					let _ = match tt.type_def() {
+						scale_info::TypeDef::Variant(v) => {
+							v.variants().iter().for_each(|vv| {
+								print!("  - {:?}: fn {}( ", vv.index(), vv.name());
+								// println!("      {:?}", vv.docs());
+								vv.fields().iter().for_each(|f| {
+									print!("{}: {}, ", f.name().unwrap(), f.type_name().unwrap());
+								});
+								println!(") ");
+							});
+						}
+						_ => unimplemented!(),
+					};
+				} else {
+					println!("   {} has no calls", &p.name);
+				}
+
+				ReducedPallet { index: 0, name: "junk".into(), items: vec![] }
+			})
+			.collect();
+
+		let r_rtm: ReducedRuntime = reduced_pallets.into();
+		Ok(r_rtm)
 	}
 
 	// pub fn diff(&self, other: &ReducedPallet) {
@@ -206,11 +270,19 @@ mod test_reduced_conversion {
 	fn test_reduce_v14() {
 		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let metadata = testbed.metadata();
+
 		match metadata {
 			V14(v14) => {
 				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
-				println!("rrtm = {:#?}", rrtm);
-				assert_eq!(rrtm.pallets.len(), 9);
+				// println!("rrtm = {:#?}", rrtm);
+
+				assert_eq!(rrtm.pallets.len(), 30);
+
+				let first_pallet = &rrtm.pallets[0];
+				assert_eq!(0, first_pallet.index);
+				assert_eq!("System", first_pallet.name);
+
+				assert!(first_pallet.items.len() > 0);
 			}
 			_ => unreachable!(),
 		}
