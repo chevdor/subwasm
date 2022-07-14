@@ -6,17 +6,17 @@ use super::{signature::Signature, Index};
 #[derive(Debug)]
 pub struct PalletData {
 	/// The name of the Pallet Item
-	name: String,
+	pub name: String,
 
 	/// An optionnal index, some variants of `PalletItem` don't have an index
-	index: Option<Index>,
+	pub index: Option<Index>,
 
 	/// The signature contains what is relevant and critical to the item.
-	signature: Box<dyn Signature>,
+	pub signature: Box<dyn Signature>,
 
 	/// The documentation is usually not critical to the comparison
 	/// of runtimes, so it is kept aside.
-	documentation: Vec<String>,
+	pub documentation: Vec<String>,
 }
 
 impl PalletData {

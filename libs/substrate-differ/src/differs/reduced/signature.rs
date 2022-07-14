@@ -7,6 +7,7 @@ impl Debug for dyn Signature {
 	}
 }
 
+/// A trait that implements Serialize by default
 pub trait Signature {
 	fn serialize(&self) -> Value;
 }
