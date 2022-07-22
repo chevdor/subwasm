@@ -2,24 +2,17 @@
 authors = ["chevdor <chevdor@gmail.com>"]
 edition = "2021"
 homepage = "https://github.com/chevdor/subwasm"
-keywords = [
-    "wasm",
-    "cli",
-    "substrate",
-    "blockchain",
-    "runtime",
-    "polkadot",
-    "kusama",
-]
 license = "MIT"
 name = "wasm-loader"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
 version = "0.18.0"
+keywords = ["wasm", "substrate", "runtime", "polkadot", "kusama"]
+description = "load a binary that happens to be WASM"
 
 [dependencies]
 hex = "0.4"
-jsonrpsee = { version = "0.14", git = "https://github.com/paritytech/jsonrpsee", features = [
+jsonrpsee = { version = "0.14", features = [
     "client",
 ] }
 log = "0.4"

@@ -4,6 +4,7 @@ edition = "2021"
 license = "MIT"
 name = "ipfs-hasher"
 version = "0.18.0"
+description = "Bytes in => CID as String out"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

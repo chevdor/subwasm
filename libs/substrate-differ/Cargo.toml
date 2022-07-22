@@ -3,6 +3,7 @@ edition = "2021"
 license = "MIT"
 name = "substrate-differ"
 version = "0.18.0"
+description = "help comparing/diffing 2 version of Substrate metadata or 2 Runtimes"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

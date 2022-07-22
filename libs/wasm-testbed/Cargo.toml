@@ -2,20 +2,13 @@
 authors = ["chevdor <chevdor@gmail.com>"]
 edition = "2021"
 homepage = "https://github.com/chevdor/subwasm"
-keywords = [
-    "wasm",
-    "cli",
-    "substrate",
-    "blockchain",
-    "runtime",
-    "polkadot",
-    "kusama",
-]
 license = "MIT"
 name = "wasm-testbed"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
 version = "0.18.0"
+keywords = ["wasm", "substrate", "runtime", "polkadot", "kusama"]
+description = "provides a minimum context for a Substrate Runtime WASM to be loaded and executed"
 
 [dependencies]
 frame-metadata = { version = "15", package = "frame-metadata", features = [
