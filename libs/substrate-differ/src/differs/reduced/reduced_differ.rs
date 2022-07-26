@@ -6,10 +6,11 @@ use super::reduced_runtime::ReducedRuntime;
 use frame_metadata::{v13, v14, RuntimeMetadata, RuntimeMetadata::*};
 use std::iter::Extend;
 
-/// Placeholder, here we can convert from V14 to V13
-pub fn convert(_r: &v14::RuntimeMetadataV14) -> Option<v13::RuntimeMetadataV13> {
-	todo!()
-}
+// TODO: Placeholder, here we can convert from V14 to V13. We don't need to convert
+// once we can normalize.
+// pub fn convert(_r: &v14::RuntimeMetadataV14) -> Option<v13::RuntimeMetadataV13> {
+// 	todo!()
+// }
 
 type MetadataVersion = u32;
 

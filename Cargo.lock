@@ -780,24 +780,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "frame-metadata"
-version = "15.0.0"
-source = "git+https://github.com/paritytech/frame-metadata?branch=main#d241ab9c1ba89e119263812f963a601be158e661"
-dependencies = [
- "cfg-if",
- "parity-scale-codec 3.1.5",
- "scale-info 2.1.2",
- "serde",
-]
-
-[[package]]
-name = "funty"
-version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fed34cd105917e91daa4da6b3728c47b068749d6a62c59811f06ed2ac71d9da7"
-
-[[package]]
->>>>>>> 6f8168b (Basic decoding/parsing of v14 metadata)
 name = "funty"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3620,7 +3602,6 @@ dependencies = [
  "parity-scale-codec",
  "sc-executor",
  "sc-executor-common",
- "scale-info 2.1.2",
  "sp-core",
  "sp-io",
  "sp-runtime",
