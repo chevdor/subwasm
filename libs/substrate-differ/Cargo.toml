@@ -17,9 +17,21 @@ log = "0.4"
 num-format = "0.4"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-treediff = { version = "4.0", features = ["with-serde-json", "with-rustc-serialize"] }
-scale-info = { version = "2.1.2", default-features = false, features = ["derive", "std", "serde"] }
+treediff = { version = "4.0", features = [
+    "with-serde-json",
+    "with-rustc-serialize",
+] }
+scale-info = { version = "2.1.2", default-features = false, features = [
+    "derive",
+    "std",
+    "serde",
+] }
 wasm-testbed = { version = "0.18.0", path = "../wasm-testbed" }
 
 [dev-dependencies]
 wasm-loader = { version = "0.18", path = "../wasm-loader" }
+
+[features]
+default = ["v14"]
+v13 = []
+v14 = []
