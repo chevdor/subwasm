@@ -61,7 +61,7 @@ mod test_reduced_conversion {
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 				// println!(" first_pallet.items = {:#?}", first_pallet.items);
-				assert_eq!(45, first_pallet.items.len());
+				assert_eq!(43, first_pallet.items.len());
 
 				match &first_pallet.items[1] {
 					PalletItem::Call(c) => assert_eq!("remark", c.name),

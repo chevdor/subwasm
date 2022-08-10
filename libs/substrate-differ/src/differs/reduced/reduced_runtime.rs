@@ -125,8 +125,6 @@ impl ReducedRuntime {
 
 		// storages
 		let mut storages = if let Some(item) = &p.storage {
-			println!("item = {:?}", item.entries[0]);
-
 			item.entries
 				.iter()
 				.map(|e| {
@@ -140,33 +138,36 @@ impl ReducedRuntime {
 		};
 
 		// constants
-		// todo: it is a vwec
-		// let mut constants = if let Some(item) = &p.constants {
-		// 	// let id = item.ty.id();
-		// 	// let ty = registry.resolve(id.to_owned()).unwrap();
+		// todo: it is a vec
+		let mut constants: Vec<PalletItem> = p
+			.constants
+			.iter()
+			.map(|i| {
+				println!("i = {:?}", i);
+				// 	// let id = item.ty.id();
+				// 	// let ty = registry.resolve(id.to_owned()).unwrap();
 
-		// 	// match ty.type_def() {
-		// 	// 	scale_info::TypeDef::Variant(v) => {
-		// 	// 		let constants: Vec<PalletItem> = variant_to_constants(v);
+				// 	// match ty.type_def() {
+				// 	// 	scale_info::TypeDef::Variant(v) => {
+				// 	// 		let constants: Vec<PalletItem> = variant_to_constants(v);
 
-		// 	// 		// constants.iter().for_each(|constant| println!("  constant = {}", constant));
-		// 	// 		constants
-		// 	// 	}
-		// 	// 	_ => unimplemented!(),
-		// 	// }
-		// 	// TODO: reomve that
-		// 	vec![]
-		// } else {
-		// 	// println!("   {} has no constant", &p.name);
-		// 	vec![]
-		// };
+				// 	// 		// constants.iter().for_each(|constant| println!("  constant = {}", constant));
+				// 	// 		constants
+				// 	// 	}
+				// 	// 	_ => unimplemented!(),
+				// 	// }
+				// 	// TODO: reomve that
+				let c = Constant { index: 0, name: i.name.clone(), docs: i.docs.clone() };
+				PalletItem::Constant(c)
+			})
+			.collect();
 
 		let mut items: Vec<PalletItem> = Vec::new();
 		items.append(&mut calls);
 		items.append(&mut events);
 		items.append(&mut errors);
 		items.append(&mut storages);
-		// items.append(&mut constants);
+		items.append(&mut constants);
 		ReducedPallet { index: 0, name: name.into(), items }
 	}
 
