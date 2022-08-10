@@ -33,7 +33,7 @@ impl From<Vec<ReducedPallet>> for ReducedRuntime {
 
 #[cfg(test)]
 mod test_reduced_conversion {
-	use crate::differs::reduced::reduced_runtime;
+	use crate::differs::reduced::{pallet_item::PalletItem, reduced_runtime};
 
 	use super::*;
 	use frame_metadata::RuntimeMetadata;
@@ -59,7 +59,12 @@ mod test_reduced_conversion {
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 
-				assert!(first_pallet.items.len() > 0);
+				println!(" first_pallet.items = {:#?}", first_pallet.items);
+				assert_eq!(45, first_pallet.items.len());
+				match &first_pallet.items[1] {
+					PalletItem::Call(c) => assert_eq!("remark", c.name),
+					_ => unreachable!(),
+				}
 			}
 			_ => unreachable!(),
 		}
