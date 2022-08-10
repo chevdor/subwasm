@@ -58,7 +58,7 @@ pub struct Storage {
 /// Reduced Constant
 #[derive(Debug, PartialEq, Eq, Serialize)]
 pub struct Constant {
-	index: Index,
+	pub index: Index,
 
 	pub name: String,
 
@@ -66,9 +66,11 @@ pub struct Constant {
 	// /// Type of the module constant.
 	// pub ty: String,
 	// /// Value stored in the constant (SCALE encoded).
+
+	// TODO: Bring that
 	// pub value_hash: Hash,
 	/// Documentation of the constant.
-	pub documentation: Documentation,
+	pub docs: Documentation,
 }
 
 /// Reduced Error
@@ -77,7 +79,7 @@ pub struct Error {
 	pub index: Index,
 
 	pub name: String,
-	pub documentation: Documentation,
+	pub docs: Documentation,
 }
 
 // impl From<scale_info::TypeDef> for Call {
@@ -204,7 +206,7 @@ pub fn variant_to_errors(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
 			PalletItem::Error(Error {
 				index: vv.index(),
 				name: vv.name().to_string(),
-				documentation: vv.docs().iter().map(|f| f.into()).collect(),
+				docs: vv.docs().iter().map(|f| f.into()).collect(),
 			})
 		})
 		.collect()
@@ -233,7 +235,7 @@ pub fn variant_to_constants(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem
 			PalletItem::Constant(Constant {
 				index: vv.index(),
 				name: vv.name().to_string(),
-				documentation: vv.docs().iter().map(|f| f.into()).collect(),
+				docs: vv.docs().iter().map(|f| f.into()).collect(),
 				// TODO
 				// ty: todo!(),
 				// value_hash: todo!(),
