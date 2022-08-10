@@ -17,7 +17,7 @@ pub struct Call {
 	pub index: Index,
 	pub name: String,
 	pub signature: Signature,
-	pub documentation: Documentation,
+	pub docs: Documentation,
 }
 
 /// Signature of a reduced call
@@ -38,14 +38,13 @@ pub struct Event {
 	index: Index,
 	name: String,
 	signature: Signature,
-	documentation: Documentation,
+	docs: Documentation,
 }
 
 /// Reduced Storage
 #[derive(Debug, PartialEq, Eq, Serialize)]
 pub struct Storage {
-	index: Index,
-	name: String,
+	pub name: String,
 	// Brought back down to a String to allow new runtimes adding more variants
 	// modifier: String,
 	// TODO: Check how to handle the following
@@ -53,7 +52,7 @@ pub struct Storage {
 	// Here we don't really care about the default value but its hash
 	// TODO
 	// default_value_hash: Hash,
-	documentation: Documentation,
+	pub docs: Documentation,
 }
 
 /// Reduced Constant
@@ -133,7 +132,7 @@ impl Display for Error {
 
 impl Display for Storage {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let _ = f.write_fmt(format_args!("{:?}: {}", self.index, self.name));
+		let _ = f.write_fmt(format_args!("{}", self.name));
 
 		Ok(())
 	}
@@ -169,7 +168,7 @@ pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
 				index: vv.index(),
 				name: vv.name().to_string(),
 				signature: Signature { args },
-				documentation: vv.docs().iter().map(|f| f.into()).collect(),
+				docs: vv.docs().iter().map(|f| f.into()).collect(),
 			})
 		})
 		.collect()
@@ -192,7 +191,7 @@ pub fn variant_to_events(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
 				index: vv.index(),
 				name: vv.name().to_string(),
 				signature: Signature { args },
-				documentation: vv.docs().iter().map(|f| f.into()).collect(),
+				docs: vv.docs().iter().map(|f| f.into()).collect(),
 			})
 		})
 		.collect()
@@ -211,22 +210,21 @@ pub fn variant_to_errors(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
 		.collect()
 }
 
-pub fn variant_to_storage(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
-	td.variants()
-		.iter()
-		.map(|vv| {
-			PalletItem::Storage(Storage {
-				index: vv.index(),
-				name: vv.name().to_string(),
-				documentation: vv.docs().iter().map(|f| f.into()).collect(),
-				// modifier: vv.field
-				// TODO:
-				// ty:,
-				// default_value_hash: todo!(),
-			})
-		})
-		.collect()
-}
+// pub fn variant_to_storage(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
+// 	td.variants()
+// 		.iter()
+// 		.map(|vv| {
+// 			PalletItem::Storage(Storage {
+// 				name: vv.name().to_string(),
+// 				docs: vv.docs().iter().map(|f| f.into()).collect(),
+// 				// modifier: vv.field
+// 				// TODO:
+// 				// ty:,
+// 				// default_value_hash: todo!(),
+// 			})
+// 		})
+// 		.collect()
+// }
 
 pub fn variant_to_constants(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
 	td.variants()
@@ -259,7 +257,7 @@ mod test_reduced_call {
 					Arg { name: "value".into(), ty: "T::Balance".into() },
 				],
 			},
-			documentation: vec![],
+			docs: vec![],
 		};
 		println!("call = {:?}", call);
 	}

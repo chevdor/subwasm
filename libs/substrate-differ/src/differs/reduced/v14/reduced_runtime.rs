@@ -137,6 +137,8 @@ mod test_reduced_conversion {
 				let first_pallet = &rrtm.pallets[0];
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
+				// println!(" first_pallet.items = {:#?}", first_pallet.items);
+				assert_eq!(45, first_pallet.items.len());
 
 				// Check errors
 				let errors = first_pallet.items.iter().filter(|&p| matches!(p, PalletItem::Error(_)));
