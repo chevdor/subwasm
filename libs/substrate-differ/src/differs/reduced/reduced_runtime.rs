@@ -125,25 +125,17 @@ impl ReducedRuntime {
 
 		// storages
 		let mut storages = if let Some(item) = &p.storage {
-			// let id = item. ty.id();
-			println!("item = {:?}", item);
+			println!("item = {:?}", item.entries[0]);
 
-			// let ty = registry.resolve(id.to_owned()).unwrap();
-
-			// match ty.type_def() {
-			// 	scale_info::TypeDef::Variant(v) => {
-			// 		let storages: Vec<PalletItem> = variant_to_storage(v);
-
-			// 		// storages.iter().for_each(|storage| println!("  storage = {}", storage));
-			// 		storages
-			// 	}
-			// 	_ => unimplemented!(),
-			// }
-
-			// TODO: reomve that
-			vec![]
+			item.entries
+				.iter()
+				.map(|e| {
+					let s = Storage { name: e.name.clone(), docs: e.docs.clone() };
+					PalletItem::Storage(s)
+				})
+				.collect()
 		} else {
-			println!("   {} has no storage", &p.name);
+			// println!("   {} has no storage", &p.name);
 			vec![]
 		};
 

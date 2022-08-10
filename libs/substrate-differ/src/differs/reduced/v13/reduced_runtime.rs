@@ -170,13 +170,13 @@ mod test_reduced_conversion {
 	}
 
 	#[test]
-	fn test_reduce_v14() {
+	fn test_reduce_v13() {
 		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let metadata = testbed.metadata();
 
 		match metadata {
-			V14(v14) => {
-				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
+			V13(v13) => {
+				let rrtm = reduced_runtime::ReducedRuntime::from_v13(v14).unwrap();
 				// println!("rrtm = {:#?}", rrtm);
 
 				assert_eq!(rrtm.pallets.len(), 30);
