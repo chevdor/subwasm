@@ -1,13 +1,15 @@
 use frame_metadata::v14;
 use frame_metadata::PalletCallMetadata;
+use frame_metadata::PalletMetadata;
 use frame_metadata::RuntimeMetadata;
 
 use frame_metadata::RuntimeMetadata::*;
 use scale_info::form::PortableForm;
+use scale_info::PortableRegistry;
 use std::fmt::Debug;
 
 use super::{pallet_data::PalletData, pallet_item::PalletItem, reduced_pallet::ReducedPallet};
-use crate::differs::reduced::call::variant_to_calls;
+use crate::differs::reduced::call::*;
 
 pub type ReducedRuntimeError = String;
 pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
@@ -57,6 +59,125 @@ impl ReducedRuntime {
 		Ok(r_rtm)
 	}
 
+	pub fn get_reduced_pallet_from_v14_pallet(
+		p: &PalletMetadata<PortableForm>,
+		registry: &PortableRegistry,
+	) -> ReducedPallet {
+		let name = &p.name;
+		println!("{:?}: {:?}", &p.index, name);
+
+		// calls
+		let mut calls = if let Some(calls) = &p.calls {
+			let id = calls.ty.id();
+			let ty = registry.resolve(id.to_owned()).unwrap();
+
+			match ty.type_def() {
+				scale_info::TypeDef::Variant(v) => {
+					let calls: Vec<PalletItem> = variant_to_calls(v);
+
+					// calls.iter().for_each(|call| println!("  call = {}", call));
+					calls
+				}
+				_ => unimplemented!(),
+			}
+		} else {
+			// println!("   {} has no calls", &p.name);
+			vec![]
+		};
+
+		// events
+		let mut events = if let Some(item) = &p.event {
+			let id = item.ty.id();
+			let ty = registry.resolve(id.to_owned()).unwrap();
+
+			match ty.type_def() {
+				scale_info::TypeDef::Variant(v) => {
+					let events: Vec<PalletItem> = variant_to_events(v);
+
+					// events.iter().for_each(|event| println!("  event = {}", event));
+					events
+				}
+				_ => unimplemented!(),
+			}
+		} else {
+			// println!("   {} has no events", &p.name);
+			vec![]
+		};
+
+		// errors
+		let mut errors = if let Some(item) = &p.error {
+			let id = item.ty.id();
+			let ty = registry.resolve(id.to_owned()).unwrap();
+
+			match ty.type_def() {
+				scale_info::TypeDef::Variant(v) => {
+					let errors: Vec<PalletItem> = variant_to_errors(v);
+
+					// errors.iter().for_each(|error| println!("  error = {}", error));
+					errors
+				}
+				_ => unimplemented!(),
+			}
+		} else {
+			// println!("   {} has no errors", &p.name);
+			vec![]
+		};
+
+		// storages
+		let mut storages = if let Some(item) = &p.storage {
+			// let id = item. ty.id();
+			println!("item = {:?}", item);
+
+			// let ty = registry.resolve(id.to_owned()).unwrap();
+
+			// match ty.type_def() {
+			// 	scale_info::TypeDef::Variant(v) => {
+			// 		let storages: Vec<PalletItem> = variant_to_storage(v);
+
+			// 		// storages.iter().for_each(|storage| println!("  storage = {}", storage));
+			// 		storages
+			// 	}
+			// 	_ => unimplemented!(),
+			// }
+
+			// TODO: reomve that
+			vec![]
+		} else {
+			println!("   {} has no storage", &p.name);
+			vec![]
+		};
+
+		// constants
+		// todo: it is a vwec
+		// let mut constants = if let Some(item) = &p.constants {
+		// 	// let id = item.ty.id();
+		// 	// let ty = registry.resolve(id.to_owned()).unwrap();
+
+		// 	// match ty.type_def() {
+		// 	// 	scale_info::TypeDef::Variant(v) => {
+		// 	// 		let constants: Vec<PalletItem> = variant_to_constants(v);
+
+		// 	// 		// constants.iter().for_each(|constant| println!("  constant = {}", constant));
+		// 	// 		constants
+		// 	// 	}
+		// 	// 	_ => unimplemented!(),
+		// 	// }
+		// 	// TODO: reomve that
+		// 	vec![]
+		// } else {
+		// 	// println!("   {} has no constant", &p.name);
+		// 	vec![]
+		// };
+
+		let mut items: Vec<PalletItem> = Vec::new();
+		items.append(&mut calls);
+		items.append(&mut events);
+		items.append(&mut errors);
+		items.append(&mut storages);
+		// items.append(&mut constants);
+		ReducedPallet { index: 0, name: name.into(), items }
+	}
+
 	#[cfg(feature = "v14")]
 	/// Reduce a RuntimeMetadataV14 into a normalized ReducedRuntime
 	pub fn from_v14(v14: &v14::RuntimeMetadataV14) -> Result<Self> {
@@ -65,36 +186,12 @@ impl ReducedRuntime {
 		println!("runtime_type = {:?}", runtime_type);
 		println!("runtime_type = {:?}", runtime_type.path().segments());
 
-		// TODO: deal with extrinsic
+		// TODO: deal with extrinsic as well
 		let _extrinsics = &v14.extrinsic;
 
 		let pallets = &v14.pallets;
-		let reduced_pallets: Vec<ReducedPallet> = pallets
-			.iter()
-			.map(|p| {
-				let name = &p.name;
-				println!("{:?}: {:?}", &p.index, name);
-				let calls_maybe = &p.calls;
-
-				if let Some(calls) = calls_maybe {
-					let id = calls.ty.id();
-					let tt = registry.resolve(id.to_owned()).unwrap();
-
-					let _ = match tt.type_def() {
-						scale_info::TypeDef::Variant(v) => {
-							let calls: Vec<PalletItem> = variant_to_calls(v);
-
-							calls.iter().for_each(|call| println!("  call = {}", call));
-						}
-						_ => unimplemented!(),
-					};
-				} else {
-					println!("   {} has no calls", &p.name);
-				}
-
-				ReducedPallet { index: 0, name: "junk".into(), items: vec![] }
-			})
-			.collect();
+		let reduced_pallets: Vec<ReducedPallet> =
+			pallets.iter().map(|p| ReducedRuntime::get_reduced_pallet_from_v14_pallet(p, registry)).collect();
 
 		let r_rtm: ReducedRuntime = reduced_pallets.into();
 		Ok(r_rtm)

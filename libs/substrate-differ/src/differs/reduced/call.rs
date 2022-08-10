@@ -1,6 +1,7 @@
-use std::fmt::Display;
+use std::{fmt::Display, sync::Arc};
 
 use super::{pallet_data::PalletData, pallet_item::PalletItem};
+use frame_metadata::StorageEntryMetadata;
 use scale_info::{form::PortableForm, TypeDefVariant};
 use serde::Serialize;
 
@@ -13,10 +14,10 @@ type Hash = String;
 /// Reduced Call
 #[derive(Debug, PartialEq, Serialize)]
 pub struct Call {
-	index: Index,
-	name: String,
-	signature: Signature,
-	documentation: Documentation,
+	pub index: Index,
+	pub name: String,
+	pub signature: Signature,
+	pub documentation: Documentation,
 }
 
 /// Signature of a reduced call
@@ -46,11 +47,12 @@ pub struct Storage {
 	index: Index,
 	name: String,
 	// Brought back down to a String to allow new runtimes adding more variants
-	modifier: String,
+	// modifier: String,
 	// TODO: Check how to handle the following
-	ty: String,
+	// ty: String,
 	// Here we don't really care about the default value but its hash
-	default_value_hash: Hash,
+	// TODO
+	// default_value_hash: Hash,
 	documentation: Documentation,
 }
 
@@ -60,10 +62,12 @@ pub struct Constant {
 	index: Index,
 
 	pub name: String,
-	/// Type of the module constant.
-	pub ty: String,
-	/// Value stored in the constant (SCALE encoded).
-	pub value_hash: Hash,
+
+	// TODO
+	// /// Type of the module constant.
+	// pub ty: String,
+	// /// Value stored in the constant (SCALE encoded).
+	// pub value_hash: Hash,
 	/// Documentation of the constant.
 	pub documentation: Documentation,
 }
@@ -71,7 +75,7 @@ pub struct Constant {
 /// Reduced Error
 #[derive(Debug, PartialEq, Eq, Serialize)]
 pub struct Error {
-	index: Index,
+	pub index: Index,
 
 	pub name: String,
 	pub documentation: Documentation,
@@ -111,6 +115,37 @@ impl Display for Call {
 	}
 }
 
+impl Display for Event {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		let _ = f.write_fmt(format_args!("{:?}: {}( {} )", self.index, self.name, self.signature));
+
+		Ok(())
+	}
+}
+
+impl Display for Error {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		let _ = f.write_fmt(format_args!("{:?}: {}", self.index, self.name));
+
+		Ok(())
+	}
+}
+
+impl Display for Storage {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		let _ = f.write_fmt(format_args!("{:?}: {}", self.index, self.name));
+
+		Ok(())
+	}
+}
+
+impl Display for Constant {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		let _ = f.write_fmt(format_args!("{:?}: {}", self.index, self.name));
+
+		Ok(())
+	}
+}
 pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
 	td.variants()
 		.iter()
@@ -135,6 +170,75 @@ pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
 				name: vv.name().to_string(),
 				signature: Signature { args },
 				documentation: vv.docs().iter().map(|f| f.into()).collect(),
+			})
+		})
+		.collect()
+}
+
+pub fn variant_to_events(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
+	td.variants()
+		.iter()
+		.map(|vv| {
+			let args = vv
+				.fields()
+				.iter()
+				.map(|f| Arg {
+					name: f.name().unwrap_or(&String::from("")).into(),
+					ty: f.type_name().unwrap_or(&String::from("")).into(),
+				})
+				.collect();
+
+			PalletItem::Event(Event {
+				index: vv.index(),
+				name: vv.name().to_string(),
+				signature: Signature { args },
+				documentation: vv.docs().iter().map(|f| f.into()).collect(),
+			})
+		})
+		.collect()
+}
+
+pub fn variant_to_errors(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
+	td.variants()
+		.iter()
+		.map(|vv| {
+			PalletItem::Error(Error {
+				index: vv.index(),
+				name: vv.name().to_string(),
+				documentation: vv.docs().iter().map(|f| f.into()).collect(),
+			})
+		})
+		.collect()
+}
+
+pub fn variant_to_storage(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
+	td.variants()
+		.iter()
+		.map(|vv| {
+			PalletItem::Storage(Storage {
+				index: vv.index(),
+				name: vv.name().to_string(),
+				documentation: vv.docs().iter().map(|f| f.into()).collect(),
+				// modifier: vv.field
+				// TODO:
+				// ty:,
+				// default_value_hash: todo!(),
+			})
+		})
+		.collect()
+}
+
+pub fn variant_to_constants(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
+	td.variants()
+		.iter()
+		.map(|vv| {
+			PalletItem::Constant(Constant {
+				index: vv.index(),
+				name: vv.name().to_string(),
+				documentation: vv.docs().iter().map(|f| f.into()).collect(),
+				// TODO
+				// ty: todo!(),
+				// value_hash: todo!(),
 			})
 		})
 		.collect()
