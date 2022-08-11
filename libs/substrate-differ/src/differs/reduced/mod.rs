@@ -8,6 +8,9 @@ pub mod reduced_pallet;
 pub mod reduced_runtime;
 pub mod signature;
 
+/// This is the pallet name and the pallet index.
+pub type PalletId = (String, Index);
+
 #[cfg(feature = "v13")]
 pub mod v13;
 #[cfg(feature = "v14")]

@@ -1,6 +1,9 @@
+use super::diff_result::DiffResult;
 use super::reduced_runtime::ReducedRuntime;
-use crate::differs::{reduced::call::prelude::Index, DiffOptions, Differ};
+use crate::differs::{DiffOptions, Differ};
+use crate::differs::{reduced::reduced_pallet::ReducedPallet, reduced::*, reduced::call::prelude::Index, DiffOptions, Differ};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadata::*};
+use std::collections::HashMap;
 use std::collections::HashSet;
 
 // TODO: Placeholder, here we can convert from V14 to V13. We don't need to convert
@@ -51,9 +54,9 @@ impl ReducedDiffer {
 	// }
 }
 
-impl Differ for ReducedDiffer {
+impl Differ<ReducedPallet> for ReducedDiffer {
 	// TODO: The following may even go to the default impl in the Trait
-	fn diff(&self, options: DiffOptions) {
+	fn diff(&self, options: DiffOptions) -> Vec<(PalletId, DiffResult<'_, ReducedPallet>)> {
 		// assert!(self.r1.ver) != std::mem::discriminant(&self.r2), "");
 		log::debug!("Comparing 2 v{:?} runtimes", self.version);
 		log::debug!("options: {:#?}", options);
@@ -62,34 +65,48 @@ impl Differ for ReducedDiffer {
 		let r2 = &self.r2;
 
 		// We gather the Set of all indexes in both pallets
-		let indexes_1: Vec<Index> = r1.pallets.iter().map(|pallet| pallet.index).collect();
-		let indexes_2: Vec<Index> = r2.pallets.iter().map(|pallet| pallet.index).collect();
-		let mut indexes: HashSet<Index> = HashSet::new();
-		indexes.extend(indexes_1.iter());
-		indexes.extend(indexes_2.iter());
+		let indexes_1: HashMap<PalletId, &ReducedPallet> =
+			r1.pallets.iter().map(|pallet| ((pallet.name.clone(), pallet.index), pallet)).collect();
+		let indexes_2: HashMap<PalletId, &ReducedPallet> =
+			r2.pallets.iter().map(|pallet| ((pallet.name.clone(), pallet.index), pallet)).collect();
+		// println!("indicies {:?}", indexes_1);
+		let mut indexes: HashSet<PalletId> = indexes_1.keys().cloned().collect();
+		indexes.extend(indexes_2.keys().cloned());
 		// println!("indexes_1 = {:?}", indexes_1);
 		// println!("indexes_2 = {:?}", indexes_2);
-		println!("indexes = {:?}", indexes);
-		assert_eq!(indexes_1.len(), 51);
-		assert_eq!(indexes_2.len(), 50);
-		assert_eq!(indexes.len(), 51);
+		// println!("indexes = {:?}", indexes);
+		// assert_eq!(indexes_1.len(), 51);
+		// assert_eq!(indexes_2.len(), 50);
+		// assert_eq!(indexes.len(), 51);
 
+		let mut results = vec![];
 
-		indexes.iter().for_each(|index| {
-			let pallet_a = self.r1.pallets.get(index);
-			let pallet_b = self.r2.pallets.get(index);
+		indexes.into_iter().for_each(|key| {
+			let pallet_a = indexes_1.get(&key);
+			let pallet_b = indexes_2.get(&key);
 
-			let d = ReducedPallet::diff(pallet_a, pallet_b);
-			println!("d = {:?}", d);
+			match (pallet_a, pallet_b) {
+				(Some(pallet_a), Some(pallet_b)) => {
+					let d = ReducedPallet::diff(pallet_a, pallet_b);
+
+					if let crate::differs::raw::change_type::ChangeType::Unchanged = d.change_type {
+						println!("no changes for pallet {:?}", key);
+					} else {
+						println!("d = {:#?}", d);
+					}
+					results.push((key, d));
+				}
+				_ => todo!("write me"),
+			}
 		});
 
-		todo!();
+		results
 	}
 }
 
 #[cfg(test)]
 mod test_diff_runtimes {
-	use crate::differs::{DiffOptions, Differ};
+	use crate::differs::{raw::change_type::ChangeType, DiffOptions, Differ};
 
 	use super::ReducedDiffer;
 	use std::path::PathBuf;
@@ -124,7 +141,12 @@ mod test_diff_runtimes {
 	fn test_v14() {
 		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
-		let _differ = ReducedDiffer::new(a.metadata(), b.metadata());
+		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
+		let results = differ.diff(DiffOptions::default());
+
+		for ((pallet_name, pallet_index), pallet_diff) in results {
+			assert!(matches!(pallet_diff.change_type, ChangeType::Unchanged));
+		}
 	}
 
 	#[test]
