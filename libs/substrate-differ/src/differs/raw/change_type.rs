@@ -1,4 +1,5 @@
 /// The type of change(s) between items
+#[derive(Debug)]
 pub enum ChangeType {
 	/// An item has been added
 	Added,

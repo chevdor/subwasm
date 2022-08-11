@@ -19,7 +19,7 @@ pub struct ReducedPallet {
 // TODO: impl Iterator
 impl ReducedPallet {
 	/// Computes the differences between 2 pallets
-	pub fn diff(pallet_a: &'static Self, pallet_b: &'static Self) -> DiffResult<ReducedPallet> {
+	pub fn diff<'meta>(pallet_a: &'meta Self, pallet_b: &'meta Self) -> DiffResult<'meta, ReducedPallet> {
 		assert_eq!(pallet_a.index, pallet_b.index, "Comparing different indexes does not make much sense");
 
 		if pallet_a.name != pallet_b.name {
