@@ -143,6 +143,9 @@ mod test_diff_runtimes {
 
 		for ((pallet_name, pallet_index), pallet_diff) in results {
 			println!("pallet: {:?} - {}", pallet_index, pallet_name,);
+			if pallet_name == "Scheduler" {
+				assert_eq!(1, pallet_index);
+			}
 			assert!(matches!(pallet_diff.change_type, ChangeType::Unchanged));
 		}
 	}
