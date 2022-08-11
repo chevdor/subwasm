@@ -18,6 +18,9 @@ repository = "https://github.com/chevdor/subwasm"
 version = "0.18.0"
 
 [dependencies]
+scale-info = { version = "2.1", default-features = false, features = [
+    "derive",
+] }
 frame-metadata = { version = "15", package = "frame-metadata", features = [
     "v12",
     "v13",

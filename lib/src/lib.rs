@@ -1,3 +1,4 @@
+use log::{debug, info};
 use std::path::Path;
 use std::{fs::File, path::PathBuf};
 use std::{io::prelude::*, str::FromStr};
@@ -7,7 +8,7 @@ use substrate_differ::differs::raw::raw_differ_options::RawDifferOptions;
 use substrate_differ::differs::reduced::reduced_differ::ReducedDiffer;
 use substrate_differ::differs::summary::RuntimeSummaryDiffer;
 use substrate_differ::differs::{DiffOptions, Differ};
-use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
+use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, WasmLoader};
 use wasm_testbed::WasmTestBed;
 mod chain_info;
 mod chain_urls;

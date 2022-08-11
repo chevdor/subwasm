@@ -226,7 +226,7 @@ mod tests {
 	}
 
 	#[cfg(test)]
-	mod runtime_versions_2 {
+	mod runtime_versions {
 		use super::*;
 
 		#[test]

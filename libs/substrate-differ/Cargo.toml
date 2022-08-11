@@ -21,7 +21,7 @@ treediff = { version = "4.0", features = [
     "with-serde-json",
     "with-rustc-serialize",
 ] }
-wasm-testbed = {path = "../wasm-testbed"}
+wasm-testbed = { version = "0.18.0", path = "../wasm-testbed" }
 scale-info = { version = "2.1.2", default-features = false, features = [
     "derive",
     "std",

@@ -18,6 +18,7 @@ repository = "https://github.com/chevdor/subwasm"
 version = "0.18.0"
 
 [dependencies]
+frame-metadata = {package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main", features = ["v12", "v13", "v14", "std"] }
 blake2 = "0.10"
 codec = { version = "3.1", package = "parity-scale-codec" }
 sp-core = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }

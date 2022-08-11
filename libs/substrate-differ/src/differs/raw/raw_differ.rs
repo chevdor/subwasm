@@ -1,5 +1,8 @@
 use super::{json_utils::json_collapse_byte_arrays, raw_differ_options::RawDifferOptions, skip_counter::SkipCounter};
-use crate::{call_wrapper::CallWrapper, differs::raw::{change_counter::{ChangeCounter}, change_type::ChangeType}};
+use crate::{
+	call_wrapper::CallWrapper,
+	differs::raw::{change_counter::ChangeCounter, change_type::ChangeType},
+};
 use log::debug;
 use serde::Serialize;
 use treediff::{diff, tools::Recorder};
