@@ -2,13 +2,13 @@ use crate::differs::raw::change_type::ChangeType;
 
 pub struct DiffResult<T: 'static + PartialEq> {
 	/// Define the nature of the change if there was one
-	change_type: ChangeType,
+	pub change_type: ChangeType,
 
 	/// First item compared
-	left: &'static T,
+	pub left: &'static T,
 
 	/// Second item compared
-	right: &'static T,
+	pub right: &'static T,
 	// /// Some notes about the changes
 	// notes: Option<Vec<String>>,
 }

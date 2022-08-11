@@ -38,8 +38,8 @@ impl From<&v13::FunctionMetadata> for PalletData {
 		let index = None;
 		let name = convert(&f.name).to_string();
 		let signature = Box::new(purge_v13_keys(f.serialize()));
-		let documentation = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
-		PalletData::new(name, index, signature, documentation)
+		let docs = convert(&f.docs).iter().map(|s| s.to_string()).collect();
+		PalletData::new(name, index, signature, docs)
 	}
 }
 
@@ -54,8 +54,8 @@ impl From<&v13::EventMetadata> for PalletData {
 		let index = None;
 		let name = convert(&f.name).to_string();
 		let signature = Box::new(purge_v13_keys(f.serialize()));
-		let documentation = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
-		PalletData::new(name, index, signature, documentation)
+		let docs = convert(&f.docs).iter().map(|s| s.to_string()).collect();
+		PalletData::new(name, index, signature, docs)
 	}
 }
 
@@ -70,8 +70,8 @@ impl From<&v13::ErrorMetadata> for PalletData {
 		let index = None;
 		let name = convert(&f.name).to_string();
 		let signature = Box::new(purge_v13_keys(f.serialize()));
-		let documentation = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
-		PalletData::new(name, index, signature, documentation)
+		let docs = convert(&f.docs).iter().map(|s| s.to_string()).collect();
+		PalletData::new(name, index, signature, docs)
 	}
 }
 
@@ -86,8 +86,8 @@ impl From<&v13::ModuleConstantMetadata> for PalletData {
 		let index = None;
 		let name = convert(&f.name).to_string();
 		let signature = Box::new(purge_v13_keys(f.serialize()));
-		let documentation = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
-		PalletData::new(name, index, signature, documentation)
+		let docs = convert(&f.docs).iter().map(|s| s.to_string()).collect();
+		PalletData::new(name, index, signature, docs)
 	}
 }
 
@@ -102,8 +102,8 @@ impl From<&v13::StorageEntryMetadata> for PalletData {
 		let index = None;
 		let name = convert(&f.name).to_string();
 		let signature = Box::new(purge_v13_keys(f.serialize()));
-		let documentation = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
-		PalletData::new(name, index, signature, documentation)
+		let docs = convert(&f.docs).iter().map(|s| s.to_string()).collect();
+		PalletData::new(name, index, signature, docs)
 	}
 }
 

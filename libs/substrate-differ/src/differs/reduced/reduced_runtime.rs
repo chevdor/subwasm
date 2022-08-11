@@ -2,14 +2,20 @@ use frame_metadata::v14;
 use frame_metadata::PalletCallMetadata;
 use frame_metadata::PalletMetadata;
 use frame_metadata::RuntimeMetadata;
-
 use frame_metadata::RuntimeMetadata::*;
 use scale_info::form::PortableForm;
 use scale_info::PortableRegistry;
+use std::collections::hash_map::DefaultHasher;
 use std::fmt::Debug;
+use std::hash::Hash;
+use std::hash::Hasher;
 
 use super::{pallet_data::PalletData, pallet_item::PalletItem, reduced_pallet::ReducedPallet};
-use crate::differs::reduced::call::*;
+use crate::differs::reduced::call::call::*;
+use crate::differs::reduced::call::constant::Constant;
+use crate::differs::reduced::call::error::variant_to_errors;
+use crate::differs::reduced::call::event::variant_to_events;
+use crate::differs::reduced::call::storage::Storage;
 
 pub type ReducedRuntimeError = String;
 pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
@@ -29,7 +35,7 @@ impl From<&PalletCallMetadata<PortableForm>> for PalletItem {
 
 impl From<&PalletCallMetadata<PortableForm>> for PalletData {
 	fn from(call: &PalletCallMetadata<PortableForm>) -> Self {
-		Self { name: "todo".to_string(), index: None, signature: Box::new(call.ty), documentation: vec![] }
+		Self { name: "todo".to_string(), index: None, signature: Box::new(call.ty), docs: vec![] }
 	}
 }
 
@@ -128,7 +134,10 @@ impl ReducedRuntime {
 			item.entries
 				.iter()
 				.map(|e| {
-					let s = Storage { name: e.name.clone(), docs: e.docs.clone() };
+					let mut s = DefaultHasher::new();
+					e.default.hash(&mut s);
+					let default_value_hash = s.finish();
+					let s = Storage { name: e.name.clone(), docs: e.docs.clone(), default_value_hash };
 					PalletItem::Storage(s)
 				})
 				.collect()

@@ -6,10 +6,10 @@ pub mod utils;
 
 #[derive(Debug)]
 pub struct DiffOptionInclude {
-	added: bool,
-	removed: bool,
-	changed: bool,
-	doc: bool,
+	pub added: bool,
+	pub removed: bool,
+	pub changed: bool,
+	pub doc: bool,
 }
 
 impl Default for DiffOptionInclude {
@@ -20,7 +20,7 @@ impl Default for DiffOptionInclude {
 
 #[derive(Debug, Default)]
 pub struct DiffOptions {
-	include: DiffOptionInclude,
+	pub include: DiffOptionInclude,
 }
 
 pub trait Differ {

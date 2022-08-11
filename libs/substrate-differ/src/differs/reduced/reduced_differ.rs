@@ -1,9 +1,7 @@
-use std::collections::HashSet;
-
-use crate::differs::{reduced::*, DiffOptions, Differ};
-
 use super::reduced_runtime::ReducedRuntime;
-use frame_metadata::{v13, v14, RuntimeMetadata, RuntimeMetadata::*};
+use crate::differs::{reduced::*, DiffOptions, Differ};
+use frame_metadata::{RuntimeMetadata, RuntimeMetadata::*};
+use std::collections::HashSet;
 use std::iter::Extend;
 
 // TODO: Placeholder, here we can convert from V14 to V13. We don't need to convert

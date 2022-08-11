@@ -34,8 +34,6 @@ impl From<Vec<ReducedPallet>> for ReducedRuntime {
 #[cfg(test)]
 mod test_reduced_conversion {
 	use crate::differs::reduced::{pallet_item::PalletItem, reduced_runtime};
-
-	use super::*;
 	use frame_metadata::RuntimeMetadata;
 	use std::path::PathBuf;
 	use wasm_loader::Source;
