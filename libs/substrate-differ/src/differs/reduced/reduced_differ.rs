@@ -1,8 +1,7 @@
 use super::reduced_runtime::ReducedRuntime;
-use crate::differs::{reduced::*, DiffOptions, Differ};
+use crate::differs::{reduced::call::prelude::Index, DiffOptions, Differ};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadata::*};
 use std::collections::HashSet;
-use std::iter::Extend;
 
 // TODO: Placeholder, here we can convert from V14 to V13. We don't need to convert
 // once we can normalize.
