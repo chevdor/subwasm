@@ -8,6 +8,8 @@ on:
       - "!v*"
     branches:
       - "*"
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
 
 jobs:
   quick_check:
