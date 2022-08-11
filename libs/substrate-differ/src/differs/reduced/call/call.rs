@@ -55,7 +55,7 @@ pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
 			// 	documentation: vv.docs().iter().map(|f| f.into()).collect(),
 			// })
 			PalletItem::Call(Call {
-				index: vv.index(),
+				index: vv.index() as u32,
 				name: vv.name().to_string(),
 				signature: Signature { args },
 				docs: vv.docs().iter().map(|f| f.into()).collect(),

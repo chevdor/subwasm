@@ -1,4 +1,4 @@
-use super::{diff_result::DiffResult, pallet_item::PalletItem, Index};
+use super::{call::prelude::Index, diff_result::DiffResult, pallet_item::PalletItem};
 use crate::differs::raw::change_type::ChangeType;
 use frame_metadata::PalletMetadata;
 use scale_info::form::PortableForm;

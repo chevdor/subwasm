@@ -1,10 +1,10 @@
 use super::diff_result::DiffResult;
 use super::reduced_runtime::ReducedRuntime;
-use crate::differs::{reduced::reduced_pallet::ReducedPallet, reduced::*, DiffOptions, Differ};
+use crate::differs::{DiffOptions, Differ};
+use crate::differs::{reduced::reduced_pallet::ReducedPallet, reduced::*, reduced::call::prelude::Index, DiffOptions, Differ};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadata::*};
 use std::collections::HashMap;
 use std::collections::HashSet;
-use std::iter::Extend;
 
 // TODO: Placeholder, here we can convert from V14 to V13. We don't need to convert
 // once we can normalize.

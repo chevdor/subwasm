@@ -7,7 +7,6 @@ pub mod reduced_differ;
 pub mod reduced_pallet;
 pub mod reduced_runtime;
 pub mod signature;
-pub type Index = u32;
 
 /// This is the pallet name and the pallet index.
 pub type PalletId = (String, Index);
