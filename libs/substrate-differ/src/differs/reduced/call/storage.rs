@@ -1,7 +1,6 @@
-use std::fmt::Display;
-
 use super::prelude::*;
 use serde::Serialize;
+use std::fmt::Display;
 
 /// Reduced Storage
 #[derive(Debug, PartialEq, Eq, Serialize, Hash)]
@@ -13,7 +12,7 @@ pub struct Storage {
 	// ty: String,
 	// Here we don't really care about the default value but its hash
 	// TODO
-	pub default_value_hash: Hash,
+	pub default_value: Value,
 	pub docs: Documentation,
 }
 
