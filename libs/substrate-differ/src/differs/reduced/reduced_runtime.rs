@@ -5,10 +5,7 @@ use frame_metadata::RuntimeMetadata;
 use frame_metadata::RuntimeMetadata::*;
 use scale_info::form::PortableForm;
 use scale_info::PortableRegistry;
-use std::collections::hash_map::DefaultHasher;
 use std::fmt::Debug;
-use std::hash::Hash;
-use std::hash::Hasher;
 
 use super::{pallet_data::PalletData, pallet_item::PalletItem, reduced_pallet::ReducedPallet};
 use crate::differs::reduced::call::call::*;
@@ -134,10 +131,7 @@ impl ReducedRuntime {
 			item.entries
 				.iter()
 				.map(|e| {
-					let mut s = DefaultHasher::new();
-					e.default.hash(&mut s);
-					let default_value_hash = s.finish();
-					let s = Storage { name: e.name.clone(), docs: e.docs.clone(), default_value_hash };
+					let s = Storage { name: e.name.clone(), docs: e.docs.clone(), default_value: e.default.clone() };
 					PalletItem::Storage(s)
 				})
 				.collect()
@@ -166,7 +160,7 @@ impl ReducedRuntime {
 				// 	// 	_ => unimplemented!(),
 				// 	// }
 				// 	// TODO: reomve that
-				let c = Constant { index: 0, name: i.name.clone(), docs: i.docs.clone() };
+				let c = Constant::new(0, &i.name, vec![42], i.docs.clone());
 				PalletItem::Constant(c)
 			})
 			.collect();
