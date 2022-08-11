@@ -45,6 +45,7 @@ mod test_reduced_conversion {
 
 	#[test]
 	#[ignore = "local data"]
+	#[cfg(feature = "v14")]
 	fn test_reduce_v14_global() {
 		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let metadata = testbed.metadata();
@@ -73,6 +74,7 @@ mod test_reduced_conversion {
 
 	#[test]
 	#[ignore = "local data"]
+	#[cfg(feature = "v14")]
 	fn test_reduce_v14_calls() {
 		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let metadata = testbed.metadata();
@@ -98,6 +100,7 @@ mod test_reduced_conversion {
 
 	#[test]
 	#[ignore = "local data"]
+	#[cfg(feature = "v14")]
 	fn test_reduce_v14_events() {
 		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let metadata = testbed.metadata();
@@ -123,6 +126,7 @@ mod test_reduced_conversion {
 
 	#[test]
 	#[ignore = "local data"]
+	#[cfg(feature = "v14")]
 	fn test_reduce_v14_errors() {
 		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let metadata = testbed.metadata();
@@ -138,7 +142,7 @@ mod test_reduced_conversion {
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 				// println!(" first_pallet.items = {:#?}", first_pallet.items);
-				assert_eq!(45, first_pallet.items.len());
+				assert_eq!(43, first_pallet.items.len());
 
 				// Check errors
 				let errors = first_pallet.items.iter().filter(|&p| matches!(p, PalletItem::Error(_)));
@@ -154,6 +158,7 @@ mod test_reduced_conversion {
 
 	#[test]
 	#[ignore = "local data"]
+	#[cfg(feature = "v14")]
 	fn test_reduce_v14_storages() {
 		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let metadata = testbed.metadata();
@@ -179,6 +184,7 @@ mod test_reduced_conversion {
 
 	#[test]
 	#[ignore = "local data"]
+	#[cfg(feature = "v14")]
 	fn test_reduce_v14_constants() {
 		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let metadata = testbed.metadata();

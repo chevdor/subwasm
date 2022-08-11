@@ -152,9 +152,9 @@ mod tests {
 	use super::*;
 	use std::env;
 
-	fn get_http_node() -> String {
-		env::var("POLKADOT_HTTP").unwrap_or_else(|_| "http://localhost:9933".to_string())
-	}
+	// fn get_http_node() -> String {
+	// 	env::var("POLKADOT_HTTP").unwrap_or_else(|_| "http://localhost:9933".to_string())
+	// }
 
 	fn get_ws_node() -> String {
 		env::var("POLKADOT_WS").unwrap_or_else(|_| "ws://localhost:9944".to_string())

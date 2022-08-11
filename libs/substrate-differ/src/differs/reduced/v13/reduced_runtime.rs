@@ -156,6 +156,7 @@ mod test_reduced_conversion {
 	const RUNTIME_V13: &str = "../../data/polkadot/V13/polkadot-9030.wasm";
 
 	#[test]
+	#[cfg(feature = "v13")]
 	fn test_reduce_v13() {
 		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).unwrap();
 		let metadata = testbed.metadata();
