@@ -36,7 +36,7 @@ pub fn variant_to_events(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
 				.collect();
 
 			PalletItem::Event(Event {
-				index: vv.index(),
+				index: vv.index() as u32,
 				name: vv.name().to_string(),
 				signature: Signature { args },
 				docs: vv.docs().iter().map(|f| f.into()).collect(),

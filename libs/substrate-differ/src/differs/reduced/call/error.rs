@@ -24,7 +24,7 @@ pub fn variant_to_errors(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
 		.iter()
 		.map(|vv| {
 			PalletItem::Error(Error {
-				index: vv.index(),
+				index: vv.index() as u32,
 				name: vv.name().to_string(),
 				docs: vv.docs().iter().map(|f| f.into()).collect(),
 			})

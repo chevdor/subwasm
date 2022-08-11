@@ -7,7 +7,6 @@ pub mod reduced_differ;
 pub mod reduced_pallet;
 pub mod reduced_runtime;
 pub mod signature;
-pub type Index = u32;
 
 #[cfg(feature = "v13")]
 pub mod v13;

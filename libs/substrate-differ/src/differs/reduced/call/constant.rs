@@ -38,7 +38,7 @@ pub fn variant_to_constants(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem
 		.iter()
 		.map(|vv| {
 			PalletItem::Constant(Constant::new(
-				vv.index(),
+				vv.index() as u32,
 				vv.name(),
 				vec![42],
 				vv.docs().iter().map(|f| f.into()).collect(),
@@ -48,14 +48,14 @@ pub fn variant_to_constants(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem
 }
 
 #[cfg(test)]
-mod test_reduced_call {
+mod test_reduced_constant {
 	use super::*;
 
 	#[test]
 	fn test_constant() {
-		let call = Constant::new(1, "transfer", vec![12, 42], vec![]);
-		println!("call = {:?}", call);
-		assert_eq!(1, call.index);
-		assert_eq!([12, 42], call.value.as_slice());
+		let c = Constant::new(1, "transfer", vec![12, 42], vec![]);
+		println!("c = {:?}", c);
+		assert_eq!(1, c.index);
+		assert_eq!([12, 42], c.value.as_slice());
 	}
 }
