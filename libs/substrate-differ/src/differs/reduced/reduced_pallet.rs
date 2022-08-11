@@ -1,7 +1,7 @@
 use super::{diff_result::DiffResult, pallet_item::PalletItem, Index};
-use crate::differs::{raw::change_type::ChangeType, utils::convert};
-use frame_metadata::{v13, PalletCallMetadata, PalletMetadata};
-use scale_info::form::{MetaForm, PortableForm};
+use crate::differs::raw::change_type::ChangeType;
+use frame_metadata::PalletMetadata;
+use scale_info::form::PortableForm;
 
 #[derive(Debug, PartialEq)]
 pub struct ReducedPallet {

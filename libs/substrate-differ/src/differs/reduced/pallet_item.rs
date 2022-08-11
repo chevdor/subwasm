@@ -2,7 +2,7 @@ use frame_metadata::PalletCallMetadata;
 use scale_info::form::PortableForm;
 use std::fmt::Display;
 
-use super::call::{self, *};
+use super::call::{call::*, constant::*, error::*, event::*, storage::*};
 
 #[derive(Debug, PartialEq)]
 /// Content of a Reduced runtime
@@ -23,12 +23,11 @@ impl Display for PalletItem {
 			PalletItem::Error(e) => f.write_fmt(format_args!("{}", e)),
 			PalletItem::Storage(s) => f.write_fmt(format_args!("{}", s)),
 			PalletItem::Constant(c) => f.write_fmt(format_args!("{}", c)),
-			_ => todo!(),
 		}
 	}
 }
 
-impl From<&PalletCallMetadata<PortableForm>> for call::Call {
+impl From<&PalletCallMetadata<PortableForm>> for Call {
 	fn from(_: &PalletCallMetadata<PortableForm>) -> Self {
 		todo!()
 	}

@@ -16,12 +16,12 @@ pub struct PalletData {
 
 	/// The documentation is usually not critical to the comparison
 	/// of runtimes, so it is kept aside.
-	pub documentation: Vec<String>,
+	pub docs: Vec<String>,
 }
 
 impl PalletData {
-	pub fn new(name: String, index: Option<Index>, signature: Box<dyn Signature>, documentation: Vec<String>) -> Self {
-		Self { name, index, signature, documentation }
+	pub fn new(name: String, index: Option<Index>, signature: Box<dyn Signature>, docs: Vec<String>) -> Self {
+		Self { name, index, signature, docs }
 	}
 }
 
