@@ -1,10 +1,8 @@
 use super::diff_result::DiffResult;
 use super::reduced_runtime::ReducedRuntime;
-use crate::differs::{DiffOptions, Differ};
-use crate::differs::{reduced::reduced_pallet::ReducedPallet, reduced::*, reduced::calls::prelude::Index, DiffOptions, Differ};
+use crate::differs::{reduced::reduced_pallet::ReducedPallet, reduced::*, DiffOptions, Differ};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadata::*};
-use std::collections::HashMap;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 // TODO: Placeholder, here we can convert from V14 to V13. We don't need to convert
 // once we can normalize.
@@ -65,11 +63,13 @@ impl Differ<ReducedPallet> for ReducedDiffer {
 		let r2 = &self.r2;
 
 		// We gather the Set of all indexes in both pallets
-		let indexes_1: Vec<Index> = r1.pallets.iter().map(|pallet| pallet.index).collect();
-		let indexes_2: Vec<Index> = r2.pallets.iter().map(|pallet| pallet.index).collect();
-		let mut indexes: HashSet<Index> = HashSet::new();
-		indexes.extend(indexes_1.iter());
-		indexes.extend(indexes_2.iter());
+		let indexes_1: HashMap<PalletId, &ReducedPallet> =
+			r1.pallets.iter().map(|pallet| ((pallet.name.clone(), pallet.index), pallet)).collect();
+		let indexes_2: HashMap<PalletId, &ReducedPallet> =
+			r2.pallets.iter().map(|pallet| ((pallet.name.clone(), pallet.index), pallet)).collect();
+		// println!("indicies {:?}", indexes_1);
+		let mut indexes: HashSet<PalletId> = indexes_1.keys().cloned().collect();
+		indexes.extend(indexes_2.keys().cloned());
 		// println!("indexes_1 = {:?}", indexes_1);
 		// println!("indexes_2 = {:?}", indexes_2);
 		// println!("indexes = {:?}", indexes);
@@ -113,7 +113,7 @@ mod test_diff_runtimes {
 
 	#[test]
 	#[ignore = "local data"]
-	fn test_different_variants() {
+	fn test_different_variants_v13_v14() {
 		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13_1))).unwrap();
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let _differ = ReducedDiffer::new(a.metadata(), b.metadata());
@@ -133,10 +133,12 @@ mod test_diff_runtimes {
 	fn test_v14() {
 		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
+
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
 		let results = differ.diff(DiffOptions::default());
 
 		for ((pallet_name, pallet_index), pallet_diff) in results {
+			println!("pallet: {:?} - {}", pallet_index, pallet_name,);
 			assert!(matches!(pallet_diff.change_type, ChangeType::Unchanged));
 		}
 	}
@@ -154,9 +156,6 @@ mod test_diff_runtimes {
 // #[cfg(test)]
 // mod test_normalized {
 // 	use super::*;
-// 	const RUNTIME_V13: &str = "../../data/runtime_v13.wasm";
-// 	const RUNTIME_V14: &str = "../../data/runtime_v14.wasm";
-
 // 	#[test]
 // 	fn test_ctor() {
 // 		let item1 = PalletItem { index: None, name: "foo".into(), signature: Box::new(String::from("foo")) };
