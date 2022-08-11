@@ -1,10 +1,13 @@
 pub mod diff_method;
 pub mod raw;
 pub mod reduced;
-pub mod summary_differ;
+pub mod summary;
 pub mod utils;
 use crate::differs::reduced::diff_result::DiffResult;
 use crate::differs::reduced::PalletId;
+
+#[cfg(test)]
+pub mod test_constants;
 
 #[derive(Debug)]
 pub struct DiffOptionInclude {

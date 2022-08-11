@@ -1,4 +1,4 @@
-pub mod call;
+pub mod calls;
 pub mod diff_result;
 pub mod diff_trait;
 pub mod pallet_data;

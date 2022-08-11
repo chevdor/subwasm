@@ -2,9 +2,9 @@ use frame_metadata::PalletCallMetadata;
 use scale_info::form::PortableForm;
 use std::fmt::Display;
 
-use super::call::{call::*, constant::*, error::*, event::*, storage::*};
+use super::calls::{call::*, constant::*, error::*, event::*, storage::*};
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 /// Content of a Reduced runtime
 pub enum PalletItem {
 	// Call(PalletData),

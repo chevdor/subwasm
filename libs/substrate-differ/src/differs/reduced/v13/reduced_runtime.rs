@@ -8,11 +8,11 @@ use frame_metadata::{
 use scale_info::form::PortableForm;
 // use scale_info::form::{Form, PortableForm};
 use serde_json::Value;
-use std::{any::Any, fmt::Debug};
+use std::fmt::Debug;
 
 use super::{pallet_data::PalletData, pallet_item::PalletItem, reduced_pallet::ReducedPallet, signature::Signature};
 use crate::differs::{
-	reduced::call::{self, variant_to_calls},
+	reduced::calls::{self, variant_to_calls},
 	utils::convert,
 };
 use scale_info::{IntoPortable as _, MetaType, PortableRegistry, Registry, TypeInfo};
@@ -38,7 +38,7 @@ impl From<&v13::FunctionMetadata> for PalletData {
 		let index = None;
 		let name = convert(&f.name).to_string();
 		let signature = Box::new(purge_v13_keys(f.serialize()));
-		let docs = convert(&f.docs).iter().map(|s| s.to_string()).collect();
+		let docs = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
 		PalletData::new(name, index, signature, docs)
 	}
 }
@@ -54,7 +54,7 @@ impl From<&v13::EventMetadata> for PalletData {
 		let index = None;
 		let name = convert(&f.name).to_string();
 		let signature = Box::new(purge_v13_keys(f.serialize()));
-		let docs = convert(&f.docs).iter().map(|s| s.to_string()).collect();
+		let docs = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
 		PalletData::new(name, index, signature, docs)
 	}
 }
@@ -70,7 +70,7 @@ impl From<&v13::ErrorMetadata> for PalletData {
 		let index = None;
 		let name = convert(&f.name).to_string();
 		let signature = Box::new(purge_v13_keys(f.serialize()));
-		let docs = convert(&f.docs).iter().map(|s| s.to_string()).collect();
+		let docs = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
 		PalletData::new(name, index, signature, docs)
 	}
 }
@@ -86,7 +86,7 @@ impl From<&v13::ModuleConstantMetadata> for PalletData {
 		let index = None;
 		let name = convert(&f.name).to_string();
 		let signature = Box::new(purge_v13_keys(f.serialize()));
-		let docs = convert(&f.docs).iter().map(|s| s.to_string()).collect();
+		let docs = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
 		PalletData::new(name, index, signature, docs)
 	}
 }
@@ -102,7 +102,7 @@ impl From<&v13::StorageEntryMetadata> for PalletData {
 		let index = None;
 		let name = convert(&f.name).to_string();
 		let signature = Box::new(purge_v13_keys(f.serialize()));
-		let docs = convert(&f.docs).iter().map(|s| s.to_string()).collect();
+		let docs = convert(&f.documentation).iter().map(|s| s.to_string()).collect();
 		PalletData::new(name, index, signature, docs)
 	}
 }

@@ -1,3 +1,8 @@
+use crate::differs::reduced::calls::call::variant_to_calls;
+use crate::differs::reduced::calls::constant::Constant;
+use crate::differs::reduced::calls::error::variant_to_errors;
+use crate::differs::reduced::calls::event::variant_to_events;
+use crate::differs::reduced::calls::storage::*;
 use frame_metadata::v14;
 use frame_metadata::PalletCallMetadata;
 use frame_metadata::PalletMetadata;
@@ -8,11 +13,6 @@ use scale_info::PortableRegistry;
 use std::fmt::Debug;
 
 use super::{pallet_data::PalletData, pallet_item::PalletItem, reduced_pallet::ReducedPallet};
-use crate::differs::reduced::call::call::*;
-use crate::differs::reduced::call::constant::Constant;
-use crate::differs::reduced::call::error::variant_to_errors;
-use crate::differs::reduced::call::event::variant_to_events;
-use crate::differs::reduced::call::storage::Storage;
 
 pub type ReducedRuntimeError = String;
 pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
@@ -36,7 +36,7 @@ impl From<&PalletCallMetadata<PortableForm>> for PalletData {
 	}
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct ReducedRuntime {
 	// TODO: remove pub once we have an iterator
 	pub pallets: Vec<ReducedPallet>, // TODO: Could use a BTreeMap
@@ -115,8 +115,6 @@ impl ReducedRuntime {
 			match ty.type_def() {
 				scale_info::TypeDef::Variant(v) => {
 					let errors: Vec<PalletItem> = variant_to_errors(v);
-
-					// errors.iter().for_each(|error| println!("  error = {}", error));
 					errors
 				}
 				_ => unimplemented!(),
@@ -141,25 +139,10 @@ impl ReducedRuntime {
 		};
 
 		// constants
-		// todo: it is a vec
 		let mut constants: Vec<PalletItem> = p
 			.constants
 			.iter()
 			.map(|i| {
-				println!("i = {:?}", i);
-				// 	// let id = item.ty.id();
-				// 	// let ty = registry.resolve(id.to_owned()).unwrap();
-
-				// 	// match ty.type_def() {
-				// 	// 	scale_info::TypeDef::Variant(v) => {
-				// 	// 		let constants: Vec<PalletItem> = variant_to_constants(v);
-
-				// 	// 		// constants.iter().for_each(|constant| println!("  constant = {}", constant));
-				// 	// 		constants
-				// 	// 	}
-				// 	// 	_ => unimplemented!(),
-				// 	// }
-				// 	// TODO: reomve that
 				let c = Constant::new(0, &i.name, vec![42], i.docs.clone());
 				PalletItem::Constant(c)
 			})

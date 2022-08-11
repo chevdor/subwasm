@@ -1,9 +1,9 @@
-use super::{call::prelude::Index, diff_result::DiffResult, pallet_item::PalletItem};
+use super::{calls::prelude::Index, diff_result::DiffResult, pallet_item::PalletItem};
 use crate::differs::raw::change_type::ChangeType;
 use frame_metadata::PalletMetadata;
 use scale_info::form::PortableForm;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct ReducedPallet {
 	/// Index of the pallet
 	pub index: Index,

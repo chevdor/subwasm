@@ -78,6 +78,7 @@ fn main() -> color_eyre::Result<()> {
 			match diff_opts.method {
 				DiffMethod::Raw => diff(src_a, src_b),
 				DiffMethod::Reduced => reduced_diff(src_a, src_b),
+				DiffMethod::Summary => todo!(),
 			}
 		}
 

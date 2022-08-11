@@ -66,7 +66,7 @@ pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
 
 #[cfg(test)]
 mod test_reduced_call {
-	use crate::differs::reduced::call::signature::Arg;
+	use crate::differs::reduced::calls::signature::Arg;
 
 	use super::*;
 

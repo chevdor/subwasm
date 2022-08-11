@@ -5,7 +5,7 @@ pub use substrate_differ::differs::diff_method::DiffMethod;
 use substrate_differ::differs::raw::raw_differ::RawDiffer;
 use substrate_differ::differs::raw::raw_differ_options::RawDifferOptions;
 use substrate_differ::differs::reduced::reduced_differ::ReducedDiffer;
-use substrate_differ::differs::summary_differ::RuntimeSummaryDiffer;
+use substrate_differ::differs::summary::RuntimeSummaryDiffer;
 use substrate_differ::differs::{DiffOptions, Differ};
 use wasm_loader::{BlockRef, NodeEndpoint, OnchainBlock, Source};
 use wasm_testbed::WasmTestBed;

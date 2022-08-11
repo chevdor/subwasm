@@ -1,4 +1,4 @@
-use super::{call::prelude::Index, signature::Signature};
+use super::{calls::prelude::Index, signature::Signature};
 
 /// PalletData is a a struct describing calls, events, constants, errors and storage.
 /// Those are mentioned as `items` below. Items/PalletData are usually handled through

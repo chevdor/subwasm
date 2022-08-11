@@ -1,7 +1,7 @@
 use super::diff_result::DiffResult;
 use super::reduced_runtime::ReducedRuntime;
 use crate::differs::{DiffOptions, Differ};
-use crate::differs::{reduced::reduced_pallet::ReducedPallet, reduced::*, reduced::call::prelude::Index, DiffOptions, Differ};
+use crate::differs::{reduced::reduced_pallet::ReducedPallet, reduced::*, reduced::calls::prelude::Index, DiffOptions, Differ};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadata::*};
 use std::collections::HashMap;
 use std::collections::HashSet;
@@ -65,13 +65,11 @@ impl Differ<ReducedPallet> for ReducedDiffer {
 		let r2 = &self.r2;
 
 		// We gather the Set of all indexes in both pallets
-		let indexes_1: HashMap<PalletId, &ReducedPallet> =
-			r1.pallets.iter().map(|pallet| ((pallet.name.clone(), pallet.index), pallet)).collect();
-		let indexes_2: HashMap<PalletId, &ReducedPallet> =
-			r2.pallets.iter().map(|pallet| ((pallet.name.clone(), pallet.index), pallet)).collect();
-		// println!("indicies {:?}", indexes_1);
-		let mut indexes: HashSet<PalletId> = indexes_1.keys().cloned().collect();
-		indexes.extend(indexes_2.keys().cloned());
+		let indexes_1: Vec<Index> = r1.pallets.iter().map(|pallet| pallet.index).collect();
+		let indexes_2: Vec<Index> = r2.pallets.iter().map(|pallet| pallet.index).collect();
+		let mut indexes: HashSet<Index> = HashSet::new();
+		indexes.extend(indexes_1.iter());
+		indexes.extend(indexes_2.iter());
 		// println!("indexes_1 = {:?}", indexes_1);
 		// println!("indexes_2 = {:?}", indexes_2);
 		// println!("indexes = {:?}", indexes);
@@ -106,18 +104,12 @@ impl Differ<ReducedPallet> for ReducedDiffer {
 
 #[cfg(test)]
 mod test_diff_runtimes {
-	use crate::differs::{raw::change_type::ChangeType, DiffOptions, Differ};
-
 	use super::ReducedDiffer;
+	use crate::differs::test_constants::*;
+	use crate::differs::{raw::change_type::ChangeType, DiffOptions, Differ};
 	use std::path::PathBuf;
 	use wasm_loader::Source;
 	use wasm_testbed::WasmTestBed;
-
-	// TODO: put that in a 	single file
-	const RUNTIME_V12: &str = "../../data/runtime_v12.wasm";
-	const RUNTIME_V13_1: &str = "../../data/kusama/V13/kusama-9030.wasm";
-	const RUNTIME_V13_2: &str = "../../data/kusama/V13/kusama-9080.wasm";
-	const RUNTIME_V14: &str = "../../data/runtime_v14.wasm";
 
 	#[test]
 	#[ignore = "local data"]
