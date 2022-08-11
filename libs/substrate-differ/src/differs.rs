@@ -4,6 +4,7 @@ pub mod reduced;
 pub mod summary_differ;
 pub mod utils;
 use crate::differs::reduced::diff_result::DiffResult;
+use crate::differs::reduced::PalletId;
 
 #[derive(Debug)]
 pub struct DiffOptionInclude {
@@ -28,5 +29,5 @@ pub trait Differ<T>
 where
 	T: PartialEq,
 {
-	fn diff(&self, options: DiffOptions) -> Vec<(String, u32, DiffResult<'_, T>)>;
+	fn diff(&self, options: DiffOptions) -> Vec<(PalletId, DiffResult<'_, T>)>;
 }

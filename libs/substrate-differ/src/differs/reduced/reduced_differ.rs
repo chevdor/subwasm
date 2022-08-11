@@ -56,7 +56,7 @@ impl ReducedDiffer {
 
 impl Differ<ReducedPallet> for ReducedDiffer {
 	// TODO: The following may even go to the default impl in the Trait
-	fn diff(&self, options: DiffOptions) -> Vec<(String, u32, DiffResult<'_, ReducedPallet>)> {
+	fn diff(&self, options: DiffOptions) -> Vec<(PalletId, DiffResult<'_, ReducedPallet>)> {
 		// assert!(self.r1.ver) != std::mem::discriminant(&self.r2), "");
 		log::debug!("Comparing 2 v{:?} runtimes", self.version);
 		log::debug!("options: {:#?}", options);
@@ -65,12 +65,12 @@ impl Differ<ReducedPallet> for ReducedDiffer {
 		let r2 = &self.r2;
 
 		// We gather the Set of all indexes in both pallets
-		let indexes_1: HashMap<(String, Index), &ReducedPallet> =
+		let indexes_1: HashMap<PalletId, &ReducedPallet> =
 			r1.pallets.iter().map(|pallet| ((pallet.name.clone(), pallet.index), pallet)).collect();
-		let indexes_2: HashMap<(String, Index), &ReducedPallet> =
+		let indexes_2: HashMap<PalletId, &ReducedPallet> =
 			r2.pallets.iter().map(|pallet| ((pallet.name.clone(), pallet.index), pallet)).collect();
 		// println!("indicies {:?}", indexes_1);
-		let mut indexes: HashSet<(String, Index)> = indexes_1.keys().cloned().collect();
+		let mut indexes: HashSet<PalletId> = indexes_1.keys().cloned().collect();
 		indexes.extend(indexes_2.keys().cloned());
 		// println!("indexes_1 = {:?}", indexes_1);
 		// println!("indexes_2 = {:?}", indexes_2);
@@ -94,7 +94,7 @@ impl Differ<ReducedPallet> for ReducedDiffer {
 					} else {
 						println!("d = {:#?}", d);
 					}
-					results.push((key.0, key.1, d));
+					results.push((key, d));
 				}
 				_ => todo!("write me"),
 			}
@@ -144,7 +144,7 @@ mod test_diff_runtimes {
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
 		let results = differ.diff(DiffOptions::default());
 
-		for (pallet_name, pallet_index, pallet_diff) in results {
+		for ((pallet_name, pallet_index), pallet_diff) in results {
 			assert!(matches!(pallet_diff.change_type, ChangeType::Unchanged));
 		}
 	}
