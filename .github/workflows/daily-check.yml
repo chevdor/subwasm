@@ -9,6 +9,8 @@ on:
 
 jobs:
   daily_check:
+    env:
+      CARGO_TERM_COLOR: always
     strategy:
       fail-fast: false
       matrix:
@@ -33,6 +35,11 @@ jobs:
           override: true
           components: clippy, rustfmt
 
+      - name: Install Rust tooling
+        uses: taiki-e/install-action@v1
+        with:
+          tool: nextest
+
       - uses: actions/checkout@v2
 
       - name: Cargo fmt
@@ -47,10 +54,11 @@ jobs:
           command: clippy
           args: -- -D warnings
 
-      - name: Cargo test
+      - name: Cargo nextest
         uses: actions-rs/cargo@v1
         with:
-          command: test
+          command: nextest
+          args: run
 
       - name: Cargo check
         uses: actions-rs/cargo@v1
