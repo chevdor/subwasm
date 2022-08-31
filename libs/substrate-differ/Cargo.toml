@@ -27,11 +27,26 @@ scale-info = { version = "2.1.2", default-features = false, features = [
     "std",
     "serde",
 ] }
+document-features = { version = "0.2" }
 
 [dev-dependencies]
 wasm-loader = { version = "0.18", path = "../wasm-loader" }
 
 [features]
-default = ["v14"]
+## The default feature currently hides feature that are deprecated
+default = ["v14", "raw", "reduced"]
+
+## v13 runtimes
 v13 = []
+
+## v14 runtimes
 v14 = []
+
+## Raw differ.
+raw = []
+
+## Reduced differ
+reduced = []
+
+[package.metadata.docs.rs]
+features = ["document-features"]

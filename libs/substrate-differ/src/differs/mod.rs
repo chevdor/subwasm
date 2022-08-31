@@ -1,6 +1,11 @@
 pub mod diff_method;
+
+#[cfg(feature = "raw")]
 pub mod raw;
+
+#[cfg(feature = "reduced")]
 pub mod reduced;
+
 pub mod summary;
 pub mod utils;
 use crate::differs::reduced::diff_result::DiffResult;
@@ -32,5 +37,5 @@ pub trait Differ<T>
 where
 	T: PartialEq,
 {
-	fn diff(&self, options: DiffOptions) -> Vec<(PalletId, DiffResult<'_, T>)>;
+	fn diff(&self, options: DiffOptions) -> Vec<(PalletId, DiffResult<T>)>;
 }

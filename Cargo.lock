@@ -677,6 +677,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fea41bba32d969b513997752735605054bc0dfa92b4c56bf1189f2e174be7a10"
 
 [[package]]
+name = "document-features"
+version = "0.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d99bbe945402eb228b85cdfc7020cf7422574976861c642b28255d0a49606d79"
+
+[[package]]
 name = "downcast-rs"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3076,6 +3082,7 @@ dependencies = [
 name = "substrate-differ"
 version = "0.18.0"
 dependencies = [
+ "document-features",
  "frame-metadata 15.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "log",
  "num-format",

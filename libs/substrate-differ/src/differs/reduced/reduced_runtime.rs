@@ -39,7 +39,8 @@ impl From<&PalletCallMetadata<PortableForm>> for PalletData {
 #[derive(Debug, PartialEq, Eq)]
 pub struct ReducedRuntime {
 	// TODO: remove pub once we have an iterator
-	pub pallets: Vec<ReducedPallet>, // TODO: Could use a BTreeMap
+	// TODO: Could use a BTreeMap
+	pub pallets: Vec<ReducedPallet>,
 }
 
 impl From<Vec<ReducedPallet>> for ReducedRuntime {
@@ -48,7 +49,7 @@ impl From<Vec<ReducedPallet>> for ReducedRuntime {
 	}
 }
 
-// TODO: impl Iterator
+// TODO: impl Iterator / IntoIterator
 impl ReducedRuntime {
 	#[cfg(feature = "v13")]
 	/// Reduce a RuntimeMetadataV13 into a normalized ReducedRuntime
@@ -67,7 +68,7 @@ impl ReducedRuntime {
 		registry: &PortableRegistry,
 	) -> ReducedPallet {
 		let name = &p.name;
-		println!("{:?}: {:?}", &p.index, name);
+		// println!("{:?}: {:?}", &p.index, name);
 
 		// calls
 		let mut calls = if let Some(calls) = &p.calls {
@@ -154,16 +155,16 @@ impl ReducedRuntime {
 		items.append(&mut errors);
 		items.append(&mut storages);
 		items.append(&mut constants);
-		ReducedPallet { index: 0, name: name.into(), items }
+		ReducedPallet { index: p.index.into(), name: name.into(), items }
 	}
 
 	#[cfg(feature = "v14")]
 	/// Reduce a RuntimeMetadataV14 into a normalized ReducedRuntime
 	pub fn from_v14(v14: &v14::RuntimeMetadataV14) -> Result<Self> {
 		let registry = &v14.types;
-		let runtime_type = registry.resolve(v14.ty.id()).unwrap();
-		println!("runtime_type = {:?}", runtime_type);
-		println!("runtime_type = {:?}", runtime_type.path().segments());
+		// let runtime_type = registry.resolve(v14.ty.id()).unwrap();
+		// println!("runtime_type = {:?}", runtime_type);
+		// println!("runtime_type = {:?}", runtime_type.path().segments());
 
 		// TODO: deal with extrinsic as well
 		let _extrinsics = &v14.extrinsic;

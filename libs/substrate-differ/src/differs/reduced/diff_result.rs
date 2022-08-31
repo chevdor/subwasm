@@ -1,22 +1,27 @@
-use crate::differs::raw::change_type::ChangeType;
+use super::change_type::Change;
 
 #[derive(Debug)]
 pub struct DiffResult<'meta, T: PartialEq> {
 	/// Define the nature of the change if there was one
-	pub change_type: ChangeType,
+	pub change: Change<'meta, T>,
+	// /// First item compared
+	// pub left: Option<&'meta T>,
 
-	/// First item compared
-	pub left: &'meta T,
-
-	/// Second item compared
-	pub right: &'meta T,
+	// /// Second item compared
+	// pub right: Option<&'meta T>,
 	// /// Some notes about the changes
 	// notes: Option<Vec<String>>,
 }
 
 impl<'meta, T: PartialEq> DiffResult<'meta, T> {
-	pub fn new(change_type: ChangeType, left: &'meta T, right: &'meta T) -> Self {
-		Self { change_type, left, right }
+	// pub fn new(change: Change<T>, left: &'meta T, right: &'meta T) -> Self {
+	// 	// Self { change_type, Some(left), Some(right) }
+	// 	Self { change: change }
+	// }
+
+	pub fn new(change: Change<'meta, T>) -> Self {
+		// Self { change_type, Some(left), Some(right) }
+		Self { change }
 	}
 }
 

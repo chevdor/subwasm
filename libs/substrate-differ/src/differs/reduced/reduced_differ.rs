@@ -1,6 +1,10 @@
 use super::diff_result::DiffResult;
 use super::reduced_runtime::ReducedRuntime;
-use crate::differs::{reduced::reduced_pallet::ReducedPallet, reduced::*, DiffOptions, Differ};
+use crate::differs::{
+	reduced::*,
+	reduced::{change_type::Change, reduced_pallet::ReducedPallet},
+	DiffOptions, Differ,
+};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadata::*};
 use std::collections::{HashMap, HashSet};
 
@@ -54,7 +58,7 @@ impl ReducedDiffer {
 
 impl Differ<ReducedPallet> for ReducedDiffer {
 	// TODO: The following may even go to the default impl in the Trait
-	fn diff(&self, options: DiffOptions) -> Vec<(PalletId, DiffResult<'_, ReducedPallet>)> {
+	fn diff(&self, options: DiffOptions) -> Vec<(PalletId, DiffResult<ReducedPallet>)> {
 		// assert!(self.r1.ver) != std::mem::discriminant(&self.r2), "");
 		log::debug!("Comparing 2 v{:?} runtimes", self.version);
 		log::debug!("options: {:#?}", options);
@@ -85,16 +89,23 @@ impl Differ<ReducedPallet> for ReducedDiffer {
 
 			match (pallet_a, pallet_b) {
 				(Some(pallet_a), Some(pallet_b)) => {
-					let d = ReducedPallet::diff(pallet_a, pallet_b);
+					let d = ReducedPallet::diff(Some(pallet_a), Some(pallet_b));
 
-					if let crate::differs::raw::change_type::ChangeType::Unchanged = d.change_type {
-						println!("no changes for pallet {:?}", key);
+					if let Change::Unchanged = d.change {
+						println!("[=] no changes for pallet {:?}", key);
 					} else {
-						println!("d = {:#?}", d);
+						assert_eq!(pallet_a.name, pallet_b.name);
+						println!("[/] pallets: {} => {:#?}", pallet_a.name, d.change);
 					}
 					results.push((key, d));
 				}
-				_ => todo!("write me"),
+				(Some(pallet_a), None) => {
+					println!("[-] pallet {} has been removed", pallet_a.name);
+				},
+				(None, Some(pallet_b)) => {
+					println!("[+] pallet {} has been introduced", pallet_b.name);
+				},
+				(None, None) => unreachable!("There is no reason we would get there since we iterate over the indexes found in at least pallet_a or pallet_b"),
 			}
 		});
 
@@ -106,7 +117,7 @@ impl Differ<ReducedPallet> for ReducedDiffer {
 mod test_diff_runtimes {
 	use super::ReducedDiffer;
 	use crate::differs::test_constants::*;
-	use crate::differs::{raw::change_type::ChangeType, DiffOptions, Differ};
+	use crate::differs::{raw::change_type::Change, DiffOptions, Differ};
 	use std::path::PathBuf;
 	use wasm_loader::Source;
 	use wasm_testbed::WasmTestBed;
@@ -146,7 +157,7 @@ mod test_diff_runtimes {
 			if pallet_name == "Scheduler" {
 				assert_eq!(1, pallet_index);
 			}
-			assert!(matches!(pallet_diff.change_type, ChangeType::Unchanged));
+			assert!(matches!(pallet_diff.change_type, Change::Unchanged));
 		}
 	}
 
@@ -162,7 +173,7 @@ mod test_diff_runtimes {
 
 		for ((pallet_name, pallet_index), pallet_diff) in results {
 			println!("pallet: {:?} - {}", pallet_index, pallet_name,);
-			assert!(matches!(pallet_diff.change_type, ChangeType::Unchanged));
+			assert!(matches!(pallet_diff.change_type, Change::Unchanged));
 		}
 	}
 
@@ -178,7 +189,7 @@ mod test_diff_runtimes {
 
 		for ((pallet_name, pallet_index), pallet_diff) in results {
 			println!("pallet: {:?} - {}", pallet_index, pallet_name,);
-			assert!(matches!(pallet_diff.change_type, ChangeType::Unchanged));
+			assert!(matches!(pallet_diff.change_type, Change::Unchanged));
 		}
 	}
 

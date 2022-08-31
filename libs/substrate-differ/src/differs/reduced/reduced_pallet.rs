@@ -1,5 +1,6 @@
+use crate::differs::reduced::change_type::Change;
+
 use super::{calls::prelude::Index, diff_result::DiffResult, pallet_item::PalletItem};
-use crate::differs::raw::change_type::ChangeType;
 use frame_metadata::PalletMetadata;
 use scale_info::form::PortableForm;
 
@@ -19,18 +20,27 @@ pub struct ReducedPallet {
 // TODO: impl Iterator
 impl ReducedPallet {
 	/// Computes the differences between 2 pallets
-	pub fn diff<'meta>(pallet_a: &'meta Self, pallet_b: &'meta Self) -> DiffResult<'meta, ReducedPallet> {
-		assert_eq!(pallet_a.index, pallet_b.index, "Comparing different indexes does not make much sense");
+	pub fn diff<'meta>(
+		pallet_a: Option<&'meta Self>,
+		pallet_b: Option<&'meta Self>,
+	) -> DiffResult<'meta, ReducedPallet> {
+		match (pallet_a, pallet_b) {
+			(Some(pa), Some(pb)) => {
+				assert_eq!(pa.index, pb.index, "Comparing different indexes does not make much sense");
+				if pa.name != pb.name {
+					return DiffResult::new(Change::Modified((pa, pb)));
+				}
 
-		if pallet_a.name != pallet_b.name {
-			return DiffResult::new(ChangeType::Modified, pallet_a, pallet_b);
+				if pa.items != pb.items {
+					return DiffResult::new(Change::Modified((pa, pb)));
+				}
+			}
+			(Some(pa), None) => return DiffResult::new(Change::Removed(pa)),
+			(None, Some(pb)) => return DiffResult::new(Change::Added(pb)),
+			(None, None) => todo!(),
 		}
 
-		if pallet_a.items != pallet_b.items {
-			return DiffResult::new(ChangeType::Modified, pallet_a, pallet_b);
-		}
-
-		DiffResult::new(ChangeType::Unchanged, pallet_a, pallet_b)
+		DiffResult::new(Change::Unchanged)
 	}
 }
 

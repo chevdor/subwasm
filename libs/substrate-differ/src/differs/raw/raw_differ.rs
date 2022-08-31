@@ -1,7 +1,7 @@
 use super::{json_utils::json_collapse_byte_arrays, raw_differ_options::RawDifferOptions, skip_counter::SkipCounter};
 use crate::{
 	call_wrapper::CallWrapper,
-	differs::raw::{change_counter::ChangeCounter, change_type::ChangeType},
+	differs::raw::{change_counter::ChangeCounter, change_type::Change},
 };
 use log::debug;
 use serde::Serialize;
@@ -89,10 +89,10 @@ impl<'a, T: Serialize> RawDiffer<'a, T> {
 
 			for call in &recorder.calls {
 				match call {
-					treediff::tools::ChangeType::Removed(_, _) => counter.inc(ChangeType::Removed),
-					treediff::tools::ChangeType::Added(_, _) => counter.inc(ChangeType::Added),
-					treediff::tools::ChangeType::Unchanged(_, _) => counter.inc(ChangeType::Unchanged),
-					treediff::tools::ChangeType::Modified(_, _, _) => counter.inc(ChangeType::Modified),
+					treediff::tools::ChangeType::Removed(_, _) => counter.inc(Change::Removed),
+					treediff::tools::ChangeType::Added(_, _) => counter.inc(Change::Added),
+					treediff::tools::ChangeType::Unchanged(_, _) => counter.inc(Change::Unchanged),
+					treediff::tools::ChangeType::Modified(_, _, _) => counter.inc(Change::Modified),
 				}
 			}
 

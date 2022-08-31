@@ -1,6 +1,7 @@
 use self::calls::prelude::Index;
 
 pub mod calls;
+pub mod change_type;
 pub mod diff_result;
 pub mod diff_trait;
 pub mod pallet_data;
