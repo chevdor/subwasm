@@ -117,7 +117,7 @@ impl Differ<ReducedPallet> for ReducedDiffer {
 mod test_diff_runtimes {
 	use super::ReducedDiffer;
 	use crate::differs::test_constants::*;
-	use crate::differs::{raw::change_type::Change, DiffOptions, Differ};
+	use crate::differs::{DiffOptions, Differ};
 	use std::path::PathBuf;
 	use wasm_loader::Source;
 	use wasm_testbed::WasmTestBed;
@@ -146,6 +146,8 @@ mod test_diff_runtimes {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9100_9100() {
+		use crate::differs::reduced::change_type::Change;
+
 		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 
@@ -153,11 +155,11 @@ mod test_diff_runtimes {
 		let results = differ.diff(DiffOptions::default());
 
 		for ((pallet_name, pallet_index), pallet_diff) in results {
-			println!("pallet: {:?} - {}", pallet_index, pallet_name,);
+			println!("pallet: {:>2?} - {}", pallet_index, pallet_name,);
 			if pallet_name == "Scheduler" {
 				assert_eq!(1, pallet_index);
 			}
-			assert!(matches!(pallet_diff.change_type, Change::Unchanged));
+			assert!(matches!(pallet_diff.change, Change::Unchanged));
 		}
 	}
 
@@ -165,6 +167,8 @@ mod test_diff_runtimes {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9100_9260() {
+		use crate::differs::reduced::change_type::Change;
+
 		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9100))).unwrap();
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9260))).unwrap();
 
@@ -172,8 +176,26 @@ mod test_diff_runtimes {
 		let results = differ.diff(DiffOptions::default());
 
 		for ((pallet_name, pallet_index), pallet_diff) in results {
-			println!("pallet: {:?} - {}", pallet_index, pallet_name,);
-			assert!(matches!(pallet_diff.change_type, Change::Unchanged));
+			println!("pallet: {:>2?} - {}", pallet_index, pallet_name,);
+			assert!(matches!(pallet_diff.change, Change::Unchanged));
+		}
+	}
+
+	#[test]
+	#[cfg(feature = "v14")]
+	#[ignore = "local data"]
+	fn test_v14_polkadot_9260_9260() {
+		use crate::differs::reduced::change_type::Change;
+
+		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9260))).unwrap();
+		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9260))).unwrap();
+
+		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
+		let results = differ.diff(DiffOptions::default());
+
+		for ((pallet_name, pallet_index), pallet_diff) in results {
+			println!("pallet: {:>2?} - {}", pallet_index, pallet_name,);
+			assert!(matches!(pallet_diff.change, Change::Unchanged));
 		}
 	}
 
@@ -181,6 +203,8 @@ mod test_diff_runtimes {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9260_9270() {
+		use crate::differs::reduced::change_type::Change;
+
 		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9100))).unwrap();
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9260))).unwrap();
 
@@ -188,8 +212,8 @@ mod test_diff_runtimes {
 		let results = differ.diff(DiffOptions::default());
 
 		for ((pallet_name, pallet_index), pallet_diff) in results {
-			println!("pallet: {:?} - {}", pallet_index, pallet_name,);
-			assert!(matches!(pallet_diff.change_type, Change::Unchanged));
+			println!("pallet: {:>2?} - {}", pallet_index, pallet_name,);
+			assert!(matches!(pallet_diff.change, Change::Modified(_) | Change::Added(_) | Change::Removed(_)));
 		}
 	}
 
