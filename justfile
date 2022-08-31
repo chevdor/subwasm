@@ -5,8 +5,11 @@ export TAG:=`toml get cli/Cargo.toml "package.version" | jq -r .`
 _default:
   just --choose --chooser "fzf +s -x --tac --cycle"
 
-# Test / watch
 test:
+	cargo nextest run --no-fail-fast
+
+# Test & watch
+test_dev:
 	cargo watch -x "test -- --no-capture"
 
 # Test including ignored tests
