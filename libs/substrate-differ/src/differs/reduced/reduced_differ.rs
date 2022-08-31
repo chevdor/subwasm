@@ -90,20 +90,15 @@ impl Differ<ReducedPallet> for ReducedDiffer {
 			match (pallet_a, pallet_b) {
 				(Some(pallet_a), Some(pallet_b)) => {
 					let d = ReducedPallet::diff(Some(pallet_a), Some(pallet_b));
-
-					if let Change::Unchanged = d.change {
-						println!("[=] no changes for pallet {:?}", key);
-					} else {
-						assert_eq!(pallet_a.name, pallet_b.name);
-						println!("[/] pallets: {} => {:#?}", pallet_a.name, d.change);
-					}
 					results.push((key, d));
 				}
-				(Some(pallet_a), None) => {
-					println!("[-] pallet {} has been removed", pallet_a.name);
+				(Some(pallet), None) => {
+					// println!("[-] pallet {} has been removed", pallet_a.name);
+					results.push((key, DiffResult::new(Change::Removed(pallet))))
 				},
-				(None, Some(pallet_b)) => {
-					println!("[+] pallet {} has been introduced", pallet_b.name);
+				(None, Some(pallet)) => {
+					// println!("[+] pallet {} has been introduced", pallet_b.name);
+					results.push((key, DiffResult::new(Change::Added(pallet))))
 				},
 				(None, None) => unreachable!("There is no reason we would get there since we iterate over the indexes found in at least pallet_a or pallet_b"),
 			}
@@ -203,17 +198,14 @@ mod test_diff_runtimes {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9260_9270() {
-		use crate::differs::reduced::change_type::Change;
-
 		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9100))).unwrap();
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9260))).unwrap();
 
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let results = differ.diff(DiffOptions::default());
-
-		for ((pallet_name, pallet_index), pallet_diff) in results {
-			println!("pallet: {:>2?} - {}", pallet_index, pallet_name,);
-			assert!(matches!(pallet_diff.change, Change::Modified(_) | Change::Added(_) | Change::Removed(_)));
+		let mut results = differ.diff(DiffOptions::default());
+		results.sort_by(|((_, a), _), ((_, b), _)| -> std::cmp::Ordering { a.cmp(b) });
+		for ((pallet_name, pallet_index), diff) in results {
+			println!("{index:>3}{name:.>32} => {diff}", name = pallet_name, index = pallet_index, diff = diff);
 		}
 	}
 

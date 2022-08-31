@@ -1,4 +1,5 @@
 use super::change_type::Change;
+use std::fmt::Display;
 
 #[derive(Debug)]
 pub struct DiffResult<'meta, T: PartialEq> {
@@ -25,7 +26,7 @@ impl<'meta, T: PartialEq> DiffResult<'meta, T> {
 	}
 }
 
-// TODO: make it for tests only
+// #[cfg(test)]
 // impl<T: PartialEq> Default for DiffResult<T> {
 // 	fn default() -> Self {
 // 		Self {
@@ -36,3 +37,9 @@ impl<'meta, T: PartialEq> DiffResult<'meta, T> {
 // 		}
 // 	}
 // }
+
+impl<'meta, T: PartialEq> Display for DiffResult<'meta, T> {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		f.write_fmt(format_args!("{}", self.change))
+	}
+}
