@@ -9,6 +9,7 @@ pub mod pallet_item;
 pub mod reduced_differ;
 pub mod reduced_pallet;
 pub mod reduced_runtime;
+pub mod reduced_trait;
 pub mod signature;
 
 /// This is the pallet name and the pallet index.

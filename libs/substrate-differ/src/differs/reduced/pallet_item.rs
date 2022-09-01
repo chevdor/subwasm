@@ -5,9 +5,8 @@ use std::fmt::Display;
 use super::calls::{call::*, constant::*, error::*, event::*, storage::*};
 
 #[derive(Debug, PartialEq, Eq)]
-/// Content of a Reduced runtime
+/// A [PalletItem] is what [ReducedRuntime](super::reduced_runtime::ReducedRuntime) are made of.
 pub enum PalletItem {
-	// Call(PalletData),
 	Call(Call),
 	Event(Event),
 	Error(Error),

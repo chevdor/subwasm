@@ -4,6 +4,7 @@ use super::{calls::prelude::Index, diff_result::DiffResult, pallet_item::PalletI
 use frame_metadata::PalletMetadata;
 use scale_info::form::PortableForm;
 
+/// A [ReducedPallet] is mainly a `Vec` or [PalletItem].
 #[derive(Debug, PartialEq, Eq)]
 pub struct ReducedPallet {
 	/// Index of the pallet
@@ -26,21 +27,24 @@ impl ReducedPallet {
 	) -> DiffResult<'meta, ReducedPallet> {
 		match (pallet_a, pallet_b) {
 			(Some(pa), Some(pb)) => {
+				// Compare indexes... well kinda...
 				assert_eq!(pa.index, pb.index, "Comparing different indexes does not make much sense");
+
+				// Compare names
 				if pa.name != pb.name {
 					return DiffResult::new(Change::Modified((pa, pb)));
 				}
 
+				// Compare items, this is the most important
 				if pa.items != pb.items {
 					return DiffResult::new(Change::Modified((pa, pb)));
 				}
+				DiffResult::new(Change::Unchanged)
 			}
 			(Some(pa), None) => return DiffResult::new(Change::Removed(pa)),
 			(None, Some(pb)) => return DiffResult::new(Change::Added(pb)),
-			(None, None) => todo!(),
+			(None, None) => unreachable!(),
 		}
-
-		DiffResult::new(Change::Unchanged)
 	}
 }
 

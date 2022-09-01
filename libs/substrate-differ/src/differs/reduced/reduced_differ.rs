@@ -210,6 +210,22 @@ mod test_diff_runtimes {
 	}
 
 	#[test]
+	#[cfg(feature = "v14")]
+	#[ignore = "local data"]
+	fn test_v14_polkadot_9260_9270_system() {
+		use crate::differs::reduced::change_type::Change;
+
+		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9100))).unwrap();
+		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9260))).unwrap();
+
+		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
+		let results = differ.diff(DiffOptions::default());
+		let result_system = &results.iter().find(|item| item.0 .0 == "System").unwrap().1;
+		assert!(matches!(result_system.change, Change::Modified(_)));
+		println!("result_system = {:#?}", result_system);
+	}
+
+	#[test]
 	#[ignore = "local data"]
 	#[should_panic]
 	fn test_unsupported_variants() {
