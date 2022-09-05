@@ -1,10 +1,11 @@
 use super::diff_result::DiffResult;
-use super::reduced_runtime::ReducedRuntime;
+use super::reduced_runtime::*;
 use crate::differs::{
 	reduced::*,
-	reduced::{change_type::Change, reduced_pallet::ReducedPallet},
+	reduced::{change_type::Change, reduced_pallet::*},
 	DiffOptions, Differ,
 };
+use comparable::{Changed, Comparable, SetChange, VecChange};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadata::*};
 use std::collections::{HashMap, HashSet};
 
@@ -16,7 +17,8 @@ use std::collections::{HashMap, HashSet};
 
 type MetadataVersion = u32;
 
-// TODO: not great, we could already enforce here getting the same variant
+/// The [ReducedDiffer] works exclusively on 2 [ReducedRuntime].
+
 pub struct ReducedDiffer {
 	r1: ReducedRuntime,
 	r2: ReducedRuntime,
@@ -54,6 +56,37 @@ impl ReducedDiffer {
 	// 		_ => panic!("V12 is unsupported"),
 	// 	}
 	// }
+
+	pub fn comp(&self) {
+		match self.r1.comparison(&self.r2) {
+			Changed::Changed(changes) => {
+				// println!("p = {:#?}", p);
+
+				changes.pallets.iter().for_each(
+					|c: &SetChange<ReducedPalletDesc, Vec<reduced_pallet::ReducedPalletChange>>| {
+						match c {
+							SetChange::Added(size, desc) => {
+								println!("ADDED size: {}", size);
+								println!("desc = {:?}", desc);
+							}
+							// SetChange::Changed(size, change ) =>  {
+							// 	// println!("CHANGED size: {}", size);
+							// 	println!("change = {:?}", change);
+							// },
+							SetChange::Removed(size, desc) => {
+								println!("REMOVED size: {}", size);
+								println!("desc = {:?}", desc);
+							}
+						};
+						// println!("index = {:?}", c);
+					},
+				)
+			}
+			Changed::Unchanged => {
+				println!("UNCHANGED")
+			}
+		};
+	}
 }
 
 impl Differ<ReducedPallet> for ReducedDiffer {
@@ -207,6 +240,8 @@ mod test_diff_runtimes {
 		for ((pallet_name, pallet_index), diff) in results {
 			println!("{index:>3}{name:.>32} => {diff}", name = pallet_name, index = pallet_index, diff = diff);
 		}
+
+		differ.comp();
 	}
 
 	#[test]
@@ -222,7 +257,7 @@ mod test_diff_runtimes {
 		let results = differ.diff(DiffOptions::default());
 		let result_system = &results.iter().find(|item| item.0 .0 == "System").unwrap().1;
 		assert!(matches!(result_system.change, Change::Modified(_)));
-		println!("result_system = {:#?}", result_system);
+		// println!("result_system = {:#?}", result_system);
 	}
 
 	#[test]

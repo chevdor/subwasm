@@ -1,9 +1,10 @@
 use super::prelude::*;
+use comparable::Comparable;
 use serde::Serialize;
 use std::fmt::Display;
 
 /// Reduced Constant
-#[derive(Debug, PartialEq, Eq, Serialize, Hash)]
+#[derive(Debug, Serialize, Hash, Comparable, PartialOrd, Ord, PartialEq, Eq)]
 pub struct Constant {
 	/// Index
 	pub index: Index,
@@ -15,6 +16,7 @@ pub struct Constant {
 	pub value: Value,
 
 	/// Documentation of the constant.
+	#[comparable_ignore]
 	pub docs: Documentation,
 }
 

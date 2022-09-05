@@ -1,11 +1,12 @@
 use crate::differs::reduced::change_type::Change;
 
 use super::{calls::prelude::Index, diff_result::DiffResult, pallet_item::PalletItem};
+use comparable::Comparable;
 use frame_metadata::PalletMetadata;
 use scale_info::form::PortableForm;
 
 /// A [ReducedPallet] is mainly a `Vec` or [PalletItem].
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Hash, Comparable, PartialOrd, Ord)]
 pub struct ReducedPallet {
 	/// Index of the pallet
 	pub index: Index,

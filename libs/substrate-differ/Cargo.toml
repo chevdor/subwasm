@@ -28,6 +28,7 @@ scale-info = { version = "2.1.2", default-features = false, features = [
     "serde",
 ] }
 document-features = { version = "0.2" }
+comparable = { version = "0.5", features = ["derive"] }
 
 [dev-dependencies]
 wasm-loader = { version = "0.18", path = "../wasm-loader" }

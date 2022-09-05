@@ -2,15 +2,18 @@ use super::{
 	prelude::*,
 	signature::{Arg, Signature},
 };
+use comparable::Comparable;
 use serde::Serialize;
 use std::fmt::Display;
 
 /// Reduced Event
-#[derive(Debug, PartialEq, Eq, Serialize, Hash)]
+#[derive(Debug, PartialEq, Eq, Serialize, Hash, Comparable, PartialOrd, Ord)]
 pub struct Event {
 	index: Index,
 	name: String,
 	signature: Signature,
+
+	#[comparable_ignore]
 	docs: Documentation,
 }
 

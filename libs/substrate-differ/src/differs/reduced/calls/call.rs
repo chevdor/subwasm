@@ -2,17 +2,20 @@ use super::{
 	prelude::*,
 	signature::{Arg, Signature},
 };
+use comparable::{Changed, Comparable};
 use std::fmt::Display;
 // use frame_metadata::StorageEntryMetadata;
 use scale_info::{form::PortableForm, TypeDefVariant};
 use serde::Serialize;
 
 /// Reduced Call
-#[derive(Debug, PartialEq, Eq, Serialize, Hash)]
+#[derive(Debug, PartialEq, Eq, Serialize, Hash, Comparable, PartialOrd, Ord)]
 pub struct Call {
 	pub index: Index,
 	pub name: String,
 	pub signature: Signature,
+
+	#[comparable_ignore]
 	pub docs: Documentation,
 }
 
@@ -32,6 +35,15 @@ impl Display for Call {
 		// });
 		// f.write_str(") ")
 		Ok(())
+	}
+}
+
+impl Call {
+	pub fn comp(&self) {
+		let c: Changed<_> = self.comparison(&self);
+		c.for_each(|x| {
+			println!("***** x = {:#?}", x);
+		})
 	}
 }
 

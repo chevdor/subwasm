@@ -1,9 +1,10 @@
 use super::prelude::*;
+use comparable::Comparable;
 use serde::Serialize;
 use std::fmt::Display;
 
 /// Reduced Storage
-#[derive(Debug, PartialEq, Eq, Serialize, Hash)]
+#[derive(Debug, PartialEq, Eq, Serialize, Hash, Comparable, PartialOrd, Ord)]
 pub struct Storage {
 	pub name: String,
 	// Brought back down to a String to allow new runtimes adding more variants
@@ -13,6 +14,8 @@ pub struct Storage {
 	// Here we don't really care about the default value but its hash
 	// TODO
 	pub default_value: Value,
+
+	#[comparable_ignore]
 	pub docs: Documentation,
 }
 

@@ -3,6 +3,7 @@ use crate::differs::reduced::calls::constant::Constant;
 use crate::differs::reduced::calls::error::variant_to_errors;
 use crate::differs::reduced::calls::event::variant_to_events;
 use crate::differs::reduced::calls::storage::*;
+use comparable::Comparable;
 use frame_metadata::v14;
 use frame_metadata::PalletCallMetadata;
 use frame_metadata::PalletMetadata;
@@ -10,6 +11,7 @@ use frame_metadata::RuntimeMetadata;
 use frame_metadata::RuntimeMetadata::*;
 use scale_info::form::PortableForm;
 use scale_info::PortableRegistry;
+use std::collections::HashSet;
 use std::fmt::Debug;
 
 use super::{pallet_data::PalletData, pallet_item::PalletItem, reduced_pallet::ReducedPallet};
@@ -36,11 +38,11 @@ impl From<&PalletCallMetadata<PortableForm>> for PalletData {
 	}
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Comparable)]
 pub struct ReducedRuntime {
 	// TODO: remove pub once we have an iterator
 	// TODO: Could use a BTreeMap
-	pub pallets: Vec<ReducedPallet>,
+	pub pallets: HashSet<ReducedPallet>,
 }
 
 impl From<Vec<ReducedPallet>> for ReducedRuntime {

@@ -1,13 +1,15 @@
 use super::prelude::*;
+use comparable::Comparable;
 use serde::Serialize;
 use std::fmt::Display;
 
 /// Reduced Error
-#[derive(Debug, PartialEq, Eq, Serialize, Hash)]
+#[derive(Debug, PartialEq, Eq, Serialize, Hash, Comparable, PartialOrd, Ord)]
 pub struct Error {
 	pub index: Index,
-
 	pub name: String,
+
+	#[comparable_ignore]
 	pub docs: Documentation,
 }
 
