@@ -5,7 +5,7 @@ use crate::differs::{
 	reduced::{change_type::Change, reduced_pallet::*},
 	DiffOptions, Differ,
 };
-use comparable::{Changed, Comparable, SetChange};
+use comparable::{Changed, Comparable, SetChange, VecChange};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadata::*};
 use std::collections::{HashMap, HashSet};
 
@@ -63,20 +63,19 @@ impl ReducedDiffer {
 				// println!("p = {:#?}", p);
 
 				changes.pallets.iter().for_each(
-					// |c: &SetChange<ReducedPalletDesc, Vec<reduced_pallet::ReducedPalletChange>>| {
-					|c: &SetChange<ReducedPalletDesc>| {
+					|c: &SetChange<ReducedPalletDesc, Vec<reduced_pallet::ReducedPalletChange>>| {
 						match c {
-							SetChange::Added(desc) => {
-								// println!("ADDED size: {}", size);
-								println!("ADDED desc = {:?}", desc);
+							SetChange::Added(size, desc) => {
+								println!("ADDED size: {}", size);
+								println!("desc = {:?}", desc);
 							}
 							// SetChange::Changed(size, change ) =>  {
 							// 	// println!("CHANGED size: {}", size);
 							// 	println!("change = {:?}", change);
 							// },
-							SetChange::Removed(desc) => {
-								// println!("REMOVED size: {}", size);
-								println!("ADDED desc = {:?}", desc);
+							SetChange::Removed(size, desc) => {
+								println!("REMOVED size: {}", size);
+								println!("desc = {:?}", desc);
 							}
 						};
 						// println!("index = {:?}", c);
