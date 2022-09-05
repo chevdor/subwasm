@@ -45,8 +45,8 @@ pub struct ReducedRuntime {
 	pub pallets: HashSet<ReducedPallet>,
 }
 
-impl From<Vec<ReducedPallet>> for ReducedRuntime {
-	fn from(pallets: Vec<ReducedPallet>) -> Self {
+impl From<HashSet<ReducedPallet>> for ReducedRuntime {
+	fn from(pallets: HashSet<ReducedPallet>) -> Self {
 		Self { pallets }
 	}
 }
@@ -172,7 +172,7 @@ impl ReducedRuntime {
 		let _extrinsics = &v14.extrinsic;
 
 		let pallets = &v14.pallets;
-		let reduced_pallets: Vec<ReducedPallet> =
+		let reduced_pallets: HashSet<ReducedPallet> =
 			pallets.iter().map(|p| ReducedRuntime::get_reduced_pallet_from_v14_pallet(p, registry)).collect();
 
 		let r_rtm: ReducedRuntime = reduced_pallets.into();

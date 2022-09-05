@@ -57,7 +57,7 @@ mod test_reduced_conversion {
 
 				assert_eq!(rrtm.pallets.len(), 30);
 
-				let first_pallet = &rrtm.pallets[0];
+				let first_pallet = rrtm.pallets.iter().next().unwrap();
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 				// println!(" first_pallet.items = {:#?}", first_pallet.items);
@@ -86,7 +86,7 @@ mod test_reduced_conversion {
 
 				assert_eq!(rrtm.pallets.len(), 30);
 
-				let first_pallet = &rrtm.pallets[0];
+				let first_pallet = rrtm.pallets.iter().next().unwrap();
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 
@@ -112,7 +112,7 @@ mod test_reduced_conversion {
 
 				assert_eq!(rrtm.pallets.len(), 30);
 
-				let first_pallet = &rrtm.pallets[0];
+				let first_pallet = rrtm.pallets.iter().next().unwrap();
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 
@@ -138,7 +138,7 @@ mod test_reduced_conversion {
 
 				assert_eq!(rrtm.pallets.len(), 30);
 
-				let first_pallet = &rrtm.pallets[0];
+				let first_pallet = rrtm.pallets.iter().next().unwrap();
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 				// println!(" first_pallet.items = {:#?}", first_pallet.items);
@@ -170,7 +170,7 @@ mod test_reduced_conversion {
 
 				assert_eq!(rrtm.pallets.len(), 30);
 
-				let first_pallet = &rrtm.pallets[0];
+				let first_pallet = rrtm.pallets.iter().next().unwrap();
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 
@@ -196,7 +196,7 @@ mod test_reduced_conversion {
 
 				assert_eq!(rrtm.pallets.len(), 30);
 
-				let first_pallet = &rrtm.pallets[0];
+				let first_pallet = rrtm.pallets.iter().next().unwrap();
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 
