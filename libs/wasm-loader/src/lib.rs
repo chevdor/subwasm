@@ -69,7 +69,7 @@ impl WasmLoader {
 
 	/// Load some binary from a file
 	fn load_from_file(filename: &Path) -> WasmBytes {
-		let mut f = File::open(&filename).unwrap_or_else(|_| panic!("File {} not found", filename.to_string_lossy()));
+		let mut f = File::open(filename).unwrap_or_else(|_| panic!("File {} not found", filename.to_string_lossy()));
 		// TODO: Remove the following once issues like https://github.com/chevdor/subwasm/actions/runs/2292032462
 		// are confirmed to be gone.
 		// let metadata = fs::metadata(&filename).expect("unable to read metadata");
