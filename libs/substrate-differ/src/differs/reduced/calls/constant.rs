@@ -1,14 +1,11 @@
 use super::prelude::*;
 use comparable::Comparable;
 use serde::Serialize;
-use std::fmt::Display;
+use std::{collections::BTreeSet, fmt::Display};
 
 /// Reduced Constant
 #[derive(Debug, Serialize, Hash, Comparable, PartialOrd, Ord, PartialEq, Eq)]
 pub struct Constant {
-	/// Index
-	pub index: Index,
-
 	/// Name
 	pub name: String,
 
@@ -21,30 +18,29 @@ pub struct Constant {
 }
 
 impl Constant {
-	pub fn new(index: Index, name: &str, value: Vec<u8>, docs: Documentation) -> Self {
+	pub fn new(name: &str, value: Vec<u8>, docs: Documentation) -> Self {
 		let name = name.into();
-		Self { index, name, value, docs }
+		Self { name, value, docs }
 	}
 }
 
 impl Display for Constant {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let _ = f.write_fmt(format_args!("[{: >2}] {}: {:?}", self.index, self.name, self.value));
+		let _ = f.write_fmt(format_args!("{}: {:?}", self.name, self.value));
 
 		Ok(())
 	}
 }
 
-pub fn variant_to_constants(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
+pub fn variant_to_constants(td: &TypeDefVariant<PortableForm>) -> BTreeSet<Constant> {
 	td.variants()
 		.iter()
 		.map(|vv| {
-			PalletItem::Constant(Constant::new(
-				vv.index() as u32,
+			Constant::new(
 				vv.name(),
-				vec![42], // TODO: That is NOT 42 ........
+				vec![42], // TODO: That is surely NOT 42 ........
 				vv.docs().iter().map(|f| f.into()).collect(),
-			))
+			)
 		})
 		.collect()
 }
@@ -55,9 +51,8 @@ mod test_reduced_constant {
 
 	#[test]
 	fn test_constant() {
-		let c = Constant::new(1, "transfer", vec![12, 42], vec![]);
+		let c = Constant::new("transfer", vec![12, 42], vec![]);
 		println!("c = {:?}", c);
-		assert_eq!(1, c.index);
 		assert_eq!([12, 42], c.value.as_slice());
 	}
 }

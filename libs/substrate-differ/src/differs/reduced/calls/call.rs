@@ -3,7 +3,7 @@ use super::{
 	signature::{Arg, Signature},
 };
 use comparable::{Changed, Comparable};
-use std::fmt::Display;
+use std::{collections::BTreeMap, fmt::Display};
 // use frame_metadata::StorageEntryMetadata;
 use scale_info::{form::PortableForm, TypeDefVariant};
 use serde::Serialize;
@@ -40,14 +40,14 @@ impl Display for Call {
 
 impl Call {
 	pub fn comp(&self) {
-		let c: Changed<_> = self.comparison(&self);
+		let c: Changed<_> = self.comparison(self);
 		c.for_each(|x| {
 			println!("***** x = {:#?}", x);
 		})
 	}
 }
 
-pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
+pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> BTreeMap<Index, Call> {
 	td.variants()
 		.iter()
 		.map(|vv| {
@@ -66,12 +66,15 @@ pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
 			// 	signature: Box::new(Signature { args }),
 			// 	documentation: vv.docs().iter().map(|f| f.into()).collect(),
 			// })
-			PalletItem::Call(Call {
-				index: vv.index() as u32,
-				name: vv.name().to_string(),
-				signature: Signature { args },
-				docs: vv.docs().iter().map(|f| f.into()).collect(),
-			})
+			(
+				vv.index() as Index,
+				Call {
+					index: vv.index() as Index,
+					name: vv.name().to_string(),
+					signature: Signature { args },
+					docs: vv.docs().iter().map(|f| f.into()).collect(),
+				},
+			)
 		})
 		.collect()
 }

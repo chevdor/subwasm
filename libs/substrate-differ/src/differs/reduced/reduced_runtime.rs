@@ -1,3 +1,6 @@
+use super::calls::call::Call;
+use super::calls::error::Error;
+use super::calls::event::Event;
 use super::{calls::prelude::Index, pallet_data::PalletData, pallet_item::PalletItem, reduced_pallet::ReducedPallet};
 use crate::differs::reduced::calls::call::variant_to_calls;
 use crate::differs::reduced::calls::storage::*;
@@ -6,7 +9,7 @@ use comparable::Comparable;
 use frame_metadata::RuntimeMetadata::*;
 use frame_metadata::{v14, PalletCallMetadata, PalletMetadata, RuntimeMetadata};
 use scale_info::{form::PortableForm, PortableRegistry};
-use std::collections::HashMap;
+use std::collections::{BTreeMap, BTreeSet, HashMap};
 use std::fmt::Debug;
 
 pub type ReducedRuntimeError = String;
@@ -71,16 +74,15 @@ impl ReducedRuntime {
 		registry: &PortableRegistry,
 	) -> ReducedPallet {
 		let name = &p.name;
-		// println!("{:?}: {:?}", &p.index, name);
 
 		// calls
-		let mut calls = if let Some(calls) = &p.calls {
+		let calls = if let Some(calls) = &p.calls {
 			let id = calls.ty.id();
 			let ty = registry.resolve(id.to_owned()).unwrap();
 
 			match ty.type_def() {
 				scale_info::TypeDef::Variant(v) => {
-					let calls: Vec<PalletItem> = variant_to_calls(v);
+					let calls: BTreeMap<Index, Call> = variant_to_calls(v);
 
 					// calls.iter().for_each(|call| println!("  call = {}", call));
 					calls
@@ -89,17 +91,17 @@ impl ReducedRuntime {
 			}
 		} else {
 			// println!("   {} has no calls", &p.name);
-			vec![]
+			BTreeMap::new()
 		};
 
 		// events
-		let mut events = if let Some(item) = &p.event {
+		let events = if let Some(item) = &p.event {
 			let id = item.ty.id();
 			let ty = registry.resolve(id.to_owned()).unwrap();
 
 			match ty.type_def() {
 				scale_info::TypeDef::Variant(v) => {
-					let events: Vec<PalletItem> = variant_to_events(v);
+					let events: BTreeMap<Index, Event> = variant_to_events(v);
 
 					// events.iter().for_each(|event| println!("  event = {}", event));
 					events
@@ -108,57 +110,48 @@ impl ReducedRuntime {
 			}
 		} else {
 			// println!("   {} has no events", &p.name);
-			vec![]
+			BTreeMap::new()
 		};
 
 		// errors
-		let mut errors = if let Some(item) = &p.error {
+		let errors = if let Some(item) = &p.error {
 			let id = item.ty.id();
 			let ty = registry.resolve(id.to_owned()).unwrap();
 
 			match ty.type_def() {
 				scale_info::TypeDef::Variant(v) => {
-					let errors: Vec<PalletItem> = variant_to_errors(v);
+					let errors: BTreeMap<Index, Error> = variant_to_errors(v);
 					errors
 				}
 				_ => unimplemented!(),
 			}
 		} else {
 			// println!("   {} has no errors", &p.name);
-			vec![]
+			BTreeMap::new()
 		};
 
 		// storages
-		let mut storages = if let Some(item) = &p.storage {
+		let storages = if let Some(item) = &p.storage {
 			item.entries
 				.iter()
-				.map(|e| {
-					let s = Storage { name: e.name.clone(), docs: e.docs.clone(), default_value: e.default.clone() };
-					PalletItem::Storage(s)
-				})
+				.map(|e| Storage { name: e.name.clone(), docs: e.docs.clone(), default_value: e.default.clone() })
 				.collect()
 		} else {
 			// println!("   {} has no storage", &p.name);
-			vec![]
+			BTreeSet::new()
 		};
 
 		// constants
-		let mut constants: Vec<PalletItem> = p
-			.constants
-			.iter()
-			.map(|i| {
-				let c = Constant::new(0, &i.name, vec![42], i.docs.clone());
-				PalletItem::Constant(c)
-			})
-			.collect();
+		let constants: BTreeSet<Constant> =
+			p.constants.iter().map(|i| Constant::new(&i.name, i.value.clone(), i.docs.clone())).collect();
 
-		let mut items: Vec<PalletItem> = Vec::new();
-		items.append(&mut calls);
-		items.append(&mut events);
-		items.append(&mut errors);
-		items.append(&mut storages);
-		items.append(&mut constants);
-		ReducedPallet { index: p.index.into(), name: name.into(), items }
+		// let mut items: Vec<PalletItem> = Vec::new();
+		// items.append(&mut calls);
+		// items.append(&mut events);
+		// items.append(&mut errors);
+		// items.append(&mut storages);
+		// items.append(&mut constants);
+		ReducedPallet { index: p.index.into(), name: name.into(), calls, events, errors, constants, storages }
 	}
 
 	#[cfg(feature = "v14")]

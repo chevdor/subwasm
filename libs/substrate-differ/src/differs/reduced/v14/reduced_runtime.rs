@@ -33,7 +33,7 @@ impl From<Vec<ReducedPallet>> for ReducedRuntime {
 
 #[cfg(test)]
 mod test_reduced_conversion {
-	use crate::differs::reduced::{pallet_item::PalletItem, reduced_runtime};
+	use crate::differs::reduced::reduced_runtime;
 	use frame_metadata::RuntimeMetadata;
 	use std::path::PathBuf;
 	use wasm_loader::Source;
@@ -61,12 +61,9 @@ mod test_reduced_conversion {
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 				// println!(" first_pallet.items = {:#?}", first_pallet.items);
-				assert_eq!(43, first_pallet.items.len());
+				assert_eq!(9, first_pallet.calls.len());
 
-				match &first_pallet.items[1] {
-					PalletItem::Call(c) => assert_eq!("remark", c.name),
-					_ => unreachable!(),
-				}
+				assert_eq!("remark", &first_pallet.calls.get(&1).unwrap().name);
 			}
 			_ => unreachable!(),
 		}
@@ -91,8 +88,7 @@ mod test_reduced_conversion {
 				assert_eq!("System", first_pallet.name);
 
 				// Check calls
-				let calls = first_pallet.items.iter().filter(|&p| matches!(p, PalletItem::Call(_)));
-				assert_eq!(10, calls.count());
+				assert_eq!(10, first_pallet.calls.len());
 			}
 			_ => unreachable!(),
 		}
@@ -117,8 +113,7 @@ mod test_reduced_conversion {
 				assert_eq!("System", first_pallet.name);
 
 				// Check events
-				let events = first_pallet.items.iter().filter(|&p| matches!(p, PalletItem::Event(_)));
-				assert_eq!(6, events.count());
+				assert_eq!(6, first_pallet.events.len());
 			}
 			_ => unreachable!(),
 		}
@@ -142,15 +137,13 @@ mod test_reduced_conversion {
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 				// println!(" first_pallet.items = {:#?}", first_pallet.items);
-				assert_eq!(43, first_pallet.items.len());
+				assert_eq!(9, first_pallet.calls.len());
+				assert_eq!(6, first_pallet.events.len());
+				assert_eq!(6, first_pallet.errors.len());
+				assert_eq!(16, first_pallet.constants.len());
+				assert_eq!(6, first_pallet.storages.len());
 
-				// Check errors
-				let errors = first_pallet.items.iter().filter(|&p| matches!(p, PalletItem::Error(_)));
-				assert_eq!(5, errors.count());
-				match &first_pallet.items[1] {
-					PalletItem::Call(c) => assert_eq!("remark", c.name),
-					_ => unreachable!(),
-				}
+				assert_eq!("remark", &first_pallet.calls.get(&1).unwrap().name)
 			}
 			_ => unreachable!(),
 		}
@@ -175,8 +168,7 @@ mod test_reduced_conversion {
 				assert_eq!("System", first_pallet.name);
 
 				// Check storages
-				let storages = first_pallet.items.iter().filter(|&p| matches!(p, PalletItem::Storage(_)));
-				assert_eq!(16, storages.count());
+				assert_eq!(16, first_pallet.storages.len());
 			}
 			_ => unreachable!(),
 		}
@@ -201,8 +193,7 @@ mod test_reduced_conversion {
 				assert_eq!("System", first_pallet.name);
 
 				// Check constants
-				let constants = first_pallet.items.iter().filter(|&p| matches!(p, PalletItem::Constant(_)));
-				assert_eq!(6, constants.count());
+				assert_eq!(6, first_pallet.constants.len());
 			}
 			_ => unreachable!(),
 		}

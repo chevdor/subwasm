@@ -1,7 +1,7 @@
 use super::prelude::*;
 use comparable::Comparable;
 use serde::Serialize;
-use std::fmt::Display;
+use std::{collections::BTreeMap, fmt::Display};
 
 /// Reduced Error
 #[derive(Debug, PartialEq, Eq, Serialize, Hash, Comparable, PartialOrd, Ord)]
@@ -21,15 +21,18 @@ impl Display for Error {
 	}
 }
 
-pub fn variant_to_errors(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
+pub fn variant_to_errors(td: &TypeDefVariant<PortableForm>) -> BTreeMap<Index, Error> {
 	td.variants()
 		.iter()
 		.map(|vv| {
-			PalletItem::Error(Error {
-				index: vv.index() as u32,
-				name: vv.name().to_string(),
-				docs: vv.docs().iter().map(|f| f.into()).collect(),
-			})
+			(
+				vv.index() as Index,
+				Error {
+					index: vv.index() as Index,
+					name: vv.name().to_string(),
+					docs: vv.docs().iter().map(|f| f.into()).collect(),
+				},
+			)
 		})
 		.collect()
 }

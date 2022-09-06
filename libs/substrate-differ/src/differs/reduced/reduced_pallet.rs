@@ -1,11 +1,18 @@
-use super::{calls::prelude::Index, diff_result::DiffResult, pallet_item::PalletItem};
+use super::{
+	calls::{call::Call, constant::Constant, error::Error, event::Event, prelude::Index, storage::Storage},
+	diff_result::DiffResult,
+};
 use crate::differs::reduced::change_type::Change;
 use comparable::Comparable;
 use frame_metadata::PalletMetadata;
 use scale_info::form::PortableForm;
-use std::fmt::Display;
+use std::{
+	collections::{BTreeMap, BTreeSet},
+	fmt::Display,
+};
 
 /// A [ReducedPallet] is mainly a `Vec` or [PalletItem].
+// TODO: no doc ?
 #[derive(Debug, PartialEq, Eq, Hash, Comparable)]
 pub struct ReducedPallet {
 	/// Index of the pallet
@@ -13,23 +20,22 @@ pub struct ReducedPallet {
 
 	/// Name of the pallet
 	pub name: String,
-
-	/// Vec of all the `PalletItem`
-	pub items: Vec<PalletItem>,
-	// TODO: no doc ?
+	// /// Vec of all the `PalletItem`. This option makes it easier to manage new variants but is less "diff" friendly.
+	// /// We may go back to that if you PalletItem variants are introduced.
+	// pub items: Vec<PalletItem>,
+	pub calls: BTreeMap<Index, Call>,
+	pub events: BTreeMap<Index, Event>,
+	pub errors: BTreeMap<Index, Error>,
+	pub constants: BTreeSet<Constant>,
+	pub storages: BTreeSet<Storage>,
 }
 
 impl PartialOrd for ReducedPallet {
 	fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
 		match self.index.partial_cmp(&other.index) {
 			a @ Some(core::cmp::Ordering::Equal) => a,
-			ord => return ord,
+			ord => ord,
 		}
-		// match self.name.partial_cmp(&other.name) {
-		//     Some(core::cmp::Ordering::Equal) => {}
-		//     ord => return ord,
-		// }
-		// self.items.partial_cmp(&other.items)
 	}
 }
 
@@ -51,7 +57,8 @@ impl ReducedPallet {
 				}
 
 				// Compare items, this is the most important
-				if pa.items != pb.items {
+				// TODO: this check goes away, we switch to comparable
+				if pa.calls != pb.calls {
 					return DiffResult::new(Change::Modified((pa, pb)));
 				}
 				DiffResult::new(Change::Unchanged)
@@ -67,8 +74,9 @@ impl Display for ReducedPallet {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		let _ = f.write_fmt(format_args!("pallet #{} {}\n", self.index, self.name));
 
-		self.items.iter().for_each(|pallet_item| {
-			let _ = f.write_fmt(format_args!("  - {}\n", pallet_item));
+		// TODO: Show more than the calls
+		self.calls.iter().for_each(|(index, call)| {
+			let _ = f.write_fmt(format_args!("  - {} {}\n", index, call));
 		});
 
 		Ok(())
@@ -92,19 +100,30 @@ impl From<&PalletMetadata<PortableForm>> for ReducedPallet {
 		// let errors: Vec<PalletItem> = pallet.error.as_ref().map(|call| call.into()).unwrap();
 		// let storages: Vec<PalletItem> = pallet.storage.as_ref().map(|call| call.into()).unwrap();
 		// let constants: Vec<PalletItem> = pallet.constants.as_ref().map(|call| call.into()).unwrap();
-		// TODO: Add others as well
-		// let items = calls;
-		let items = vec![];
 
-		// let items = Some(calls); // TODO:
-		// Self { index, name, items }
-		Self { index, name, items }
+		Self {
+			index,
+			name,
+			calls: BTreeMap::new(),
+			events: BTreeMap::new(),
+			errors: BTreeMap::new(),
+			constants: BTreeSet::new(),
+			storages: BTreeSet::new(),
+		}
 	}
 }
 
 #[cfg(test)]
 impl Default for ReducedPallet {
 	fn default() -> Self {
-		Self { index: 42, name: "Foobar".into(), items: vec![] }
+		Self {
+			index: 42,
+			name: "Foobar".into(),
+			calls: BTreeMap::new(),
+			events: BTreeMap::new(),
+			errors: BTreeMap::new(),
+			constants: BTreeSet::new(),
+			storages: BTreeSet::new(),
+		}
 	}
 }

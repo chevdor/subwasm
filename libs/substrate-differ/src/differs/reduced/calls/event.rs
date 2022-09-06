@@ -4,7 +4,7 @@ use super::{
 };
 use comparable::Comparable;
 use serde::Serialize;
-use std::fmt::Display;
+use std::{collections::BTreeMap, fmt::Display};
 
 /// Reduced Event
 #[derive(Debug, PartialEq, Eq, Serialize, Hash, Comparable, PartialOrd, Ord)]
@@ -25,7 +25,7 @@ impl Display for Event {
 	}
 }
 
-pub fn variant_to_events(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
+pub fn variant_to_events(td: &TypeDefVariant<PortableForm>) -> BTreeMap<Index, Event> {
 	td.variants()
 		.iter()
 		.map(|vv| {
@@ -38,12 +38,15 @@ pub fn variant_to_events(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem> {
 				})
 				.collect();
 
-			PalletItem::Event(Event {
-				index: vv.index() as u32,
-				name: vv.name().to_string(),
-				signature: Signature { args },
-				docs: vv.docs().iter().map(|f| f.into()).collect(),
-			})
+			(
+				vv.index() as Index,
+				Event {
+					index: vv.index() as Index,
+					name: vv.name().to_string(),
+					signature: Signature { args },
+					docs: vv.docs().iter().map(|f| f.into()).collect(),
+				},
+			)
 		})
 		.collect()
 }

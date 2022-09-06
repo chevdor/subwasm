@@ -224,7 +224,12 @@ mod test_diff_runtimes {
 		let mut results = differ.diff(DiffOptions::default());
 		results.sort_by(|(a, _), (b, _)| -> std::cmp::Ordering { a.cmp(b) });
 		for (pallet_index, diff) in results {
-			println!("{index:>3}{name:.>32} => {diff}", name = "todo_name", index = pallet_index, diff = diff);
+			println!(
+				"{index:>3}{name:.>32} => {diff}",
+				name = "todo_name will go away",
+				index = pallet_index,
+				diff = diff
+			);
 		}
 
 		differ.comp();
