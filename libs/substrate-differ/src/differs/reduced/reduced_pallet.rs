@@ -1,11 +1,9 @@
-use std::{cmp::Ordering, fmt::Display};
-
-use crate::differs::reduced::change_type::Change;
-
 use super::{calls::prelude::Index, diff_result::DiffResult, pallet_item::PalletItem};
+use crate::differs::reduced::change_type::Change;
 use comparable::Comparable;
 use frame_metadata::PalletMetadata;
 use scale_info::form::PortableForm;
+use std::fmt::Display;
 
 /// A [ReducedPallet] is mainly a `Vec` or [PalletItem].
 #[derive(Debug, PartialEq, Eq, Hash, Comparable)]

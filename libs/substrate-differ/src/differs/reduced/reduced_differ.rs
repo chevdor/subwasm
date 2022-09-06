@@ -5,9 +5,9 @@ use crate::differs::{
 	reduced::{change_type::Change, reduced_pallet::*},
 	DiffOptions, Differ,
 };
-use comparable::{Changed, Comparable, VecChange};
+use comparable::{Changed, Comparable, MapChange};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadata::*};
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 
 // TODO: Placeholder, here we can convert from V14 to V13. We don't need to convert
 // once we can normalize.
@@ -62,22 +62,20 @@ impl ReducedDiffer {
 			Changed::Changed(changes) => {
 				// println!("p = {:#?}", p);
 
-				changes.pallets.iter().for_each(
-					|c: &VecChange<ReducedPalletDesc, Vec<reduced_pallet::ReducedPalletChange>>| {
-						match c {
-							VecChange::Added(index, desc) => {
-								println!("[+] {} => {:?}", index, desc);
-							}
-							VecChange::Changed(index, change) => {
-								println!("[/] {} => {:#?}", index, change);
-							}
-							VecChange::Removed(index, desc) => {
-								println!("[-] {} => {:#?}", index, desc);
-							}
-						};
-						// println!("index = {:?}", c);
-					},
-				)
+				changes.pallets.iter().for_each(|c: &MapChange<Index, ReducedPalletDesc, Vec<ReducedPalletChange>>| {
+					match c {
+						MapChange::Added(index, desc) => {
+							println!("[+] {} => {:?}", index, desc);
+						}
+						MapChange::Changed(index, change) => {
+							println!("[/] {} => {:#?}", index, change);
+						}
+						MapChange::Removed(index) => {
+							println!("[-] {}", index);
+						}
+					};
+					// println!("index = {:?}", c);
+				})
 			}
 			Changed::Unchanged => {
 				println!("UNCHANGED")
@@ -97,19 +95,10 @@ impl Differ<ReducedPallet> for ReducedDiffer {
 		let r2 = &self.r2;
 
 		// We gather the Set of all indexes in both pallets
-		let indexes_1: HashMap<PalletId, &ReducedPallet> =
-			r1.pallets.iter().map(|pallet| ((pallet.name.clone(), pallet.index), pallet)).collect();
-		let indexes_2: HashMap<PalletId, &ReducedPallet> =
-			r2.pallets.iter().map(|pallet| ((pallet.name.clone(), pallet.index), pallet)).collect();
-		// println!("indicies {:?}", indexes_1);
+		let indexes_1 = &r1.pallets;
+		let indexes_2 = &r2.pallets;
 		let mut indexes: HashSet<PalletId> = indexes_1.keys().cloned().collect();
 		indexes.extend(indexes_2.keys().cloned());
-		// println!("indexes_1 = {:?}", indexes_1);
-		// println!("indexes_2 = {:?}", indexes_2);
-		// println!("indexes = {:?}", indexes);
-		// assert_eq!(indexes_1.len(), 51);
-		// assert_eq!(indexes_2.len(), 50);
-		// assert_eq!(indexes.len(), 51);
 
 		let mut results = vec![];
 
@@ -179,11 +168,11 @@ mod test_diff_runtimes {
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
 		let results = differ.diff(DiffOptions::default());
 
-		for ((pallet_name, pallet_index), pallet_diff) in results {
-			println!("pallet: {:>2?} - {}", pallet_index, pallet_name,);
-			if pallet_name == "Scheduler" {
-				assert_eq!(1, pallet_index);
-			}
+		for (pallet_index, pallet_diff) in results {
+			println!("pallet: {:>2?}", pallet_index,);
+			// if pallet_name == "Scheduler" {
+			// 	assert_eq!(1, pallet_index);
+			// }
 			assert!(matches!(pallet_diff.change, Change::Unchanged));
 		}
 	}
@@ -200,8 +189,8 @@ mod test_diff_runtimes {
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
 		let results = differ.diff(DiffOptions::default());
 
-		for ((pallet_name, pallet_index), pallet_diff) in results {
-			println!("pallet: {:>2?} - {}", pallet_index, pallet_name,);
+		for (pallet_index, pallet_diff) in results {
+			println!("pallet: {:>2?}", pallet_index);
 			assert!(matches!(pallet_diff.change, Change::Unchanged));
 		}
 	}
@@ -218,8 +207,8 @@ mod test_diff_runtimes {
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
 		let results = differ.diff(DiffOptions::default());
 
-		for ((pallet_name, pallet_index), pallet_diff) in results {
-			println!("pallet: {:>2?} - {}", pallet_index, pallet_name,);
+		for (pallet_index, pallet_diff) in results {
+			println!("pallet: {:>2?}", pallet_index);
 			assert!(matches!(pallet_diff.change, Change::Unchanged));
 		}
 	}
@@ -233,9 +222,9 @@ mod test_diff_runtimes {
 
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
 		let mut results = differ.diff(DiffOptions::default());
-		results.sort_by(|((_, a), _), ((_, b), _)| -> std::cmp::Ordering { a.cmp(b) });
-		for ((pallet_name, pallet_index), diff) in results {
-			println!("{index:>3}{name:.>32} => {diff}", name = pallet_name, index = pallet_index, diff = diff);
+		results.sort_by(|(a, _), (b, _)| -> std::cmp::Ordering { a.cmp(b) });
+		for (pallet_index, diff) in results {
+			println!("{index:>3}{name:.>32} => {diff}", name = "todo_name", index = pallet_index, diff = diff);
 		}
 
 		differ.comp();
@@ -245,7 +234,7 @@ mod test_diff_runtimes {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9260_9270_system() {
-		use crate::differs::reduced::{change_type::Change, reduced_runtime::ReducedRuntime};
+		use crate::differs::reduced::reduced_runtime::ReducedRuntime;
 
 		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9100))).unwrap();
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9260))).unwrap();
@@ -253,8 +242,8 @@ mod test_diff_runtimes {
 		let ra = ReducedRuntime::from(a.metadata());
 		let rb = ReducedRuntime::from(b.metadata());
 
-		let sys_ra = &ra.pallets[0];
-		let sys_rb = &rb.pallets[0];
+		let sys_ra = &ra.pallets[&0];
+		let sys_rb = &rb.pallets[&0];
 
 		println!("sys_ra = {}", sys_ra);
 		println!("sys_rb = {}", sys_rb);

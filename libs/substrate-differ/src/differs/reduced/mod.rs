@@ -13,7 +13,7 @@ pub mod reduced_trait;
 pub mod signature;
 
 /// This is the pallet name and the pallet index.
-pub type PalletId = (String, Index);
+pub type PalletId = Index;
 
 #[cfg(feature = "v13")]
 pub mod v13;

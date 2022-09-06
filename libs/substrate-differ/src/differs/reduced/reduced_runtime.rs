@@ -1,4 +1,4 @@
-use super::{pallet_data::PalletData, pallet_item::PalletItem, reduced_pallet::ReducedPallet};
+use super::{calls::prelude::Index, pallet_data::PalletData, pallet_item::PalletItem, reduced_pallet::ReducedPallet};
 use crate::differs::reduced::calls::call::variant_to_calls;
 use crate::differs::reduced::calls::storage::*;
 use crate::differs::reduced::calls::{constant::Constant, error::variant_to_errors, event::variant_to_events};
@@ -6,6 +6,7 @@ use comparable::Comparable;
 use frame_metadata::RuntimeMetadata::*;
 use frame_metadata::{v14, PalletCallMetadata, PalletMetadata, RuntimeMetadata};
 use scale_info::{form::PortableForm, PortableRegistry};
+use std::collections::HashMap;
 use std::fmt::Debug;
 
 pub type ReducedRuntimeError = String;
@@ -34,11 +35,19 @@ impl From<&PalletCallMetadata<PortableForm>> for PalletData {
 pub struct ReducedRuntime {
 	// TODO: remove pub once we have an iterator
 	// TODO: Could use a BTreeMap
-	pub pallets: Vec<ReducedPallet>,
+	pub pallets: HashMap<Index, ReducedPallet>,
 }
 
-impl From<Vec<ReducedPallet>> for ReducedRuntime {
-	fn from(pallets: Vec<ReducedPallet>) -> Self {
+// impl From<Vec<ReducedPallet>> for ReducedRuntime {
+// 	fn from(pallets: Vec<ReducedPallet>) -> Self {
+// 		let hashmap =
+// 			HashMap::from_iter(pallets.iter().map(|p| (p.index, p)).collect::<Vec<(Index, ReducedPallet)>>());
+// 		Self { pallets: hashmap }
+// 	}
+// }
+
+impl From<HashMap<Index, ReducedPallet>> for ReducedRuntime {
+	fn from(pallets: HashMap<Index, ReducedPallet>) -> Self {
 		Self { pallets }
 	}
 }
@@ -164,18 +173,17 @@ impl ReducedRuntime {
 		let _extrinsics = &v14.extrinsic;
 
 		let pallets = &v14.pallets;
-		let reduced_pallets: Vec<ReducedPallet> =
-			pallets.iter().map(|p| ReducedRuntime::get_reduced_pallet_from_v14_pallet(p, registry)).collect();
+		let reduced_pallets: HashMap<Index, ReducedPallet> = pallets
+			.iter()
+			.map(|p| {
+				let reduced_runtime = ReducedRuntime::get_reduced_pallet_from_v14_pallet(p, registry);
+				(reduced_runtime.index, reduced_runtime)
+			})
+			.collect();
 
 		let r_rtm: ReducedRuntime = reduced_pallets.into();
 		Ok(r_rtm)
 	}
-
-	// pub fn diff(&self, other: &ReducedPallet) {
-	// 	let r1 = self;
-	// 	let r2 = other;
-
-	// }
 }
 
 impl From<&RuntimeMetadata> for ReducedRuntime {
