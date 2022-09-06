@@ -27,7 +27,7 @@ pub struct Call {
 
 impl Display for Call {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let _ = f.write_fmt(format_args!("{:?}: {}( {} )", self.index, self.name, self.signature));
+		let _ = f.write_fmt(format_args!("[{: >2}] {} ( {} )", self.index, self.name, self.signature));
 
 		// // TODO: impl display for Signature
 		// self.signature.args.iter().for_each(|a| {

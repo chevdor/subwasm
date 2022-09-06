@@ -1,20 +1,12 @@
-use crate::differs::reduced::calls::call::variant_to_calls;
-use crate::differs::reduced::calls::constant::Constant;
-use crate::differs::reduced::calls::error::variant_to_errors;
-use crate::differs::reduced::calls::event::variant_to_events;
-use crate::differs::reduced::calls::storage::*;
-use comparable::Comparable;
-use frame_metadata::v14;
-use frame_metadata::PalletCallMetadata;
-use frame_metadata::PalletMetadata;
-use frame_metadata::RuntimeMetadata;
-use frame_metadata::RuntimeMetadata::*;
-use scale_info::form::PortableForm;
-use scale_info::PortableRegistry;
-use std::collections::HashSet;
-use std::fmt::Debug;
-
 use super::{pallet_data::PalletData, pallet_item::PalletItem, reduced_pallet::ReducedPallet};
+use crate::differs::reduced::calls::call::variant_to_calls;
+use crate::differs::reduced::calls::storage::*;
+use crate::differs::reduced::calls::{constant::Constant, error::variant_to_errors, event::variant_to_events};
+use comparable::Comparable;
+use frame_metadata::RuntimeMetadata::*;
+use frame_metadata::{v14, PalletCallMetadata, PalletMetadata, RuntimeMetadata};
+use scale_info::{form::PortableForm, PortableRegistry};
+use std::fmt::Debug;
 
 pub type ReducedRuntimeError = String;
 pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
@@ -42,7 +34,7 @@ impl From<&PalletCallMetadata<PortableForm>> for PalletData {
 pub struct ReducedRuntime {
 	// TODO: remove pub once we have an iterator
 	// TODO: Could use a BTreeMap
-	pub pallets: HashSet<ReducedPallet>,
+	pub pallets: Vec<ReducedPallet>,
 }
 
 impl From<Vec<ReducedPallet>> for ReducedRuntime {

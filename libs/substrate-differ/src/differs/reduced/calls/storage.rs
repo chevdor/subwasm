@@ -24,11 +24,21 @@ impl Storage {
 		let name = name.into();
 		Self { name, default_value, docs }
 	}
+
+	/// Lots of the default values are arrays of zeroes. This helper shows those long
+	/// arrays in a compressed form more appropriate to display.
+	fn format_compress_vec(&self) -> String {
+		const LIMIT: usize = 1;
+		if self.default_value.len() > LIMIT && self.default_value.iter().all(|x| x == &0) {
+			return format!("[0; {}]", self.default_value.len());
+		}
+		format!("{:?}", self.default_value)
+	}
 }
 
 impl Display for Storage {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let _ = f.write_fmt(format_args!("{}", self.name));
+		let _ = f.write_fmt(format_args!("{} [{}]", self.name, self.format_compress_vec()));
 
 		Ok(())
 	}

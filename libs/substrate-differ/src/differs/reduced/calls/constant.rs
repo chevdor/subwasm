@@ -29,7 +29,7 @@ impl Constant {
 
 impl Display for Constant {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let _ = f.write_fmt(format_args!("{:?}: {}", self.index, self.name));
+		let _ = f.write_fmt(format_args!("[{: >2}] {}: {:?}", self.index, self.name, self.value));
 
 		Ok(())
 	}
@@ -42,7 +42,7 @@ pub fn variant_to_constants(td: &TypeDefVariant<PortableForm>) -> Vec<PalletItem
 			PalletItem::Constant(Constant::new(
 				vv.index() as u32,
 				vv.name(),
-				vec![42],
+				vec![42], // TODO: That is NOT 42 ........
 				vv.docs().iter().map(|f| f.into()).collect(),
 			))
 		})

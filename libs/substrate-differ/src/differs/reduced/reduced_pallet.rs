@@ -1,3 +1,5 @@
+use std::{cmp::Ordering, fmt::Display};
+
 use crate::differs::reduced::change_type::Change;
 
 use super::{calls::prelude::Index, diff_result::DiffResult, pallet_item::PalletItem};
@@ -6,7 +8,7 @@ use frame_metadata::PalletMetadata;
 use scale_info::form::PortableForm;
 
 /// A [ReducedPallet] is mainly a `Vec` or [PalletItem].
-#[derive(Debug, PartialEq, Eq, Hash, Comparable, PartialOrd, Ord)]
+#[derive(Debug, PartialEq, Eq, Hash, Comparable)]
 pub struct ReducedPallet {
 	/// Index of the pallet
 	pub index: Index,
@@ -17,6 +19,20 @@ pub struct ReducedPallet {
 	/// Vec of all the `PalletItem`
 	pub items: Vec<PalletItem>,
 	// TODO: no doc ?
+}
+
+impl PartialOrd for ReducedPallet {
+	fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+		match self.index.partial_cmp(&other.index) {
+			a @ Some(core::cmp::Ordering::Equal) => a,
+			ord => return ord,
+		}
+		// match self.name.partial_cmp(&other.name) {
+		//     Some(core::cmp::Ordering::Equal) => {}
+		//     ord => return ord,
+		// }
+		// self.items.partial_cmp(&other.items)
+	}
 }
 
 // TODO: impl Iterator
@@ -46,6 +62,18 @@ impl ReducedPallet {
 			(None, Some(pb)) => return DiffResult::new(Change::Added(pb)),
 			(None, None) => unreachable!(),
 		}
+	}
+}
+
+impl Display for ReducedPallet {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		let _ = f.write_fmt(format_args!("pallet #{} {}\n", self.index, self.name));
+
+		self.items.iter().for_each(|pallet_item| {
+			let _ = f.write_fmt(format_args!("  - {}\n", pallet_item));
+		});
+
+		Ok(())
 	}
 }
 

@@ -19,7 +19,7 @@ pub struct Event {
 
 impl Display for Event {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let _ = f.write_fmt(format_args!("{:?}: {}( {} )", self.index, self.name, self.signature));
+		let _ = f.write_fmt(format_args!("[{: >2}] {} ( {} )", self.index, self.name, self.signature));
 
 		Ok(())
 	}
