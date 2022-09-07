@@ -145,11 +145,10 @@ pub fn reduced_diff(src_a: Source, src_b: Source) {
 	println!("  🅱️  {:?}", src_b);
 	let runtime_b = WasmTestBed::new(&src_b).expect("Can only diff if the 2 runtimes can load");
 
-	log::trace!("TRACE1");
-
 	let partial = ReducedDiffer::new(runtime_a.metadata(), runtime_b.metadata());
 	log::trace!("TRACE2");
 	let opts = DiffOptions::default();
+
 	partial.diff(opts);
 	log::trace!("TRACE3");
 }

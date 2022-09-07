@@ -84,6 +84,7 @@ impl ReducedDiffer {
 	}
 }
 
+// TODO: The following should NOT be needed with comparable
 impl Differ<ReducedPallet> for ReducedDiffer {
 	// TODO: The following may even go to the default impl in the Trait
 	fn diff(&self, options: DiffOptions) -> Vec<(PalletId, DiffResult<ReducedPallet>)> {
