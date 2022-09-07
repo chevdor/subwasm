@@ -194,11 +194,8 @@ mod test_diff_runtimes {
 
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
 		let comp = differ.comp();
-		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
-		// for (pallet_index, pallet_diff) in results {
-		// 	println!("pallet: {:>2?}", pallet_index);
-		// 	assert!(matches!(pallet_diff.change, Change::Unchanged));
-		// }
+		assert!(matches!(comp.as_ref(), Changed::Unchanged));
+		println!("comp = {}", comp);
 	}
 
 	#[test]
@@ -207,22 +204,15 @@ mod test_diff_runtimes {
 	fn test_v14_polkadot_9260_9270_full() {
 		use comparable::Changed;
 
-		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9100))).unwrap();
-		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9260))).unwrap();
+		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9260))).unwrap();
+		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9270))).unwrap();
 
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
 		let comp = differ.comp();
 
-		// results.sort_by(|(a, _), (b, _)| -> std::cmp::Ordering { a.cmp(b) });
 		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
-		// for (pallet_index, diff) in comp.as_ref() {
-		// 	println!(
-		// 		"{index:>3}{name:.>32} => {diff}",
-		// 		name = "todo_name will go away",
-		// 		index = pallet_index,
-		// 		diff = diff
-		// 	);
-		// }
+		println!("COMP:");
+		println!("{}", comp);
 	}
 
 	#[test]
