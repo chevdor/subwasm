@@ -3,11 +3,12 @@ use std::path::Path;
 use std::{fs::File, path::PathBuf};
 use std::{io::prelude::*, str::FromStr};
 pub use substrate_differ::differs::diff_method::DiffMethod;
-use substrate_differ::differs::raw::raw_differ::RawDiffer;
-use substrate_differ::differs::raw::raw_differ_options::RawDifferOptions;
-use substrate_differ::differs::reduced::reduced_differ::ReducedDiffer;
-use substrate_differ::differs::summary::RuntimeSummaryDiffer;
-use substrate_differ::differs::{DiffOptions, Differ};
+use substrate_differ::differs::{
+	raw::{raw_differ::RawDiffer, raw_differ_options::RawDifferOptions},
+	reduced::reduced_differ::ReducedDiffer,
+	summary::RuntimeSummaryDiffer,
+	DiffOptions,
+};
 use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, WasmLoader};
 use wasm_testbed::WasmTestBed;
 mod chain_info;
@@ -145,12 +146,11 @@ pub fn reduced_diff(src_a: Source, src_b: Source) {
 	println!("  🅱️  {:?}", src_b);
 	let runtime_b = WasmTestBed::new(&src_b).expect("Can only diff if the 2 runtimes can load");
 
-	let partial = ReducedDiffer::new(runtime_a.metadata(), runtime_b.metadata());
-	log::trace!("TRACE2");
-	let opts = DiffOptions::default();
+	let _partial = ReducedDiffer::new(runtime_a.metadata(), runtime_b.metadata());
+	let _opts = DiffOptions::default();
 
-	partial.diff(opts);
-	log::trace!("TRACE3");
+	// partial.diff(opts);
+	todo!();
 }
 
 /// Compress a given runtime into a new file. You cannot compress
