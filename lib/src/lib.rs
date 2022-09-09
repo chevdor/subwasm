@@ -146,11 +146,11 @@ pub fn reduced_diff(src_a: Source, src_b: Source) {
 	println!("  🅱️  {:?}", src_b);
 	let runtime_b = WasmTestBed::new(&src_b).expect("Can only diff if the 2 runtimes can load");
 
-	let _partial = ReducedDiffer::new(runtime_a.metadata(), runtime_b.metadata());
+	let differ = ReducedDiffer::new(runtime_a.metadata(), runtime_b.metadata());
 	let _opts = DiffOptions::default();
 
-	// partial.diff(opts);
-	todo!();
+	let changes = differ.comp();
+	println!("{}", changes);
 }
 
 /// Compress a given runtime into a new file. You cannot compress
