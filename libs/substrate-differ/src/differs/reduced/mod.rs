@@ -4,6 +4,7 @@ pub mod calls;
 pub mod change_type;
 pub mod changed_wapper;
 pub mod diff_result;
+pub mod diff_stats;
 pub mod diff_trait;
 pub mod pallet_data;
 pub mod pallet_item;

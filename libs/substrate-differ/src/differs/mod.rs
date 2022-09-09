@@ -10,7 +10,7 @@ pub mod summary;
 pub mod utils;
 
 #[cfg(test)]
-pub mod test_constants;
+pub mod test_runtimes;
 
 #[derive(Debug)]
 pub struct DiffOptionInclude {

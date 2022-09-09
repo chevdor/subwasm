@@ -21,10 +21,6 @@ pub struct ReducedRuntime {
 	pub pallets: Vec<ReducedPallet>, // TODO: Could use a BTreeMap
 }
 
-// impl SliceIndex<[ReducedPallet] for u32 {
-
-// }
-
 impl From<Vec<ReducedPallet>> for ReducedRuntime {
 	fn from(pallets: Vec<ReducedPallet>) -> Self {
 		Self { pallets }
@@ -46,23 +42,19 @@ mod test_reduced_conversion {
 	#[test]
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
-	fn test_reduce_v14_global() {
+	fn test_reduce_v14_first_pallet_first_call() {
 		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let metadata = testbed.metadata();
 
 		match metadata {
 			RuntimeMetadata::V14(v14) => {
 				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
-				// println!("rrtm = {:#?}", rrtm);
-
 				assert_eq!(rrtm.pallets.len(), 30);
 
 				let first_pallet = &rrtm.pallets[&0];
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
-				// println!(" first_pallet.items = {:#?}", first_pallet.items);
-				assert_eq!(9, first_pallet.calls.len());
-
+				assert_eq!(10, first_pallet.calls.len());
 				assert_eq!("remark", &first_pallet.calls.get(&1).unwrap().name);
 			}
 			_ => unreachable!(),
@@ -79,15 +71,12 @@ mod test_reduced_conversion {
 		match metadata {
 			RuntimeMetadata::V14(v14) => {
 				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
-				// println!("rrtm = {:#?}", rrtm);
-
 				assert_eq!(rrtm.pallets.len(), 30);
 
 				let first_pallet = &rrtm.pallets[&0];
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 
-				// Check calls
 				assert_eq!(10, first_pallet.calls.len());
 			}
 			_ => unreachable!(),
@@ -104,15 +93,12 @@ mod test_reduced_conversion {
 		match metadata {
 			RuntimeMetadata::V14(v14) => {
 				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
-				// println!("rrtm = {:#?}", rrtm);
-
 				assert_eq!(rrtm.pallets.len(), 30);
 
 				let first_pallet = &rrtm.pallets[&0];
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 
-				// Check events
 				assert_eq!(6, first_pallet.events.len());
 			}
 			_ => unreachable!(),
@@ -122,26 +108,24 @@ mod test_reduced_conversion {
 	#[test]
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
-	fn test_reduce_v14_errors() {
+	fn test_reduce_v14_global() {
 		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let metadata = testbed.metadata();
 
 		match metadata {
 			RuntimeMetadata::V14(v14) => {
 				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
-				// println!("rrtm = {:#?}", rrtm);
-
 				assert_eq!(rrtm.pallets.len(), 30);
 
 				let first_pallet = &rrtm.pallets[&0];
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
-				// println!(" first_pallet.items = {:#?}", first_pallet.items);
-				assert_eq!(9, first_pallet.calls.len());
+
+				assert_eq!(10, first_pallet.calls.len());
 				assert_eq!(6, first_pallet.events.len());
-				assert_eq!(6, first_pallet.errors.len());
-				assert_eq!(16, first_pallet.constants.len());
-				assert_eq!(6, first_pallet.storages.len());
+				assert_eq!(5, first_pallet.errors.len());
+				assert_eq!(6, first_pallet.constants.len());
+				assert_eq!(16, first_pallet.storages.len());
 
 				assert_eq!("remark", &first_pallet.calls.get(&1).unwrap().name)
 			}
@@ -159,15 +143,12 @@ mod test_reduced_conversion {
 		match metadata {
 			RuntimeMetadata::V14(v14) => {
 				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
-				// println!("rrtm = {:#?}", rrtm);
-
 				assert_eq!(rrtm.pallets.len(), 30);
 
 				let first_pallet = &rrtm.pallets[&0];
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 
-				// Check storages
 				assert_eq!(16, first_pallet.storages.len());
 			}
 			_ => unreachable!(),
@@ -184,15 +165,12 @@ mod test_reduced_conversion {
 		match metadata {
 			RuntimeMetadata::V14(v14) => {
 				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
-				// println!("rrtm = {:#?}", rrtm);
-
 				assert_eq!(rrtm.pallets.len(), 30);
 
 				let first_pallet = &rrtm.pallets[&0];
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 
-				// Check constants
 				assert_eq!(6, first_pallet.constants.len());
 			}
 			_ => unreachable!(),

@@ -1,15 +1,19 @@
-use super::calls::call::Call;
-use super::calls::error::Error;
-use super::calls::event::Event;
-use super::{calls::prelude::Index, pallet_data::PalletData, pallet_item::PalletItem, reduced_pallet::ReducedPallet};
-use crate::differs::reduced::calls::call::variant_to_calls;
-use crate::differs::reduced::calls::storage::*;
-use crate::differs::reduced::calls::{constant::Constant, error::variant_to_errors, event::variant_to_events};
+use super::{
+	calls::{call::Call, error::Error, event::Event, prelude::Index},
+	pallet_data::PalletData,
+	pallet_item::PalletItem,
+	reduced_pallet::ReducedPallet,
+};
+use crate::differs::reduced::calls::{
+	call::variant_to_calls, constant::Constant, error::variant_to_errors, event::variant_to_events, storage::*,
+};
 use comparable::Comparable;
-use frame_metadata::RuntimeMetadata::*;
-use frame_metadata::{v14, PalletCallMetadata, PalletMetadata, RuntimeMetadata};
+use frame_metadata::{
+	v14, PalletCallMetadata, PalletMetadata,
+	RuntimeMetadata::{self, *},
+};
 use scale_info::{form::PortableForm, PortableRegistry};
-use std::collections::{BTreeMap, BTreeSet, HashMap};
+use std::collections::{BTreeMap, HashMap};
 use std::fmt::Debug;
 
 pub type ReducedRuntimeError = String;
@@ -22,17 +26,13 @@ impl From<&PalletCallMetadata<PortableForm>> for PalletItem {
 	}
 }
 
-// impl From<&PalletCallMetadata<PortableForm>> for Vec<PalletItem> {
-// 	fn from(fn_meta: &PalletCallMetadata<PortableForm>) -> Self {
-// 		PalletItem::Call(fn_meta.into())
-// 	}
-// }
-
 impl From<&PalletCallMetadata<PortableForm>> for PalletData {
 	fn from(call: &PalletCallMetadata<PortableForm>) -> Self {
 		Self { name: "todo".to_string(), index: None, signature: Box::new(call.ty), docs: vec![] }
 	}
 }
+
+// TODO: fix the variables names in here
 
 #[derive(Debug, PartialEq, Eq, Comparable)]
 pub struct ReducedRuntime {
@@ -40,14 +40,6 @@ pub struct ReducedRuntime {
 	// TODO: Could use a BTreeMap
 	pub pallets: HashMap<Index, ReducedPallet>,
 }
-
-// impl From<Vec<ReducedPallet>> for ReducedRuntime {
-// 	fn from(pallets: Vec<ReducedPallet>) -> Self {
-// 		let hashmap =
-// 			HashMap::from_iter(pallets.iter().map(|p| (p.index, p)).collect::<Vec<(Index, ReducedPallet)>>());
-// 		Self { pallets: hashmap }
-// 	}
-// }
 
 impl From<HashMap<Index, ReducedPallet>> for ReducedRuntime {
 	fn from(pallets: HashMap<Index, ReducedPallet>) -> Self {
@@ -134,23 +126,25 @@ impl ReducedRuntime {
 		let storages = if let Some(item) = &p.storage {
 			item.entries
 				.iter()
-				.map(|e| Storage { name: e.name.clone(), docs: e.docs.clone(), default_value: e.default.clone() })
+				.map(|e| {
+					(
+						e.name.clone(),
+						Storage { name: e.name.clone(), docs: e.docs.clone(), default_value: e.default.clone() },
+					)
+				})
 				.collect()
 		} else {
 			// println!("   {} has no storage", &p.name);
-			BTreeSet::new()
+			BTreeMap::new()
 		};
 
 		// constants
-		let constants: BTreeSet<Constant> =
-			p.constants.iter().map(|i| Constant::new(&i.name, i.value.clone(), i.docs.clone())).collect();
+		let constants: BTreeMap<String, Constant> = p
+			.constants
+			.iter()
+			.map(|i| (i.name.clone(), Constant::new(&i.name, i.value.clone(), i.docs.clone())))
+			.collect();
 
-		// let mut items: Vec<PalletItem> = Vec::new();
-		// items.append(&mut calls);
-		// items.append(&mut events);
-		// items.append(&mut errors);
-		// items.append(&mut storages);
-		// items.append(&mut constants);
 		ReducedPallet { index: p.index.into(), name: name.into(), calls, events, errors, constants, storages }
 	}
 
@@ -158,9 +152,6 @@ impl ReducedRuntime {
 	/// Reduce a RuntimeMetadataV14 into a normalized ReducedRuntime
 	pub fn from_v14(v14: &v14::RuntimeMetadataV14) -> Result<Self> {
 		let registry = &v14.types;
-		// let runtime_type = registry.resolve(v14.ty.id()).unwrap();
-		// println!("runtime_type = {:?}", runtime_type);
-		// println!("runtime_type = {:?}", runtime_type.path().segments());
 
 		// TODO: deal with extrinsic as well
 		let _extrinsics = &v14.extrinsic;
@@ -182,6 +173,7 @@ impl ReducedRuntime {
 impl From<&RuntimeMetadata> for ReducedRuntime {
 	fn from(runtime_metadata: &RuntimeMetadata) -> Self {
 		match &runtime_metadata {
+			// TODO: Bring back v13 eventually
 			// #[cfg(feature = "v13")]
 			// V13(v13) => ReducedRuntime::from_v13(v13).unwrap(),
 			#[cfg(feature = "v14")]

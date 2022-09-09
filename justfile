@@ -5,6 +5,9 @@ export TAG:=`toml get cli/Cargo.toml "package.version" | jq -r .`
 _default:
   just --choose --chooser "fzf +s -x --tac --cycle"
 
+help:
+	just --list
+
 test:
 	cargo nextest run --no-fail-fast
 
@@ -88,3 +91,18 @@ tag:
     echo Tagging version v$TAG
     git tag "v$TAG" -f
     git tag | sort -Vr | head
+
+# Fetch the current runtimes
+get_runtimes:
+	#!/bin/sh
+	for chain in kusama westend polkadot statemint statemine westmint; do
+		echo "Fetching current $chain runtime"
+		JSON=$(subwasm info --chain $chain -j)
+		SPEC_VERSION=$(echo $JSON | jq -r .core_version.specVersion)
+		METADATA_VERSION=$(echo $JSON | jq -r .metadata_version)
+		echo "  Spec Version: $SPEC_VERSION"
+		echo "  Metadata Version: V$METADATA_VERSION"
+		mkdir -p "data/$chain/V$METADATA_VERSION"
+		subwasm get --chain $chain -o data/$chain/V$METADATA_VERSION/$SPEC_VERSION.wasm
+	done
+	find data -newermt "-15 minutes" -iname "*.wasm" -ls
