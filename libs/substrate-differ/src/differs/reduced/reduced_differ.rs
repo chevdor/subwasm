@@ -54,7 +54,9 @@ impl ReducedDiffer {
 	// }
 
 	pub fn comp(&self) -> ChangedWrapper {
-		self.r1.comparison(&self.r2).into()
+		let comp = self.r1.comparison(&self.r2).into();
+
+		comp
 		// match diff {
 		// 	Changed::Changed(changes) => {
 		// 		// println!("p = {:#?}", p);

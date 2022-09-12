@@ -1,8 +1,5 @@
-use super::{
-	calls::{prelude::Index, *},
-	diff_result::DiffResult,
-};
-use crate::differs::reduced::change_type::Change;
+use super::calls::{prelude::Index, *};
+// use crate::differs::reduced::change_type::Change;
 use comparable::{Comparable, MapChange};
 use frame_metadata::PalletMetadata;
 use scale_info::form::PortableForm;
@@ -34,33 +31,33 @@ impl PartialOrd for ReducedPallet {
 
 // TODO: impl Iterator
 impl ReducedPallet {
-	/// Computes the differences between 2 pallets
-	pub fn diff<'meta>(
-		pallet_a: Option<&'meta Self>,
-		pallet_b: Option<&'meta Self>,
-	) -> DiffResult<'meta, ReducedPallet> {
-		match (pallet_a, pallet_b) {
-			(Some(pa), Some(pb)) => {
-				// Compare indexes... well kinda...
-				assert_eq!(pa.index, pb.index, "Comparing different indexes does not make much sense");
+	// /// Computes the differences between 2 pallets
+	// pub fn diff<'meta>(
+	// 	pallet_a: Option<&'meta Self>,
+	// 	pallet_b: Option<&'meta Self>,
+	// ) -> DiffResult<'meta, ReducedPallet> {
+	// 	match (pallet_a, pallet_b) {
+	// 		(Some(pa), Some(pb)) => {
+	// 			// Compare indexes... well kinda...
+	// 			assert_eq!(pa.index, pb.index, "Comparing different indexes does not make much sense");
 
-				// Compare names
-				if pa.name != pb.name {
-					return DiffResult::new(Change::Modified((pa, pb)));
-				}
+	// 			// Compare names
+	// 			if pa.name != pb.name {
+	// 				return DiffResult::new(Change::Modified((pa, pb)));
+	// 			}
 
-				// Compare items, this is the most important
-				// TODO: this check goes away, we switch to comparable
-				if pa.calls != pb.calls {
-					return DiffResult::new(Change::Modified((pa, pb)));
-				}
-				DiffResult::new(Change::Unchanged)
-			}
-			(Some(pa), None) => return DiffResult::new(Change::Removed(pa)),
-			(None, Some(pb)) => return DiffResult::new(Change::Added(pb)),
-			(None, None) => unreachable!(),
-		}
-	}
+	// 			// Compare items, this is the most important
+	// 			// TODO: this check goes away, we switch to comparable
+	// 			if pa.calls != pb.calls {
+	// 				return DiffResult::new(Change::Modified((pa, pb)));
+	// 			}
+	// 			DiffResult::new(Change::Unchanged)
+	// 		}
+	// 		(Some(pa), None) => return DiffResult::new(Change::Removed(pa)),
+	// 		(None, Some(pb)) => return DiffResult::new(Change::Added(pb)),
+	// 		(None, None) => unreachable!(),
+	// 	}
+	// }
 }
 
 impl Display for ReducedPallet {

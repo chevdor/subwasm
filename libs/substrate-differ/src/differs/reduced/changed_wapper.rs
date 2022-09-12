@@ -7,6 +7,7 @@ use std::fmt::Display;
 pub type CompOutput = Changed<ReducedRuntimeChange>;
 
 #[derive(Debug)]
+/// Currently a wrapper around `Changed<ReducedRuntimeChange>` but that will likely improve.
 pub struct ChangedWrapper(CompOutput);
 
 impl From<CompOutput> for ChangedWrapper {
