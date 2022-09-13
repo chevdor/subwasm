@@ -4,6 +4,7 @@ use crate::differs::reduced::calls::prelude::Index;
 use comparable::{Changed, MapChange};
 use std::fmt::Display;
 
+// TODO: Rename that
 pub type CompOutput = Changed<ReducedRuntimeChange>;
 
 #[derive(Debug)]

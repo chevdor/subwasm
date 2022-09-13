@@ -19,6 +19,15 @@ use std::fmt::Debug;
 pub type ReducedRuntimeError = String;
 pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
 
+// TODO: fix the variables names in here
+
+#[derive(Debug, PartialEq, Eq, Comparable)]
+pub struct ReducedRuntime {
+	// TODO: remove pub once we have an iterator
+	// TODO: Could use a BTreeMap
+	pub pallets: HashMap<Index, ReducedPallet>,
+}
+
 // One of the following is wrong
 impl From<&PalletCallMetadata<PortableForm>> for PalletItem {
 	fn from(fn_meta: &PalletCallMetadata<PortableForm>) -> Self {
@@ -30,15 +39,6 @@ impl From<&PalletCallMetadata<PortableForm>> for PalletData {
 	fn from(call: &PalletCallMetadata<PortableForm>) -> Self {
 		Self { name: "todo".to_string(), index: None, signature: Box::new(call.ty), docs: vec![] }
 	}
-}
-
-// TODO: fix the variables names in here
-
-#[derive(Debug, PartialEq, Eq, Comparable)]
-pub struct ReducedRuntime {
-	// TODO: remove pub once we have an iterator
-	// TODO: Could use a BTreeMap
-	pub pallets: HashMap<Index, ReducedPallet>,
 }
 
 impl From<HashMap<Index, ReducedPallet>> for ReducedRuntime {
