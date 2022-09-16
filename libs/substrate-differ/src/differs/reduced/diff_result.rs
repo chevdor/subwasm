@@ -1,45 +1,59 @@
-// use super::change_type::Change;
-// use std::fmt::Display;
+use frame_metadata::RuntimeMetadata;
 
-// #[derive(Debug)]
-// pub struct DiffResult<'meta, T: PartialEq> {
-// 	/// Define the nature of the change if there was one
-// 	pub change: Change<'meta, T>,
-// 	// /// First item compared
-// 	// pub left: Option<&'meta T>,
+use super::{
+	changed_wapper::{ChangedWrapper, CompOutput},
+	diff_analyzer::{Compatible, DiffAnalyzer},
+	reduced_differ::ReducedDiffer,
+	reduced_runtime::ReducedRuntime,
+};
+use std::fmt::Display;
 
-// 	// /// Second item compared
-// 	// pub right: Option<&'meta T>,
-// 	// /// Some notes about the changes
-// 	// notes: Option<Vec<String>>,
-// }
+pub struct ReducedDiffResult {
+	runtime_a: &'static ReducedRuntime,
+	runtime_b: &'static ReducedRuntime,
+	changes: &'static ChangedWrapper,
+	compatible: bool,
+}
+impl ReducedDiffResult {
+	pub fn new(runtime_a: &RuntimeMetadata, runtime_b: &RuntimeMetadata) -> Self {
+		let differ = ReducedDiffer::new(runtime_a, runtime_b);
+		let (ra, rb) = differ.get_reduced_runtimes();
 
-// impl<'meta, T: PartialEq> DiffResult<'meta, T> {
-// 	// pub fn new(change: Change<T>, left: &'meta T, right: &'meta T) -> Self {
-// 	// 	// Self { change_type, Some(left), Some(right) }
-// 	// 	Self { change: change }
-// 	// }
+		let changes = &differ.compare();
+		let da = DiffAnalyzer::new(&ra, &rb, &changes);
+		let compatible = da.compatible();
+		Self { runtime_a: &ra, runtime_b: &rb, changes, compatible }
+	}
+}
 
-// 	pub fn new(change: Change<'meta, T>) -> Self {
-// 		// Self { change_type, Some(left), Some(right) }
-// 		Self { change }
-// 	}
-// }
+impl Display for ReducedDiffResult {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		//     let compatible = da.compatible();
 
-// // #[cfg(test)]
-// // impl<T: PartialEq> Default for DiffResult<T> {
-// // 	fn default() -> Self {
-// // 		Self {
-// // 			change_type: ChangeType::Unchanged,
-// // 			left: None,
-// // 			right: None,
-// // 			// notes: None
-// // 		}
-// // 	}
-// // }
+		// println!("{}", changes);
 
-// impl<'meta, T: PartialEq> Display for DiffResult<'meta, T> {
-// 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-// 		f.write_fmt(format_args!("{}", self.change))
-// 	}
-// }
+		// println!(
+		// 	"spec_version       : {:>4?} -> {:>4?}",
+		// 	runtime_a.core_version().spec_version,
+		// 	runtime_b.core_version().spec_version
+		// );
+
+		// let tx_version_a = runtime_a.core_version().transaction_version;
+		// let tx_version_b = runtime_a.core_version().transaction_version;
+		// println!("transaction_version: {:>4?} -> {:>4?}", tx_version_a, tx_version_b,);
+		// println!("Compatible: {}", if compatible { "YES" } else { "NO" });
+		// if !compatible {
+		// 	if tx_version_a == tx_version_b {
+		// 		eprintln!("ERROR: You need to bump the transaction_version");
+		// 		std::process::exit(1)
+		// 	} else {
+		// 		println!("GOOD: transaction_version has been bumped already");
+		// 		std::process::exit(0)
+		// 	}
+		// } else {
+		// 	println!("OK runtimes are compatibles");
+		// 	std::process::exit(0)
+		// }
+		todo!()
+	}
+}

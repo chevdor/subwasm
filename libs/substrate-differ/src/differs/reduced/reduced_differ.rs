@@ -14,13 +14,13 @@ use frame_metadata::{RuntimeMetadata, RuntimeMetadata::*};
 /// The [ReducedDiffer] works exclusively on 2 [ReducedRuntime].
 
 pub struct ReducedDiffer {
-	r1: ReducedRuntime,
-	r2: ReducedRuntime,
+	r1: &'static ReducedRuntime,
+	r2: &'static ReducedRuntime,
 	// version: MetadataVersion,
 }
 
 impl ReducedDiffer {
-	pub fn new(r1: &RuntimeMetadata, r2: &RuntimeMetadata) -> Self {
+	pub fn new(r1: RuntimeMetadata, r2: RuntimeMetadata) -> Self {
 		log::debug!("++ReducedDiffer");
 		// if std::mem::discriminant(r1) != std::mem::discriminant(r2) {
 		// 	panic!("Only same Metadata Versions can be compared");
@@ -53,33 +53,12 @@ impl ReducedDiffer {
 	// 	}
 	// }
 
-	pub fn comp(&self) -> ChangedWrapper {
-		let comp = self.r1.comparison(&self.r2).into();
+	pub fn compare(&self) -> ChangedWrapper {
+		self.r1.comparison(&self.r2).into()
+	}
 
-		comp
-		// match diff {
-		// 	Changed::Changed(changes) => {
-		// 		// println!("p = {:#?}", p);
-
-		// 		changes.pallets.iter().for_each(|c: &MapChange<Index, ReducedPalletDesc, Vec<ReducedPalletChange>>| {
-		// 			match c {
-		// 				MapChange::Added(index, desc) => {
-		// 					println!("[+] {} => {:?}", index, desc);
-		// 				}
-		// 				MapChange::Changed(index, change) => {
-		// 					println!("[/] {} => {:#?}", index, change);
-		// 				}
-		// 				MapChange::Removed(index) => {
-		// 					println!("[-] {}", index);
-		// 				}
-		// 			};
-		// 			// println!("index = {:?}", c);
-		// 		})
-		// 	}
-		// 	Changed::Unchanged => {
-		// 		println!("UNCHANGED")
-		// 	}
-		// };
+	pub fn get_reduced_runtimes(&self) -> (&ReducedRuntime, &ReducedRuntime) {
+		(self.r1, self.r2)
 	}
 }
 
@@ -165,7 +144,7 @@ mod test_diff_runtimes {
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.comp();
+		let comp = differ.compare();
 
 		assert_eq!(&Changed::Unchanged, comp.as_ref());
 	}
@@ -180,7 +159,7 @@ mod test_diff_runtimes {
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_POLKADOT_V14_9260))).unwrap();
 
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.comp();
+		let comp = differ.compare();
 
 		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
 	}
@@ -195,7 +174,7 @@ mod test_diff_runtimes {
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_POLKADOT_V14_9260))).unwrap();
 
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.comp();
+		let comp = differ.compare();
 		assert!(matches!(comp.as_ref(), Changed::Unchanged));
 		println!("comp = {}", comp);
 	}
@@ -210,7 +189,7 @@ mod test_diff_runtimes {
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_POLKADOT_V14_9270))).unwrap();
 
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.comp();
+		let comp = differ.compare();
 
 		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
 		println!("COMP:");
@@ -255,7 +234,7 @@ mod test_diff_runtimes {
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_POLKADOT_V14_9290))).unwrap();
 
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.comp();
+		let comp = differ.compare();
 
 		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
 		println!("COMP:");
@@ -324,7 +303,7 @@ mod test_diff_runtimes {
 		let b = WasmTestBed::new(&Source::File(rb)).unwrap();
 
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.comp();
+		let comp = differ.compare();
 
 		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
 		println!("{}", comp);
@@ -342,7 +321,7 @@ mod test_diff_runtimes {
 		let b = WasmTestBed::new(&Source::File(rb)).unwrap();
 
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.comp();
+		let comp = differ.compare();
 
 		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
 		println!("{}", comp);
@@ -360,7 +339,7 @@ mod test_diff_runtimes {
 		let b = WasmTestBed::new(&Source::File(rb)).unwrap();
 
 		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.comp();
+		let comp = differ.compare();
 
 		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
 		println!("{}", comp);

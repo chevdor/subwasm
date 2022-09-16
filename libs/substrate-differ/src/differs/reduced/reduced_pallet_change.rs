@@ -74,25 +74,30 @@ impl Display for ReducedPalletChange {
 
 impl Compatible for ReducedPalletChange {
 	fn compatible(&self) -> bool {
-		println!("self = {:#?}", self);
-
 		match self {
 			ReducedPalletChange::Index(_) => false,
-			ReducedPalletChange::Name(_) => false,
+			ReducedPalletChange::Name(_) => true,
 
-			ReducedPalletChange::Calls(x) => todo!(),
-			ReducedPalletChange::Events(x) => todo!(),
-			ReducedPalletChange::Errors(x) => todo!(),
-
-			ReducedPalletChange::Constants(x) => x
+			ReducedPalletChange::Calls(x) => x
 				.iter()
 				.map(|i| match i {
-					MapChange::Added(k, d) => true,
-					MapChange::Removed(k) => false,
-					MapChange::Changed(k, c) => c.iter().map(|cc| cc.compatible()).all(|x| x.into()),
+					MapChange::Added(_k, _d) => true,
+					MapChange::Removed(_k) => false,
+					MapChange::Changed(_k, c) => c.iter().map(|cc| cc.compatible()).all(|x| x),
 				})
-				.all(|x| x.into()),
-			ReducedPalletChange::Storages(x) => todo!(),
+				.all(|x| x),
+			ReducedPalletChange::Events(_x) => true,
+			ReducedPalletChange::Errors(_x) => true,
+
+			ReducedPalletChange::Constants(_x) => true,
+			// x.iter()
+			// .map(|i| match i {
+			// 	MapChange::Added(_k, _d) => true,
+			// 	MapChange::Removed(_k) => true,
+			// 	MapChange::Changed(_k, c) => c.iter().map(|cc| cc.compatible()).all(|x| x.into()),
+			// })
+			// .all(|x| x.into()),
+			ReducedPalletChange::Storages(_x) => true,
 		}
 	}
 }
