@@ -14,32 +14,35 @@ use frame_metadata::{RuntimeMetadata, RuntimeMetadata::*};
 /// The [ReducedDiffer] works exclusively on 2 [ReducedRuntime].
 
 pub struct ReducedDiffer {
-	r1: &'static ReducedRuntime,
-	r2: &'static ReducedRuntime,
+	// r1: ReducedRuntime,
+	// r2: ReducedRuntime,
 	// version: MetadataVersion,
 }
 
 impl ReducedDiffer {
-	pub fn new(r1: RuntimeMetadata, r2: RuntimeMetadata) -> Self {
-		log::debug!("++ReducedDiffer");
-		// if std::mem::discriminant(r1) != std::mem::discriminant(r2) {
-		// 	panic!("Only same Metadata Versions can be compared");
-		// };
+	// pub fn new(r1: &RuntimeMetadata, r2: &RuntimeMetadata) -> Self {
+	// 	log::debug!("++ReducedDiffer");
+	// 	// if std::mem::discriminant(r1) != std::mem::discriminant(r2) {
+	// 	// 	panic!("Only same Metadata Versions can be compared");
+	// 	// };
 
-		match (&r1, &r2) {
-			// (V13(_), V13(_)) => Self { r1: r1.into(), r2: r2.into(), version: 13 },
-			(V13(_), V13(_)) => Self { r1: r1.into(), r2: r2.into() },
-			// (V13(_), V14(b)) => {
-			// 	Self { r1: r1.into(), r2: (RuntimeMetadata::V13(convert(b).unwrap())).into(), version: 13 }
-			// }
-			// (V14(a), V13(_)) => {
-			// 	Self { r1: (RuntimeMetadata::V13(convert(a).unwrap())).into(), r2: r2.into(), version: 13 }
-			// }
-			// (V14(_), V14(_)) => Self { r1: r1.into(), r2: r2.into(), version: 14 },
-			(V14(_), V14(_)) => Self { r1: r1.into(), r2: r2.into() },
-			_ => panic!("Unsupported versions set, we support only Vn/Vn or Vn/Vn+1"),
-		}
-	}
+	// 	match (&r1, &r2) {
+	// 		// (V13(_), V13(_)) => Self { r1: r1.into(), r2: r2.into(), version: 13 },
+	// 		(V13(_), V13(_)) | (V14(_), V14(_)) => {
+	// 			let r1 = r1.into();
+	// 			let r2 = r2.into();
+	// 			Self { r1, r2 }
+	// 		}
+	// 		// (V13(_), V14(b)) => {
+	// 		// 	Self { r1: r1.into(), r2: (RuntimeMetadata::V13(convert(b).unwrap())).into(), version: 13 }
+	// 		// }
+	// 		// (V14(a), V13(_)) => {
+	// 		// 	Self { r1: (RuntimeMetadata::V13(convert(a).unwrap())).into(), r2: r2.into(), version: 13 }
+	// 		// }
+	// 		// (V14(_), V14(_)) => Self { r1: r1.into(), r2: r2.into(), version: 14 },
+	// 		_ => panic!("Unsupported versions set, we support only Vn/Vn or Vn/Vn+1"),
+	// 	}
+	// }
 
 	// This is a raw comparison based on the json serialization of the metadata
 	// pub fn compare(&self) {
@@ -53,13 +56,13 @@ impl ReducedDiffer {
 	// 	}
 	// }
 
-	pub fn compare(&self) -> ChangedWrapper {
-		self.r1.comparison(&self.r2).into()
+	pub fn compare(r1: &ReducedRuntime, r2: &ReducedRuntime) -> ChangedWrapper {
+		r1.comparison(r2).into()
 	}
 
-	pub fn get_reduced_runtimes(&self) -> (&ReducedRuntime, &ReducedRuntime) {
-		(self.r1, self.r2)
-	}
+	// pub fn get_reduced_runtimes_as_ref(&self) -> (&ReducedRuntime, &ReducedRuntime) {
+	// 	(&self.r1, &self.r2)
+	// }
 }
 
 // TODO: The following should NOT be needed with comparable
@@ -130,8 +133,7 @@ mod test_diff_runtimes {
 	fn test_v13() {
 		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13_1))).unwrap();
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13_2))).unwrap();
-		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		differ.diff(DiffOptions::default());
+		let comp = ReducedDiffer::compare(&a, &b);
 	}
 
 	#[test]
@@ -140,11 +142,11 @@ mod test_diff_runtimes {
 	fn test_v14_polkadot_9100_9100() {
 		use comparable::Changed;
 
-		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
-		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
-
-		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.compare();
+		let ra = get_runtime_file(Chain::Westmint, 14, 9100).expect("Runtime file should exist");
+		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
+		let rb = get_runtime_file(Chain::Westmint, 14, 9100).expect("Runtime file should exist");
+		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
+		let comp = ReducedDiffer::compare(&a, &b);
 
 		assert_eq!(&Changed::Unchanged, comp.as_ref());
 	}
@@ -155,11 +157,11 @@ mod test_diff_runtimes {
 	fn test_v14_polkadot_9100_9260() {
 		use comparable::Changed;
 
-		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14_9100))).unwrap();
-		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_POLKADOT_V14_9260))).unwrap();
-
-		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.compare();
+		let ra = get_runtime_file(Chain::Westmint, 14, 9100).expect("Runtime file should exist");
+		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
+		let rb = get_runtime_file(Chain::Westmint, 14, 9260).expect("Runtime file should exist");
+		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
+		let comp = ReducedDiffer::compare(&a, &b);
 
 		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
 	}
@@ -170,11 +172,11 @@ mod test_diff_runtimes {
 	fn test_v14_polkadot_9260_9260() {
 		use comparable::Changed;
 
-		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_POLKADOT_V14_9260))).unwrap();
-		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_POLKADOT_V14_9260))).unwrap();
-
-		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.compare();
+		let ra = get_runtime_file(Chain::Westmint, 14, 9260).expect("Runtime file should exist");
+		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
+		let rb = get_runtime_file(Chain::Westmint, 14, 9260).expect("Runtime file should exist");
+		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
+		let comp = ReducedDiffer::compare(&a, &b);
 		assert!(matches!(comp.as_ref(), Changed::Unchanged));
 		println!("comp = {}", comp);
 	}
@@ -185,11 +187,12 @@ mod test_diff_runtimes {
 	fn test_v14_polkadot_9260_9270_full() {
 		use comparable::Changed;
 
-		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_POLKADOT_V14_9260))).unwrap();
-		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_POLKADOT_V14_9270))).unwrap();
+		let ra = get_runtime_file(Chain::Westmint, 14, 9270).expect("Runtime file should exist");
+		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
+		let rb = get_runtime_file(Chain::Westmint, 14, 9290).expect("Runtime file should exist");
+		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
 
-		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.compare();
+		let comp = ReducedDiffer::compare(&a, &b);
 
 		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
 		println!("COMP:");
@@ -214,8 +217,7 @@ mod test_diff_runtimes {
 		println!("sys_ra = {}", sys_ra);
 		println!("sys_rb = {}", sys_rb);
 
-		// let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		// let results = differ.diff(DiffOptions::default());
+		// let comp = ReducedDiffer::compare(&a, &b);
 		// let result_system = &results.iter().find(|item| item.0 .0 == "System").unwrap().1;
 		// assert!(matches!(result_system.change, Change::Modified(_)));
 
@@ -229,12 +231,11 @@ mod test_diff_runtimes {
 		use comparable::Changed;
 
 		let ra = get_runtime_file(Chain::Polkadot, 14, 9280).expect("Runtime file should exist");
-		let a = WasmTestBed::new(&Source::File(ra)).unwrap();
-		// let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_POLKADOT_V14_9280))).unwrap();
-		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_POLKADOT_V14_9290))).unwrap();
+		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
+		let rb = get_runtime_file(Chain::Polkadot, 14, 9290).expect("Runtime file should exist");
+		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
 
-		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.compare();
+		let comp = ReducedDiffer::compare(&a, &b);
 
 		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
 		println!("COMP:");
@@ -298,12 +299,11 @@ mod test_diff_runtimes {
 		use comparable::Changed;
 
 		let ra = get_runtime_file(Chain::Westmint, 14, 9270).expect("Runtime file should exist");
-		let a = WasmTestBed::new(&Source::File(ra)).unwrap();
+		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
 		let rb = get_runtime_file(Chain::Westmint, 14, 9290).expect("Runtime file should exist");
-		let b = WasmTestBed::new(&Source::File(rb)).unwrap();
+		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
 
-		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.compare();
+		let comp = ReducedDiffer::compare(&a, &b);
 
 		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
 		println!("{}", comp);
@@ -316,12 +316,11 @@ mod test_diff_runtimes {
 		use comparable::Changed;
 
 		let ra = get_runtime_file(Chain::Statemint, 14, 9270).expect("Runtime file should exist");
-		let a = WasmTestBed::new(&Source::File(ra)).unwrap();
+		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
 		let rb = get_runtime_file(Chain::Statemint, 14, 9290).expect("Runtime file should exist");
-		let b = WasmTestBed::new(&Source::File(rb)).unwrap();
+		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
 
-		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.compare();
+		let comp = ReducedDiffer::compare(&a, &b);
 
 		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
 		println!("{}", comp);
@@ -334,12 +333,11 @@ mod test_diff_runtimes {
 		use comparable::Changed;
 
 		let ra = get_runtime_file(Chain::Statemine, 14, 9270).expect("Runtime file should exist");
-		let a = WasmTestBed::new(&Source::File(ra)).unwrap();
+		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
 		let rb = get_runtime_file(Chain::Statemine, 14, 9290).expect("Runtime file should exist");
-		let b = WasmTestBed::new(&Source::File(rb)).unwrap();
+		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
 
-		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.compare();
+		let comp = ReducedDiffer::compare(&a, &b);
 
 		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
 		println!("{}", comp);
@@ -349,8 +347,8 @@ mod test_diff_runtimes {
 	#[ignore = "local data"]
 	#[should_panic]
 	fn test_unsupported_variants() {
-		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap();
-		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap();
-		let _differ = ReducedDiffer::new(a.metadata(), b.metadata());
+		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap().metadata().into();
+		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap().metadata().into();
+		let _differ = ReducedDiffer::compare(&a, &b);
 	}
 }

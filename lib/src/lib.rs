@@ -11,7 +11,6 @@ use substrate_differ::differs::{
 	raw::{raw_differ::RawDiffer, raw_differ_options::RawDifferOptions},
 	reduced::reduced_differ::ReducedDiffer,
 	summary::RuntimeSummaryDiffer,
-	DiffOptions,
 };
 use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, WasmLoader};
 use wasm_testbed::WasmTestBed;
@@ -143,25 +142,22 @@ pub fn diff(src_a: Source, src_b: Source) {
 	// }
 }
 
-pub fn reduced_diff<'a>(src_a: Source, src_b: Source) -> ReducedDiffResult<'a> {
+//todo: return Result and no expect
+pub fn reduced_diff(src_a: Source, src_b: Source) -> ReducedDiffResult {
 	log::debug!("REDUCED: Loading WASM runtimes:");
 	log::info!("  🅰️  {:?}", src_a);
 	let runtime_a = WasmTestBed::new(&src_a).expect("Can only diff if the 2 runtimes can load");
 	log::info!("  🅱️  {:?}", src_b);
 	let runtime_b = WasmTestBed::new(&src_b).expect("Can only diff if the 2 runtimes can load");
 
-	let differ = ReducedDiffer::new(runtime_a.metadata(), runtime_b.metadata());
-	let _opts = DiffOptions::default();
+	// let differ = ReducedDiffer::new(, runtime_b.metadata());
+	let ra = ReducedRuntime::from(runtime_a.metadata());
+	let rb = ReducedRuntime::from(runtime_b.metadata());
+	// let changes = ReducedDiffer::compare(&ra, &rb);
+	// let da = DiffAnalyzer::new(&ra, &rb, &changes);
+	// let compatible = da.compatible();
 
-	let changes = differ.compare();
-
-	let ra = runtime_a.metadata().into();
-	let rb = runtime_b.metadata().into();
-	let da = DiffAnalyzer::new(&ra, &rb, &changes);
-
-	let compatible = da.compatible();
-
-	ReducedDiffResult::new(&ra, &rb)
+	ReducedDiffResult::new(ra, rb)
 }
 
 /// Compress a given runtime into a new file. You cannot compress

@@ -4,6 +4,7 @@ use clap::{crate_name, crate_version, StructOpt};
 use env_logger::Env;
 use log::info;
 use opts::*;
+use serde_json::*;
 use subwasmlib::*;
 
 /// Simple macro that only execute $statement if $opts don#t contain neither the quiet nor the json flag
@@ -79,33 +80,11 @@ fn main() -> color_eyre::Result<()> {
 				DiffMethod::Raw => diff(src_a, src_b),
 				DiffMethod::Reduced => {
 					let diff_result = reduced_diff(src_a, src_b);
-					println!("{}", diff_result);
-
-					todo!();
-					// println!("{}", changes);
-
-					// println!(
-					// 	"spec_version       : {:>4?} -> {:>4?}",
-					// 	runtime_a.core_version().spec_version,
-					// 	runtime_b.core_version().spec_version
-					// );
-
-					// let tx_version_a = runtime_a.core_version().transaction_version;
-					// let tx_version_b = runtime_a.core_version().transaction_version;
-					// println!("transaction_version: {:>4?} -> {:>4?}", tx_version_a, tx_version_b,);
-					// println!("Compatible: {}", if compatible { "YES" } else { "NO" });
-					// if !compatible {
-					// 	if tx_version_a == tx_version_b {
-					// 		eprintln!("ERROR: You need to bump the transaction_version");
-					// 		std::process::exit(1)
-					// 	} else {
-					// 		println!("GOOD: transaction_version has been bumped already");
-					// 		std::process::exit(0)
-					// 	}
-					// } else {
-					// 	println!("OK runtimes are compatibles");
-					// 	std::process::exit(0)
-					// }
+					if opts.json {
+						serde_json::to_string_pretty(&diff_result);
+					} else {
+						println!("{}", diff_result);
+					}
 				}
 				DiffMethod::Summary => todo!(),
 			}

@@ -2,11 +2,12 @@ use super::calls::{prelude::Index, *};
 use comparable::Comparable;
 use frame_metadata::PalletMetadata;
 use scale_info::form::PortableForm;
+use serde::Serialize;
 use std::{collections::BTreeMap, fmt::Display};
 
 /// A [ReducedPallet] is mainly a `Vec` or [PalletItem].
 // TODO: no doc ?
-#[derive(Debug, PartialEq, Eq, Hash, Comparable)]
+#[derive(Debug, PartialEq, Eq, Hash, Comparable, Serialize)]
 pub struct ReducedPallet {
 	/// Index of the pallet
 	pub index: Index,

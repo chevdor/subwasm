@@ -13,6 +13,7 @@ use frame_metadata::{
 	RuntimeMetadata::{self, *},
 };
 use scale_info::{form::PortableForm, PortableRegistry};
+use serde::Serialize;
 use std::collections::{BTreeMap, HashMap};
 use std::fmt::Debug;
 
@@ -21,7 +22,7 @@ pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
 
 // TODO: fix the variables names in here
 
-#[derive(Debug, PartialEq, Eq, Comparable)]
+#[derive(Debug, PartialEq, Eq, Comparable, Serialize)]
 pub struct ReducedRuntime {
 	// TODO: remove pub once we have an iterator
 	// TODO: Could use a BTreeMap

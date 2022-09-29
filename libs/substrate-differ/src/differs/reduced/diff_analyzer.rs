@@ -54,10 +54,9 @@ mod test_diffanalyzer {
 		let a = WasmTestBed::new(&Source::File(runtime_a)).unwrap();
 		let b = WasmTestBed::new(&Source::File(runtime_b)).unwrap();
 
-		let differ = ReducedDiffer::new(a.metadata(), b.metadata());
-		let comp = differ.compare();
 		let ra = a.metadata().into();
 		let rb = b.metadata().into();
+		let comp = ReducedDiffer::compare(&ra, &rb);
 		let da = DiffAnalyzer::new(&ra, &rb, &comp);
 		println!("spec_version {:?} -> {:?}", a.core_version().spec_version, b.core_version().spec_version);
 		println!(

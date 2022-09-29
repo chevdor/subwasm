@@ -2,12 +2,14 @@ use super::reduced_pallet::*;
 use super::reduced_runtime::*;
 use crate::differs::reduced::calls::prelude::Index;
 use comparable::{Changed, MapChange};
+use serde::Serialize;
 use std::fmt::Display;
 
 // TODO: Rename that
+// pub type CompOutput = Changed<ReducedRuntimeChange>;
 pub type CompOutput = Changed<ReducedRuntimeChange>;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 /// Currently a wrapper around `Changed<ReducedRuntimeChange>` but that will likely improve.
 pub struct ChangedWrapper(CompOutput);
 

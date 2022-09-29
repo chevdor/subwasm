@@ -1,37 +1,44 @@
-use frame_metadata::RuntimeMetadata;
+use serde::Serialize;
 
 use super::{
-	changed_wapper::{ChangedWrapper, CompOutput},
+	changed_wapper::ChangedWrapper,
 	diff_analyzer::{Compatible, DiffAnalyzer},
 	reduced_differ::ReducedDiffer,
 	reduced_runtime::ReducedRuntime,
 };
 use std::fmt::Display;
 
+#[derive(Debug, Serialize)]
 pub struct ReducedDiffResult {
-	runtime_a: &'static ReducedRuntime,
-	runtime_b: &'static ReducedRuntime,
-	changes: &'static ChangedWrapper,
+	runtime_a: ReducedRuntime,
+	runtime_b: ReducedRuntime,
+	changes: ChangedWrapper,
 	compatible: bool,
 }
-impl ReducedDiffResult {
-	pub fn new(runtime_a: &RuntimeMetadata, runtime_b: &RuntimeMetadata) -> Self {
-		let differ = ReducedDiffer::new(runtime_a, runtime_b);
-		let (ra, rb) = differ.get_reduced_runtimes();
 
-		let changes = &differ.compare();
+impl ReducedDiffResult {
+	pub fn new(ra: ReducedRuntime, rb: ReducedRuntime) -> Self {
+		// let ra=.....into():
+		// let rb=.....into():
+
+		// ReducedDiffer::compare(runtime_a, runtime_b);
+
+		// let differ = ReducedDiffer::new(runtime_a, runtime_b);
+		// let (ra, rb) = differ.get_reduced_runtimes_as_ref();
+		// let (ra, rb) = (ReducedRuntime::from(runtime_a), ReducedRuntime::from(runtime_b));
+		let changes = ReducedDiffer::compare(&ra, &rb);
 		let da = DiffAnalyzer::new(&ra, &rb, &changes);
 		let compatible = da.compatible();
-		Self { runtime_a: &ra, runtime_b: &rb, changes, compatible }
+		Self { runtime_a: ra, runtime_b: rb, changes, compatible }
 	}
 }
 
 impl Display for ReducedDiffResult {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		//     let compatible = da.compatible();
+		f.write_fmt(format_args!("{}", self.changes));
+		f.write_fmt(format_args!("compatible: {}", self.compatible))
 
-		// println!("{}", changes);
-
+		// TODO: some work here
 		// println!(
 		// 	"spec_version       : {:>4?} -> {:>4?}",
 		// 	runtime_a.core_version().spec_version,
@@ -54,6 +61,5 @@ impl Display for ReducedDiffResult {
 		// 	println!("OK runtimes are compatibles");
 		// 	std::process::exit(0)
 		// }
-		todo!()
 	}
 }
