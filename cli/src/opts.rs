@@ -1,11 +1,11 @@
-use clap::{crate_authors, crate_version, Parser, Subcommand};
+use clap::{crate_authors, crate_version, ColorChoice, Parser, Subcommand};
 use std::path::PathBuf;
-use subwasmlib::ChainInfo;
+use subwasmlib::*;
 use wasm_loader::{OnchainBlock, Source};
 
 /// `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains.
 #[derive(Parser)]
-#[clap(version = crate_version!(), author = crate_authors!())]
+#[clap(version = crate_version!(), author = crate_authors!(), color=ColorChoice::Always)]
 pub struct Opts {
 	/// Output as json
 	#[clap(short, long, global = true)]
@@ -54,7 +54,7 @@ pub struct GetOpts {
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
-	#[clap(long, parse(from_str), conflicts_with = "url")]
+	#[clap(long, conflicts_with = "url")]
 	pub chain: Option<ChainInfo>,
 
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
@@ -65,7 +65,7 @@ pub struct GetOpts {
 	/// You may specifiy the output filename where the runtime will be saved. If not provided, we will figure out an appropriate default name
 	/// based on a counter: runtime_NNN.wasm where NNN is incrementing to make sure you do not override previous runtime. If you specify an
 	/// existing file as output, it will be overwritten.
-	#[clap(short, long, alias("out"), parse(from_os_str))]
+	#[clap(short, long, alias("out"), value_parser)]
 	pub output: Option<PathBuf>,
 }
 
@@ -80,7 +80,7 @@ pub struct InfoOpts {
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
-	#[clap(long, parse(from_str), conflicts_with = "source")]
+	#[clap(long, conflicts_with = "source")]
 	pub chain: Option<ChainInfo>,
 
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
@@ -100,7 +100,7 @@ pub struct VersionOpts {
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
-	#[clap(long, parse(from_str), conflicts_with = "source")]
+	#[clap(long, conflicts_with = "source")]
 	pub chain: Option<ChainInfo>,
 
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
@@ -120,7 +120,7 @@ pub struct MetaOpts {
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
-	#[clap(long, parse(from_str), conflicts_with = "source")]
+	#[clap(long, conflicts_with = "source")]
 	pub chain: Option<ChainInfo>,
 
 	/// Without this flag, the metadata command display the list of all modules.
@@ -144,7 +144,7 @@ pub struct DiffOpts {
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
-	#[clap(long, short('a'), parse(from_str), conflicts_with = "src-a")]
+	#[clap(long, short('a'), conflicts_with = "src-a")]
 	pub chain_a: Option<ChainInfo>,
 
 	/// The second source
@@ -154,7 +154,7 @@ pub struct DiffOpts {
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
-	#[clap(long, short('b'), parse(from_str), conflicts_with = "src-b")]
+	#[clap(long, short('b'), conflicts_with = "src-b")]
 	pub chain_b: Option<ChainInfo>,
 }
 
