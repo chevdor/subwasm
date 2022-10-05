@@ -5,9 +5,23 @@ use comparable::{Changed, MapChange};
 use serde::Serialize;
 use std::fmt::Display;
 
+#[derive(Deserialize)]
+#[serde(remote = "ReducedRuntimeChange")]
+struct ReducedRuntimeChangeDef {}
+
+// #[derive(Serialize)]
+// #[serde(remote = "Changed<ReducedRuntimeChange>")]
+// struct ChangedDef(Changed<ReducedRuntimeChange>);
+#[derive(Serialize)]
+// #[serde(remote = "ChangedDef<ReducedRuntimeChange>")]
+pub enum ChangedDef {
+	Unchanged,
+	Changed(ReducedRuntimeChange),
+}
 // TODO: Rename that
 // pub type CompOutput = Changed<ReducedRuntimeChange>;
-pub type CompOutput = Changed<ReducedRuntimeChange>;
+#[derive(Debug, Serialize)]
+pub struct CompOutput(#[serde(with = "ChangedDef")] Changed<ReducedRuntimeChange>);
 
 #[derive(Debug, Serialize)]
 /// Currently a wrapper around `Changed<ReducedRuntimeChange>` but that will likely improve.
@@ -85,7 +99,7 @@ pub enum ChangedFilter {
 
 impl Display for ChangedWrapper {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		match &self.0 {
+		match &self {
 			Changed::Unchanged => f.write_str("UNCHANGED"),
 			Changed::Changed(reduced_runtime_change) => {
 				reduced_runtime_change.pallets.iter().for_each(
