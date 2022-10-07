@@ -31,6 +31,7 @@ document-features = { version = "0.2" }
 # comparable = { version = "0.5", features = ["derive"] }
 comparable = { branch = "main", features = [
     "derive",
+    "serde",
 ], git = "https://github.com/gilescope/comparable.git" }
 
 [dev-dependencies]
