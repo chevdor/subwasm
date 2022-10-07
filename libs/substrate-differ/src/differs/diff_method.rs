@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum DiffMethod {
 	/// The metadata is serialized to json and the json representation are compared
 	Raw,

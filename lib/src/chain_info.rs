@@ -18,7 +18,7 @@ impl PartialEq<NodeEndpoint> for EndpointType {
 	}
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ChainInfo {
 	pub name: String,
 	pub endpoints: Vec<NodeEndpoint>,

@@ -12,7 +12,7 @@ use std::fmt::Display;
 pub struct ReducedDiffResult {
 	runtime_a: ReducedRuntime,
 	runtime_b: ReducedRuntime,
-	changes: ChangedWrapper,
+	changes: Option<ChangedWrapper>,
 	compatible: bool,
 }
 
@@ -27,15 +27,22 @@ impl ReducedDiffResult {
 		// let (ra, rb) = differ.get_reduced_runtimes_as_ref();
 		// let (ra, rb) = (ReducedRuntime::from(runtime_a), ReducedRuntime::from(runtime_b));
 		let changes = ReducedDiffer::compare(&ra, &rb);
-		let da = DiffAnalyzer::new(&ra, &rb, &changes);
-		let compatible = da.compatible();
-		Self { runtime_a: ra, runtime_b: rb, changes, compatible }
+
+		match changes {
+			Some(changes) => {
+				let da = DiffAnalyzer::new(&ra, &rb, &changes);
+				let compatible = da.compatible();
+				Self { runtime_a: ra, runtime_b: rb, changes: Some(changes), compatible }
+			}
+			None => Self { runtime_a: ra, runtime_b: rb, changes: None, compatible: true },
+		}
 	}
 }
 
 impl Display for ReducedDiffResult {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		f.write_fmt(format_args!("{}", self.changes));
+		// TODO: handle with match
+		f.write_fmt(format_args!("{:?}", self.changes));
 		f.write_fmt(format_args!("compatible: {}", self.compatible))
 
 		// TODO: some work here

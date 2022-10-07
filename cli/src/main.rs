@@ -1,6 +1,6 @@
 mod opts;
 
-use clap::{crate_name, crate_version, StructOpt};
+use clap::{crate_name, crate_version, Parser};
 use env_logger::Env;
 use log::info;
 use opts::*;
@@ -81,7 +81,8 @@ fn main() -> color_eyre::Result<()> {
 				DiffMethod::Reduced => {
 					let diff_result = reduced_diff(src_a, src_b);
 					if opts.json {
-						serde_json::to_string_pretty(&diff_result);
+						let s = serde_json::to_string_pretty(&diff_result).unwrap();
+						println!("{}", s);
 					} else {
 						println!("{}", diff_result);
 					}

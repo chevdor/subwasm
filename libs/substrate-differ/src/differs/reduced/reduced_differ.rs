@@ -1,4 +1,4 @@
-use super::changed_wapper::ChangedWrapper;
+use super::changed_wapper::{ChangedWrapper, CompOutput};
 use super::reduced_runtime::*;
 use comparable::Comparable;
 use frame_metadata::{RuntimeMetadata, RuntimeMetadata::*};
@@ -56,8 +56,13 @@ impl ReducedDiffer {
 	// 	}
 	// }
 
-	pub fn compare(r1: &ReducedRuntime, r2: &ReducedRuntime) -> ChangedWrapper {
-		r1.comparison(r2).into()
+	pub fn compare(r1: &ReducedRuntime, r2: &ReducedRuntime) -> Option<ChangedWrapper> {
+		match r1.comparison(r2) {
+			comparable::Changed::Unchanged => None,
+			comparable::Changed::Changed(c /* ReducedRuntimeChange */) => {
+				Some(ChangedWrapper::from(CompOutput::from(c)))
+			}
+		}
 	}
 
 	// pub fn get_reduced_runtimes_as_ref(&self) -> (&ReducedRuntime, &ReducedRuntime) {

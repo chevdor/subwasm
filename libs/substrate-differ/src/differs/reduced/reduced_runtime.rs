@@ -29,6 +29,35 @@ pub struct ReducedRuntime {
 	pub pallets: HashMap<Index, ReducedPallet>,
 }
 
+// pub struct ReducedRuntimeChange{
+// 	pub pallets: MapChange<u32, ReducedPalletDesc, Vec<ReducedPalletChange>
+// }
+
+// impl Serialize for ReducedRuntimeChange {
+// 	fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
+// 	where
+// 		S: serde::Serializer,
+// 	{
+// 		// serializer.serialize_map(*self.pallets);
+
+// 		// let mut map = serializer.serialize_map(Some(self.pallets.len()))?;
+// 		self.pallets.iter().map(|p| {
+// 			match p {
+// 				comparable::MapChange::Added(k, d) => todo!(),
+// 				comparable::MapChange::Changed(_, _) => todo!(),
+// 				comparable::MapChange::Removed(_) => todo!(),
+// 			}
+// 			println!("p = {:?}", p)
+// 		});
+// 		// for (k, v) in self.pallets {
+// 		//     map.serialize_entry(k, v)?;
+// 		// }
+// 		// map.end()
+
+// 		todo!()
+// 	}
+// }
+
 // One of the following is wrong
 impl From<&PalletCallMetadata<PortableForm>> for PalletItem {
 	fn from(fn_meta: &PalletCallMetadata<PortableForm>) -> Self {

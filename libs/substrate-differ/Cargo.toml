@@ -28,7 +28,10 @@ scale-info = { version = "2.1.2", default-features = false, features = [
     "serde",
 ] }
 document-features = { version = "0.2" }
-comparable = { version = "0.5", features = ["derive"] }
+# comparable = { version = "0.5", features = ["derive"] }
+comparable = { branch = "main", features = [
+    "derive",
+], git = "https://github.com/gilescope/comparable.git" }
 
 [dev-dependencies]
 wasm-loader = { version = "0.18", path = "../wasm-loader" }

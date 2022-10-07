@@ -21,19 +21,22 @@ impl<'a> DiffAnalyzer<'a> {
 
 impl<'a> Compatible for DiffAnalyzer<'a> {
 	fn compatible(&self) -> bool {
-		match self.changes.as_ref() {
-			comparable::Changed::Unchanged => true,
-			comparable::Changed::Changed(c) => c
-				.pallets
-				.iter()
-				.map(|p| match p {
-					comparable::MapChange::Added(_k, _d) => true,
-					comparable::MapChange::Removed(_k) => false,
-					comparable::MapChange::Changed(_k, c) => c.iter().map(|x| x.compatible()).all(|x| x),
-				})
-				.all(|x| x),
-		}
+		// match self.changes.0.0 {
+		// 	comparable::Changed::Unchanged => true,
+		// 	comparable::Changed::Changed(c) => c
+		self.changes
+			.0
+			 .0
+			.pallets
+			.iter()
+			.map(|p| match p {
+				comparable::MapChange::Added(_k, _d) => true,
+				comparable::MapChange::Removed(_k) => false,
+				comparable::MapChange::Changed(_k, c) => c.iter().map(|x| x.compatible()).all(|x| x),
+			})
+			.all(|x| x)
 	}
+	// }
 }
 
 pub trait Compatible {
