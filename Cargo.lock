@@ -498,7 +498,7 @@ dependencies = [
 [[package]]
 name = "comparable"
 version = "0.5.2"
-source = "git+https://github.com/gilescope/comparable.git?branch=main#3529e95dd05a533f9bfddbe2ef46ebb037fa4060"
+source = "git+https://github.com/gilescope/comparable.git?branch=main#809f92aff3687621d76add4ad70f64a6af888749"
 dependencies = [
  "comparable_derive",
  "comparable_helper",
@@ -509,7 +509,7 @@ dependencies = [
 [[package]]
 name = "comparable_derive"
 version = "0.5.2"
-source = "git+https://github.com/gilescope/comparable.git?branch=main#3529e95dd05a533f9bfddbe2ef46ebb037fa4060"
+source = "git+https://github.com/gilescope/comparable.git?branch=main#809f92aff3687621d76add4ad70f64a6af888749"
 dependencies = [
  "convert_case",
  "proc-macro2",
@@ -520,7 +520,7 @@ dependencies = [
 [[package]]
 name = "comparable_helper"
 version = "0.5.2"
-source = "git+https://github.com/gilescope/comparable.git?branch=main#3529e95dd05a533f9bfddbe2ef46ebb037fa4060"
+source = "git+https://github.com/gilescope/comparable.git?branch=main#809f92aff3687621d76add4ad70f64a6af888749"
 dependencies = [
  "convert_case",
  "proc-macro2",

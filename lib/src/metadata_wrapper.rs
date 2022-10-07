@@ -2,6 +2,7 @@ use frame_metadata::RuntimeMetadata;
 use log::debug;
 
 use crate::{convert::convert, display_module, display_v14_meta};
+
 pub struct MetadataWrapper<'a>(pub &'a RuntimeMetadata);
 
 impl<'a> MetadataWrapper<'a> {

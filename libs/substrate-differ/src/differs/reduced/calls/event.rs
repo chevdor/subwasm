@@ -7,7 +7,7 @@ use serde::Serialize;
 use std::{collections::BTreeMap, fmt::Display};
 
 /// Reduced Event
-#[derive(Debug, PartialEq, Eq, Serialize, Hash, Comparable, PartialOrd, Ord)]
+#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq)]
 pub struct Event {
 	index: Index,
 	name: String,

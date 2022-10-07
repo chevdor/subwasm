@@ -22,43 +22,12 @@ pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
 
 // TODO: fix the variables names in here
 
-#[derive(Debug, PartialEq, Eq, Comparable, Serialize)]
+#[derive(Debug, PartialEq, Comparable, Serialize)]
 pub struct ReducedRuntime {
-	// TODO: remove pub once we have an iterator
-	// TODO: Could use a BTreeMap
 	pub pallets: HashMap<Index, ReducedPallet>,
 }
 
-// pub struct ReducedRuntimeChange{
-// 	pub pallets: MapChange<u32, ReducedPalletDesc, Vec<ReducedPalletChange>
-// }
-
-// impl Serialize for ReducedRuntimeChange {
-// 	fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
-// 	where
-// 		S: serde::Serializer,
-// 	{
-// 		// serializer.serialize_map(*self.pallets);
-
-// 		// let mut map = serializer.serialize_map(Some(self.pallets.len()))?;
-// 		self.pallets.iter().map(|p| {
-// 			match p {
-// 				comparable::MapChange::Added(k, d) => todo!(),
-// 				comparable::MapChange::Changed(_, _) => todo!(),
-// 				comparable::MapChange::Removed(_) => todo!(),
-// 			}
-// 			println!("p = {:?}", p)
-// 		});
-// 		// for (k, v) in self.pallets {
-// 		//     map.serialize_entry(k, v)?;
-// 		// }
-// 		// map.end()
-
-// 		todo!()
-// 	}
-// }
-
-// One of the following is wrong
+// TODO: One of the following is wrong
 impl From<&PalletCallMetadata<PortableForm>> for PalletItem {
 	fn from(fn_meta: &PalletCallMetadata<PortableForm>) -> Self {
 		PalletItem::Call(fn_meta.into())

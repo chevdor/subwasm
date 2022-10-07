@@ -1,61 +1,18 @@
 use super::changed_wapper::{ChangedWrapper, CompOutput};
 use super::reduced_runtime::*;
 use comparable::Comparable;
-use frame_metadata::{RuntimeMetadata, RuntimeMetadata::*};
 
-// TODO: Placeholder, here we can convert from V14 to V13. We don't need to convert
-// once we can normalize both to a ReducedRuntime.
+// TODO: Placeholder, here we can convert from V14 to V13. We don't need to convert once we can normalize both to a ReducedRuntime.
 // pub fn convert(_r: &v14::RuntimeMetadataV14) -> Option<v13::RuntimeMetadataV13> {
 // 	todo!()
 // }
-
 // type MetadataVersion = u32;
 
-/// The [ReducedDiffer] works exclusively on 2 [ReducedRuntime].
+// /// The [ReducedDiffer] works exclusively on 2 [ReducedRuntime].
 
-pub struct ReducedDiffer {
-	// r1: ReducedRuntime,
-	// r2: ReducedRuntime,
-	// version: MetadataVersion,
-}
+pub struct ReducedDiffer;
 
 impl ReducedDiffer {
-	// pub fn new(r1: &RuntimeMetadata, r2: &RuntimeMetadata) -> Self {
-	// 	log::debug!("++ReducedDiffer");
-	// 	// if std::mem::discriminant(r1) != std::mem::discriminant(r2) {
-	// 	// 	panic!("Only same Metadata Versions can be compared");
-	// 	// };
-
-	// 	match (&r1, &r2) {
-	// 		// (V13(_), V13(_)) => Self { r1: r1.into(), r2: r2.into(), version: 13 },
-	// 		(V13(_), V13(_)) | (V14(_), V14(_)) => {
-	// 			let r1 = r1.into();
-	// 			let r2 = r2.into();
-	// 			Self { r1, r2 }
-	// 		}
-	// 		// (V13(_), V14(b)) => {
-	// 		// 	Self { r1: r1.into(), r2: (RuntimeMetadata::V13(convert(b).unwrap())).into(), version: 13 }
-	// 		// }
-	// 		// (V14(a), V13(_)) => {
-	// 		// 	Self { r1: (RuntimeMetadata::V13(convert(a).unwrap())).into(), r2: r2.into(), version: 13 }
-	// 		// }
-	// 		// (V14(_), V14(_)) => Self { r1: r1.into(), r2: r2.into(), version: 14 },
-	// 		_ => panic!("Unsupported versions set, we support only Vn/Vn or Vn/Vn+1"),
-	// 	}
-	// }
-
-	// This is a raw comparison based on the json serialization of the metadata
-	// pub fn compare(&self) {
-	// 	log::debug!("A: {:?}", self.r1);
-	// 	log::debug!("B: {:?}", self.r2);
-
-	// 	match (self.r1, self.r2) {
-	// 		(V13(_a), V13(_b)) => self.compare_reduced(),
-	// 		(V14(_a), V14(_b)) => self.compare_reduced(),
-	// 		_ => panic!("V12 is unsupported"),
-	// 	}
-	// }
-
 	pub fn compare(r1: &ReducedRuntime, r2: &ReducedRuntime) -> Option<ChangedWrapper> {
 		match r1.comparison(r2) {
 			comparable::Changed::Unchanged => None,
@@ -64,10 +21,6 @@ impl ReducedDiffer {
 			}
 		}
 	}
-
-	// pub fn get_reduced_runtimes_as_ref(&self) -> (&ReducedRuntime, &ReducedRuntime) {
-	// 	(&self.r1, &self.r2)
-	// }
 }
 
 // TODO: The following should NOT be needed with comparable

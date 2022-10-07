@@ -8,7 +8,7 @@ use serde::Serialize;
 use std::{collections::BTreeMap, fmt::Display};
 
 /// Reduced Call
-#[derive(Debug, PartialEq, Eq, Serialize, Hash, Comparable, PartialOrd, Ord)]
+#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq)]
 pub struct Call {
 	pub index: Index,
 	pub name: String,
@@ -17,12 +17,6 @@ pub struct Call {
 	#[comparable_ignore]
 	pub docs: Documentation,
 }
-
-// impl From<scale_info::TypeDef> for Call {
-// 	fn from(_: scale_info::TypeDef) -> Self {
-// 		todo!()
-// 	}
-// }
 
 impl Display for Call {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {

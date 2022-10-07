@@ -4,7 +4,7 @@ use serde::Serialize;
 use std::{collections::BTreeMap, fmt::Display};
 
 /// Reduced Error
-#[derive(Debug, PartialEq, Eq, Serialize, Hash, Comparable, PartialOrd, Ord)]
+#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq)]
 pub struct Error {
 	pub index: Index,
 	pub name: String,

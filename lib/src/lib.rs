@@ -1,15 +1,16 @@
+#![allow(clippy::derive_partial_eq_without_eq)]
+
 use log::{debug, info};
-use std::path::Path;
-use std::{fs::File, path::PathBuf};
-use std::{io::prelude::*, str::FromStr};
+use std::{
+	fs::File,
+	io::prelude::*,
+	path::{Path, PathBuf},
+	str::FromStr,
+};
 pub use substrate_differ::differs::diff_method::DiffMethod;
-use substrate_differ::differs::reduced::changed_wapper::CompOutput;
-use substrate_differ::differs::reduced::diff_analyzer::{Compatible, DiffAnalyzer};
-use substrate_differ::differs::reduced::diff_result::ReducedDiffResult;
-use substrate_differ::differs::reduced::reduced_runtime::ReducedRuntime;
 use substrate_differ::differs::{
 	raw::{raw_differ::RawDiffer, raw_differ_options::RawDifferOptions},
-	reduced::reduced_differ::ReducedDiffer,
+	reduced::{diff_result::ReducedDiffResult, reduced_runtime::ReducedRuntime},
 	summary::RuntimeSummaryDiffer,
 };
 use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, WasmLoader};
@@ -23,6 +24,7 @@ mod metadata_wrapper;
 mod runtime_info;
 mod subwasm;
 mod types;
+
 pub use chain_info::*;
 pub use runtime_info::*;
 pub use subwasm::*;

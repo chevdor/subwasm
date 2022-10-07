@@ -42,7 +42,7 @@ impl ReducedDiffResult {
 impl Display for ReducedDiffResult {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		// TODO: handle with match
-		f.write_fmt(format_args!("{:?}", self.changes));
+		let _ = f.write_fmt(format_args!("{:?}", self.changes));
 		f.write_fmt(format_args!("compatible: {}", self.compatible))
 
 		// TODO: some work here

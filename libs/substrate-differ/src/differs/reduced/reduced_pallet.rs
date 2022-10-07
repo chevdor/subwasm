@@ -7,7 +7,7 @@ use std::{collections::BTreeMap, fmt::Display};
 
 /// A [ReducedPallet] is mainly a `Vec` or [PalletItem].
 // TODO: no doc ?
-#[derive(Debug, PartialEq, Eq, Hash, Comparable, Serialize)]
+#[derive(Debug, PartialEq, Hash, Comparable, Serialize)]
 pub struct ReducedPallet {
 	/// Index of the pallet
 	pub index: Index,
@@ -27,37 +27,6 @@ impl PartialOrd for ReducedPallet {
 	fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
 		self.index.partial_cmp(&other.index)
 	}
-}
-
-// TODO: impl Iterator
-impl ReducedPallet {
-	// /// Computes the differences between 2 pallets
-	// pub fn diff<'meta>(
-	// 	pallet_a: Option<&'meta Self>,
-	// 	pallet_b: Option<&'meta Self>,
-	// ) -> DiffResult<'meta, ReducedPallet> {
-	// 	match (pallet_a, pallet_b) {
-	// 		(Some(pa), Some(pb)) => {
-	// 			// Compare indexes... well kinda...
-	// 			assert_eq!(pa.index, pb.index, "Comparing different indexes does not make much sense");
-
-	// 			// Compare names
-	// 			if pa.name != pb.name {
-	// 				return DiffResult::new(Change::Modified((pa, pb)));
-	// 			}
-
-	// 			// Compare items, this is the most important
-	// 			// TODO: this check goes away, we switch to comparable
-	// 			if pa.calls != pb.calls {
-	// 				return DiffResult::new(Change::Modified((pa, pb)));
-	// 			}
-	// 			DiffResult::new(Change::Unchanged)
-	// 		}
-	// 		(Some(pa), None) => return DiffResult::new(Change::Removed(pa)),
-	// 		(None, Some(pb)) => return DiffResult::new(Change::Added(pb)),
-	// 		(None, None) => unreachable!(),
-	// 	}
-	// }
 }
 
 impl Display for ReducedPallet {

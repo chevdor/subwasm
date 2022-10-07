@@ -1,11 +1,10 @@
+use super::calls::{call::*, constant::*, error::*, event::*, storage::*};
 use comparable::Comparable;
 use frame_metadata::PalletCallMetadata;
 use scale_info::form::PortableForm;
 use std::fmt::Display;
 
-use super::calls::{call::*, constant::*, error::*, event::*, storage::*};
-
-#[derive(Debug, PartialEq, Eq, Hash, Comparable, PartialOrd, Ord)]
+#[derive(Debug, PartialEq, Hash, Comparable, PartialOrd, Ord, Eq)]
 /// A [PalletItem] is what [ReducedRuntime](super::reduced_runtime::ReducedRuntime) are made of.
 pub enum PalletItem {
 	Call(Call),

@@ -5,12 +5,12 @@ use std::fmt::Display;
 pub type ArgType = String;
 
 /// Signature of a reduced call
-#[derive(Debug, PartialEq, Eq, Serialize, Hash, Comparable, PartialOrd, Ord)]
+#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq)]
 pub struct Signature {
 	pub args: Vec<Arg>,
 }
 
-#[derive(Debug, PartialEq, Eq, Serialize, Hash, Comparable, PartialOrd, Ord)]
+#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq)]
 pub struct Arg {
 	pub name: String,
 	pub ty: ArgType,

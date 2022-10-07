@@ -4,7 +4,6 @@ use clap::{crate_name, crate_version, Parser};
 use env_logger::Env;
 use log::info;
 use opts::*;
-use serde_json::*;
 use subwasmlib::*;
 
 /// Simple macro that only execute $statement if $opts don#t contain neither the quiet nor the json flag

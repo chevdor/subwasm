@@ -4,7 +4,7 @@ use serde::Serialize;
 use std::fmt::Display;
 
 /// Reduced Storage
-#[derive(Debug, PartialEq, Eq, Serialize, Hash, Comparable, PartialOrd, Ord)]
+#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq)]
 pub struct Storage {
 	pub name: String,
 	// Brought back down to a String to allow new runtimes adding more variants
