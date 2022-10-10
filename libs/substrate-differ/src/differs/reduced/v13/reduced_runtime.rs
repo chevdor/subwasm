@@ -5,8 +5,11 @@ use frame_metadata::{
 	PalletCallMetadata, RuntimeMetadata,
 	RuntimeMetadata::*,
 };
-use scale_info::form::PortableForm;
-// use scale_info::form::{Form, PortableForm};
+use scale_info::{
+	form::PortableForm,
+	scale::{Decode, Encode},
+	IntoPortable as _, MetaType, PortableRegistry, Registry, TypeInfo,
+};
 use serde_json::Value;
 use std::fmt::Debug;
 
@@ -15,10 +18,7 @@ use crate::differs::{
 	reduced::calls::{self, variant_to_calls},
 	utils::convert,
 };
-use scale_info::{IntoPortable as _, MetaType, PortableRegistry, Registry, TypeInfo};
 use std::fmt::Display;
-
-use scale_info::scale::{Decode, Encode};
 
 /// Some keys are duplicate data. We remove them here.
 fn purge_v13_keys(value: Value) -> Value {

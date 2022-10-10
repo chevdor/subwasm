@@ -12,7 +12,7 @@ pub struct Opts {
 	pub json: bool,
 
 	/// Less output
-	#[clap(short, long)]
+	#[clap(short, long, global = true)]
 	pub quiet: bool,
 
 	#[clap(subcommand)]

@@ -32,7 +32,7 @@ mod cli_tests {
 		fn it_gets_a_runtime() {
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
 
-			let assert = cmd.args(&["get", "--output", "runtime.wasm", "wss://rpc.polkadot.io:443"]).assert();
+			let assert = cmd.args(["get", "--output", "runtime.wasm", "wss://rpc.polkadot.io:443"]).assert();
 			assert.success().code(0);
 			assert!(Path::new("runtime.wasm").exists());
 		}
@@ -41,7 +41,7 @@ mod cli_tests {
 		fn it_fails_on_bad_chain() {
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
 
-			let assert = cmd.args(&["get", "--chain", "foobar"]).assert();
+			let assert = cmd.args(["get", "--chain", "foobar"]).assert();
 			assert.failure().code(101);
 		}
 	}
@@ -53,11 +53,11 @@ mod cli_tests {
 		#[test]
 		fn it_shows_metadata() {
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
-			let assert = cmd.args(&["get", "wss://rpc.polkadot.io:443", "--output", "runtime.wasm"]).assert();
+			let assert = cmd.args(["get", "wss://rpc.polkadot.io:443", "--output", "runtime.wasm"]).assert();
 			assert.success().code(0);
 
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
-			let assert = cmd.args(&["meta", "runtime.wasm"]).assert();
+			let assert = cmd.args(["meta", "runtime.wasm"]).assert();
 			assert.success().code(0);
 		}
 	}
@@ -69,27 +69,27 @@ mod cli_tests {
 		#[test]
 		fn it_does_basic_compress_decompress() {
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
-			let assert = cmd.args(&["get", "wss://rpc.polkadot.io:443", "--output", "compressed.wasm"]).assert();
+			let assert = cmd.args(["get", "wss://rpc.polkadot.io:443", "--output", "compressed.wasm"]).assert();
 			assert.success().code(0);
 
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
-			cmd.args(&["decompress", "compressed.wasm", "decompressed.wasm"]).assert().success().code(0);
+			cmd.args(["decompress", "compressed.wasm", "decompressed.wasm"]).assert().success().code(0);
 
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
-			cmd.args(&["compress", "decompressed.wasm", "new_compressed.wasm"]).assert().success().code(0);
+			cmd.args(["compress", "decompressed.wasm", "new_compressed.wasm"]).assert().success().code(0);
 		}
 
 		#[test]
 		fn it_does_decompress_on_already() {
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
-			let assert = cmd.args(&["get", "wss://rpc.polkadot.io:443", "--output", "compressed.wasm"]).assert();
+			let assert = cmd.args(["get", "wss://rpc.polkadot.io:443", "--output", "compressed.wasm"]).assert();
 			assert.success().code(0);
 
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
-			cmd.args(&["decompress", "compressed.wasm", "decompressed.wasm"]).assert().success().code(0);
+			cmd.args(["decompress", "compressed.wasm", "decompressed.wasm"]).assert().success().code(0);
 
 			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
-			cmd.args(&["decompress", "decompressed.wasm", "new_decompressed.wasm"]).assert().success().code(0);
+			cmd.args(["decompress", "decompressed.wasm", "new_decompressed.wasm"]).assert().success().code(0);
 		}
 	}
 }

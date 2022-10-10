@@ -21,18 +21,12 @@ impl<'a> DiffAnalyzer<'a> {
 		&self,
 		pallet_id: u32,
 	) -> Option<&MapChange<PalletId, ReducedPalletDesc, Vec<ReducedPalletChange>>> {
-		// TODO: this .0.0 is ugly, implement that below.
-		let changes = &self.changes.0 .0.pallets;
-
-		changes.iter().find(|&map_change| matches!(map_change, MapChange::Added(id, _) | MapChange::Changed(id, _) | MapChange::Removed(id) if id == &pallet_id))
+		self.changes.get_pallet_changes_by_id(pallet_id)
 	}
 }
 
 impl<'a> Compatible for DiffAnalyzer<'a> {
 	fn compatible(&self) -> bool {
-		// match self.changes.0.0 {
-		// 	comparable::Changed::Unchanged => true,
-		// 	comparable::Changed::Changed(c) => c
 		self.changes
 			.0
 			 .0
@@ -45,7 +39,6 @@ impl<'a> Compatible for DiffAnalyzer<'a> {
 			})
 			.all(|x| x)
 	}
-	// }
 }
 
 pub trait Compatible {
@@ -152,7 +145,7 @@ mod test_diffanalyzer {
 				let change = &changes[0];
 				assert!(change.compatible());
 			}
-			_ => panic!("That does not look right"),
+			_ => panic!("Unexpected change while comparing 9280 and 9290"),
 		}
 
 		let pallet_balances_changes = da.get_pallet_changes(4).unwrap();
@@ -166,7 +159,7 @@ mod test_diffanalyzer {
 				let change = &changes[0];
 				assert!(!change.compatible());
 			}
-			_ => panic!("That does not look right"),
+			_ => panic!("Unexpected change while comparing 9280 and 9290"),
 		}
 	}
 }

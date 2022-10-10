@@ -254,7 +254,7 @@ mod tests {
 		fn it_loads_v14() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14)));
 			// println!("runtime = {:?}", runtime);
-			assert!(!runtime.is_err());
+			assert!(runtime.is_ok());
 			println!("runtime = {:?}", &runtime);
 			let runtime = runtime.unwrap();
 			// println!("{:#?}", runtime);

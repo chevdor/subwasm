@@ -1,5 +1,5 @@
 [package]
-authors = ["chevdor <chevdor@gmail.com>", "Wilfried Kopp <wilfried@parity.io"]
+authors = ["Chevdor <chevdor@gmail.com>", "Wilfried Kopp <wilfried@parity.io"]
 description = "subwasm is a utility that works on WASM Runtime of Substrate based chains"
 edition = "2021"
 homepage = "https://github.com/chevdor/subwasm"
@@ -45,7 +45,7 @@ assert_cmd = "2.0"
 
 [package.metadata.deb]
 assets = [["target/release/subwasm", "usr/bin/", "755"]]
-copyright = "2021, Wilfried Kopp aka. Chevdor <chevdor@gmail.com>"
+copyright = "2021-2022, Wilfried Kopp aka. Chevdor <chevdor@gmail.com>"
 depends = "$auto"
 extended-description = """\
 A cli utility to work with Substrate WASM Runtime."""

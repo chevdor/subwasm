@@ -1,6 +1,6 @@
 mod opts;
 
-use clap::{crate_name, crate_version, Parser};
+use clap::{crate_authors, crate_name, crate_version, Parser};
 use env_logger::Env;
 use log::info;
 use opts::*;
@@ -20,6 +20,7 @@ fn main() -> color_eyre::Result<()> {
 	env_logger::Builder::from_env(Env::default().default_filter_or("none")).init();
 	let opts: Opts = Opts::parse();
 	noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
+	noquiet!(opts, println!("{}", crate_authors!(", ")));
 
 	match opts.subcmd {
 		SubCommand::Get(get_opts) => {
@@ -66,7 +67,6 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		SubCommand::Diff(diff_opts) => {
-			noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
 			log::debug!("Method: {:?}", diff_opts.method);
 
 			let chain_a = diff_opts.chain_a.map(|some| some.name);

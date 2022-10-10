@@ -48,7 +48,7 @@ fmt:
 
 # Run clippy
 clippy:
-	cargo +nightly clippy --features="v14" --all-targets
+	cargo +nightly clippy --features="v14" --all-targets --tests
 
 deny:
 	cargo deny check

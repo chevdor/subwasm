@@ -8,11 +8,15 @@ use super::{
 };
 use std::fmt::Display;
 
-#[derive(Debug, Serialize)]
+#[derive(Serialize)]
 pub struct ReducedDiffResult {
-	runtime_a: ReducedRuntime,
-	runtime_b: ReducedRuntime,
+	// #[serde(skip_serializing)]
+	// runtime_a: ReducedRuntime,
+
+	// #[serde(skip_serializing)]
+	// runtime_b: ReducedRuntime,
 	changes: Option<ChangedWrapper>,
+
 	compatible: bool,
 }
 
@@ -32,9 +36,17 @@ impl ReducedDiffResult {
 			Some(changes) => {
 				let da = DiffAnalyzer::new(&ra, &rb, &changes);
 				let compatible = da.compatible();
-				Self { runtime_a: ra, runtime_b: rb, changes: Some(changes), compatible }
+				Self {
+					// runtime_a: ra, runtime_b: rb,
+					changes: Some(changes),
+					compatible,
+				}
 			}
-			None => Self { runtime_a: ra, runtime_b: rb, changes: None, compatible: true },
+			None => Self {
+				// runtime_a: ra, runtime_b: rb,
+				changes: None,
+				compatible: true,
+			},
 		}
 	}
 }
@@ -42,7 +54,12 @@ impl ReducedDiffResult {
 impl Display for ReducedDiffResult {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		// TODO: handle with match
-		let _ = f.write_fmt(format_args!("{:?}", self.changes));
+
+		let _ = match &self.changes {
+			Some(changes) => f.write_fmt(format_args!("{}", changes)),
+			None => f.write_str("No change detected\n"),
+		};
+
 		f.write_fmt(format_args!("compatible: {}", self.compatible))
 
 		// TODO: some work here

@@ -200,10 +200,7 @@ mod test_reduced_runtime {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_reduce_runtime_v14_polkadot_9290() {
-		use crate::differs::{
-			reduced::diff_analyzer::{Compatible, DiffAnalyzer},
-			test_runtimes::{get_runtime_file, Chain},
-		};
+		use crate::differs::test_runtimes::{get_runtime_file, Chain};
 		use wasm_loader::Source;
 		use wasm_testbed::WasmTestBed;
 
@@ -215,10 +212,7 @@ mod test_reduced_runtime {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_reduce_runtime_get_pallet() {
-		use crate::differs::{
-			reduced::diff_analyzer::{Compatible, DiffAnalyzer},
-			test_runtimes::{get_runtime_file, Chain},
-		};
+		use crate::differs::test_runtimes::{get_runtime_file, Chain};
 		use wasm_loader::Source;
 		use wasm_testbed::WasmTestBed;
 

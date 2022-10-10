@@ -1,4 +1,4 @@
-use super::changed_wapper::{ChangedWrapper, CompOutput};
+use super::changed_wapper::{ChangedWrapper, ReducedRuntimeChangeWrapper};
 use super::reduced_runtime::*;
 use comparable::Comparable;
 
@@ -10,7 +10,7 @@ impl ReducedDiffer {
 		match r1.comparison(r2) {
 			comparable::Changed::Unchanged => None,
 			comparable::Changed::Changed(c /* ReducedRuntimeChange */) => {
-				Some(ChangedWrapper::from(CompOutput::from(c)))
+				Some(ChangedWrapper::from(ReducedRuntimeChangeWrapper::from(c)))
 			}
 		}
 	}
