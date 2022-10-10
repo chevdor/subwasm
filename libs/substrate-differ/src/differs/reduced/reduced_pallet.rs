@@ -1,4 +1,4 @@
-use super::calls::{prelude::Index, *};
+use super::calls::{prelude::PalletId, *};
 use comparable::Comparable;
 use frame_metadata::PalletMetadata;
 use scale_info::form::PortableForm;
@@ -6,18 +6,17 @@ use serde::Serialize;
 use std::{collections::BTreeMap, fmt::Display};
 
 /// A [ReducedPallet] is mainly a `Vec` or [PalletItem].
-// TODO: no doc ?
-#[derive(Debug, PartialEq, Hash, Comparable, Serialize)]
+#[derive(Debug, PartialEq, Hash, Comparable, Serialize, Clone)]
 pub struct ReducedPallet {
 	/// Index of the pallet
-	pub index: Index,
+	pub index: PalletId,
 
 	/// Name of the pallet
 	pub name: String,
 
-	pub calls: BTreeMap<Index, Call>,
-	pub events: BTreeMap<Index, Event>,
-	pub errors: BTreeMap<Index, Error>,
+	pub calls: BTreeMap<PalletId, Call>,
+	pub events: BTreeMap<PalletId, Event>,
+	pub errors: BTreeMap<PalletId, Error>,
 
 	pub constants: BTreeMap<String, Constant>,
 	pub storages: BTreeMap<String, Storage>,
@@ -44,7 +43,7 @@ impl Display for ReducedPallet {
 
 impl From<&PalletMetadata<PortableForm>> for ReducedPallet {
 	fn from(pallet: &PalletMetadata<PortableForm>) -> Self {
-		let index: Index = pallet.index.into();
+		let index: PalletId = pallet.index.into();
 		let name = pallet.name.to_string();
 
 		Self { index, name, ..Default::default() }

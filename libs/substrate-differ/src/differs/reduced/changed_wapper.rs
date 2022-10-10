@@ -1,5 +1,5 @@
 use super::{reduced_pallet::*, reduced_runtime::*};
-use crate::differs::reduced::calls::prelude::Index;
+use crate::differs::reduced::calls::prelude::PalletId;
 use comparable::MapChange;
 use serde::Serialize;
 use std::fmt::Display;
@@ -45,8 +45,8 @@ pub enum ChangedFilter {
 
 impl Display for ChangedWrapper {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		self.0 .0.pallets.iter().for_each(
-			|mc: &MapChange<Index, ReducedPalletDesc, Vec<ReducedPalletChange>>| match mc {
+		self.0 .0.pallets.iter().for_each(|mc: &MapChange<PalletId, ReducedPalletDesc, Vec<ReducedPalletChange>>| {
+			match mc {
 				MapChange::Added(key, reduced_pallet) => {
 					let _ = writeln!(f, "[+] id: {:>2} - new pallet: {}", key, reduced_pallet.name);
 				}
@@ -60,8 +60,8 @@ impl Display for ChangedWrapper {
 						let _ = writeln!(f, "{}", reduced_pallet_change);
 					});
 				}
-			},
-		);
+			}
+		});
 		Ok(())
 	}
 }

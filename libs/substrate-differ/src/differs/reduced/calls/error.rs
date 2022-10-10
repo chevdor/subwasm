@@ -4,9 +4,9 @@ use serde::Serialize;
 use std::{collections::BTreeMap, fmt::Display};
 
 /// Reduced Error
-#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq)]
+#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
 pub struct Error {
-	pub index: Index,
+	pub index: PalletId,
 	pub name: String,
 
 	#[comparable_ignore]
@@ -21,14 +21,14 @@ impl Display for Error {
 	}
 }
 
-pub fn variant_to_errors(td: &TypeDefVariant<PortableForm>) -> BTreeMap<Index, Error> {
+pub fn variant_to_errors(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Error> {
 	td.variants()
 		.iter()
 		.map(|vv| {
 			(
-				vv.index() as Index,
+				vv.index() as PalletId,
 				Error {
-					index: vv.index() as Index,
+					index: vv.index() as PalletId,
 					name: vv.name().to_string(),
 					docs: vv.docs().iter().map(|f| f.into()).collect(),
 				},

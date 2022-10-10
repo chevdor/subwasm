@@ -128,13 +128,8 @@ impl From<&v14::PalletCallMetadata> for PalletData {
 
 #[derive(Debug, PartialEq)]
 pub struct ReducedRuntime {
-	// TODO: remove pub once we have an iterator
-	pub pallets: Vec<ReducedPallet>, // TODO: Could use a BTreeMap
+	pub pallets: Vec<ReducedPallet>,
 }
-
-// impl SliceIndex<[ReducedPallet] for u32 {
-
-// }
 
 impl From<Vec<ReducedPallet>> for ReducedRuntime {
 	fn from(pallets: Vec<ReducedPallet>) -> Self {

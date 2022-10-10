@@ -7,9 +7,9 @@ use serde::Serialize;
 use std::{collections::BTreeMap, fmt::Display};
 
 /// Reduced Event
-#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq)]
+#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
 pub struct Event {
-	index: Index,
+	index: PalletId,
 	name: String,
 	signature: Signature,
 
@@ -25,7 +25,7 @@ impl Display for Event {
 	}
 }
 
-pub fn variant_to_events(td: &TypeDefVariant<PortableForm>) -> BTreeMap<Index, Event> {
+pub fn variant_to_events(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Event> {
 	td.variants()
 		.iter()
 		.map(|vv| {
@@ -39,9 +39,9 @@ pub fn variant_to_events(td: &TypeDefVariant<PortableForm>) -> BTreeMap<Index, E
 				.collect();
 
 			(
-				vv.index() as Index,
+				vv.index() as PalletId,
 				Event {
-					index: vv.index() as Index,
+					index: vv.index() as PalletId,
 					name: vv.name().to_string(),
 					signature: Signature { args },
 					docs: vv.docs().iter().map(|f| f.into()).collect(),

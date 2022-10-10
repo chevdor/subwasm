@@ -2,14 +2,7 @@ use super::changed_wapper::{ChangedWrapper, CompOutput};
 use super::reduced_runtime::*;
 use comparable::Comparable;
 
-// TODO: Placeholder, here we can convert from V14 to V13. We don't need to convert once we can normalize both to a ReducedRuntime.
-// pub fn convert(_r: &v14::RuntimeMetadataV14) -> Option<v13::RuntimeMetadataV13> {
-// 	todo!()
-// }
-// type MetadataVersion = u32;
-
-// /// The [ReducedDiffer] works exclusively on 2 [ReducedRuntime].
-
+/// The [ReducedDiffer] works exclusively on 2 [ReducedRuntime].
 pub struct ReducedDiffer;
 
 impl ReducedDiffer {
@@ -22,50 +15,6 @@ impl ReducedDiffer {
 		}
 	}
 }
-
-// TODO: The following should NOT be needed with comparable
-// impl Differ<ReducedPallet> for ReducedDiffer {
-// 	// TODO: The following may even go to the default impl in the Trait
-// 	fn diff(&self, options: DiffOptions) -> Vec<(PalletId, DiffResult<ReducedPallet>)> {
-// 		// assert!(self.r1.ver) != std::mem::discriminant(&self.r2), "");
-// 		log::debug!("Comparing 2 v{:?} runtimes", self.version);
-// 		log::debug!("options: {:#?}", options);
-
-// 		let r1 = &self.r1;
-// 		let r2 = &self.r2;
-
-// 		// We gather the Set of all indexes in both pallets
-// 		let indexes_1 = &r1.pallets;
-// 		let indexes_2 = &r2.pallets;
-// 		let mut indexes: HashSet<PalletId> = indexes_1.keys().cloned().collect();
-// 		indexes.extend(indexes_2.keys().cloned());
-
-// 		let mut results = vec![];
-
-// 		indexes.into_iter().for_each(|key| {
-// 			let pallet_a = indexes_1.get(&key);
-// 			let pallet_b = indexes_2.get(&key);
-
-// 			match (pallet_a, pallet_b) {
-// 				(Some(pallet_a), Some(pallet_b)) => {
-// 					let d = ReducedPallet::diff(Some(pallet_a), Some(pallet_b));
-// 					results.push((key, d));
-// 				}
-// 				(Some(pallet), None) => {
-// 					// println!("[-] pallet {} has been removed", pallet_a.name);
-// 					results.push((key, DiffResult::new(Change::Removed(pallet))))
-// 				},
-// 				(None, Some(pallet)) => {
-// 					// println!("[+] pallet {} has been introduced", pallet_b.name);
-// 					results.push((key, DiffResult::new(Change::Added(pallet))))
-// 				},
-// 				(None, None) => unreachable!("There is no reason we would get there since we iterate over the indexes found in at least pallet_a or pallet_b"),
-// 			}
-// 		});
-
-// 		results
-// 	}
-// }
 
 #[cfg(test)]
 mod test_diff_runtimes {
@@ -98,63 +47,52 @@ mod test_diff_runtimes {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9100_9100() {
-		use comparable::Changed;
-
 		let ra = get_runtime_file(Chain::Westmint, 14, 9100).expect("Runtime file should exist");
 		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
 		let rb = get_runtime_file(Chain::Westmint, 14, 9100).expect("Runtime file should exist");
 		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
 		let comp = ReducedDiffer::compare(&a, &b);
 
-		assert_eq!(&Changed::Unchanged, comp.as_ref());
+		assert!(comp.is_none());
 	}
 
 	#[test]
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9100_9260() {
-		use comparable::Changed;
-
 		let ra = get_runtime_file(Chain::Westmint, 14, 9100).expect("Runtime file should exist");
 		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
 		let rb = get_runtime_file(Chain::Westmint, 14, 9260).expect("Runtime file should exist");
 		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
 		let comp = ReducedDiffer::compare(&a, &b);
 
-		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
+		assert!(comp.is_some());
 	}
 
 	#[test]
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9260_9260() {
-		use comparable::Changed;
-
 		let ra = get_runtime_file(Chain::Westmint, 14, 9260).expect("Runtime file should exist");
 		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
 		let rb = get_runtime_file(Chain::Westmint, 14, 9260).expect("Runtime file should exist");
 		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
 		let comp = ReducedDiffer::compare(&a, &b);
-		assert!(matches!(comp.as_ref(), Changed::Unchanged));
-		println!("comp = {}", comp);
+		assert!(comp.is_none());
+		println!("comp = {}", comp.unwrap());
 	}
 
 	#[test]
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9260_9270_full() {
-		use comparable::Changed;
-
 		let ra = get_runtime_file(Chain::Westmint, 14, 9270).expect("Runtime file should exist");
 		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
 		let rb = get_runtime_file(Chain::Westmint, 14, 9290).expect("Runtime file should exist");
 		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
 
-		let comp = ReducedDiffer::compare(&a, &b);
-
-		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
-		println!("COMP:");
-		println!("{}", comp);
+		let comp = ReducedDiffer::compare(&a, &b).unwrap();
+		println!("COMP:\n{}", comp);
 	}
 
 	#[test]
@@ -186,7 +124,7 @@ mod test_diff_runtimes {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9280_9290_full() {
-		use comparable::Changed;
+		use crate::differs::reduced::diff_analyzer::{Compatible, DiffAnalyzer};
 
 		let ra = get_runtime_file(Chain::Polkadot, 14, 9280).expect("Runtime file should exist");
 		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
@@ -195,15 +133,21 @@ mod test_diff_runtimes {
 
 		let comp = ReducedDiffer::compare(&a, &b);
 
-		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
+		assert!(comp.as_ref().is_some());
 		println!("COMP:");
-		println!("{}", comp);
+		println!("{:#?}", comp);
 
+		let changes = comp.unwrap();
+		let da = DiffAnalyzer::new(&a, &b, &changes);
+		assert!(!da.compatible());
+
+		println!("changes = {:?}", changes);
+		// assert_eq!(12, changes)
 		todo!()
 		// todo: add folling expectations to the test
 		// all the changes below are SIG changes
-		// - need tx version bump: YES
-		// - Summary pallet  | compat change  | breaking change
+		// [x] need tx version bump: YES
+		// [ ] Summary pallet  | compat change  | breaking change
 		// 			[System] | 0              | sig: 1 [blockWeight] type: FrameSupportWeightsPerDispatchClassU64 -> FrameSupportWeightsPerDispatchClassWeight
 		// 		[Scheduler]  | 0 			  | 0
 		// 		 [Preimage] | 0 			  | 0
@@ -248,57 +192,6 @@ mod test_diff_runtimes {
 		// 		 [Auctions] idx: 72| 0    	  | 0
 		// 		[Crowdloan] idx: 73 | 0    	  | 0
 		// 		[XcmPallet] idx: 99 | 0    	  | 1
-	}
-
-	#[test]
-	#[cfg(feature = "v14")]
-	#[ignore = "local data"]
-	fn test_muharem_westmint_9270_9290() {
-		use comparable::Changed;
-
-		let ra = get_runtime_file(Chain::Westmint, 14, 9270).expect("Runtime file should exist");
-		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
-		let rb = get_runtime_file(Chain::Westmint, 14, 9290).expect("Runtime file should exist");
-		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
-
-		let comp = ReducedDiffer::compare(&a, &b);
-
-		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
-		println!("{}", comp);
-	}
-
-	#[test]
-	#[cfg(feature = "v14")]
-	#[ignore = "local data"]
-	fn test_muharem_statemint_9270_9290() {
-		use comparable::Changed;
-
-		let ra = get_runtime_file(Chain::Statemint, 14, 9270).expect("Runtime file should exist");
-		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
-		let rb = get_runtime_file(Chain::Statemint, 14, 9290).expect("Runtime file should exist");
-		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
-
-		let comp = ReducedDiffer::compare(&a, &b);
-
-		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
-		println!("{}", comp);
-	}
-
-	#[test]
-	#[cfg(feature = "v14")]
-	#[ignore = "local data"]
-	fn test_muharem_statemine_9270_9290() {
-		use comparable::Changed;
-
-		let ra = get_runtime_file(Chain::Statemine, 14, 9270).expect("Runtime file should exist");
-		let a = WasmTestBed::new(&Source::File(ra)).unwrap().metadata().into();
-		let rb = get_runtime_file(Chain::Statemine, 14, 9290).expect("Runtime file should exist");
-		let b = WasmTestBed::new(&Source::File(rb)).unwrap().metadata().into();
-
-		let comp = ReducedDiffer::compare(&a, &b);
-
-		assert!(matches!(comp.as_ref(), Changed::Changed(_)));
-		println!("{}", comp);
 	}
 
 	#[test]

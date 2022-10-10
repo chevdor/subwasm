@@ -431,9 +431,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.0.10"
+version = "4.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3b1a0a4208c6c483b952ad35c6eed505fc13b46f08f631b81e828084a9318d74"
+checksum = "4ed45cc2c62a3eff523e718d8576ba762c83a3146151093283ac62ae11933a73"
 dependencies = [
  "atty",
  "bitflags",
@@ -469,6 +469,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "codespan-reporting"
+version = "0.11.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3538270d33cc669650c4b093848450d380def10c331d38c768e34cac80576e6e"
+dependencies = [
+ "termcolor",
+ "unicode-width",
+]
+
+[[package]]
 name = "color-eyre"
 version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -497,8 +507,9 @@ dependencies = [
 
 [[package]]
 name = "comparable"
-version = "0.5.2"
-source = "git+https://github.com/gilescope/comparable.git?branch=main#809f92aff3687621d76add4ad70f64a6af888749"
+version = "0.5.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d169f471c7dac8d112b1b7a1a962bc1a4d7e9751820139c62e04f5943b82649c"
 dependencies = [
  "comparable_derive",
  "comparable_helper",
@@ -508,8 +519,9 @@ dependencies = [
 
 [[package]]
 name = "comparable_derive"
-version = "0.5.2"
-source = "git+https://github.com/gilescope/comparable.git?branch=main#809f92aff3687621d76add4ad70f64a6af888749"
+version = "0.5.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4b67c555121b6e872b7e0adb8a66bf4f602590e0629af47391f070da7eab43a4"
 dependencies = [
  "convert_case",
  "proc-macro2",
@@ -519,8 +531,9 @@ dependencies = [
 
 [[package]]
 name = "comparable_helper"
-version = "0.5.2"
-source = "git+https://github.com/gilescope/comparable.git?branch=main#809f92aff3687621d76add4ad70f64a6af888749"
+version = "0.5.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "52c1a14219f3d4b88e59faa87165ca9750be4f9a80588dfdaf45b8f8739b6203"
 dependencies = [
  "convert_case",
  "proc-macro2",
@@ -644,6 +657,50 @@ dependencies = [
  "rand_core 0.5.1",
  "subtle",
  "zeroize",
+]
+
+[[package]]
+name = "cxx"
+version = "1.0.78"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "19f39818dcfc97d45b03953c1292efc4e80954e1583c4aa770bac1383e2310a4"
+dependencies = [
+ "cc",
+ "cxxbridge-flags",
+ "cxxbridge-macro",
+ "link-cplusplus",
+]
+
+[[package]]
+name = "cxx-build"
+version = "1.0.78"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3e580d70777c116df50c390d1211993f62d40302881e54d4b79727acb83d0199"
+dependencies = [
+ "cc",
+ "codespan-reporting",
+ "once_cell",
+ "proc-macro2",
+ "quote",
+ "scratch",
+ "syn",
+]
+
+[[package]]
+name = "cxxbridge-flags"
+version = "1.0.78"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "56a46460b88d1cec95112c8c363f0e2c39afdb237f60583b0b36343bf627ea9c"
+
+[[package]]
+name = "cxxbridge-macro"
+version = "1.0.78"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "747b608fecf06b0d72d440f27acc99288207324b793be2c17991839f3d4995ea"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -1198,7 +1255,7 @@ checksum = "75f43d41e26995c17e71ee126451dd3941010b0514a81a9d11f3b341debc2399"
 dependencies = [
  "bytes",
  "fnv",
- "itoa 1.0.4",
+ "itoa",
 ]
 
 [[package]]
@@ -1245,7 +1302,7 @@ dependencies = [
  "http-body",
  "httparse",
  "httpdate",
- "itoa 1.0.4",
+ "itoa",
  "pin-project-lite",
  "socket2",
  "tokio",
@@ -1272,15 +1329,26 @@ dependencies = [
 
 [[package]]
 name = "iana-time-zone"
-version = "0.1.50"
+version = "0.1.51"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fd911b35d940d2bd0bea0f9100068e5b97b51a1cbe13d13382f132e0365257a0"
+checksum = "f5a6ef98976b22b3b7f2f3a806f858cb862044cfa66805aa3ad84cb3d3b785ed"
 dependencies = [
  "android_system_properties",
  "core-foundation-sys",
+ "iana-time-zone-haiku",
  "js-sys",
  "wasm-bindgen",
  "winapi",
+]
+
+[[package]]
+name = "iana-time-zone-haiku"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fde6edd6cef363e9359ed3c98ba64590ba9eecba2293eb5a723ab32aee8926aa"
+dependencies = [
+ "cxx",
+ "cxx-build",
 ]
 
 [[package]]
@@ -1370,12 +1438,6 @@ dependencies = [
 
 [[package]]
 name = "itoa"
-version = "0.4.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b71991ff56294aa922b450139ee08b3bfc70982c6b2c7562771375cf73542dd4"
-
-[[package]]
-name = "itoa"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4217ad341ebadf8d8e724e264f13e593e0648f5b3e94b3896a5df283be015ecc"
@@ -1401,7 +1463,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee"
 version = "0.15.1"
-source = "git+https://github.com/paritytech/jsonrpsee#a7108a7d45e1be342724a20e2d007f1c7a3f7bae"
+source = "git+https://github.com/paritytech/jsonrpsee#264e0a8d4f3308db880d60b563eaf3410754eef9"
 dependencies = [
  "jsonrpsee-client-transport",
  "jsonrpsee-core",
@@ -1414,7 +1476,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-client-transport"
 version = "0.15.1"
-source = "git+https://github.com/paritytech/jsonrpsee#a7108a7d45e1be342724a20e2d007f1c7a3f7bae"
+source = "git+https://github.com/paritytech/jsonrpsee#264e0a8d4f3308db880d60b563eaf3410754eef9"
 dependencies = [
  "anyhow",
  "futures-channel",
@@ -1438,7 +1500,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-core"
 version = "0.15.1"
-source = "git+https://github.com/paritytech/jsonrpsee#a7108a7d45e1be342724a20e2d007f1c7a3f7bae"
+source = "git+https://github.com/paritytech/jsonrpsee#264e0a8d4f3308db880d60b563eaf3410754eef9"
 dependencies = [
  "anyhow",
  "async-lock",
@@ -1461,7 +1523,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-http-client"
 version = "0.15.1"
-source = "git+https://github.com/paritytech/jsonrpsee#a7108a7d45e1be342724a20e2d007f1c7a3f7bae"
+source = "git+https://github.com/paritytech/jsonrpsee#264e0a8d4f3308db880d60b563eaf3410754eef9"
 dependencies = [
  "async-trait",
  "hyper",
@@ -1479,7 +1541,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-types"
 version = "0.15.1"
-source = "git+https://github.com/paritytech/jsonrpsee#a7108a7d45e1be342724a20e2d007f1c7a3f7bae"
+source = "git+https://github.com/paritytech/jsonrpsee#264e0a8d4f3308db880d60b563eaf3410754eef9"
 dependencies = [
  "anyhow",
  "beef",
@@ -1492,7 +1554,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-wasm-client"
 version = "0.15.1"
-source = "git+https://github.com/paritytech/jsonrpsee#a7108a7d45e1be342724a20e2d007f1c7a3f7bae"
+source = "git+https://github.com/paritytech/jsonrpsee#264e0a8d4f3308db880d60b563eaf3410754eef9"
 dependencies = [
  "jsonrpsee-client-transport",
  "jsonrpsee-core",
@@ -1502,7 +1564,7 @@ dependencies = [
 [[package]]
 name = "jsonrpsee-ws-client"
 version = "0.15.1"
-source = "git+https://github.com/paritytech/jsonrpsee#a7108a7d45e1be342724a20e2d007f1c7a3f7bae"
+source = "git+https://github.com/paritytech/jsonrpsee#264e0a8d4f3308db880d60b563eaf3410754eef9"
 dependencies = [
  "http",
  "jsonrpsee-client-transport",
@@ -1524,9 +1586,9 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "libc"
-version = "0.2.134"
+version = "0.2.135"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "329c933548736bc49fd575ee68c89e8be4d260064184389a5b77517cddd99ffb"
+checksum = "68783febc7782c6c5cb401fbda4de5a9898be1762314da0bb2c10ced61f18b0c"
 
 [[package]]
 name = "libm"
@@ -1580,6 +1642,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3db8d6ba2cec9eacc40e6e8ccc98931840301f1006e95647ceb2dd5c3aa06f7c"
 dependencies = [
  "libsecp256k1-core",
+]
+
+[[package]]
+name = "link-cplusplus"
+version = "1.0.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9272ab7b96c9046fbc5bc56c06c117cb639fe2d509df0c421cad82d2915cf369"
+dependencies = [
+ "cc",
 ]
 
 [[package]]
@@ -1768,12 +1839,12 @@ dependencies = [
 
 [[package]]
 name = "num-format"
-version = "0.4.0"
+version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bafe4179722c2894288ee77a9f044f02811c86af699344c498b0840c698a2465"
+checksum = "54b862ff8df690cf089058c98b183676a7ed0f974cc08b426800093227cbff3b"
 dependencies = [
- "arrayvec 0.4.12",
- "itoa 0.4.8",
+ "arrayvec 0.7.2",
+ "itoa",
 ]
 
 [[package]]
@@ -2226,18 +2297,18 @@ dependencies = [
 
 [[package]]
 name = "ref-cast"
-version = "1.0.9"
+version = "1.0.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed13bcd201494ab44900a96490291651d200730904221832b9547d24a87d332b"
+checksum = "b8ebf632f3e32bf35133f620cf481f29c99ae0fb01450fd3d85eee0225274ec1"
 dependencies = [
  "ref-cast-impl",
 ]
 
 [[package]]
 name = "ref-cast-impl"
-version = "1.0.9"
+version = "1.0.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5234cd6063258a5e32903b53b1b6ac043a0541c8adc1f610f67b0326c7a578fa"
+checksum = "caab98faa75ce294d40512ce514a46b15eafe78d72c9397a68ea45b3a88201b6"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2478,6 +2549,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
 
 [[package]]
+name = "scratch"
+version = "1.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9c8132065adcfd6e02db789d9285a0deb2f3fcb04002865ab67d5fb103533898"
+
+[[package]]
 name = "sct"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2565,11 +2642,11 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.85"
+version = "1.0.86"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e55a28e3aaef9d5ce0506d0a14dbba8054ddc7e499ef522dd8b26859ec9d4a44"
+checksum = "41feea4228a6f1cd09ec7a3593a682276702cd67b5273544757dae23c096f074"
 dependencies = [
- "itoa 1.0.4",
+ "itoa",
  "ryu",
  "serde",
 ]
@@ -3587,9 +3664,9 @@ dependencies = [
 
 [[package]]
 name = "unicode-ident"
-version = "1.0.4"
+version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dcc811dc4066ac62f84f11307873c4850cb653bfa9b1719cee2bd2204a4bc5dd"
+checksum = "6ceab39d59e4c9499d4e5a8ee0e2735b891bb7308ac83dfb4e80cad195c9f6f3"
 
 [[package]]
 name = "unicode-normalization"

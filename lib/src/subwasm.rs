@@ -36,25 +36,6 @@ impl Subwasm {
 		&self.runtime_info
 	}
 
-	// TODO: clean up
-	// pub fn display_infos(&self) -> color_eyre::Result<()> {
-	// 	let metadata = self.testbed.runtime_metadata_prefixed();
-
-	// 	match &metadata.1 {
-	// 		RuntimeMetadata::V12(_v12) => {
-	// 			println!("Detected Substrate Runtime V12");
-	// 		}
-	// 		RuntimeMetadata::V13(_v13) => {
-	// 			println!("Detected Substrate Runtime V13");
-	// 		}
-	// 		RuntimeMetadata::V14(_v14) => {
-	// 			println!("Detected Substrate Runtime V14");
-	// 		}
-	// 		_ => return Err(eyre::eyre!("Unsupported metadata version")),
-	// 	};
-	// 	Ok(())
-	// }
-
 	pub fn display_module(&self, filter: String) {
 		let metadata = self.testbed.runtime_metadata_prefixed();
 		let wrapper = MetadataWrapper(&metadata.1);

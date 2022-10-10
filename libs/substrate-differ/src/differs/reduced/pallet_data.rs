@@ -1,4 +1,4 @@
-use super::{calls::prelude::Index, signature::Signature};
+use super::{calls::prelude::PalletId, signature::Signature};
 
 /// PalletData is a a struct describing calls, events, constants, errors and storage.
 /// Those are mentioned as `items` below. Items/PalletData are usually handled through
@@ -9,7 +9,7 @@ pub struct PalletData {
 	pub name: String,
 
 	/// An optionnal index, some variants of `PalletItem` don't have an index
-	pub index: Option<Index>,
+	pub index: Option<PalletId>,
 
 	/// The signature contains what is relevant and critical to the item.
 	pub signature: Box<dyn Signature>,
@@ -20,7 +20,7 @@ pub struct PalletData {
 }
 
 impl PalletData {
-	pub fn new(name: String, index: Option<Index>, signature: Box<dyn Signature>, docs: Vec<String>) -> Self {
+	pub fn new(name: String, index: Option<PalletId>, signature: Box<dyn Signature>, docs: Vec<String>) -> Self {
 		Self { name, index, signature, docs }
 	}
 }

@@ -4,7 +4,7 @@ use serde::Serialize;
 use std::{collections::BTreeSet, fmt::Display};
 
 /// Reduced Constant
-#[derive(Debug, Serialize, Hash, Comparable, PartialOrd, Ord, PartialEq, Eq)]
+#[derive(Debug, Serialize, Hash, Comparable, PartialOrd, Ord, PartialEq, Eq, Clone)]
 pub struct Constant {
 	/// Name
 	pub name: String,
@@ -38,7 +38,7 @@ pub fn variant_to_constants(td: &TypeDefVariant<PortableForm>) -> BTreeSet<Const
 		.map(|vv| {
 			Constant::new(
 				vv.name(),
-				vec![42], // TODO: That is surely NOT 42 ........
+				vec![42], // TODO: WARNING That is surely NOT 42 ........
 				vv.docs().iter().map(|f| f.into()).collect(),
 			)
 		})

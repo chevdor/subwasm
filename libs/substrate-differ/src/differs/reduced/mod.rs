@@ -1,7 +1,5 @@
 #![allow(clippy::derive_partial_eq_without_eq)]
 
-use self::calls::prelude::Index;
-
 pub mod calls;
 pub mod change_type;
 pub mod changed_wapper;
@@ -17,9 +15,6 @@ pub mod reduced_pallet_change;
 pub mod reduced_runtime;
 pub mod reduced_trait;
 pub mod signature;
-
-/// This is the pallet name and the pallet index.
-pub type PalletId = Index;
 
 #[cfg(feature = "v13")]
 pub mod v13;

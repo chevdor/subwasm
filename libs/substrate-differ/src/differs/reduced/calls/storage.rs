@@ -4,15 +4,13 @@ use serde::Serialize;
 use std::fmt::Display;
 
 /// Reduced Storage
-#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq)]
+#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
 pub struct Storage {
 	pub name: String,
 	// Brought back down to a String to allow new runtimes adding more variants
 	// modifier: String,
 	// TODO: Check how to handle the following
 	// ty: String,
-	// Here we don't really care about the default value but its hash
-	// TODO
 	pub default_value: Value,
 
 	#[comparable_ignore]

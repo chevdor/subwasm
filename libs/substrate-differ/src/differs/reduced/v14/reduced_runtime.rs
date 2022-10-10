@@ -17,8 +17,7 @@ impl From<&v14::PalletCallMetadata> for PalletData {
 
 #[derive(Debug, PartialEq)]
 pub struct ReducedRuntime {
-	// TODO: remove pub once we have an iterator
-	pub pallets: Vec<ReducedPallet>, // TODO: Could use a BTreeMap
+	pub pallets: Vec<ReducedPallet>,
 }
 
 impl From<Vec<ReducedPallet>> for ReducedRuntime {

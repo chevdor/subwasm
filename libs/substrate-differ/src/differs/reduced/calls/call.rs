@@ -8,9 +8,9 @@ use serde::Serialize;
 use std::{collections::BTreeMap, fmt::Display};
 
 /// Reduced Call
-#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq)]
+#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
 pub struct Call {
-	pub index: Index,
+	pub index: PalletId,
 	pub name: String,
 	pub signature: Signature,
 
@@ -40,7 +40,7 @@ impl Call {
 	}
 }
 
-pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> BTreeMap<Index, Call> {
+pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Call> {
 	td.variants()
 		.iter()
 		.map(|vv| {
@@ -60,9 +60,9 @@ pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> BTreeMap<Index, Ca
 			// 	documentation: vv.docs().iter().map(|f| f.into()).collect(),
 			// })
 			(
-				vv.index() as Index,
+				vv.index() as PalletId,
 				Call {
-					index: vv.index() as Index,
+					index: vv.index() as PalletId,
 					name: vv.name().to_string(),
 					signature: Signature { args },
 					docs: vv.docs().iter().map(|f| f.into()).collect(),
