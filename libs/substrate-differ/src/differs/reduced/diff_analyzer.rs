@@ -1,5 +1,4 @@
 use comparable::MapChange;
-
 use super::{calls::PalletId, changed_wapper::ChangedWrapper, reduced_pallet::*, reduced_runtime::*};
 
 /// This struct holds both the ReducedRuntime and its changes.
@@ -84,6 +83,7 @@ mod test_diffanalyzer {
 	}
 
 	#[test]
+	#[ignore = "local data"]
 	fn test_compatible_9260_9260() {
 		assert!(compare_runtimes_compatibility(
 			get_runtime_file(Chain::Polkadot, 14, 9260).unwrap(),
@@ -92,6 +92,7 @@ mod test_diffanalyzer {
 	}
 
 	#[test]
+	#[ignore = "local data"]
 	fn test_compatible_9270_9270() {
 		assert!(compare_runtimes_compatibility(
 			get_runtime_file(Chain::Polkadot, 14, 9270).unwrap(),
@@ -100,6 +101,7 @@ mod test_diffanalyzer {
 	}
 
 	#[test]
+	#[ignore = "local data"]
 	fn test_compatible_not_9260_9270() {
 		assert!(!compare_runtimes_compatibility(
 			get_runtime_file(Chain::Polkadot, 14, 9260).unwrap(),
@@ -108,6 +110,7 @@ mod test_diffanalyzer {
 	}
 
 	#[test]
+	#[ignore = "local data"]
 	fn test_compatible_ksm_not_9280_9290() {
 		assert!(!compare_runtimes_compatibility(
 			get_runtime_file(Chain::Kusama, 14, 9280).unwrap(),
@@ -116,6 +119,7 @@ mod test_diffanalyzer {
 	}
 
 	#[test]
+	#[ignore = "local data"]
 	fn test_compatible_dot_not_9280_9290() {
 		assert!(!compare_runtimes_compatibility(
 			get_runtime_file(Chain::Polkadot, 14, 9280).unwrap(),
@@ -124,6 +128,7 @@ mod test_diffanalyzer {
 	}
 
 	#[test]
+	#[ignore = "local data"]
 	fn test_changes_9280_9290() {
 		// TODO: add macro/fn analyze!(Source, Source) -> DiffAnalyzer
 		let a = get_runtime_file(Chain::Polkadot, 14, 9280).expect("Runtime file should exist");

@@ -253,13 +253,10 @@ mod tests {
 		#[ignore = "local data"]
 		fn it_loads_v14() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14)));
-			// println!("runtime = {:?}", runtime);
 			assert!(runtime.is_ok());
 			println!("runtime = {:?}", &runtime);
 			let runtime = runtime.unwrap();
-			// println!("{:#?}", runtime);
 			assert!(runtime.metadata_version == 14);
-			// assert!(runtime.core_version.is_none());
 			assert!(runtime.is_supported());
 		}
 	}

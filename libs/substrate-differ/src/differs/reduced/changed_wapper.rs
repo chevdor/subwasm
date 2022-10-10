@@ -19,8 +19,11 @@ impl ChangedWrapper {
 		&self,
 		pallet_id: PalletId,
 	) -> Option<&MapChange<PalletId, ReducedPalletDesc, Vec<ReducedPalletChange>>> {
-		// self.0.0.pallets.iter().find(|pallet| pallet.id == pallet_id)
-		self.0.0.pallets.iter().find(|&map_change| matches!(map_change, MapChange::Added(id, _) | MapChange::Changed(id, _) | MapChange::Removed(id) if id == &pallet_id))
+		self.0.0.pallets.iter().find(|&map_change|
+			matches!(map_change,
+				MapChange::Added(id, _) |
+				MapChange::Changed(id, _) |
+				MapChange::Removed(id) if id == &pallet_id))
 	}
 }
 
@@ -39,17 +42,19 @@ impl From<ReducedRuntimeChange> for ReducedRuntimeChangeWrapper {
 impl Display for ChangedWrapper {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		// TODO: See other todo, we need to get rid of that
-		self.0 .0.pallets.iter().for_each(|mc: &MapChange<PalletId, ReducedPalletDesc, Vec<ReducedPalletChange>>| {
+		self.get_pallets_changes()
+			.iter()
+			.for_each(|mc: &MapChange<PalletId, ReducedPalletDesc, Vec<ReducedPalletChange>>| {
 			match mc {
-				MapChange::Added(key, reduced_pallet) => {
-					let _ = writeln!(f, "[+] id: {:>2} - new pallet: {}", key, reduced_pallet.name);
+				MapChange::Added(pallet_id, reduced_pallet) => {
+					let _ = writeln!(f, "[+] id: {:>2} - new pallet: {}", pallet_id, reduced_pallet.name);
 				}
-				MapChange::Removed(key) => {
-					let _ = writeln!(f, "[-] pallet {}", key);
+				MapChange::Removed(pallet_id) => {
+					let _ = writeln!(f, "[-] pallet {}", pallet_id);
 				}
 
-				MapChange::Changed(key, changes) => {
-					let _ = writeln!(f, "[≠] pallet {}: -> {} change(s)", key, changes.len());
+				MapChange::Changed(pallet_id, changes) => {
+					let _ = writeln!(f, "[≠] pallet {}: -> {} change(s)", pallet_id, changes.len());
 					changes.iter().for_each(|reduced_pallet_change| {
 						let _ = writeln!(f, "{}", reduced_pallet_change);
 					});
