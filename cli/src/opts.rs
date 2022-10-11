@@ -60,7 +60,7 @@ pub struct GetOpts {
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
-	pub block: Option<String>, // TODO: can do better...
+	pub block: Option<String>, // TODO: can do better with a real Hash
 
 	/// You may specifiy the output filename where the runtime will be saved. If not provided, we will figure out an appropriate default name
 	/// based on a counter: runtime_NNN.wasm where NNN is incrementing to make sure you do not override previous runtime. If you specify an
@@ -86,7 +86,7 @@ pub struct InfoOpts {
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
-	pub block: Option<String>, // TODO: can do better...
+	pub block: Option<String>, // TODO: can do better with a real Hash
 }
 
 /// The `version` command returns summarized information about the versions of a runtime.
@@ -106,7 +106,7 @@ pub struct VersionOpts {
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
-	pub block: Option<String>, // TODO: can do better...
+	pub block: Option<String>, // TODO: can do better with a real Hash
 }
 
 /// Returns the metadata as a json object. You may also use the "meta" alias.
@@ -131,7 +131,7 @@ pub struct MetaOpts {
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
-	pub block: Option<String>, // TODO: can do better...
+	pub block: Option<String>, // TODO: can do better with a real Hash
 }
 
 /// Compare 2 runtimes

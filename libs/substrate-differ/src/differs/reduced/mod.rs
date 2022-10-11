@@ -1,19 +1,15 @@
 #![allow(clippy::derive_partial_eq_without_eq)]
 
 pub mod calls;
-pub mod change_type;
 pub mod changed_wapper;
 pub mod diff_analyzer;
 pub mod diff_result;
-pub mod diff_stats;
-pub mod diff_trait;
 pub mod pallet_data;
 pub mod pallet_item;
 pub mod reduced_differ;
 pub mod reduced_pallet;
 pub mod reduced_pallet_change;
 pub mod reduced_runtime;
-pub mod reduced_trait;
 pub mod signature;
 
 #[cfg(feature = "v13")]

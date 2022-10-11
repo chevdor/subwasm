@@ -1,5 +1,5 @@
-use comparable::MapChange;
 use super::{calls::PalletId, changed_wapper::ChangedWrapper, reduced_pallet::*, reduced_runtime::*};
+use comparable::MapChange;
 
 /// This struct holds both the ReducedRuntime and its changes.
 /// It allows computing stats about the amount of changes,
@@ -28,7 +28,7 @@ impl<'a> Compatible for DiffAnalyzer<'a> {
 	fn compatible(&self) -> bool {
 		self.changes
 			.0
-			 .0
+			.reduced_runtime_change
 			.pallets
 			.iter()
 			.map(|p| match p {

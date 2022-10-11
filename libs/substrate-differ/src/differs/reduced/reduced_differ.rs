@@ -9,8 +9,11 @@ impl ReducedDiffer {
 	pub fn compare(r1: &ReducedRuntime, r2: &ReducedRuntime) -> Option<ChangedWrapper> {
 		match r1.comparison(r2) {
 			comparable::Changed::Unchanged => None,
-			comparable::Changed::Changed(c /* ReducedRuntimeChange */) => {
-				Some(ChangedWrapper::from(ReducedRuntimeChangeWrapper::from(c)))
+			comparable::Changed::Changed(reduced_runtime_change) => {
+				Some(ChangedWrapper::from(ReducedRuntimeChangeWrapper::new(
+					reduced_runtime_change,
+					// r1, r2
+				)))
 			}
 		}
 	}
@@ -144,7 +147,7 @@ mod test_diff_runtimes {
 		println!("changes = {:?}", changes);
 		// assert_eq!(12, changes)
 		todo!()
-		// todo: add folling expectations to the test
+		// todo: add folling expectations to the test. Those are tested in test_changes_9280_9290
 		// all the changes below are SIG changes
 		// [x] need tx version bump: YES
 		// [ ] Summary pallet  | compat change  | breaking change
