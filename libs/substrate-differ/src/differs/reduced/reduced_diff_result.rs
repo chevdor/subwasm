@@ -1,20 +1,22 @@
+use comparable::Comparable;
 use serde::Serialize;
 
 use super::{
 	changed_wapper::ChangedWrapper,
 	diff_analyzer::{Compatible, DiffAnalyzer},
-	reduced_differ::ReducedDiffer,
 	reduced_runtime::ReducedRuntime,
+	reduced_runtime_change_wrapper::ReducedRuntimeChangeWrapper,
 };
 use std::fmt::Display;
 
 #[derive(Serialize)]
 pub struct ReducedDiffResult {
-	// #[serde(skip_serializing)]
-	// runtime_a: ReducedRuntime,
+	#[serde(skip_serializing)]
+	runtime_a: ReducedRuntime,
 
-	// #[serde(skip_serializing)]
-	// runtime_b: ReducedRuntime,
+	#[serde(skip_serializing)]
+	runtime_b: ReducedRuntime,
+
 	changes: Option<ChangedWrapper>,
 
 	compatible: bool,
@@ -22,6 +24,8 @@ pub struct ReducedDiffResult {
 
 impl ReducedDiffResult {
 	pub fn new(ra: ReducedRuntime, rb: ReducedRuntime) -> Self {
+		println!("ReducedDiffResult::new(...)");
+
 		// let ra=.....into():
 		// let rb=.....into():
 
@@ -30,23 +34,24 @@ impl ReducedDiffResult {
 		// let differ = ReducedDiffer::new(runtime_a, runtime_b);
 		// let (ra, rb) = differ.get_reduced_runtimes_as_ref();
 		// let (ra, rb) = (ReducedRuntime::from(runtime_a), ReducedRuntime::from(runtime_b));
-		let changes = ReducedDiffer::compare(&ra, &rb);
+		// let changes = ReducedDiffer::compare(&ra, &rb);
+		let changes: Option<ChangedWrapper> = match ra.comparison(&rb) {
+			comparable::Changed::Unchanged => None,
+			comparable::Changed::Changed(reduced_runtime_change) => {
+				Some(ChangedWrapper::from(ReducedRuntimeChangeWrapper::new(
+					reduced_runtime_change,
+					// r1, r2
+				)))
+			}
+		};
 
 		match changes {
 			Some(changes) => {
 				let da = DiffAnalyzer::new(&ra, &rb, &changes);
 				let compatible = da.compatible();
-				Self {
-					// runtime_a: ra, runtime_b: rb,
-					changes: Some(changes),
-					compatible,
-				}
+				Self { runtime_a: ra, runtime_b: rb, changes: Some(changes), compatible }
 			}
-			None => Self {
-				// runtime_a: ra, runtime_b: rb,
-				changes: None,
-				compatible: true,
-			},
+			None => Self { runtime_a: ra, runtime_b: rb, changes: None, compatible: true },
 		}
 	}
 }

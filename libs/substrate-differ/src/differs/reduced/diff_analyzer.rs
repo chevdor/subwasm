@@ -1,7 +1,15 @@
 use super::{calls::PalletId, changed_wapper::ChangedWrapper, reduced_pallet::*, reduced_runtime::*};
 use comparable::MapChange;
 
-/// This struct holds both the ReducedRuntime and its changes.
+pub trait Compatible {
+	/// This function reports whether the 2 runtimes APIs are compatible or not.
+	/// This helps decide whether the runtime's `transaction_version` should be bumped or not.
+	fn compatible(&self) -> bool;
+}
+
+// todo: XX12 implement display here
+
+/// This struct holds both the [ReducedRuntime] and its changes.
 /// It allows computing stats about the amount of changes,
 /// what has changed (or not) and making the decision about wether
 /// the new runtime breaks API compatibility with the reference one.
@@ -38,12 +46,6 @@ impl<'a> Compatible for DiffAnalyzer<'a> {
 			})
 			.all(|x| x)
 	}
-}
-
-pub trait Compatible {
-	/// This function reports whether the 2 runtimes APIs are compatible or not.
-	/// This helps decide whether the runtime `transaction_version` should be bumped or not.
-	fn compatible(&self) -> bool;
 }
 
 #[cfg(test)]

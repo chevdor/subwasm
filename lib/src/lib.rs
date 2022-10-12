@@ -1,5 +1,15 @@
 #![allow(clippy::derive_partial_eq_without_eq)]
 
+mod chain_info;
+mod chain_urls;
+mod convert;
+mod error;
+mod macros;
+mod metadata_wrapper;
+mod runtime_info;
+mod subwasm;
+mod types;
+
 use log::{debug, info};
 use std::{
 	fs::File,
@@ -10,20 +20,11 @@ use std::{
 pub use substrate_differ::differs::diff_method::DiffMethod;
 use substrate_differ::differs::{
 	raw::{raw_differ::RawDiffer, raw_differ_options::RawDifferOptions},
-	reduced::{diff_result::ReducedDiffResult, reduced_runtime::ReducedRuntime},
+	reduced::{reduced_diff_result::ReducedDiffResult, reduced_runtime::ReducedRuntime},
 	summary::RuntimeSummaryDiffer,
 };
 use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, WasmLoader};
 use wasm_testbed::WasmTestBed;
-mod chain_info;
-mod chain_urls;
-mod convert;
-mod error;
-mod macros;
-mod metadata_wrapper;
-mod runtime_info;
-mod subwasm;
-mod types;
 
 pub use chain_info::*;
 pub use runtime_info::*;
@@ -159,7 +160,8 @@ pub fn reduced_diff(src_a: Source, src_b: Source) -> ReducedDiffResult {
 	// let da = DiffAnalyzer::new(&ra, &rb, &changes);
 	// let compatible = da.compatible();
 
-	ReducedDiffResult::new(ra, rb)
+	let diff_result = ReducedDiffResult::new(ra, rb);
+	diff_result
 }
 
 /// Compress a given runtime into a new file. You cannot compress

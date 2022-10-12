@@ -1,15 +1,8 @@
-use super::{reduced_pallet::*, reduced_runtime::*};
+use super::{reduced_pallet::*, reduced_runtime_change_wrapper::ReducedRuntimeChangeWrapper};
 use crate::differs::reduced::calls::prelude::PalletId;
 use comparable::MapChange;
 use serde::Serialize;
 use std::fmt::Display;
-
-#[derive(Debug, Serialize)]
-pub struct ReducedRuntimeChangeWrapper {
-	pub(crate) reduced_runtime_change: ReducedRuntimeChange,
-	// pub(crate) reduced_runtime_a: &'a ReducedRuntime,
-	// pub(crate) reduced_runtime_b: &'a ReducedRuntime,
-}
 
 #[derive(Debug, Serialize)]
 pub struct ChangedWrapper(pub(crate) ReducedRuntimeChangeWrapper);
@@ -30,6 +23,11 @@ impl ChangedWrapper {
 				MapChange::Removed(id) if id == &pallet_id)
 		})
 	}
+
+	// pub fn get_pallet_by_id(&self,
+	// 	pallet_id: PalletId) -> &ReducedPallet {
+	// 		self.0.
+	// 	}
 }
 
 impl From<ReducedRuntimeChangeWrapper> for ChangedWrapper {
@@ -38,19 +36,7 @@ impl From<ReducedRuntimeChangeWrapper> for ChangedWrapper {
 	}
 }
 
-impl ReducedRuntimeChangeWrapper {
-	pub fn new(
-		reduced_runtime_change: ReducedRuntimeChange,
-		// reduced_runtime_a: &'a ReducedRuntime,
-		// reduced_runtime_b: &'a ReducedRuntime,
-	) -> Self {
-		Self {
-			reduced_runtime_change,
-			// reduced_runtime_a, reduced_runtime_b
-		}
-	}
-}
-
+// todo: XX12 we may need to do that "down" and have access to the runtimes references
 impl Display for ChangedWrapper {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		// TODO: See other todo, we need to get rid of that
