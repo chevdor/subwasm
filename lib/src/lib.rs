@@ -160,8 +160,7 @@ pub fn reduced_diff(src_a: Source, src_b: Source) -> ReducedDiffResult {
 	// let da = DiffAnalyzer::new(&ra, &rb, &changes);
 	// let compatible = da.compatible();
 
-	let diff_result = ReducedDiffResult::new(ra, rb);
-	diff_result
+	ReducedDiffResult::new(ra, rb)
 }
 
 /// Compress a given runtime into a new file. You cannot compress

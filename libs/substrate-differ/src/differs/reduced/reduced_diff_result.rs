@@ -1,5 +1,6 @@
 use comparable::Comparable;
 use serde::Serialize;
+use std::rc::Rc;
 
 use super::{
 	changed_wapper::ChangedWrapper,
@@ -11,14 +12,22 @@ use std::fmt::Display;
 
 #[derive(Serialize)]
 pub struct ReducedDiffResult {
+	/// Reference runtime. This is the runtime on the left side of the comparison.
+	/// We compare [runtime_b] to [runtime_a].
 	#[serde(skip_serializing)]
-	runtime_a: ReducedRuntime,
+	pub(crate) runtime_a: Rc<ReducedRuntime>,
 
+	/// This is the Right side of the comparison. We compare this runtime with the reference [runtime_a].
 	#[serde(skip_serializing)]
-	runtime_b: ReducedRuntime,
+	pub(crate) runtime_b: Rc<ReducedRuntime>,
 
-	changes: Option<ChangedWrapper>,
+	/// This is the diff between our 2 runtimes. Anything common and unchanged between the 2 runtimes
+	/// is NOT part of these [changes].
+	pub(crate) changes: Option<Rc<ChangedWrapper>>,
 
+	/// After computing the [changes] we analysis the content of the changes and set this flag depending
+	/// on whether we consider the runtimes compatible or not. If they are not compatible, the `transaction_version` of
+	/// [runtime_b] should be bumped before releasing.
 	compatible: bool,
 }
 
@@ -26,69 +35,37 @@ impl ReducedDiffResult {
 	pub fn new(ra: ReducedRuntime, rb: ReducedRuntime) -> Self {
 		println!("ReducedDiffResult::new(...)");
 
-		// let ra=.....into():
-		// let rb=.....into():
+		let instance = Self { runtime_a: Rc::new(ra), runtime_b: Rc::new(rb), changes: None, compatible: false };
+		instance.init()
+	}
 
-		// ReducedDiffer::compare(runtime_a, runtime_b);
-
-		// let differ = ReducedDiffer::new(runtime_a, runtime_b);
-		// let (ra, rb) = differ.get_reduced_runtimes_as_ref();
-		// let (ra, rb) = (ReducedRuntime::from(runtime_a), ReducedRuntime::from(runtime_b));
-		// let changes = ReducedDiffer::compare(&ra, &rb);
-		let changes: Option<ChangedWrapper> = match ra.comparison(&rb) {
+	pub fn init(mut self) -> Self {
+		let ra = self.runtime_a.clone();
+		let rb = self.runtime_b.clone();
+		self.changes = match ra.comparison(&rb) {
 			comparable::Changed::Unchanged => None,
-			comparable::Changed::Changed(reduced_runtime_change) => {
-				Some(ChangedWrapper::from(ReducedRuntimeChangeWrapper::new(
-					reduced_runtime_change,
-					// r1, r2
-				)))
-			}
+			comparable::Changed::Changed(reduced_runtime_change) => Some(Rc::new(ChangedWrapper::from(
+				ReducedRuntimeChangeWrapper::new(reduced_runtime_change, ra.clone(), rb.clone()),
+			))),
 		};
 
-		match changes {
-			Some(changes) => {
-				let da = DiffAnalyzer::new(&ra, &rb, &changes);
-				let compatible = da.compatible();
-				Self { runtime_a: ra, runtime_b: rb, changes: Some(changes), compatible }
-			}
-			None => Self { runtime_a: ra, runtime_b: rb, changes: None, compatible: true },
+		if let Some(changes) = &self.changes {
+			let da = DiffAnalyzer::new(changes.clone());
+			self.compatible = da.compatible();
+		} else {
+			self.compatible = true;
 		}
+		self
 	}
 }
 
 impl Display for ReducedDiffResult {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		// TODO: handle with match
-
 		let _ = match &self.changes {
 			Some(changes) => f.write_fmt(format_args!("{}", changes)),
 			None => f.write_str("No change detected\n"),
 		};
 
 		f.write_fmt(format_args!("compatible: {}", self.compatible))
-
-		// TODO: some work here
-		// println!(
-		// 	"spec_version       : {:>4?} -> {:>4?}",
-		// 	runtime_a.core_version().spec_version,
-		// 	runtime_b.core_version().spec_version
-		// );
-
-		// let tx_version_a = runtime_a.core_version().transaction_version;
-		// let tx_version_b = runtime_a.core_version().transaction_version;
-		// println!("transaction_version: {:>4?} -> {:>4?}", tx_version_a, tx_version_b,);
-		// println!("Compatible: {}", if compatible { "YES" } else { "NO" });
-		// if !compatible {
-		// 	if tx_version_a == tx_version_b {
-		// 		eprintln!("ERROR: You need to bump the transaction_version");
-		// 		std::process::exit(1)
-		// 	} else {
-		// 		println!("GOOD: transaction_version has been bumped already");
-		// 		std::process::exit(0)
-		// 	}
-		// } else {
-		// 	println!("OK runtimes are compatibles");
-		// 	std::process::exit(0)
-		// }
 	}
 }

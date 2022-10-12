@@ -431,9 +431,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.0.11"
+version = "4.0.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4ed45cc2c62a3eff523e718d8576ba762c83a3146151093283ac62ae11933a73"
+checksum = "6ea54a38e4bce14ff6931c72e5b3c43da7051df056913d4e7e1fcdb1c03df69d"
 dependencies = [
  "atty",
  "bitflags",
@@ -448,9 +448,9 @@ dependencies = [
 
 [[package]]
 name = "clap_derive"
-version = "4.0.10"
+version = "4.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "db342ce9fda24fb191e2ed4e102055a4d381c1086a06630174cd8da8d5d917ce"
+checksum = "c42f169caba89a7d512b5418b09864543eeb4d497416c917d7137863bd2076ad"
 dependencies = [
  "heck",
  "proc-macro-error",
@@ -507,9 +507,9 @@ dependencies = [
 
 [[package]]
 name = "comparable"
-version = "0.5.3"
+version = "0.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d169f471c7dac8d112b1b7a1a962bc1a4d7e9751820139c62e04f5943b82649c"
+checksum = "eb513ee8037bf08c5270ecefa48da249f4c58e57a71ccfce0a5b0877d2a20eb2"
 dependencies = [
  "comparable_derive",
  "comparable_helper",
@@ -519,11 +519,11 @@ dependencies = [
 
 [[package]]
 name = "comparable_derive"
-version = "0.5.3"
+version = "0.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4b67c555121b6e872b7e0adb8a66bf4f602590e0629af47391f070da7eab43a4"
+checksum = "a54b9c40054eb8999c5d1d36fdc90e4e5f7ff0d1d9621706f360b3cbc8beb828"
 dependencies = [
- "convert_case",
+ "convert_case 0.4.0",
  "proc-macro2",
  "quote",
  "syn",
@@ -531,11 +531,11 @@ dependencies = [
 
 [[package]]
 name = "comparable_helper"
-version = "0.5.3"
+version = "0.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "52c1a14219f3d4b88e59faa87165ca9750be4f9a80588dfdaf45b8f8739b6203"
+checksum = "fb5437e327e861081c91270becff184859f706e3e50f5301a9d4dc8eb50752c3"
 dependencies = [
- "convert_case",
+ "convert_case 0.6.0",
  "proc-macro2",
  "quote",
  "syn",
@@ -552,6 +552,15 @@ name = "convert_case"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6245d59a3e82a7fc217c5828a6692dbc6dfb63a0c8c90495621f7b9d79704a0e"
+
+[[package]]
+name = "convert_case"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ec182b0ca2f35d8fc196cf3404988fd8b8c739a4d270ff118a398feb0cbec1ca"
+dependencies = [
+ "unicode-segmentation",
+]
 
 [[package]]
 name = "core-foundation"
@@ -2297,18 +2306,18 @@ dependencies = [
 
 [[package]]
 name = "ref-cast"
-version = "1.0.10"
+version = "1.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b8ebf632f3e32bf35133f620cf481f29c99ae0fb01450fd3d85eee0225274ec1"
+checksum = "70d392892f272751a9ab8dbcdb379092be98acc6331d029fbb8643eff11d3315"
 dependencies = [
  "ref-cast-impl",
 ]
 
 [[package]]
 name = "ref-cast-impl"
-version = "1.0.10"
+version = "1.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "caab98faa75ce294d40512ce514a46b15eafe78d72c9397a68ea45b3a88201b6"
+checksum = "213c2951ea9c3641b1044acbce5510fdceae2caf3d853c3a79dc2d7d51e138fb"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3198,9 +3207,9 @@ checksum = "6e63cff320ae2c57904679ba7cb63280a3dc4613885beafb148ee7bf9aa9042d"
 
 [[package]]
 name = "ss58-registry"
-version = "1.31.0"
+version = "1.33.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1de151faef619cb7b5c26b32d42bc7ddccac0d202beb7a84344b44e9232b92f7"
+checksum = "3ab7554f8a8b6f8d71cd5a8e6536ef116e2ce0504cf97ebf16311d58065dc8a6"
 dependencies = [
  "Inflector",
  "num-format",
@@ -3676,6 +3685,12 @@ checksum = "5c5713f0fc4b5db668a2ac63cdb7bb4469d8c9fed047b1d0292cc7b0ce2ba921"
 dependencies = [
  "tinyvec",
 ]
+
+[[package]]
+name = "unicode-segmentation"
+version = "1.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0fdbf052a0783de01e944a6ce7a8cb939e295b1e7be835a1112c3b9a7f047a5a"
 
 [[package]]
 name = "unicode-width"

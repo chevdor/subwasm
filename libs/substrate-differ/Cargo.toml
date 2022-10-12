@@ -15,7 +15,7 @@ frame-metadata = { version = "15", package = "frame-metadata", features = [
 ] }
 log = "0.4"
 num-format = "0.4"
-serde = { version = "1.0", features = ["derive"] }
+serde = { version = "1.0", features = ["derive", "rc"] }
 serde_json = "1.0"
 treediff = { version = "4.0", features = [
     "with-serde-json",

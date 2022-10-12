@@ -1,5 +1,6 @@
-use super::{calls::PalletId, changed_wapper::ChangedWrapper, reduced_pallet::*, reduced_runtime::*};
+use super::{calls::PalletId, changed_wapper::ChangedWrapper, reduced_pallet::*};
 use comparable::MapChange;
+use std::rc::Rc;
 
 pub trait Compatible {
 	/// This function reports whether the 2 runtimes APIs are compatible or not.
@@ -7,21 +8,17 @@ pub trait Compatible {
 	fn compatible(&self) -> bool;
 }
 
-// todo: XX12 implement display here
-
 /// This struct holds both the [ReducedRuntime] and its changes.
 /// It allows computing stats about the amount of changes,
 /// what has changed (or not) and making the decision about wether
 /// the new runtime breaks API compatibility with the reference one.
-pub struct DiffAnalyzer<'a> {
-	pub runtime_1: &'a ReducedRuntime,
-	pub runtime_2: &'a ReducedRuntime,
-	pub changes: &'a ChangedWrapper,
+pub struct DiffAnalyzer {
+	pub changes: Rc<ChangedWrapper>,
 }
 
-impl<'a> DiffAnalyzer<'a> {
-	pub fn new(runtime_1: &'a ReducedRuntime, runtime_2: &'a ReducedRuntime, changes: &'a ChangedWrapper) -> Self {
-		Self { runtime_1, runtime_2, changes }
+impl DiffAnalyzer {
+	pub fn new(changes: Rc<ChangedWrapper>) -> Self {
+		Self { changes }
 	}
 
 	pub fn get_pallet_changes(
@@ -32,11 +29,11 @@ impl<'a> DiffAnalyzer<'a> {
 	}
 }
 
-impl<'a> Compatible for DiffAnalyzer<'a> {
+impl Compatible for DiffAnalyzer {
 	fn compatible(&self) -> bool {
 		self.changes
 			.0
-			.reduced_runtime_change
+			.changes
 			.pallets
 			.iter()
 			.map(|p| match p {
@@ -51,7 +48,7 @@ impl<'a> Compatible for DiffAnalyzer<'a> {
 #[cfg(test)]
 mod test_diffanalyzer {
 	use super::*;
-	use crate::differs::{reduced::reduced_differ::ReducedDiffer, test_runtimes::*};
+	use crate::differs::{reduced::reduced_diff_result::ReducedDiffResult, test_runtimes::*};
 	use std::path::PathBuf;
 	use wasm_loader::Source;
 	use wasm_testbed::WasmTestBed;
@@ -62,11 +59,11 @@ mod test_diffanalyzer {
 
 		let ra = a.metadata().into();
 		let rb = b.metadata().into();
-		let comp = ReducedDiffer::compare(&ra, &rb);
+		let res = ReducedDiffResult::new(ra, rb);
 
-		match comp {
+		match res.changes {
 			Some(changes) => {
-				let da = DiffAnalyzer::new(&ra, &rb, &changes);
+				let da = DiffAnalyzer::new(changes);
 				println!("spec_version {:?} -> {:?}", a.core_version().spec_version, b.core_version().spec_version);
 				println!(
 					"transaction {:?} -> {:?}",
@@ -138,9 +135,9 @@ mod test_diffanalyzer {
 		let b = get_runtime_file(Chain::Polkadot, 14, 9290).expect("Runtime file should exist");
 		let rb = WasmTestBed::new(&Source::File(b)).unwrap().metadata().into();
 
-		let changes = ReducedDiffer::compare(&ra, &rb).unwrap();
+		let res = ReducedDiffResult::new(ra, rb);
 
-		let da = DiffAnalyzer::new(&ra, &rb, &changes);
+		let da = DiffAnalyzer::new(res.changes.unwrap());
 		let pallet_system_changes = da.get_pallet_changes(0).unwrap();
 		println!("pallet_system_changes = {:#?}", pallet_system_changes);
 
