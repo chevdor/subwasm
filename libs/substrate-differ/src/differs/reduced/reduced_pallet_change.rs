@@ -40,6 +40,36 @@ impl ReducedPalletChange {
 	}
 }
 
+impl Compatible for ReducedPalletChange {
+	fn compatible(&self) -> bool {
+		match self {
+			ReducedPalletChange::Index(_) => false,
+			ReducedPalletChange::Name(_) => true,
+
+			ReducedPalletChange::Calls(x) => x
+				.iter()
+				.map(|i| match i {
+					MapChange::Added(_k, _d) => true,
+					MapChange::Removed(_k) => false,
+					MapChange::Changed(_k, c) => c.iter().map(|cc| cc.compatible()).all(|x| x),
+				})
+				.all(|x| x),
+			ReducedPalletChange::Events(_x) => true,
+			ReducedPalletChange::Errors(_x) => true,
+
+			ReducedPalletChange::Constants(_x) => true,
+			// x.iter()
+			// .map(|i| match i {
+			// 	MapChange::Added(_k, _d) => true,
+			// 	MapChange::Removed(_k) => true,
+			// 	MapChange::Changed(_k, c) => c.iter().map(|cc| cc.compatible()).all(|x| x.into()),
+			// })
+			// .all(|x| x.into()),
+			ReducedPalletChange::Storages(_x) => true,
+		}
+	}
+}
+
 impl Display for ReducedPalletChange {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		// let constant_changes = ReducedPalletChange::get_changed_items(self, PalletItemType::Constants);
@@ -68,36 +98,6 @@ impl Display for ReducedPalletChange {
 			ReducedPalletChange::Storages(change) => {
 				ReducedPalletChange::format::<String, StorageDesc, StorageChange>(f, change, PalletItemType::Storage)
 			}
-		}
-	}
-}
-
-impl Compatible for ReducedPalletChange {
-	fn compatible(&self) -> bool {
-		match self {
-			ReducedPalletChange::Index(_) => false,
-			ReducedPalletChange::Name(_) => true,
-
-			ReducedPalletChange::Calls(x) => x
-				.iter()
-				.map(|i| match i {
-					MapChange::Added(_k, _d) => true,
-					MapChange::Removed(_k) => false,
-					MapChange::Changed(_k, c) => c.iter().map(|cc| cc.compatible()).all(|x| x),
-				})
-				.all(|x| x),
-			ReducedPalletChange::Events(_x) => true,
-			ReducedPalletChange::Errors(_x) => true,
-
-			ReducedPalletChange::Constants(_x) => true,
-			// x.iter()
-			// .map(|i| match i {
-			// 	MapChange::Added(_k, _d) => true,
-			// 	MapChange::Removed(_k) => true,
-			// 	MapChange::Changed(_k, c) => c.iter().map(|cc| cc.compatible()).all(|x| x.into()),
-			// })
-			// .all(|x| x.into()),
-			ReducedPalletChange::Storages(_x) => true,
 		}
 	}
 }

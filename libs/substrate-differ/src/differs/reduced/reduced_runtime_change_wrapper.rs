@@ -40,6 +40,26 @@ impl ReducedRuntimeChangeWrapper {
 		};
 		reduced_runtime.pallets.get(id)
 	}
+
+	/// We cannot just count the number of items in the Vec we get since the upper
+	/// levels will only contains Call types. So for instance, if we have only changes on [Calls], the length
+	/// of the top level will be 1 (=Call) and contain a Vec for the list of Call changes. So we need to iterate
+	/// on the second level to get the total amount of changes.
+	fn get_changes_count(changes: &Vec<ReducedPalletChange>) -> usize {
+		let val = changes
+			.iter()
+			.map(|item| match item {
+				ReducedPalletChange::Index(_) | ReducedPalletChange::Name(_) => 1,
+				ReducedPalletChange::Calls(x) => x.len(),
+				ReducedPalletChange::Events(x) => x.len(),
+				ReducedPalletChange::Errors(x) => x.len(),
+				ReducedPalletChange::Constants(x) => x.len(),
+				ReducedPalletChange::Storages(x) => x.len(),
+			})
+			.fold(0, |acc, x| acc + x);
+		// println!("val = {:?}", val);
+		val
+	}
 }
 
 impl Display for ReducedRuntimeChangeWrapper {
@@ -60,18 +80,24 @@ impl Display for ReducedRuntimeChangeWrapper {
 				}
 
 				MapChange::Changed(pallet_id, changes) => {
+					// println!("cahnges = {:?}", changes);
 					let pallet_a = self.get_pallet(pallet_id, ComparisonSide::Left);
-					let pallet_b = self.get_pallet(pallet_id, ComparisonSide::Right);
-					let pallet_name = match pallet_a {
+					// let pallet_b = self.get_pallet(pallet_id, ComparisonSide::Right);
+					let pallet_a_name = match pallet_a {
 						Some(p) => &p.name,
 						None => "n/a",
 					};
+					// let pallet_b_name = match pallet_b {
+					// 	Some(p) => &p.name,
+					// 	None => "n/a",
+					// };
 					let _ = writeln!(
 						f,
-						"[≠] pallet {id}: {name} -> {count} change(s)",
+						"[≠] pallet {id}: {name_a} -> {count} change(s)",
 						id = pallet_id,
-						name = pallet_name,
-						count = changes.len()
+						name_a = pallet_a_name,
+						// name_b = pallet_b_name,
+						count = ReducedRuntimeChangeWrapper::get_changes_count(changes)
 					);
 					changes.iter().for_each(|reduced_pallet_change| {
 						let _ = writeln!(f, "{}", reduced_pallet_change);
