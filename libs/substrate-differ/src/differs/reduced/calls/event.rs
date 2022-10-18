@@ -9,7 +9,7 @@ use std::{collections::BTreeMap, fmt::Display};
 /// Reduced Event
 #[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
 pub struct Event {
-	index: PalletId,
+	index: ExtrinsicId,
 	name: String,
 	signature: Signature,
 

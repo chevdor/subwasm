@@ -6,7 +6,7 @@ use std::{collections::BTreeMap, fmt::Display};
 /// Reduced Error
 #[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
 pub struct Error {
-	pub index: PalletId,
+	pub index: ExtrinsicId,
 	pub name: String,
 
 	#[comparable_ignore]

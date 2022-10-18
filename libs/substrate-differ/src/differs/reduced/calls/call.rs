@@ -10,7 +10,7 @@ use std::{collections::BTreeMap, fmt::Display};
 /// Reduced Call
 #[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
 pub struct Call {
-	pub index: PalletId,
+	pub index: ExtrinsicId,
 	pub name: String,
 	pub signature: Signature,
 

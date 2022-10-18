@@ -23,17 +23,17 @@ impl ReducedPalletChange {
 	pub fn format<KEY: Display, DESC: std::fmt::Debug, CHANGE: std::fmt::Debug>(
 		f: &mut std::fmt::Formatter<'_>,
 		changes: &[MapChange<KEY, DESC, Vec<CHANGE>>],
-		how: PalletItemType,
+		item_type: PalletItemType,
 	) -> std::fmt::Result {
 		changes.iter().for_each(|ch| match ch {
-			MapChange::Added(key, d) => {
-				let _ = writeln!(f, "  - [+] {}: {} {:?}", how, key, d);
+			MapChange::Added(item_id, d) => {
+				let _ = writeln!(f, "  - [+] {}: {} {:?}", item_type, item_id, d);
 			}
-			MapChange::Changed(key, c) => {
-				let _ = writeln!(f, "  - [≠] {}: {} {:?}", how, key, c);
+			MapChange::Changed(item_id, c) => {
+				let _ = writeln!(f, "  - [≠] {}: {} {:?}", item_type, item_id, c);
 			}
-			MapChange::Removed(key) => {
-				let _ = writeln!(f, "  - [-] {}: {}", how, key);
+			MapChange::Removed(item_id) => {
+				let _ = writeln!(f, "  - [-] {}: {}", item_type, item_id);
 			}
 		});
 		Ok(())
@@ -72,6 +72,7 @@ impl Compatible for ReducedPalletChange {
 
 impl Display for ReducedPalletChange {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		panic!("DONT CALL ME ! Make a ReducedPalletChangeWrapper instead and call display on it");
 		// let constant_changes = ReducedPalletChange::get_changed_items(self, PalletItemType::Constants);
 
 		match self {

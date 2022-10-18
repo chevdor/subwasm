@@ -2,15 +2,11 @@ use crate::differs::reduced::calls::PalletId;
 use std::fmt::Display;
 use std::rc::Rc;
 
+use super::ComparisonSide;
 use super::reduced_pallet::*;
 use super::reduced_runtime::*;
 use comparable::MapChange;
 use serde::Serialize;
-
-enum ComparisonSide {
-	Left,
-	Right,
-}
 
 /// This struct is important as it brings together the diff as well
 /// as references to the runtimes that have been diffed.
@@ -57,7 +53,6 @@ impl ReducedRuntimeChangeWrapper {
 				ReducedPalletChange::Storages(x) => x.len(),
 			})
 			.fold(0, |acc, x| acc + x);
-		// println!("val = {:?}", val);
 		val
 	}
 }
@@ -80,23 +75,18 @@ impl Display for ReducedRuntimeChangeWrapper {
 				}
 
 				MapChange::Changed(pallet_id, changes) => {
-					// println!("cahnges = {:?}", changes);
 					let pallet_a = self.get_pallet(pallet_id, ComparisonSide::Left);
-					// let pallet_b = self.get_pallet(pallet_id, ComparisonSide::Right);
+					let _pallet_b = self.get_pallet(pallet_id, ComparisonSide::Right);
 					let pallet_a_name = match pallet_a {
 						Some(p) => &p.name,
 						None => "n/a",
 					};
-					// let pallet_b_name = match pallet_b {
-					// 	Some(p) => &p.name,
-					// 	None => "n/a",
-					// };
+
 					let _ = writeln!(
 						f,
 						"[≠] pallet {id}: {name_a} -> {count} change(s)",
 						id = pallet_id,
 						name_a = pallet_a_name,
-						// name_b = pallet_b_name,
 						count = ReducedRuntimeChangeWrapper::get_changes_count(changes)
 					);
 					changes.iter().for_each(|reduced_pallet_change| {
