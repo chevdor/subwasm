@@ -146,7 +146,7 @@ mod test_reduced_conversion {
 	use wasm_loader::Source;
 	use wasm_testbed::WasmTestBed;
 
-	// TODO: put that in a 	single file
+	// TODO: put that in a single file
 	// const RUNTIME_V12: &str = "../../data/runtime_v12.wasm";
 	const RUNTIME_V13: &str = "../../data/polkadot/V13/polkadot-9030.wasm";
 

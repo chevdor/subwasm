@@ -5,7 +5,9 @@ use scale_info::form::PortableForm;
 use serde::Serialize;
 use std::{collections::BTreeMap, fmt::Display};
 
-/// A [ReducedPallet] is mainly a `Vec` or [PalletItem].
+/// A [ReducedPallet] could be a `Vec` or [PalletItem] but it ends
+/// but providing a much more useful output after diffing when using
+/// separated fields.
 #[derive(Debug, PartialEq, Hash, Comparable, Serialize, Clone)]
 pub struct ReducedPallet {
 	/// Index of the pallet

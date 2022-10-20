@@ -33,8 +33,6 @@ pub struct ReducedDiffResult {
 
 impl ReducedDiffResult {
 	pub fn new(ra: ReducedRuntime, rb: ReducedRuntime) -> Self {
-		println!("ReducedDiffResult::new(...)");
-
 		let instance = Self { runtime_a: Rc::new(ra), runtime_b: Rc::new(rb), changes: None, compatible: false };
 		instance.init()
 	}

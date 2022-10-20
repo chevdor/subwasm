@@ -1,5 +1,5 @@
 [package]
-authors = ["Chevdor <chevdor@gmail.com>", "Wilfried Kopp <wilfried@parity.io"]
+authors = ["Chevdor <chevdor@gmail.com>", "Wilfried Kopp <wilfried@parity.io>"]
 description = "subwasm is a utility that works on WASM Runtime of Substrate based chains"
 edition = "2021"
 homepage = "https://github.com/chevdor/subwasm"

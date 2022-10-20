@@ -9,9 +9,9 @@ use std::{collections::BTreeMap, fmt::Display};
 /// Reduced Event
 #[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
 pub struct Event {
-	index: ExtrinsicId,
-	name: String,
-	signature: Signature,
+	pub index: ExtrinsicId,
+	pub name: String,
+	pub signature: Signature,
 
 	#[comparable_ignore]
 	docs: Documentation,
