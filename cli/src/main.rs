@@ -5,6 +5,7 @@ use env_logger::Env;
 use log::info;
 use opts::*;
 use subwasmlib::*;
+use text_style::{AnsiColor, StyledStr};
 
 /// Simple macro that only execute $statement if $opts don#t contain neither the quiet nor the json flag
 macro_rules! noquiet {
@@ -83,7 +84,22 @@ fn main() -> color_eyre::Result<()> {
 						let s = serde_json::to_string_pretty(&diff_result).unwrap();
 						println!("{}", s);
 					} else {
+						let warning = StyledStr::plain(
+							"!!! THE SUBWASM REDUCED DIFFER IS EXPERIMENTAL, DOUBLE CHECK THE RESULTS !!!\n",
+						);
+
+						let warning = if opts.no_color {
+							warning
+						} else {
+							warning.on(AnsiColor::Yellow.light()).with(AnsiColor::Red.light()).bold()
+						};
+
+						// println!("!!! THE SUBWASM REDUCED DIFFER IS EXPERIMENTAL, DOUBLE CHECK THE RESULTS");
+						text_style::termion::render(std::io::stdout(), &warning).expect("Could not render line");
 						println!("{}", diff_result);
+						text_style::termion::render(std::io::stdout(), &warning).expect("Could not render line");
+
+						// println!("!!! THE SUBWASM REDUCED DIFFER IS EXPERIMENTAL, DOUBLE CHECK THE RESULTS");
 					}
 				}
 				DiffMethod::Summary => todo!(),

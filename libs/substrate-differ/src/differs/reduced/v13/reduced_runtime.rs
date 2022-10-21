@@ -23,7 +23,7 @@ use std::fmt::Display;
 /// Some keys are duplicate data. We remove them here.
 fn purge_v13_keys(value: Value) -> Value {
 	let mut serialized = value.serialize();
-	let mut c = serialized.as_object_mut().unwrap().to_owned(); // TODO: could use a match and prevent the unwrap()
+	let mut c = serialized.as_object_mut().unwrap().to_owned(); // TODO: V13 could use a match and prevent the unwrap()
 
 	// println!("c before = {:?}", &c);
 	let _ = c.remove("name");
@@ -32,7 +32,7 @@ fn purge_v13_keys(value: Value) -> Value {
 	Value::Object(c)
 }
 
-// TODO those impl can be made with a macro
+// TODO: V13 those impl can be made with a macro
 impl From<&v13::FunctionMetadata> for PalletData {
 	fn from(f: &v13::FunctionMetadata) -> Self {
 		let index = None;
@@ -121,7 +121,7 @@ impl From<&v14::PalletCallMetadata> for PalletData {
 		let _index = meta_type.type_id();
 		let _name = String::new();
 
-		todo!();
+		todo!("V13");
 		// PalletData::new(name, index, signature, documentation)
 	}
 }
@@ -146,7 +146,7 @@ mod test_reduced_conversion {
 	use wasm_loader::Source;
 	use wasm_testbed::WasmTestBed;
 
-	// TODO: put that in a single file
+	// TODO: V13 put that in a single file
 	// const RUNTIME_V12: &str = "../../data/runtime_v12.wasm";
 	const RUNTIME_V13: &str = "../../data/polkadot/V13/polkadot-9030.wasm";
 

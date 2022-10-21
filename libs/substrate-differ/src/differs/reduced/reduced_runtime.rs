@@ -1,7 +1,5 @@
 use super::{
 	calls::{call::Call, error::Error, event::Event, prelude::PalletId},
-	pallet_data::PalletData,
-	pallet_item::PalletItem,
 	reduced_pallet::ReducedPallet,
 };
 use crate::differs::reduced::calls::{
@@ -9,7 +7,7 @@ use crate::differs::reduced::calls::{
 };
 use comparable::Comparable;
 use frame_metadata::{
-	v14, PalletCallMetadata, PalletMetadata,
+	v14, PalletMetadata,
 	RuntimeMetadata::{self, *},
 };
 use scale_info::{form::PortableForm, PortableRegistry};
@@ -25,19 +23,6 @@ pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
 #[derive(Debug, PartialEq, Comparable, Serialize)]
 pub struct ReducedRuntime {
 	pub pallets: HashMap<PalletId, ReducedPallet>,
-}
-
-// TODO: One of the following is wrong
-impl From<&PalletCallMetadata<PortableForm>> for PalletItem {
-	fn from(fn_meta: &PalletCallMetadata<PortableForm>) -> Self {
-		PalletItem::Call(fn_meta.into())
-	}
-}
-
-impl From<&PalletCallMetadata<PortableForm>> for PalletData {
-	fn from(call: &PalletCallMetadata<PortableForm>) -> Self {
-		Self { name: "todo".to_string(), index: None, signature: Box::new(call.ty), docs: vec![] }
-	}
 }
 
 impl From<HashMap<PalletId, ReducedPallet>> for ReducedRuntime {
@@ -182,7 +167,7 @@ impl ReducedRuntime {
 impl From<&RuntimeMetadata> for ReducedRuntime {
 	fn from(runtime_metadata: &RuntimeMetadata) -> Self {
 		match &runtime_metadata {
-			// TODO: Bring back v13 eventually
+			// TODO: V13 Bring back v13 eventually
 			#[cfg(feature = "v13")]
 			V13(v13) => ReducedRuntime::from_v13(v13).unwrap(),
 			#[cfg(feature = "v14")]

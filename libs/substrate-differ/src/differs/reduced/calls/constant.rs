@@ -1,7 +1,7 @@
 use super::prelude::*;
 use comparable::Comparable;
 use serde::Serialize;
-use std::{collections::BTreeSet, fmt::Display};
+use std::fmt::Display;
 
 /// Reduced Constant
 #[derive(Debug, Serialize, Hash, Comparable, PartialOrd, Ord, PartialEq, Eq, Clone)]
@@ -30,19 +30,6 @@ impl Display for Constant {
 
 		Ok(())
 	}
-}
-
-pub fn variant_to_constants(td: &TypeDefVariant<PortableForm>) -> BTreeSet<Constant> {
-	td.variants()
-		.iter()
-		.map(|vv| {
-			Constant::new(
-				vv.name(),
-				vec![42], // TODO: WARNING That is surely NOT 42 ........
-				vv.docs().iter().map(|f| f.into()).collect(),
-			)
-		})
-		.collect()
 }
 
 #[cfg(test)]

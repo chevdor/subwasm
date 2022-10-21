@@ -2,7 +2,7 @@ use super::{
 	prelude::*,
 	signature::{Arg, Signature},
 };
-use comparable::{Changed, Comparable};
+use comparable::Comparable;
 use scale_info::{form::PortableForm, TypeDefVariant};
 use serde::Serialize;
 use std::{collections::BTreeMap, fmt::Display};
@@ -20,25 +20,18 @@ pub struct Call {
 
 impl Display for Call {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let _ = f.write_fmt(format_args!("[{: >2}] {} ( {} )", self.index, self.name, self.signature));
-
-		// // TODO: impl display for Signature
-		// self.signature.args.iter().for_each(|a| {
-		// 	let _ = f.write_fmt(format_args!("{}: {}, ", a.name, a.ty));
-		// });
-		// f.write_str(") ")
-		Ok(())
+		f.write_fmt(format_args!("[{: >2}] {} ( {} )", self.index, self.name, self.signature))
 	}
 }
 
-impl Call {
-	pub fn comp(&self) {
-		let c: Changed<_> = self.comparison(self);
-		c.for_each(|x| {
-			println!("***** x = {:#?}", x);
-		})
-	}
-}
+// impl Call {
+// 	pub fn comp(&self) {
+// 		let c: Changed<_> = self.comparison(self);
+// 		c.for_each(|x| {
+// 			println!("***** x = {:#?}", x);
+// 		})
+// 	}
+// }
 
 pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Call> {
 	td.variants()

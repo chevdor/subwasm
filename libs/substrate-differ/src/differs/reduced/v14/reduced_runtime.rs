@@ -10,7 +10,7 @@ impl From<&v14::PalletCallMetadata> for PalletData {
 		let _index = meta_type.type_id();
 		let _name = String::new();
 
-		todo!();
+		todo!("V14");
 		// PalletData::new(name, index, signature, documentation)
 	}
 }

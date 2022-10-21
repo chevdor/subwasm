@@ -29,6 +29,6 @@ impl Display for PalletItem {
 
 impl From<&PalletCallMetadata<PortableForm>> for Call {
 	fn from(_: &PalletCallMetadata<PortableForm>) -> Self {
-		todo!()
+		todo!("From<&PalletCallMetadata<PortableForm>> for Call")
 	}
 }

@@ -141,10 +141,11 @@
 // 		println!("changes = {:?}", changes);
 // 		// assert_eq!(12, changes)
 // 		todo!()
+// TODO: TESTS Creat tests
 // 		// todo: add folling expectations to the test. Those are tested in test_changes_9280_9290
 // 		// all the changes below are SIG changes
-// 		// [x] need tx version bump: YES
-// 		// [ ] Summary pallet  | compat change  | breaking change
+// 		// - need tx version bump: YES
+// 		// - TEST: Summary pallet  | compat change  | breaking change
 // 		// 			[System] | 0              | sig: 1 [blockWeight] type: FrameSupportWeightsPerDispatchClassU64 -> FrameSupportWeightsPerDispatchClassWeight
 // 		// 		[Scheduler]  | 0 			  | 0
 // 		// 		 [Preimage] | 0 			  | 0

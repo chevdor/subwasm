@@ -15,6 +15,9 @@ pub struct Opts {
 	#[clap(short, long, global = true)]
 	pub quiet: bool,
 
+	#[clap(short, long, global = true, env = "NO_COLOR")]
+	pub no_color: bool,
+
 	#[clap(subcommand)]
 	pub subcmd: SubCommand,
 }

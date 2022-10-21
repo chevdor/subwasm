@@ -19,8 +19,10 @@ pub struct Arg {
 impl Display for Signature {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		self.args.iter().for_each(|arg| {
-			let _ = f.write_fmt(format_args!("x{}", arg));
+			let _ = f.write_fmt(format_args!("{}: {}, ", arg.name, arg.ty));
+			// let _ = f.write_fmt(format_args!("{}", arg));
 		});
+		let _ = f.write_str(") ");
 		Ok(())
 	}
 }
