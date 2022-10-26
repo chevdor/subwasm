@@ -60,7 +60,7 @@ impl ReducedDiffResult {
 impl Display for ReducedDiffResult {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		let _ = match &self.changes {
-			Some(changes) => f.write_fmt(format_args!("{changes}" )),
+			Some(changes) => f.write_fmt(format_args!("{changes}")),
 			None => f.write_str("No change detected\n"),
 		};
 

@@ -45,7 +45,7 @@ impl RuntimeInfo {
 	pub fn print(&self, json: bool) {
 		if json {
 			let serialized = serde_json::to_string_pretty(self).unwrap();
-			println!("{serialized}" );
+			println!("{serialized}");
 		} else {
 			println!("{self}");
 		}

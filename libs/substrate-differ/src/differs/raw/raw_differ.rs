@@ -63,7 +63,7 @@ impl<'a, T: Serialize> RawDiffer<'a, T> {
 					{
 						skip_counter.bytes += 1;
 					} else {
-						println!("{wrapped_call}" )
+						println!("{wrapped_call}")
 					}
 
 					// if !k.contains(&doc) || k.contains(&doc) && !options.skip_doc {

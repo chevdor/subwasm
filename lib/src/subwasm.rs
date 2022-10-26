@@ -22,7 +22,7 @@ impl Subwasm {
 				const VERSION: &str = env!("CARGO_PKG_VERSION");
 				println!("🗣️ If you think it should have worked, please open an issue at {REPO}/issues");
 				println!("and attach your runtime and mention using {NAME} v{VERSION}");
-				println!("The source was {source} " );
+				println!("The source was {source} ");
 
 				panic!("Could not load runtime");
 			})

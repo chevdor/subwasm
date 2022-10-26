@@ -70,8 +70,7 @@ impl Display for ReducedRuntimeChangeWrapper {
 		self.changes.pallets.iter().for_each(
 			|mc: &MapChange<PalletId, ReducedPalletDesc, Vec<ReducedPalletChange>>| match mc {
 				MapChange::Added(pallet_id, reduced_pallet) => {
-					let _ =
-						writeln!(f, "[+] id: {pallet_id:>2} - new pallet: {name}", name = reduced_pallet.name);
+					let _ = writeln!(f, "[+] id: {pallet_id:>2} - new pallet: {name}", name = reduced_pallet.name);
 				}
 				MapChange::Removed(pallet_id) => {
 					let pallet = self.get_pallet(pallet_id, ComparisonSide::Left);
