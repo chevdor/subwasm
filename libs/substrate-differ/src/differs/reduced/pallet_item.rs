@@ -18,11 +18,11 @@ impl Display for PalletItem {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		const WIDTH: usize = 9;
 		match self {
-			PalletItem::Call(c) => f.write_fmt(format_args!("{:<WIDTH$}: {}", "Call", c)),
-			PalletItem::Event(e) => f.write_fmt(format_args!("{:<WIDTH$}: {}", "Event", e)),
-			PalletItem::Error(e) => f.write_fmt(format_args!("{:<WIDTH$}: {}", "Error", e)),
-			PalletItem::Constant(c) => f.write_fmt(format_args!("{:<WIDTH$}: {}", "Constant", c)),
-			PalletItem::Storage(s) => f.write_fmt(format_args!("{:<WIDTH$}: {}", "Storage", s)),
+			PalletItem::Call(c) => f.write_fmt(format_args!("{:<WIDTH$}: {c}", "Call")),
+			PalletItem::Event(e) => f.write_fmt(format_args!("{:<WIDTH$}: {e}", "Event")),
+			PalletItem::Error(e) => f.write_fmt(format_args!("{:<WIDTH$}: {e}", "Error")),
+			PalletItem::Constant(c) => f.write_fmt(format_args!("{:<WIDTH$}: {c}", "Constant")),
+			PalletItem::Storage(s) => f.write_fmt(format_args!("{:<WIDTH$}: {s}", "Storage")),
 		}
 	}
 }

@@ -10,17 +10,17 @@ impl<'a, K: Display, V: Display + 'a> Display for CallWrapper<'a, K, V> {
 			ChangeType::Modified(keys, v_before, v_after) => {
 				let mut res = String::new();
 				for key in keys {
-					let _ = write!(res, "{}.", key);
+					let _ = write!(res, "{key}.");
 				}
 
-				write!(f, "🛠  {:<50} {:>20} --> {}", res, v_before, v_after)
+				write!(f, "🛠  {res:<50} {v_before:>20} --> {v_after}")
 			}
 			ChangeType::Removed(keys, val) => {
 				let mut res = String::new();
 				for key in keys {
-					let _ = write!(res, "{}.", key);
+					let _ = write!(res, "{key}.");
 				}
-				write!(f, "🗑  {:<50} {:>20}", res, val)
+				write!(f, "🗑  {res:<50} {val:>20}")
 			}
 
 			ChangeType::Unchanged(_, _) => write!(f, "Unchanged"),

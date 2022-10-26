@@ -27,13 +27,13 @@ impl ReducedPalletChange {
 	) -> std::fmt::Result {
 		changes.iter().for_each(|ch| match ch {
 			MapChange::Added(item_id, d) => {
-				let _ = writeln!(f, "  - [+] {}: {} {:?}", item_type, item_id, d);
+				let _ = writeln!(f, "  - [+] {item_type}: {item_id} {d:?}");
 			}
 			MapChange::Changed(item_id, c) => {
-				let _ = writeln!(f, "  - [≠] {}: {} {:?}", item_type, item_id, c);
+				let _ = writeln!(f, "  - [≠] {item_type}: {item_id} {c:?}");
 			}
 			MapChange::Removed(item_id) => {
-				let _ = writeln!(f, "  - [-] {}: {}", item_type, item_id);
+				let _ = writeln!(f, "  - [-] {item_type}: {item_id}");
 			}
 		});
 		Ok(())

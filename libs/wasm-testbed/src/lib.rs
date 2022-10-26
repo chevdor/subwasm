@@ -94,7 +94,7 @@ impl WasmTestBed {
 		let version = WasmTestBed::get_metadata_version(data);
 
 		println!("✨ Magic number found: {}", if is_substrate_wasm { "YES" } else { "NO" });
-		println!("#️⃣ Extracted version : V{:?}", version);
+		println!("#️⃣ Extracted version : V{version:?}");
 	}
 
 	pub fn compression(&self) -> Compression {
@@ -193,7 +193,7 @@ impl WasmTestBed {
 	/// Compute the blake2-256 hash of the runtime
 	pub fn blake2_256_hash(&self) -> String {
 		let result = BlakeTwo256::hash(&self.bytes);
-		format!("{:?}", result)
+		format!("{result:?}")
 	}
 }
 

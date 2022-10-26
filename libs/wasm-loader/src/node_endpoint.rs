@@ -24,7 +24,7 @@ impl FromStr for NodeEndpoint {
 		match s {
 			url if url.starts_with("ws") => Ok(NodeEndpoint::WebSocket(url.to_string())),
 			url if url.starts_with("http") => Ok(NodeEndpoint::Http(url.to_string())),
-			_ => Err(WasmLoaderError::NotSupported(format!("Unsuported endpoint: {}", s))),
+			_ => Err(WasmLoaderError::NotSupported(format!("Unsuported endpoint: {s}"))),
 		}
 	}
 }

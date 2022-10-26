@@ -13,10 +13,10 @@ impl fmt::Display for WasmLoaderError {
 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
 		match self {
 			WasmLoaderError::EndpointParsing(s) | WasmLoaderError::OnchainBlockParsing(s) => {
-				write!(f, "Parsing issue: {:?}", s)
+				write!(f, "Parsing issue: {s:?}")
 			}
 
-			WasmLoaderError::NotSupported(s) => write!(f, "Unsupported: {:?}", s),
+			WasmLoaderError::NotSupported(s) => write!(f, "Unsupported: {s:?}"),
 			WasmLoaderError::HttpClient() => write!(f, "HttpClient Error"),
 			WasmLoaderError::WsClient() => write!(f, "WsClient Error"),
 		}

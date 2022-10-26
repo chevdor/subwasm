@@ -73,8 +73,8 @@ macro_rules! fmt_vec_changes {
 impl<'a> Display for ReducedPalletChangeWrapper<'a> {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		match self.changes {
-			ReducedPalletChange::Index(c) => writeln!(f, "index: {:?}", c),
-			ReducedPalletChange::Name(c) => writeln!(f, "name: {:?}", c),
+			ReducedPalletChange::Index(c) => writeln!(f, "index: {c:?}"),
+			ReducedPalletChange::Name(c) => writeln!(f, "name: {c:?}"),
 
 			ReducedPalletChange::Calls(c) => fmt_vec_changes!(self, f, calls, c),
 			ReducedPalletChange::Events(c) => fmt_vec_changes!(self, f, events, c),

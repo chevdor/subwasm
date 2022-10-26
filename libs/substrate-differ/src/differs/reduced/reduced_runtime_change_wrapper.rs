@@ -71,7 +71,7 @@ impl Display for ReducedRuntimeChangeWrapper {
 			|mc: &MapChange<PalletId, ReducedPalletDesc, Vec<ReducedPalletChange>>| match mc {
 				MapChange::Added(pallet_id, reduced_pallet) => {
 					let _ =
-						writeln!(f, "[+] id: {id:>2} - new pallet: {name}", id = pallet_id, name = reduced_pallet.name);
+						writeln!(f, "[+] id: {pallet_id:>2} - new pallet: {name}", name = reduced_pallet.name);
 				}
 				MapChange::Removed(pallet_id) => {
 					let pallet = self.get_pallet(pallet_id, ComparisonSide::Left);
@@ -79,7 +79,7 @@ impl Display for ReducedRuntimeChangeWrapper {
 						Some(p) => &p.name,
 						None => "n/a",
 					};
-					let _ = writeln!(f, "[-] pallet {id}: {name}", id = pallet_id, name = pallet_name);
+					let _ = writeln!(f, "[-] pallet {pallet_id}: {pallet_name}");
 				}
 
 				MapChange::Changed(pallet_id, changes) => {
@@ -104,7 +104,7 @@ impl Display for ReducedRuntimeChangeWrapper {
 						let reduced_pallet_change_wrapper =
 							// ReducedPalletChangeWrapper::new(reduced_pallet_change, pallet_a_rc, pallet_b_rc);
 							ReducedPalletChangeWrapper::new(reduced_pallet_change, pallet_a, pallet_b);
-						let _ = writeln!(f, "{}", reduced_pallet_change_wrapper);
+						let _ = writeln!(f, "{reduced_pallet_change_wrapper}");
 					});
 				}
 			},

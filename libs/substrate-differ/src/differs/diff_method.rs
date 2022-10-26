@@ -20,7 +20,7 @@ impl FromStr for DiffMethod {
 			"raw" | "json" => Ok(DiffMethod::Raw),
 			"summary" => Ok(DiffMethod::Summary),
 			"reduced" | "partial" => Ok(DiffMethod::Reduced),
-			_ => Err(format!("Cannot convert '{}' to a known DiffMethod", s)),
+			_ => Err(format!("Cannot convert '{s}' to a known DiffMethod")),
 		}
 	}
 }

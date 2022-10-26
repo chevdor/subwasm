@@ -36,7 +36,7 @@ impl Display for ReducedPallet {
 
 		// TODO: Show more than the calls
 		self.calls.iter().for_each(|(index, call)| {
-			let _ = f.write_fmt(format_args!("  - {} {}\n", index, call));
+			let _ = f.write_fmt(format_args!("  - {index} {call}\n"));
 		});
 
 		Ok(())

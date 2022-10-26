@@ -18,7 +18,7 @@ fn replace_byte_arrays(array: &mut Value) {
 fn numbers_to_string(v: &[Value]) -> Value {
 	let bytes: Vec<u32> =
 		v.iter().map(|value| serde_json::from_value(value.to_owned()).expect("Array of Number is expected")).collect();
-	Value::String(bytes.iter().map(|x| format!("{:02X?}", x)).collect::<String>())
+	Value::String(bytes.iter().map(|x| format!("{x:02X?}")).collect::<String>())
 }
 
 pub fn json_collapse_byte_arrays(json: &mut Value) {

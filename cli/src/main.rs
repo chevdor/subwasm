@@ -82,7 +82,7 @@ fn main() -> color_eyre::Result<()> {
 					let diff_result = reduced_diff(src_a, src_b);
 					if opts.json {
 						let s = serde_json::to_string_pretty(&diff_result).unwrap();
-						println!("{}", s);
+						println!("{s}");
 					} else {
 						let warning = StyledStr::plain(
 							"!!! THE SUBWASM REDUCED DIFFER IS EXPERIMENTAL, DOUBLE CHECK THE RESULTS !!!\n",
@@ -96,7 +96,7 @@ fn main() -> color_eyre::Result<()> {
 
 						// println!("!!! THE SUBWASM REDUCED DIFFER IS EXPERIMENTAL, DOUBLE CHECK THE RESULTS");
 						text_style::termion::render(std::io::stdout(), &warning).expect("Could not render line");
-						println!("{}", diff_result);
+						println!("{diff_result}");
 						text_style::termion::render(std::io::stdout(), &warning).expect("Could not render line");
 
 						// println!("!!! THE SUBWASM REDUCED DIFFER IS EXPERIMENTAL, DOUBLE CHECK THE RESULTS");
