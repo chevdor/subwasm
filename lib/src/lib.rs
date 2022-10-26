@@ -18,11 +18,7 @@ use std::{
 	str::FromStr,
 };
 pub use substrate_differ::differs::diff_method::DiffMethod;
-use substrate_differ::differs::{
-	raw::{raw_differ::RawDiffer, raw_differ_options::RawDifferOptions},
-	reduced::{reduced_diff_result::ReducedDiffResult, reduced_runtime::ReducedRuntime},
-	summary::RuntimeSummaryDiffer,
-};
+use substrate_differ::differs::reduced::{reduced_diff_result::ReducedDiffResult, reduced_runtime::ReducedRuntime};
 use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, WasmLoader};
 use wasm_testbed::WasmTestBed;
 
@@ -92,7 +88,6 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 	let outfile = match output {
 		Some(path) => path,
 
-		// TODO: now that we have it, we could use runtime_<name>_<version>.wasm after querying the version
 		_ => {
 			let mut i = 0;
 			let mut path;
@@ -113,36 +108,6 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 	let mut buffer = File::create(outfile)?;
 	buffer.write_all(wasm)?;
 	Ok(())
-}
-
-/// Compare 2 runtimes. It compares their versions first
-/// then their metata.
-pub fn diff(src_a: Source, src_b: Source) {
-	log::debug!("DIFF: Loading WASM runtimes:");
-	println!("  🅰️  {src_a:?}");
-	let runtime_a = WasmTestBed::new(&src_a).expect("Can only diff if the 2 runtimes can load");
-	println!("  🅱️  {src_b:?}");
-	let runtime_b = WasmTestBed::new(&src_b).expect("Can only diff if the 2 runtimes can load");
-
-	// ==== RUNTIME
-	let runtime_diff = RuntimeSummaryDiffer::new(&runtime_a, &runtime_b);
-	runtime_diff.compare();
-
-	// ==== RAW
-	if runtime_a.metadata_version() == runtime_b.metadata_version() {
-		let metadiff = RawDiffer::new(runtime_a.metadata(), runtime_b.metadata());
-		metadiff.compare(RawDifferOptions::default());
-	} else {
-		println!("Raw comparison of runtimes with different version is not supported.");
-	}
-
-	// // ==== PARTIAL
-	// if runtime_a.metadata_version() == runtime_b.metadata_version() {
-	// 	let partial = MetadataPartialDiffer::new(runtime_a.metadata(), runtime_b.metadata());
-	// 	partial.compare_reduced();
-	// } else {
-	// 	println!("Partial comparison of runtimes with different version is not supported.");
-	// }
 }
 
 //todo: return Result and no expect

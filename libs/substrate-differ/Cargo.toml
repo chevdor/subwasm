@@ -35,16 +35,13 @@ wasm-loader = { version = "0.18", path = "../wasm-loader" }
 
 [features]
 ## The default feature currently hides feature that are deprecated
-default = ["v14", "raw", "reduced"]
+default = ["v14", "reduced"]
 
 ## v13 runtimes
 v13 = []
 
 ## v14 runtimes
 v14 = []
-
-## Raw differ.
-raw = []
 
 ## Reduced differ
 reduced = []

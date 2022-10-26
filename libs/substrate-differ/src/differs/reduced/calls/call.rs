@@ -84,6 +84,6 @@ mod test_reduced_call {
 			},
 			docs: vec![],
 		};
-		println!("call = {:?}", call);
+		println!("call = {call:?}");
 	}
 }

@@ -233,7 +233,7 @@ mod tests {
 		#[ignore = "local data"]
 		fn it_loads_v12() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap();
-			println!("{:#?}", runtime);
+			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 12);
 			// assert!(runtime.core_version);
 			assert!(runtime.is_supported());
@@ -243,7 +243,7 @@ mod tests {
 		#[ignore = "local data"]
 		fn it_loads_v13() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).unwrap();
-			println!("{:#?}", runtime);
+			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 13);
 			// assert!(runtime.core_version);
 			assert!(runtime.is_supported());
@@ -270,7 +270,7 @@ mod tests {
 		#[ignore = "local data"]
 		fn it_loads_kusama_1050() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_1050_VXX))).unwrap();
-			println!("{:#?}", runtime);
+			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 11);
 			assert!(runtime.is_supported());
 		}
@@ -280,7 +280,7 @@ mod tests {
 		#[ignore = "local data"]
 		fn it_loads_kusama_1062() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_1062_VXX))).unwrap();
-			println!("{:#?}", runtime);
+			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 11);
 			assert!(runtime.is_supported());
 
@@ -297,7 +297,7 @@ mod tests {
 		#[ignore = "local data"]
 		fn it_loads_kusama_metdata() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_2030_VXX))).unwrap();
-			println!("{:#?}", runtime);
+			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 12);
 			assert!(runtime.is_supported());
 		}
@@ -306,7 +306,7 @@ mod tests {
 		#[ignore = "local data"]
 		fn it_loads_kusama_2030() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_2030_VXX))).unwrap();
-			println!("{:#?}", runtime);
+			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 12);
 			assert!(runtime.is_supported());
 
@@ -329,7 +329,7 @@ mod tests {
 		#[ignore = "local data"]
 		fn it_loads_polkadot_01() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(POLKADOT_01_V11))).unwrap();
-			println!("{:#?}", runtime);
+			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 11);
 			assert!(runtime.is_supported());
 		}
@@ -339,7 +339,7 @@ mod tests {
 		fn it_loads_polkadot_29() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(POLKADOT_29_V12))).unwrap();
 
-			println!("{:#?}", runtime);
+			println!("{runtime:#?}");
 
 			assert!(runtime.metadata_version == 12);
 			assert!(runtime.is_supported());
@@ -354,7 +354,7 @@ mod tests {
 		#[ignore = "local data"]
 		fn it_loads_westend_30() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(WESTEND_V30_V12))).unwrap();
-			println!("{:#?}", runtime);
+			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 12);
 			assert!(runtime.is_supported());
 		}
@@ -368,7 +368,7 @@ mod tests {
 		#[ignore = "local data"]
 		fn it_loads_polkadot_dev() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(POLKADOT_DEV))).unwrap();
-			println!("{:#?}", runtime);
+			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 12);
 			assert!(runtime.is_supported());
 		}

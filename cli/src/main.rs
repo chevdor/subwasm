@@ -77,7 +77,6 @@ fn main() -> color_eyre::Result<()> {
 			let src_b = get_source(chain_b.as_deref(), diff_opts.src_b, None);
 
 			match diff_opts.method {
-				DiffMethod::Raw => diff(src_a, src_b),
 				DiffMethod::Reduced => {
 					let diff_result = reduced_diff(src_a, src_b);
 					if opts.json {
@@ -94,12 +93,9 @@ fn main() -> color_eyre::Result<()> {
 							warning.on(AnsiColor::Yellow.light()).with(AnsiColor::Red.light()).bold()
 						};
 
-						// println!("!!! THE SUBWASM REDUCED DIFFER IS EXPERIMENTAL, DOUBLE CHECK THE RESULTS");
 						text_style::termion::render(std::io::stdout(), &warning).expect("Could not render line");
 						println!("{diff_result}");
 						text_style::termion::render(std::io::stdout(), &warning).expect("Could not render line");
-
-						// println!("!!! THE SUBWASM REDUCED DIFFER IS EXPERIMENTAL, DOUBLE CHECK THE RESULTS");
 					}
 				}
 				DiffMethod::Summary => todo!(),

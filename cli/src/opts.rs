@@ -1,7 +1,7 @@
 use clap::{crate_authors, crate_version, ColorChoice, Parser, Subcommand};
 use std::path::PathBuf;
 use subwasmlib::*;
-use wasm_loader::{OnchainBlock, Source};
+use wasm_loader::{BlockRef, OnchainBlock, Source};
 
 /// `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains.
 #[derive(Parser)]
@@ -63,7 +63,7 @@ pub struct GetOpts {
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
-	pub block: Option<String>, // TODO: can do better with a real Hash
+	pub block: Option<BlockRef>,
 
 	/// You may specifiy the output filename where the runtime will be saved. If not provided, we will figure out an appropriate default name
 	/// based on a counter: runtime_NNN.wasm where NNN is incrementing to make sure you do not override previous runtime. If you specify an
@@ -89,7 +89,7 @@ pub struct InfoOpts {
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
-	pub block: Option<String>, // TODO: can do better with a real Hash
+	pub block: Option<BlockRef>,
 }
 
 /// The `version` command returns summarized information about the versions of a runtime.
@@ -109,7 +109,7 @@ pub struct VersionOpts {
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
-	pub block: Option<String>, // TODO: can do better with a real Hash
+	pub block: Option<BlockRef>,
 }
 
 /// Returns the metadata as a json object. You may also use the "meta" alias.
@@ -134,7 +134,7 @@ pub struct MetaOpts {
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
-	pub block: Option<String>, // TODO: can do better with a real Hash
+	pub block: Option<BlockRef>,
 }
 
 /// Compare 2 runtimes
@@ -160,7 +160,7 @@ pub struct DiffOpts {
 	#[clap(long, short('b'), conflicts_with = "src_b")]
 	pub chain_b: Option<ChainInfo>,
 
-	/// Differ method. Raw is the legacy option. You probably want to use `Reduced` now.
+	/// You probably want to use `Reduced`.
 	#[clap(long, short, default_value = "reduced")]
 	pub method: DiffMethod,
 }

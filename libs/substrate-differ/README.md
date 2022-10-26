@@ -47,18 +47,8 @@ This is a good option to confirm that the metadata between 2 runtimes did NOT ch
 
 If, like in the example above, the _metadata_ are different, we will need the help of another method to know more about the differences.
 
-### `raw_differ`
+### `reduced_differ`
 
 Here we are diffing **the metadata**.
 
-The raw_differ first serializes the metadata as a JSON string. It then checks all differences. This is a good way to see ALL the differences but can end up very verbose. This method will however greatly reduce the size of what needs to be checked in comparison to diffing the raw json yourself.
-
-This method is rather robust for upcoming versions that are not known yet as the only requirement is to be able to seriliaze the metadata.
-
-### `partial_differ`
-
-NOTE: Not implemented yet
-
-Here we are diffing **the metadata**.
-
-The partial_differ on the other hand will look for specific aspects between the 2 metadata. That makes the partial_differ more consive and easier to read and analyse. This method however, may not work without code changes for upcoming versions.
+The reduced_differ looks for specific aspects between the metadata of the 2 runtimes.

@@ -39,7 +39,7 @@ mod test_reduced_constant {
 	#[test]
 	fn test_constant() {
 		let c = Constant::new("transfer", vec![12, 42], vec![]);
-		println!("c = {:?}", c);
+		println!("c = {c:?}");
 		assert_eq!([12, 42], c.value.as_slice());
 	}
 }

@@ -71,7 +71,7 @@ mod test_diffanalyzer {
 					b.core_version().transaction_version
 				);
 				let compatible = da.compatible();
-				println!("compatible = {:?}", compatible);
+				println!("compatible = {compatible:?}");
 				compatible
 			}
 			None => {
@@ -139,7 +139,7 @@ mod test_diffanalyzer {
 
 		let da = DiffAnalyzer::new(res.changes.unwrap());
 		let pallet_system_changes = da.get_pallet_changes(0).unwrap();
-		println!("pallet_system_changes = {:#?}", pallet_system_changes);
+		println!("pallet_system_changes = {pallet_system_changes:#?}");
 
 		// There is a single change in the system pallet between 9280 and 9290: Constant: Version
 		match pallet_system_changes {
@@ -153,7 +153,7 @@ mod test_diffanalyzer {
 		}
 
 		let pallet_balances_changes = da.get_pallet_changes(4).unwrap();
-		println!("pallet_balances_changes = {:#?}", pallet_balances_changes);
+		println!("pallet_balances_changes = {pallet_balances_changes:#?}");
 
 		// There is a single change in the balances pallet between 9280 and 9290: Calls: Signature changed
 		match pallet_balances_changes {
@@ -176,6 +176,4 @@ mod test_diffanalyzer {
 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
 		let _differ = ReducedDiffer::new(a.metadata(), b.metadata());
 	}
-
-	
 }

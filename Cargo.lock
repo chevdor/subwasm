@@ -3307,6 +3307,7 @@ dependencies = [
  "env_logger",
  "log",
  "serde_json",
+ "sp-runtime",
  "substrate-runtime-proposal-hash",
  "subwasmlib",
  "text-style",

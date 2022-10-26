@@ -2,9 +2,6 @@ use std::str::FromStr;
 
 #[derive(Debug, Clone)]
 pub enum DiffMethod {
-	/// The metadata is serialized to json and the json representation are compared
-	Raw,
-
 	/// Summary
 	Summary,
 
@@ -17,7 +14,6 @@ impl FromStr for DiffMethod {
 
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
 		match s.to_lowercase().as_str() {
-			"raw" | "json" => Ok(DiffMethod::Raw),
 			"summary" => Ok(DiffMethod::Summary),
 			"reduced" | "partial" => Ok(DiffMethod::Reduced),
 			_ => Err(format!("Cannot convert '{s}' to a known DiffMethod")),
