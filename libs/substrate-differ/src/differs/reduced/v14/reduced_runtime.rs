@@ -36,24 +36,26 @@ mod test_reduced_conversion {
 
 	// check with:
 	// subwasm meta data/polkadot/V14/polkadot_runtime.compact.compressed.wasm -m system
-	const RUNTIME_V14: &str = "../../data/polkadot/V14/polkadot_runtime.compact.compressed.wasm";
+	// const RUNTIME_V14: &str = "../../data/polkadot/V14/polkadot_runtime.compact.compressed.wasm";
 
 	#[test]
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_first_pallet_first_call() {
-		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
+    use crate::differs::test_runtimes::{get_runtime_file, Chain};
+		let rtm1 = get_runtime_file(Chain::Polkadot, 14, 9260).expect("Runtime file should exist");
+		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(rtm1))).unwrap();
 		let metadata = testbed.metadata();
 
 		match metadata {
 			RuntimeMetadata::V14(v14) => {
 				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
-				assert_eq!(rrtm.pallets.len(), 30);
+				assert_eq!(rrtm.pallets.len(), 51);
 
 				let first_pallet = &rrtm.pallets[&0];
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
-				assert_eq!(10, first_pallet.calls.len());
+				assert_eq!(9, first_pallet.calls.len());
 				assert_eq!("remark", &first_pallet.calls.get(&1).unwrap().name);
 			}
 			_ => unreachable!(),
@@ -64,19 +66,22 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_calls() {
-		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
+    use crate::differs::test_runtimes::{get_runtime_file, Chain};
+		let rtm1 = get_runtime_file(Chain::Polkadot, 14, 9260).expect("Runtime file should exist");
+
+		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(rtm1))).unwrap();
 		let metadata = testbed.metadata();
 
 		match metadata {
 			RuntimeMetadata::V14(v14) => {
 				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
-				assert_eq!(rrtm.pallets.len(), 30);
+				assert_eq!(rrtm.pallets.len(), 51);
 
 				let first_pallet = &rrtm.pallets[&0];
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 
-				assert_eq!(10, first_pallet.calls.len());
+				assert_eq!(9, first_pallet.calls.len());
 			}
 			_ => unreachable!(),
 		}
@@ -86,13 +91,16 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_events() {
-		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
+    use crate::differs::test_runtimes::{get_runtime_file, Chain};
+
+		let rtm1 = get_runtime_file(Chain::Polkadot, 14, 9260).expect("Runtime file should exist");
+		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(rtm1))).unwrap();
 		let metadata = testbed.metadata();
 
 		match metadata {
 			RuntimeMetadata::V14(v14) => {
 				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
-				assert_eq!(rrtm.pallets.len(), 30);
+				assert_eq!(rrtm.pallets.len(), 51);
 
 				let first_pallet = &rrtm.pallets[&0];
 				assert_eq!(0, first_pallet.index);
@@ -108,21 +116,23 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_global() {
-		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
+    use crate::differs::test_runtimes::{get_runtime_file, Chain};
+		let rtm1 = get_runtime_file(Chain::Polkadot, 14, 9260).expect("Runtime file should exist");
+		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(rtm1))).unwrap();
 		let metadata = testbed.metadata();
 
 		match metadata {
 			RuntimeMetadata::V14(v14) => {
 				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
-				assert_eq!(rrtm.pallets.len(), 30);
+				assert_eq!(rrtm.pallets.len(), 51);
 
 				let first_pallet = &rrtm.pallets[&0];
 				assert_eq!(0, first_pallet.index);
 				assert_eq!("System", first_pallet.name);
 
-				assert_eq!(10, first_pallet.calls.len());
+				assert_eq!(9, first_pallet.calls.len());
 				assert_eq!(6, first_pallet.events.len());
-				assert_eq!(5, first_pallet.errors.len());
+				assert_eq!(6, first_pallet.errors.len());
 				assert_eq!(6, first_pallet.constants.len());
 				assert_eq!(16, first_pallet.storages.len());
 
@@ -136,13 +146,15 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_storages() {
-		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
+    use crate::differs::test_runtimes::{get_runtime_file, Chain};
+		let rtm1 = get_runtime_file(Chain::Polkadot, 14, 9260).expect("Runtime file should exist");
+		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(rtm1))).unwrap();
 		let metadata = testbed.metadata();
 
 		match metadata {
 			RuntimeMetadata::V14(v14) => {
 				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
-				assert_eq!(rrtm.pallets.len(), 30);
+				assert_eq!(rrtm.pallets.len(), 51);
 
 				let first_pallet = &rrtm.pallets[&0];
 				assert_eq!(0, first_pallet.index);
@@ -158,13 +170,15 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_constants() {
-		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
+    use crate::differs::test_runtimes::{get_runtime_file, Chain};
+		let rtm1 = get_runtime_file(Chain::Polkadot, 14, 9260).expect("Runtime file should exist");
+		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(rtm1))).unwrap();
 		let metadata = testbed.metadata();
 
 		match metadata {
 			RuntimeMetadata::V14(v14) => {
 				let rrtm = reduced_runtime::ReducedRuntime::from_v14(v14).unwrap();
-				assert_eq!(rrtm.pallets.len(), 30);
+				assert_eq!(rrtm.pallets.len(), 51);
 
 				let first_pallet = &rrtm.pallets[&0];
 				assert_eq!(0, first_pallet.index);

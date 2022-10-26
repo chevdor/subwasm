@@ -106,7 +106,9 @@ impl<'a, T: Serialize> RawDiffer<'a, T> {
 
 #[cfg(test)]
 mod tests {
-	use super::*;
+	use crate::differs::test_runtimes::{get_runtime_file, Chain};
+
+use super::*;
 	use serde_json::json;
 	use std::path::PathBuf;
 	use wasm_loader::Source;
@@ -115,11 +117,13 @@ mod tests {
 	#[test]
 	#[ignore = "local data"]
 	fn it_constructs() {
-		const RTM1: &str = "../../data/kusama/V12/kusama-2030.wasm";
-		const RTM2: &str = "../../data/kusama/V12/kusama-9000.compact.wasm";
+		// const RTM1: &str = "../../data/kusama/V12/kusama-2030.wasm";
+		// const RTM2: &str = "../../data/kusama/V12/kusama-9000.compact.wasm";
+		let rtm1 = get_runtime_file(Chain::Polkadot, 14, 9260).expect("Runtime file should exist");
+		let rtm2 = get_runtime_file(Chain::Polkadot, 14, 9290).expect("Runtime file should exist");
 
-		let runtime_a = WasmTestBed::new(&Source::File(PathBuf::from(RTM1))).unwrap();
-		let runtime_b = WasmTestBed::new(&Source::File(PathBuf::from(RTM2))).unwrap();
+		let runtime_a = WasmTestBed::new(&Source::File(PathBuf::from(rtm1))).unwrap();
+		let runtime_b = WasmTestBed::new(&Source::File(PathBuf::from(rtm2))).unwrap();
 		let metadata_a = runtime_a.metadata();
 		let metadata_b = runtime_b.metadata();
 		RawDiffer::new(metadata_a, metadata_b).compare(RawDifferOptions::default());

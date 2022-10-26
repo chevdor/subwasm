@@ -21,15 +21,7 @@
 // 	use wasm_loader::Source;
 // 	use wasm_testbed::WasmTestBed;
 
-// 	#[test]
-// 	#[cfg(feature = "v13")]
-// 	#[cfg(feature = "v14")]
-// 	#[ignore = "local data"]
-// 	fn test_different_variants_v13_v14() {
-// 		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13_1))).unwrap();
-// 		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
-// 		let _differ = ReducedDiffer::new(a.metadata(), b.metadata());
-// 	}
+// TODO: MOVE to diff_analyzer
 
 // 	#[test]
 // 	#[cfg(feature = "v13")]

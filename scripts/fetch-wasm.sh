@@ -2,11 +2,11 @@
 
 # you can see the updates at https://kusama.subscan.io/event?module=system&event=codeupdated&address=&startDate=&endDate=
 
-export SRV=localhost
-export KUSAMA=http://$SRV:9933
-export POLKADOT=http://$SRV:9934
+# export SRV=localhost
+# export KUSAMA=http://$SRV:9933
+# export POLKADOT=http://$SRV:9934
 
-mkdir -p polkadot kusama
+# mkdir -p polkadot kusama
 
 # Kusama
 # cargo run --profile production -p subwasm -- get --url $KUSAMA --block 0x476801cf6aac6ed4f8d782c96b450ba9444b545459fe0a30e1cea99c4dba4420 --output kusama/kusama-1050.wasm
@@ -57,3 +57,22 @@ mkdir -p polkadot kusama
 # cargo run --profile production -p subwasm -- get --url $POLKADOT --block 0x58d7d68f73e490feca540dabd9ada1304930713860dae06e27410873078f3133 --output polkadot/polkadot-27.wasm
 # cargo run --profile production -p subwasm -- get --url $POLKADOT --block 0x95488d035a54f89a451f32ebcd8b90dbc792713a835dcaf719cb8d3b0f578aca --output polkadot/polkadot-28.wasm
 # cargo run --profile production -p subwasm -- get --url $POLKADOT --block 0x7f4c316fdd0780a5d3ae8f0a6f33e27aefeb9d074bed1dad5f5ab8baf42311b7 --output polkadot/polkadot-29.wasm
+
+function runtime_to_semver {
+    minor=${1:0:1}
+    patch=${1:1:2}
+    # echo $minor $patch
+    printf "0.%d.%d\n" $minor $patch
+}
+
+for chain in polkadot kusama; do
+    for version in 9260 9270 9280 9290 9291 9300; do
+        echo $chain $version
+        semver=$(runtime_to_semver $version )
+        url=https://github.com/paritytech/polkadot/releases/download/v$semver/${chain}_runtime-v$version.compact.compressed.wasm
+        # echo $url
+        wget $url -O data/$chain/V14/$version.wasm
+    done
+done
+
+wget https://github.com/mdn/webassembly-examples/blob/master/other-examples/simple.wasm -O data/wasm/qjs.wasm
