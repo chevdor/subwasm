@@ -159,7 +159,9 @@ impl ReducedRuntime {
 
 	/// Prefer using the more efficient [get_pallet_by_id] if you can.
 	pub fn get_pallet_by_name(&self, pallet_name: &str) -> Option<&ReducedPallet> {
-		self.pallets.values().find(|reduced_pallet| reduced_pallet.name == pallet_name)
+		self.pallets
+			.values()
+			.find(|reduced_pallet| reduced_pallet.name.to_lowercase() == pallet_name.to_ascii_lowercase())
 	}
 
 	/// You can also use [get_pallet_by_name] but prefer using [get_pallet_by_id] where you can.

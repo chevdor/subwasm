@@ -49,10 +49,33 @@ impl Subwasm {
 		wrapper.display_modules_list();
 	}
 
-	pub fn display_reduced_runtime(&self) {
+	pub fn display_reduced_runtime(&self, json: bool) {
 		let reduced_runtime: ReducedRuntime = self.testbed.metadata().into();
-		println!("reduced_runtime = {reduced_runtime}");
+		if json {
+			println!("{}", serde_json::to_string_pretty(&reduced_runtime).expect("Failed encoding reduced runtime"));
+		} else {
+			println!("{reduced_runtime}");
+		}
 	}
+
+	pub fn display_reduced_pallet(&self, pallet: &str, json: bool) {
+		let reduced_runtime: ReducedRuntime = self.testbed.metadata().into();
+		let pallet_maybe = reduced_runtime.get_pallet_by_name(pallet);
+
+		if let Some(reduced_pallet) = pallet_maybe {
+			if json {
+				println!(
+					"{}",
+					serde_json::to_string_pretty(&reduced_pallet).expect("Failed encoding reduced runtime")
+				);
+			} else {
+				println!("{reduced_pallet}");
+			}
+		} else {
+			println!("Pallet '{pallet}' not found.");
+		}
+	}
+
 	/// Display the metadata as json
 	pub fn display_metadata_json(&self) {
 		let pallet_filter: Option<String> = None;

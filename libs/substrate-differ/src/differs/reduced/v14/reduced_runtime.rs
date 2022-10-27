@@ -1,7 +1,9 @@
-use crate::differs::reduced::{pallet_data::PalletData, reduced_pallet::ReducedPallet};
-use frame_metadata::v14;
+#[cfg(feature = "v13")]
+use crate::differs::reduced::pallet_data::PalletData;
+use crate::differs::reduced::reduced_pallet::ReducedPallet;
 use std::fmt::Debug;
 
+#[cfg(feature = "v13")]
 impl From<&v14::PalletCallMetadata> for PalletData {
 	fn from(f: &v14::PalletCallMetadata) -> Self {
 		let meta_type = f.ty;

@@ -52,7 +52,7 @@ macro_rules! fmt_vec_changes {
 					let indent: usize = 4;
 					let _ = writeln!(
 						$f,
-						"{:indent$}[≠] {id:>2}: {item:<20}",
+						"{:indent$}[≠] {item:<20}",
 						" ",
 						item = if let Some(item) = item_a { item.to_string() } else { "n/a".to_string() },
 					);

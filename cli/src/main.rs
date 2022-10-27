@@ -110,7 +110,11 @@ fn main() -> color_eyre::Result<()> {
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
 
-			subwasm.display_reduced_runtime()
+			if let Some(pallet) = sr_opts.pallet {
+				subwasm.display_reduced_pallet(&pallet, opts.json)
+			} else {
+				subwasm.display_reduced_runtime(opts.json)
+			}
 		}
 	};
 
