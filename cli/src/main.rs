@@ -58,6 +58,7 @@ fn main() -> color_eyre::Result<()> {
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
 
+			// TODO: Use the ReducedRuntime
 			if let Some(filter) = meta_opts.module {
 				subwasm.display_module(filter);
 			} else if opts.json {

@@ -18,8 +18,6 @@ use std::fmt::Debug;
 pub type ReducedRuntimeError = String;
 pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
 
-// TODO: fix the variables names in here
-
 #[derive(Debug, PartialEq, Comparable, Serialize)]
 pub struct ReducedRuntime {
 	pub pallets: HashMap<PalletId, ReducedPallet>,
@@ -31,14 +29,11 @@ impl From<HashMap<PalletId, ReducedPallet>> for ReducedRuntime {
 	}
 }
 
-// TODO: impl Iterator / IntoIterator
 impl ReducedRuntime {
 	#[cfg(feature = "v13")]
 	/// Reduce a RuntimeMetadataV13 into a normalized ReducedRuntime
 	pub fn from_v13(v13: &v13::RuntimeMetadataV13) -> Result<Self> {
 		let mut pallets = convert(&v13.modules).clone();
-		// TODO: we may not need to sort
-		pallets.sort_by(|a, b| a.index.cmp(&b.index));
 
 		let reduced_pallets: Vec<ReducedPallet> = pallets.iter().map(|p| p.into()).collect();
 		let r_rtm: ReducedRuntime = reduced_pallets.into();
@@ -180,16 +175,17 @@ impl From<&RuntimeMetadata> for ReducedRuntime {
 #[cfg(test)]
 mod test_reduced_runtime {
 	use super::*;
+	use crate::differs::test_runtimes::{get_runtime_file, Chain, RuntimeFile};
 
 	#[test]
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_reduce_runtime_v14_polkadot_9290() {
-		use crate::differs::test_runtimes::{get_runtime_file, Chain};
 		use wasm_loader::Source;
 		use wasm_testbed::WasmTestBed;
 
-		let runtime_file = get_runtime_file(Chain::Polkadot, 14, 9290).expect("Runtime file should exist");
+		let runtime_file =
+			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).expect("Runtime file should exist");
 		let _reduced_runtime: ReducedRuntime = WasmTestBed::new(&Source::File(runtime_file)).unwrap().metadata().into();
 	}
 
@@ -197,11 +193,12 @@ mod test_reduced_runtime {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_reduce_runtime_get_pallet() {
-		use crate::differs::test_runtimes::{get_runtime_file, Chain};
+		use crate::differs::test_runtimes::{get_runtime_file, Chain, RuntimeFile};
 		use wasm_loader::Source;
 		use wasm_testbed::WasmTestBed;
 
-		let runtime_file = get_runtime_file(Chain::Polkadot, 14, 9290).expect("Runtime file should exist");
+		let runtime_file =
+			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).expect("Runtime file should exist");
 		let reduced_runtime: ReducedRuntime = WasmTestBed::new(&Source::File(runtime_file)).unwrap().metadata().into();
 		assert_eq!(0_u32, reduced_runtime.get_pallet_by_name("System").unwrap().index);
 		assert_eq!(1_u32, reduced_runtime.get_pallet_by_name("Scheduler").unwrap().index);

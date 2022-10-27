@@ -69,36 +69,3 @@ impl Compatible for ReducedPalletChange {
 		}
 	}
 }
-
-impl Display for ReducedPalletChange {
-	fn fmt(&self, _f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		panic!("DONT CALL ME ! Make a ReducedPalletChangeWrapper instead and call display on it");
-		// let constant_changes = ReducedPalletChange::get_changed_items(self, PalletItemType::Constants);
-
-		// match self {
-		// 	// CONSTANT
-		// 	ReducedPalletChange::Index(_change) => unreachable!(),
-		// 	ReducedPalletChange::Name(_change) => unreachable!(),
-
-		// 	ReducedPalletChange::Calls(changes) => {
-		// 		ReducedPalletChange::format::<u32, CallDesc, CallChange>(f, changes, PalletItemType::Call)
-		// 	}
-
-		// 	ReducedPalletChange::Events(change) => {
-		// 		ReducedPalletChange::format::<u32, EventDesc, EventChange>(f, change, PalletItemType::Event)
-		// 	}
-
-		// 	ReducedPalletChange::Errors(change) => {
-		// 		ReducedPalletChange::format::<u32, ErrorDesc, ErrorChange>(f, change, PalletItemType::Error)
-		// 	}
-
-		// 	ReducedPalletChange::Constants(change) => {
-		// 		ReducedPalletChange::format::<String, ConstantDesc, ConstantChange>(f, change, PalletItemType::Constant)
-		// 	}
-
-		// 	ReducedPalletChange::Storages(change) => {
-		// 		ReducedPalletChange::format::<String, StorageDesc, StorageChange>(f, change, PalletItemType::Storage)
-		// 	}
-		// }
-	}
-}

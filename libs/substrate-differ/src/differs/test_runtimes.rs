@@ -1,6 +1,6 @@
 #![cfg(test)]
 
-use std::{fmt::Display, path::PathBuf, str::FromStr};
+use std::{env, fmt::Display, path::PathBuf, str::FromStr};
 pub const RUNTIME_V12: &str = "../../data/runtime_v12.wasm";
 
 pub const RUNTIME_V13: &str = "../../data/runtime_v13.wasm";
@@ -37,15 +37,27 @@ impl Display for Chain {
 	}
 }
 
-pub fn get_runtime_file(chain: Chain, metadata_version: u8, spec_version: usize) -> Option<PathBuf> {
+pub struct RuntimeFile {
+	chain: Chain,
+	metadata_version: u8,
+	spec_version: usize,
+}
+
+impl RuntimeFile {
+	pub fn new(chain: Chain, metadata_version: u8, spec_version: usize) -> Self {
+		Self { chain, metadata_version, spec_version }
+	}
+}
+
+pub fn get_runtime_file(runtime_file: RuntimeFile) -> Option<PathBuf> {
+	let workspace_root = env::var("CARGO_WORKSPACE_DIR").unwrap();
 	let candidate = PathBuf::from_str(&format!(
-		"../../data/{chain}/V{meta}/{spec}.wasm",
-		chain = chain,
-		meta = metadata_version,
-		spec = spec_version
+		"{workspace_root}data/{chain}/V{meta}/{spec}.wasm",
+		chain = runtime_file.chain,
+		meta = runtime_file.metadata_version,
+		spec = runtime_file.spec_version
 	))
 	.ok();
-
 	if let Some(c) = candidate {
 		if c.exists() {
 			return Some(c);

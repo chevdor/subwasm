@@ -55,6 +55,10 @@ impl ReducedDiffResult {
 		}
 		self
 	}
+
+	pub fn compatible(&self) -> bool {
+		self.compatible
+	}
 }
 
 impl Display for ReducedDiffResult {

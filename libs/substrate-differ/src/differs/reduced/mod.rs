@@ -4,7 +4,6 @@ pub mod calls;
 pub mod changed_wapper;
 pub mod diff_analyzer;
 pub mod reduced_diff_result;
-pub mod reduced_differ;
 pub mod signature;
 
 pub mod pallet_data;

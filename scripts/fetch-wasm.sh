@@ -6,7 +6,7 @@
 # export KUSAMA=http://$SRV:9933
 # export POLKADOT=http://$SRV:9934
 
-# mkdir -p polkadot kusama
+mkdir -p data/polkadot/V12 data/polkadot/V13 data/polkadot/V14 data/kusama/V12 data/kusama/V13 data/kusama/V14
 
 # Kusama
 # cargo run --profile production -p subwasm -- get --url $KUSAMA --block 0x476801cf6aac6ed4f8d782c96b450ba9444b545459fe0a30e1cea99c4dba4420 --output kusama/kusama-1050.wasm
@@ -66,7 +66,27 @@ function runtime_to_semver {
 }
 
 for chain in polkadot kusama; do
-    for version in 9260 9270 9280 9290 9291 9300; do
+    for version in 9000; do
+        echo $chain $version
+        semver=$(runtime_to_semver $version )
+        url=https://github.com/paritytech/polkadot/releases/download/v$semver/${chain}_runtime-v$version.compact.wasm
+        # echo $url
+        wget $url -O data/$chain/V12/$version.wasm
+    done
+done
+
+for chain in polkadot kusama; do
+    for version in 9090; do
+        echo $chain $version
+        semver=$(runtime_to_semver $version )
+        url=https://github.com/paritytech/polkadot/releases/download/v$semver/${chain}_runtime-v$version.compact.compressed.wasm
+        # echo $url
+        wget $url -O data/$chain/V13/$version.wasm
+    done
+done
+
+for chain in polkadot kusama; do
+    for version in 9100 9260 9270 9280 9290 9291 9300; do
         echo $chain $version
         semver=$(runtime_to_semver $version )
         url=https://github.com/paritytech/polkadot/releases/download/v$semver/${chain}_runtime-v$version.compact.compressed.wasm
@@ -74,5 +94,6 @@ for chain in polkadot kusama; do
         wget $url -O data/$chain/V14/$version.wasm
     done
 done
+
 
 wget https://github.com/mdn/webassembly-examples/blob/master/other-examples/simple.wasm -O data/wasm/qjs.wasm

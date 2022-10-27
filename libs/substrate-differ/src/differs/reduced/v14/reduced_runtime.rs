@@ -28,7 +28,10 @@ impl From<Vec<ReducedPallet>> for ReducedRuntime {
 
 #[cfg(test)]
 mod test_reduced_conversion {
-	use crate::differs::reduced::reduced_runtime;
+	use crate::differs::{
+		reduced::reduced_runtime,
+		test_runtimes::{get_runtime_file, Chain, RuntimeFile},
+	};
 	use frame_metadata::RuntimeMetadata;
 	use wasm_loader::Source;
 	use wasm_testbed::WasmTestBed;
@@ -40,8 +43,7 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_first_pallet_first_call() {
-		use crate::differs::test_runtimes::{get_runtime_file, Chain};
-		let rtm1 = get_runtime_file(Chain::Polkadot, 14, 9260).expect("Runtime file should exist");
+		let rtm1 = get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Runtime file should exist");
 		let testbed = WasmTestBed::new(&Source::File(rtm1)).unwrap();
 		let metadata = testbed.metadata();
 
@@ -64,8 +66,7 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_calls() {
-		use crate::differs::test_runtimes::{get_runtime_file, Chain};
-		let rtm1 = get_runtime_file(Chain::Polkadot, 14, 9260).expect("Runtime file should exist");
+		let rtm1 = get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Runtime file should exist");
 
 		let testbed = WasmTestBed::new(&Source::File(rtm1)).unwrap();
 		let metadata = testbed.metadata();
@@ -89,9 +90,7 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_events() {
-		use crate::differs::test_runtimes::{get_runtime_file, Chain};
-
-		let rtm1 = get_runtime_file(Chain::Polkadot, 14, 9260).expect("Runtime file should exist");
+		let rtm1 = get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Runtime file should exist");
 		let testbed = WasmTestBed::new(&Source::File(rtm1)).unwrap();
 		let metadata = testbed.metadata();
 
@@ -114,8 +113,7 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_global() {
-		use crate::differs::test_runtimes::{get_runtime_file, Chain};
-		let rtm1 = get_runtime_file(Chain::Polkadot, 14, 9260).expect("Runtime file should exist");
+		let rtm1 = get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Runtime file should exist");
 		let testbed = WasmTestBed::new(&Source::File(rtm1)).unwrap();
 		let metadata = testbed.metadata();
 
@@ -144,8 +142,7 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_storages() {
-		use crate::differs::test_runtimes::{get_runtime_file, Chain};
-		let rtm1 = get_runtime_file(Chain::Polkadot, 14, 9260).expect("Runtime file should exist");
+		let rtm1 = get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Runtime file should exist");
 		let testbed = WasmTestBed::new(&Source::File(rtm1)).unwrap();
 		let metadata = testbed.metadata();
 
@@ -168,8 +165,7 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_constants() {
-		use crate::differs::test_runtimes::{get_runtime_file, Chain};
-		let rtm1 = get_runtime_file(Chain::Polkadot, 14, 9260).expect("Runtime file should exist");
+		let rtm1 = get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Runtime file should exist");
 		let testbed = WasmTestBed::new(&Source::File(rtm1)).unwrap();
 		let metadata = testbed.metadata();
 
