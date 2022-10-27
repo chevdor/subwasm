@@ -59,7 +59,13 @@ mod test_reduced_storage {
 
 	#[test]
 	fn test_storage() {
-		let s = Storage::new("transfer", "pub".to_string(), "String".to_string(), vec![12, 42], vec![]);
+		let s = Storage::new(
+			"transfer",
+			"pub".to_string(),
+			// "String".to_string(),
+			vec![12, 42],
+			vec![],
+		);
 		println!("s = {s:?}");
 		assert_eq!([12, 42], s.default_value.as_slice());
 	}

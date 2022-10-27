@@ -1,32 +1,5 @@
 #[cfg(feature = "v13")]
 use crate::differs::reduced::pallet_data::PalletData;
-use crate::differs::reduced::reduced_pallet::ReducedPallet;
-use std::fmt::Debug;
-
-#[cfg(feature = "v13")]
-impl From<&v14::PalletCallMetadata> for PalletData {
-	fn from(f: &v14::PalletCallMetadata) -> Self {
-		let meta_type = f.ty;
-		let _ti = meta_type.type_info();
-
-		let _index = meta_type.type_id();
-		let _name = String::new();
-
-		todo!("V14");
-		// PalletData::new(name, index, signature, documentation)
-	}
-}
-
-#[derive(Debug, PartialEq)]
-pub struct ReducedRuntime {
-	pub pallets: Vec<ReducedPallet>,
-}
-
-impl From<Vec<ReducedPallet>> for ReducedRuntime {
-	fn from(pallets: Vec<ReducedPallet>) -> Self {
-		Self { pallets }
-	}
-}
 
 #[cfg(test)]
 mod test_reduced_conversion {
@@ -37,9 +10,6 @@ mod test_reduced_conversion {
 	use frame_metadata::RuntimeMetadata;
 	use wasm_loader::Source;
 	use wasm_testbed::WasmTestBed;
-
-	// check with:
-	// subwasm meta data/polkadot/V14/polkadot_runtime.compact.compressed.wasm -m system
 
 	#[test]
 	#[ignore = "local data"]
