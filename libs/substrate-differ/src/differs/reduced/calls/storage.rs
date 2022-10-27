@@ -7,10 +7,11 @@ use std::fmt::Display;
 #[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
 pub struct Storage {
 	pub name: String,
-	// Brought back down to a String to allow new runtimes adding more variants
-	// modifier: String,
-	// TODO: Check how to handle the following
-	// ty: String,
+	// String to allow new runtimes adding more variants
+	pub modifier: String,
+
+	// Excluding the storage type for now as a single id change in the registry leads to detected diffs
+	// pub ty: String,
 	pub default_value: Value,
 
 	#[comparable_ignore]
@@ -18,9 +19,21 @@ pub struct Storage {
 }
 
 impl Storage {
-	pub fn new(name: &str, default_value: Vec<u8>, docs: Documentation) -> Self {
+	pub fn new(
+		name: &str,
+		modifier: String,
+		// ty: String,
+		default_value: Vec<u8>,
+		docs: Documentation,
+	) -> Self {
 		let name = name.into();
-		Self { name, default_value, docs }
+		Self {
+			name,
+			modifier,
+			// ty,
+			default_value,
+			docs,
+		}
 	}
 
 	/// Lots of the default values are arrays of zeroes. This helper shows those long
@@ -36,9 +49,7 @@ impl Storage {
 
 impl Display for Storage {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let _ = f.write_fmt(format_args!("{} [{}]", self.name, self.format_compress_vec()));
-
-		Ok(())
+		f.write_fmt(format_args!("mod:{} name:{} value:{}", self.modifier, self.name, self.format_compress_vec()))
 	}
 }
 
@@ -48,7 +59,7 @@ mod test_reduced_storage {
 
 	#[test]
 	fn test_storage() {
-		let s = Storage::new("transfer", vec![12, 42], vec![]);
+		let s = Storage::new("transfer", "pub".to_string(), "String".to_string(), vec![12, 42], vec![]);
 		println!("s = {s:?}");
 		assert_eq!([12, 42], s.default_value.as_slice());
 	}

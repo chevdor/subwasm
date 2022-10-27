@@ -49,13 +49,15 @@ macro_rules! fmt_vec_changes {
 				comparable::MapChange::Changed(id, change) => {
 					let item_a = $self.pallet_a.map(|pallet| pallet.$field.get(id)).flatten();
 					let _item_b = $self.pallet_b.map(|pallet| pallet.$field.get(id)).flatten();
-					writeln!(
+					let indent: usize = 4;
+					let _ = writeln!(
 						$f,
-						"    [≠] {:>2}: {:<20} {:?}",
-						id,
-						if let Some(item) = item_a { &item.name } else { "n/a" },
-						change
-					)
+						"{:indent$}[≠] {id:>2}: {item:<20}",
+						" ",
+						item = if let Some(item) = item_a { item.to_string() } else { "n/a".to_string() },
+					);
+					let _ = writeln!($f, "{:indent$}    {change:?}", " ");
+					Ok(())
 				}
 				comparable::MapChange::Removed(id) => {
 					let item_a_name = match $self.pallet_a.map(|pallet| pallet.$field.get(id)).flatten() {

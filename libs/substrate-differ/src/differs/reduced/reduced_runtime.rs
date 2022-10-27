@@ -108,7 +108,13 @@ impl ReducedRuntime {
 				.map(|e| {
 					(
 						e.name.clone(),
-						Storage { name: e.name.clone(), docs: e.docs.clone(), default_value: e.default.clone() },
+						Storage {
+							name: e.name.clone(),
+							modifier: format!("{:?}", e.modifier),
+							// ty: format!("{:?}", e.ty),
+							docs: e.docs.clone(),
+							default_value: e.default.clone(),
+						},
 					)
 				})
 				.collect()

@@ -49,7 +49,6 @@ impl WasmLoader {
 
 		// Create the runtime
 		let rt = Runtime::new().unwrap();
-		// TODO: See https://github.com/paritytech/jsonrpsee/issues/298
 		let response: Result<String, Error> = match &reference.endpoint {
 			NodeEndpoint::Http(url) => {
 				let client = HttpClientBuilder::default().build(url).map_err(|_e| WasmLoaderError::HttpClient())?;
