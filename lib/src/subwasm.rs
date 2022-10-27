@@ -1,6 +1,7 @@
 use crate::{convert::convert, metadata_wrapper::MetadataWrapper, RuntimeInfo};
 use calm_io::stdoutln;
 use frame_metadata::{decode_different::DecodeDifferent, RuntimeMetadata};
+use substrate_differ::differs::reduced::reduced_runtime::ReducedRuntime;
 use wasm_loader::Source;
 use wasm_testbed::{WasmTestBed, WasmTestbedError};
 
@@ -48,6 +49,10 @@ impl Subwasm {
 		wrapper.display_modules_list();
 	}
 
+	pub fn display_reduced_runtime(&self) {
+		let reduced_runtime: ReducedRuntime = self.testbed.metadata().into();
+		println!("reduced_runtime = {reduced_runtime}");
+	}
 	/// Display the metadata as json
 	pub fn display_metadata_json(&self) {
 		let pallet_filter: Option<String> = None;

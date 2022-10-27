@@ -63,209 +63,186 @@ MacOS Homebrew users can use:
 
 ### Command: --help
 
-    subwasm 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-    `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based
-    chains
+    [0m`subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains[0m[0m
+    [0m[0m
+    [0m[0m[1m[4mUsage:[0m[0m [0m[0m[1msubwasm[0m[0m [OPTIONS][0m[0m <[0m[0mCOMMAND[0m[0m>[0m[0m
 
-    USAGE:
-        subwasm [OPTIONS] <SUBCOMMAND>
+    [0m[0m[1m[4mCommands[0m[0m[1m[4m:
+    [0m[0m  [0m[0m[1mget[0m[0m           [0m[0mGet/Download the runtime wasm from a running node through rpc[0m[0m
+    [0m[0m  [0m[0m[1minfo[0m[0m          [0m[0mThe `info` command returns summarized information about a runtime[0m[0m
+    [0m[0m  [0m[0m[1mversion[0m[0m       [0m[0mThe `version` command returns summarized information about the versions of a runtime[0m[0m
+    [0m[0m  [0m[0m[1mmetadata[0m[0m      [0m[0mReturns the metadata as a json object. You may also use the "meta" alias. It is no longer possible to have a "printable" output, for that, please use the 'show-reduced' sub-command[0m[0m
+    [0m[0m  [0m[0m[1mshow-reduced[0m[0m  [0m[0mShows the ReducedRuntime[0m[0m
+    [0m[0m  [0m[0m[1mdiff[0m[0m          [0m[0mCompare 2 runtimes after converting them to ReducedRuntime[0m[0m
+    [0m[0m  [0m[0m[1mcompress[0m[0m      [0m[0mCompress a given runtime wasm file. You will get an error if you try compressing a runtime that is already compressed[0m[0m
+    [0m[0m  [0m[0m[1mdecompress[0m[0m    [0m[0mDecompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that case, you will get the same content as output. This is useful if you want to decompress "no matter what" and don't really know whether the input will be compressed or not[0m[0m
+    [0m[0m  [0m[0m[1mhelp[0m[0m          [0m[0mPrint this message or the help of the given subcommand(s)[0m[0m
 
-    OPTIONS:
-        -h, --help       Print help information
-        -j, --json       Output as json
-        -q, --quiet      Less output
-        -V, --version    Print version information
-
-    SUBCOMMANDS:
-        compress      Compress a given runtime wasm file. You will get an error if you try
-                          compressing a runtime that is already compressed
-        decompress    Decompress a given runtime wasm file. You may pass a runtime that is
-                          uncompressed already. In that case, you will get the same content as output.
-                          This is useful if you want to decompress "no matter what" and don't really
-                          know whether the input will be compressed or not
-        diff          Compare 2 runtimes
-        get           Get/Download the runtime wasm from a running node through rpc
-        help          Print this message or the help of the given subcommand(s)
-        info          The `info` command returns summarized information about a runtime
-        metadata      Returns the metadata as a json object. You may also use the "meta" alias
-        version       The `version` command returns summarized information about the versions of a
-                          runtime
+    [0m[0m[1m[4mOptions:
+    [0m[0m  [0m[0m[1m-j[0m[0m, [0m[0m[1m--json[0m[0m      [0m[0mOutput as json[0m[0m
+    [0m[0m  [0m[0m[1m-q[0m[0m, [0m[0m[1m--quiet[0m[0m     [0m[0mLess output[0m[0m
+    [0m[0m  [0m[0m[1m-n[0m[0m, [0m[0m[1m--no-color[0m[0m  [0m[0m[env: NO_COLOR=][0m[0m
+    [0m[0m  [0m[0m[1m-h[0m[0m, [0m[0m[1m--help[0m[0m      [0m[0mPrint help information[0m[0m
+    [0m[0m  [0m[0m[1m-V[0m[0m, [0m[0m[1m--version[0m[0m   [0m[0mPrint version information[0m[0m
+    [0m
 
 ### Command: get
 
-    subwasm-get 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-    Get/Download the runtime wasm from a running node through rpc
+    [0mGet/Download the runtime wasm from a running node through rpc[0m[0m
+    [0m[0m
+    [0m[0m[1m[4mUsage:[0m[0m [0m[0m[1msubwasm get[0m[0m [OPTIONS][0m[0m [0m[0m[URL][0m[0m
 
-    USAGE:
-        subwasm get [OPTIONS] [URL]
+    [0m[0m[1m[4mArguments:
+    [0m[0m  [0m[0m[URL][0m[0m  [0m[0mThe node url including (mandatory) the port number. Example: ws://localhost:9944 or http://localhost:9933[0m[0m [0m[0m[default: http://localhost:9933][0m[0m
 
-    ARGS:
-        <URL>    The node url including (mandatory) the port number. Example: ws://localhost:9944 or
-                 http://localhost:9933 [default: http://localhost:9933]
-
-    OPTIONS:
-        -b, --block <BLOCK>      The optional block where to fetch the runtime. That allows fetching
-                                 older runtimes but you will need to connect to archive nodes.
-                                 Currently, you must pass a block hash. Passing the block numbers is not
-                                 supported
-            --chain <CHAIN>      Provide the name of a chain and a random url amongst a list of known
-                                 nodes will be used. If you pass a valid --chain, --url will be ignored
-                                 --chain local = http://localhost:9933
-        -h, --help               Print help information
-        -j, --json               Output as json
-        -o, --output <OUTPUT>    You may specifiy the output filename where the runtime will be saved.
-                                 If not provided, we will figure out an appropriate default name based
-                                 on a counter: runtime_NNN.wasm where NNN is incrementing to make sure
-                                 you do not override previous runtime. If you specify an existing file
-                                 as output, it will be overwritten
-        -V, --version            Print version information
+    [0m[0m[1m[4mOptions:
+    [0m[0m  [0m[0m    [0m[0m[1m--chain[0m[0m [0m[0m<CHAIN>[0m[0m    [0m[0mProvide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933[0m[0m
+    [0m[0m  [0m[0m[1m-j[0m[0m, [0m[0m[1m--json[0m[0m             [0m[0mOutput as json[0m[0m
+    [0m[0m  [0m[0m[1m-b[0m[0m, [0m[0m[1m--block[0m[0m [0m[0m<BLOCK>[0m[0m    [0m[0mThe optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported[0m[0m
+    [0m[0m  [0m[0m[1m-q[0m[0m, [0m[0m[1m--quiet[0m[0m            [0m[0mLess output[0m[0m
+    [0m[0m  [0m[0m[1m-n[0m[0m, [0m[0m[1m--no-color[0m[0m         [0m[0m[env: NO_COLOR=][0m[0m
+    [0m[0m  [0m[0m[1m-o[0m[0m, [0m[0m[1m--output[0m[0m [0m[0m<OUTPUT>[0m[0m  [0m[0mYou may specifiy the output filename where the runtime will be saved. If not provided, we will figure out an appropriate default name based on a counter: runtime_NNN.wasm where NNN is incrementing to make sure you do not override previous runtime. If you specify an existing file as output, it will be overwritten[0m[0m
+    [0m[0m  [0m[0m[1m-h[0m[0m, [0m[0m[1m--help[0m[0m             [0m[0mPrint help information[0m[0m
+    [0m[0m  [0m[0m[1m-V[0m[0m, [0m[0m[1m--version[0m[0m          [0m[0mPrint version information[0m[0m
+    [0m
 
 ### Command: info
 
-    subwasm-info 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-    The `info` command returns summarized information about a runtime
+    [0mThe `info` command returns summarized information about a runtime[0m[0m
+    [0m[0m
+    [0m[0m[1m[4mUsage:[0m[0m [0m[0m[1msubwasm info[0m[0m [OPTIONS][0m[0m [0m[0m[SOURCE][0m[0m
 
-    USAGE:
-        subwasm info [OPTIONS] [SOURCE]
+    [0m[0m[1m[4mArguments:
+    [0m[0m  [0m[0m[SOURCE][0m[0m  [0m[0mThe wasm file to load. It can be a path on your local filesystem such as /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944[0m[0m [0m[0m[default: runtime_000.wasm][0m[0m
 
-    ARGS:
-        <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
-                    /tmp/runtime.wasm or a node url such as http://localhost:9933 or
-                    ws://localhost:9944 [default: runtime_000.wasm]
-
-    OPTIONS:
-        -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older
-                               runtimes but you will need to connect to archive nodes. Currently, you
-                               must pass a block hash. Passing the block numbers is not supported
-            --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known
-                               nodes will be used. If you pass a valid --chain, --url will be ignored
-                               --chain local = http://localhost:9933
-        -h, --help             Print help information
-        -j, --json             Output as json
-        -V, --version          Print version information
+    [0m[0m[1m[4mOptions:
+    [0m[0m  [0m[0m    [0m[0m[1m--chain[0m[0m [0m[0m<CHAIN>[0m[0m  [0m[0mProvide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933[0m[0m
+    [0m[0m  [0m[0m[1m-j[0m[0m, [0m[0m[1m--json[0m[0m           [0m[0mOutput as json[0m[0m
+    [0m[0m  [0m[0m[1m-b[0m[0m, [0m[0m[1m--block[0m[0m [0m[0m<BLOCK>[0m[0m  [0m[0mThe optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported[0m[0m
+    [0m[0m  [0m[0m[1m-q[0m[0m, [0m[0m[1m--quiet[0m[0m          [0m[0mLess output[0m[0m
+    [0m[0m  [0m[0m[1m-n[0m[0m, [0m[0m[1m--no-color[0m[0m       [0m[0m[env: NO_COLOR=][0m[0m
+    [0m[0m  [0m[0m[1m-h[0m[0m, [0m[0m[1m--help[0m[0m           [0m[0mPrint help information[0m[0m
+    [0m[0m  [0m[0m[1m-V[0m[0m, [0m[0m[1m--version[0m[0m        [0m[0mPrint version information[0m[0m
+    [0m
 
 By default, the ID for the Parachain pallet is expected to be `0x01` and the call ID for `authorize_upgrade` is expected to be `0x03`.
 This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to the ID of your parachain pallet and the `AUTHORIZE_UPGRADE_PREFIX` to the ID of your choice.
 
 ### Command: version
 
-    subwasm-version 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-    The `version` command returns summarized information about the versions of a runtime
+    [0mThe `version` command returns summarized information about the versions of a runtime[0m[0m
+    [0m[0m
+    [0m[0m[1m[4mUsage:[0m[0m [0m[0m[1msubwasm version[0m[0m [OPTIONS][0m[0m [0m[0m[SOURCE][0m[0m
 
-    USAGE:
-        subwasm version [OPTIONS] [SOURCE]
+    [0m[0m[1m[4mArguments:
+    [0m[0m  [0m[0m[SOURCE][0m[0m  [0m[0mThe wasm file to load. It can be a path on your local filesystem such as /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944[0m[0m [0m[0m[default: runtime_000.wasm][0m[0m
 
-    ARGS:
-        <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
-                    /tmp/runtime.wasm or a node url such as http://localhost:9933 or
-                    ws://localhost:9944 [default: runtime_000.wasm]
-
-    OPTIONS:
-        -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older
-                               runtimes but you will need to connect to archive nodes. Currently, you
-                               must pass a block hash. Passing the block numbers is not supported
-            --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known
-                               nodes will be used. If you pass a valid --chain, --url will be ignored
-                               --chain local = http://localhost:9933
-        -h, --help             Print help information
-        -j, --json             Output as json
-        -V, --version          Print version information
+    [0m[0m[1m[4mOptions:
+    [0m[0m  [0m[0m    [0m[0m[1m--chain[0m[0m [0m[0m<CHAIN>[0m[0m  [0m[0mProvide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933[0m[0m
+    [0m[0m  [0m[0m[1m-j[0m[0m, [0m[0m[1m--json[0m[0m           [0m[0mOutput as json[0m[0m
+    [0m[0m  [0m[0m[1m-b[0m[0m, [0m[0m[1m--block[0m[0m [0m[0m<BLOCK>[0m[0m  [0m[0mThe optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported[0m[0m
+    [0m[0m  [0m[0m[1m-q[0m[0m, [0m[0m[1m--quiet[0m[0m          [0m[0mLess output[0m[0m
+    [0m[0m  [0m[0m[1m-n[0m[0m, [0m[0m[1m--no-color[0m[0m       [0m[0m[env: NO_COLOR=][0m[0m
+    [0m[0m  [0m[0m[1m-h[0m[0m, [0m[0m[1m--help[0m[0m           [0m[0mPrint help information[0m[0m
+    [0m[0m  [0m[0m[1m-V[0m[0m, [0m[0m[1m--version[0m[0m        [0m[0mPrint version information[0m[0m
+    [0m
 
 ### Command: meta
 
-    subwasm-metadata 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-    Returns the metadata as a json object. You may also use the "meta" alias
+    [0mReturns the metadata as a json object. You may also use the "meta" alias. It is no longer possible to have a "printable" output, for that, please use the 'show-reduced' sub-command[0m[0m
+    [0m[0m
+    [0m[0m[1m[4mUsage:[0m[0m [0m[0m[1msubwasm metadata[0m[0m [OPTIONS][0m[0m [0m[0m[SOURCE][0m[0m
 
-    USAGE:
-        subwasm metadata [OPTIONS] [SOURCE]
+    [0m[0m[1m[4mArguments:
+    [0m[0m  [0m[0m[SOURCE][0m[0m  [0m[0mThe wasm file to load. It can be a path on your local filesystem such as /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944[0m[0m [0m[0m[default: runtime_000.wasm][0m[0m
 
-    ARGS:
-        <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
-                    /tmp/runtime.wasm or a node url such as http://localhost:9933 or
-                    ws://localhost:9944 [default: runtime_000.wasm]
+    [0m[0m[1m[4mOptions:
+    [0m[0m  [0m[0m    [0m[0m[1m--chain[0m[0m [0m[0m<CHAIN>[0m[0m    [0m[0mProvide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933[0m[0m
+    [0m[0m  [0m[0m[1m-j[0m[0m, [0m[0m[1m--json[0m[0m             [0m[0mOutput as json[0m[0m
+    [0m[0m  [0m[0m[1m-m[0m[0m, [0m[0m[1m--module[0m[0m [0m[0m<MODULE>[0m[0m  [0m[0mWithout this flag, the metadata command display the list of all modules. Using this flag, you will only see the module of your choice and a few details about it[0m[0m
+    [0m[0m  [0m[0m[1m-q[0m[0m, [0m[0m[1m--quiet[0m[0m            [0m[0mLess output[0m[0m
+    [0m[0m  [0m[0m[1m-b[0m[0m, [0m[0m[1m--block[0m[0m [0m[0m<BLOCK>[0m[0m    [0m[0mThe optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported[0m[0m
+    [0m[0m  [0m[0m[1m-n[0m[0m, [0m[0m[1m--no-color[0m[0m         [0m[0m[env: NO_COLOR=][0m[0m
+    [0m[0m  [0m[0m[1m-h[0m[0m, [0m[0m[1m--help[0m[0m             [0m[0mPrint help information[0m[0m
+    [0m[0m  [0m[0m[1m-V[0m[0m, [0m[0m[1m--version[0m[0m          [0m[0mPrint version information[0m[0m
+    [0m
 
-    OPTIONS:
-        -b, --block <BLOCK>      The optional block where to fetch the runtime. That allows fetching
-                                 older runtimes but you will need to connect to archive nodes.
-                                 Currently, you must pass a block hash. Passing the block numbers is not
-                                 supported
-            --chain <CHAIN>      Provide the name of a chain and a random url amongst a list of known
-                                 nodes will be used. If you pass a valid --chain, --url will be ignored
-                                 --chain local = http://localhost:9933
-        -h, --help               Print help information
-        -j, --json               Output as json
-        -m, --module <MODULE>    Without this flag, the metadata command display the list of all
-                                 modules. Using this flag, you will only see the module of your choice
-                                 and a few details about it
-        -V, --version            Print version information
+### Command: show-reduced
+
+    [0mShows the ReducedRuntime[0m[0m
+    [0m[0m
+    [0m[0m[1m[4mUsage:[0m[0m [0m[0m[1msubwasm show-reduced[0m[0m [OPTIONS][0m[0m [0m[0m[SRC][0m[0m
+
+    [0m[0m[1m[4mArguments:
+    [0m[0m  [0m[0m[SRC][0m[0m  [0m[0mThe first source[0m[0m [0m[0m[default: runtime_000.wasm][0m[0m
+
+    [0m[0m[1m[4mOptions:
+    [0m[0m  [0m[0m    [0m[0m[1m--chain[0m[0m [0m[0m<CHAIN>[0m[0m    [0m[0mProvide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933[0m[0m
+    [0m[0m  [0m[0m[1m-j[0m[0m, [0m[0m[1m--json[0m[0m             [0m[0mOutput as json[0m[0m
+    [0m[0m  [0m[0m[1m-b[0m[0m, [0m[0m[1m--block[0m[0m [0m[0m<BLOCK>[0m[0m    [0m[0mThe optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported[0m[0m
+    [0m[0m  [0m[0m[1m-q[0m[0m, [0m[0m[1m--quiet[0m[0m            [0m[0mLess output[0m[0m
+    [0m[0m  [0m[0m[1m-n[0m[0m, [0m[0m[1m--no-color[0m[0m         [0m[0m[env: NO_COLOR=][0m[0m
+    [0m[0m  [0m[0m[1m-p[0m[0m, [0m[0m[1m--pallet[0m[0m [0m[0m<PALLET>[0m[0m  [0m[0mYou probably want to use `Reduced`[0m[0m
+    [0m[0m  [0m[0m[1m-h[0m[0m, [0m[0m[1m--help[0m[0m             [0m[0mPrint help information[0m[0m
+    [0m[0m  [0m[0m[1m-V[0m[0m, [0m[0m[1m--version[0m[0m          [0m[0mPrint version information[0m[0m
+    [0m
 
 ### Command: diff
 
-    subwasm-diff 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-    Compare 2 runtimes
+    [0mCompare 2 runtimes after converting them to ReducedRuntime[0m[0m
+    [0m[0m
+    [0m[0m[1m[4mUsage:[0m[0m [0m[0m[1msubwasm diff[0m[0m [OPTIONS][0m[0m [0m[0m[SRC_A][0m[0m [0m[0m[SRC_B][0m[0m
 
-    USAGE:
-        subwasm diff [OPTIONS] [ARGS]
+    [0m[0m[1m[4mArguments:
+    [0m[0m  [0m[0m[SRC_A][0m[0m  [0m[0mThe first source[0m[0m [0m[0m[default: runtime_000.wasm][0m[0m
+    [0m[0m  [0m[0m[SRC_B][0m[0m  [0m[0mThe second source[0m[0m [0m[0m[default: runtime_001.wasm][0m[0m
 
-    ARGS:
-        <SRC_A>    The first source [default: runtime_000.wasm]
-        <SRC_B>    The second source [default: runtime_001.wasm]
-
-    OPTIONS:
-        -a, --chain-a <CHAIN_A>    Provide the name of a chain and a random url amongst a list of known
-                                   nodes will be used. If you pass a valid --chain, --url will be
-                                   ignored --chain local = http://localhost:9933
-        -b, --chain-b <CHAIN_B>    Provide the name of a chain and a random url amongst a list of known
-                                   nodes will be used. If you pass a valid --chain, --url will be
-                                   ignored --chain local = http://localhost:9933
-        -h, --help                 Print help information
-        -j, --json                 Output as json
-        -V, --version              Print version information
+    [0m[0m[1m[4mOptions:
+    [0m[0m  [0m[0m[1m-a[0m[0m, [0m[0m[1m--chain-a[0m[0m [0m[0m<CHAIN_A>[0m[0m  [0m[0mProvide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933[0m[0m
+    [0m[0m  [0m[0m[1m-j[0m[0m, [0m[0m[1m--json[0m[0m               [0m[0mOutput as json[0m[0m
+    [0m[0m  [0m[0m[1m-b[0m[0m, [0m[0m[1m--chain-b[0m[0m [0m[0m<CHAIN_B>[0m[0m  [0m[0mProvide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933[0m[0m
+    [0m[0m  [0m[0m[1m-q[0m[0m, [0m[0m[1m--quiet[0m[0m              [0m[0mLess output[0m[0m
+    [0m[0m  [0m[0m[1m-m[0m[0m, [0m[0m[1m--method[0m[0m [0m[0m<METHOD>[0m[0m    [0m[0mYou probably want to use `Reduced`[0m[0m [0m[0m[default: reduced][0m[0m
+    [0m[0m  [0m[0m[1m-n[0m[0m, [0m[0m[1m--no-color[0m[0m           [0m[0m[env: NO_COLOR=][0m[0m
+    [0m[0m  [0m[0m[1m-h[0m[0m, [0m[0m[1m--help[0m[0m               [0m[0mPrint help information[0m[0m
+    [0m[0m  [0m[0m[1m-V[0m[0m, [0m[0m[1m--version[0m[0m            [0m[0mPrint version information[0m[0m
+    [0m
 
 ### Command: compress
 
-    subwasm-compress 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-    Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is
-    already compressed
+    [0mCompress a given runtime wasm file. You will get an error if you try compressing a runtime that is already compressed[0m[0m
+    [0m[0m
+    [0m[0m[1m[4mUsage:[0m[0m [0m[0m[1msubwasm compress[0m[0m [OPTIONS][0m[0m [0m[0m<INPUT>[0m[0m [0m[0m<OUTPUT>[0m[0m
 
-    USAGE:
-        subwasm compress [OPTIONS] <INPUT> <OUTPUT>
+    [0m[0m[1m[4mArguments:
+    [0m[0m  [0m[0m<INPUT>[0m[0m   [0m[0mThe path of uncompressed wasm file to load[0m[0m
+    [0m[0m  [0m[0m<OUTPUT>[0m[0m  [0m[0mThe path of the file where the compressed runtime will be stored[0m[0m
 
-    ARGS:
-        <INPUT>     The path of uncompressed wasm file to load
-        <OUTPUT>    The path of the file where the compressed runtime will be stored
-
-    OPTIONS:
-        -h, --help       Print help information
-        -j, --json       Output as json
-        -V, --version    Print version information
+    [0m[0m[1m[4mOptions:
+    [0m[0m  [0m[0m[1m-j[0m[0m, [0m[0m[1m--json[0m[0m      [0m[0mOutput as json[0m[0m
+    [0m[0m  [0m[0m[1m-q[0m[0m, [0m[0m[1m--quiet[0m[0m     [0m[0mLess output[0m[0m
+    [0m[0m  [0m[0m[1m-n[0m[0m, [0m[0m[1m--no-color[0m[0m  [0m[0m[env: NO_COLOR=][0m[0m
+    [0m[0m  [0m[0m[1m-h[0m[0m, [0m[0m[1m--help[0m[0m      [0m[0mPrint help information[0m[0m
+    [0m[0m  [0m[0m[1m-V[0m[0m, [0m[0m[1m--version[0m[0m   [0m[0mPrint version information[0m[0m
+    [0m
 
 ### Command: decompress
 
-    subwasm-decompress 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-    Decompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that
-    case, you will get the same content as output. This is useful if you want to decompress "no matter
-    what" and don't really know whether the input will be compressed or not
+    [0mDecompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that case, you will get the same content as output. This is useful if you want to decompress "no matter what" and don't really know whether the input will be compressed or not[0m[0m
+    [0m[0m
+    [0m[0m[1m[4mUsage:[0m[0m [0m[0m[1msubwasm decompress[0m[0m [OPTIONS][0m[0m [0m[0m<INPUT>[0m[0m [0m[0m<OUTPUT>[0m[0m
 
-    USAGE:
-        subwasm decompress [OPTIONS] <INPUT> <OUTPUT>
+    [0m[0m[1m[4mArguments:
+    [0m[0m  [0m[0m<INPUT>[0m[0m   [0m[0mThe path of the compressed or uncompressed wasm file to load[0m[0m
+    [0m[0m  [0m[0m<OUTPUT>[0m[0m  [0m[0mThe path of the file where the uncompressed runtime will be stored[0m[0m
 
-    ARGS:
-        <INPUT>     The path of the compressed or uncompressed wasm file to load
-        <OUTPUT>    The path of the file where the uncompressed runtime will be stored
-
-    OPTIONS:
-        -h, --help       Print help information
-        -j, --json       Output as json
-        -V, --version    Print version information
+    [0m[0m[1m[4mOptions:
+    [0m[0m  [0m[0m[1m-j[0m[0m, [0m[0m[1m--json[0m[0m      [0m[0mOutput as json[0m[0m
+    [0m[0m  [0m[0m[1m-q[0m[0m, [0m[0m[1m--quiet[0m[0m     [0m[0mLess output[0m[0m
+    [0m[0m  [0m[0m[1m-n[0m[0m, [0m[0m[1m--no-color[0m[0m  [0m[0m[env: NO_COLOR=][0m[0m
+    [0m[0m  [0m[0m[1m-h[0m[0m, [0m[0m[1m--help[0m[0m      [0m[0mPrint help information[0m[0m
+    [0m[0m  [0m[0m[1m-V[0m[0m, [0m[0m[1m--version[0m[0m   [0m[0mPrint version information[0m[0m
+    [0m
 
 ### Environment variables
 

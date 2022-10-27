@@ -58,14 +58,7 @@ fn main() -> color_eyre::Result<()> {
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
 
-			// TODO: Use the ReducedRuntime
-			if let Some(filter) = meta_opts.module {
-				subwasm.display_module(filter);
-			} else if opts.json {
-				subwasm.display_metadata_json()
-			} else {
-				subwasm.display_modules_list()
-			}
+			subwasm.display_metadata_json()
 		}
 
 		SubCommand::Diff(diff_opts) => {
@@ -109,6 +102,15 @@ fn main() -> color_eyre::Result<()> {
 
 		SubCommand::Decompress(dopts) => {
 			decompress(dopts.input, dopts.output).unwrap();
+		}
+
+		SubCommand::ShowReduced(sr_opts) => {
+			let chain_name = sr_opts.chain.map(|some| some.name);
+			let source = get_source(chain_name.as_deref(), sr_opts.src, sr_opts.block);
+			info!("⏱️  Loading WASM from {:?}", &source);
+			let subwasm = Subwasm::new(&source);
+
+			subwasm.display_reduced_runtime()
 		}
 	};
 

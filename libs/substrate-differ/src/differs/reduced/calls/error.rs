@@ -15,7 +15,7 @@ pub struct Error {
 
 impl Display for Error {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let _ = f.write_fmt(format_args!("[{: >2}] {}", self.index, self.name));
+		let _ = f.write_fmt(format_args!("{: >2}: {}", self.index, self.name));
 
 		Ok(())
 	}

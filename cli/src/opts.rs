@@ -38,6 +38,9 @@ pub enum SubCommand {
 	Metadata(MetaOpts),
 
 	#[clap(version = crate_version!(), author = crate_authors!())]
+	ShowReduced(ShowReducedOpts),
+
+	#[clap(version = crate_version!(), author = crate_authors!())]
 	Diff(DiffOpts),
 
 	#[clap(version = crate_version!(), author = crate_authors!())]
@@ -113,6 +116,8 @@ pub struct VersionOpts {
 }
 
 /// Returns the metadata as a json object. You may also use the "meta" alias.
+/// It is no longer possible to have a "printable" output, for that, please
+/// use the 'show-reduced' sub-command.
 #[derive(Parser)]
 pub struct MetaOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such as
@@ -137,7 +142,7 @@ pub struct MetaOpts {
 	pub block: Option<BlockRef>,
 }
 
-/// Compare 2 runtimes
+/// Compare 2 runtimes after converting them to ReducedRuntime.
 #[derive(Parser)]
 pub struct DiffOpts {
 	/// The first source
@@ -163,6 +168,29 @@ pub struct DiffOpts {
 	/// You probably want to use `Reduced`.
 	#[clap(long, short, default_value = "reduced")]
 	pub method: DiffMethod,
+}
+
+/// Shows the ReducedRuntime.
+#[derive(Parser)]
+pub struct ShowReducedOpts {
+	/// The first source
+	#[clap(index = 1, alias = "src", default_value = "runtime_000.wasm", required_unless_present = "chain")]
+	pub src: Source,
+
+	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
+	/// If you pass a valid --chain, --url will be ignored
+	/// --chain local = http://localhost:9933
+	#[clap(long, conflicts_with = "src")]
+	pub chain: Option<ChainInfo>,
+
+	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
+	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
+	#[clap(short, long)]
+	pub block: Option<BlockRef>,
+
+	/// You probably want to use `Reduced`.
+	#[clap(long, short)]
+	pub pallet: Option<String>,
 }
 
 /// Compress a given runtime wasm file.

@@ -30,15 +30,27 @@ impl PartialOrd for ReducedPallet {
 	}
 }
 
+macro_rules! display_pallet_items {
+	( $self:ident, $f:ident, $field:ident ) => {{
+		if !$self.$field.is_empty() {
+			let _ = $f.write_fmt(format_args!("  {}:\n", stringify!($field)));
+			$self.$field.iter().for_each(|(_id, item)| {
+				let _ = $f.write_fmt(format_args!("    - {item}\n"));
+			});
+		}
+	}};
+}
+
 impl Display for ReducedPallet {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let _ = f.write_fmt(format_args!("pallet #{} {}\n", self.index, self.name));
+		let _ = f.write_fmt(format_args!("Pallet #{}: {}\n", self.index, self.name));
 
 		// TODO: Show more than the calls
-		self.calls.iter().for_each(|(index, call)| {
-			let _ = f.write_fmt(format_args!("  - {index} {call}\n"));
-		});
-
+		display_pallet_items!(self, f, calls);
+		display_pallet_items!(self, f, events);
+		display_pallet_items!(self, f, errors);
+		display_pallet_items!(self, f, constants);
+		display_pallet_items!(self, f, storages);
 		Ok(())
 	}
 }

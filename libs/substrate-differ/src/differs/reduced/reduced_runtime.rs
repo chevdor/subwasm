@@ -12,8 +12,11 @@ use frame_metadata::{
 };
 use scale_info::{form::PortableForm, PortableRegistry};
 use serde::Serialize;
-use std::collections::{BTreeMap, HashMap};
 use std::fmt::Debug;
+use std::{
+	collections::{BTreeMap, HashMap},
+	fmt::Display,
+};
 
 pub type ReducedRuntimeError = String;
 pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
@@ -175,6 +178,18 @@ impl From<&RuntimeMetadata> for ReducedRuntime {
 			V14(v14) => ReducedRuntime::from_v14(v14).unwrap(),
 			_ => panic!("Unsupported metadata version"),
 		}
+	}
+}
+
+impl Display for ReducedRuntime {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		let _ = writeln!(f, "ReducedRuntime:");
+
+		self.pallets.iter().for_each(|(_id, pallet)| {
+			let _ = writeln!(f, "{}", pallet);
+		});
+
+		Ok(())
 	}
 }
 
