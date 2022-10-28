@@ -1,7 +1,7 @@
 use super::calls::{call::*, constant::*, error::*, event::*, storage::*};
 use comparable::Comparable;
-use frame_metadata::PalletCallMetadata;
-use scale_info::form::PortableForm;
+// use frame_metadata::PalletCallMetadata;
+// use scale_info::form::PortableForm;
 use std::fmt::Display;
 
 #[derive(Debug, PartialEq, Hash, Comparable, PartialOrd, Ord, Eq)]
@@ -24,11 +24,5 @@ impl Display for PalletItem {
 			PalletItem::Constant(c) => f.write_fmt(format_args!("{:<WIDTH$}: {c}", "Constant")),
 			PalletItem::Storage(s) => f.write_fmt(format_args!("{:<WIDTH$}: {s}", "Storage")),
 		}
-	}
-}
-
-impl From<&PalletCallMetadata<PortableForm>> for Call {
-	fn from(_: &PalletCallMetadata<PortableForm>) -> Self {
-		todo!("From<&PalletCallMetadata<PortableForm>> for Call")
 	}
 }

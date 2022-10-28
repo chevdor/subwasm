@@ -6,7 +6,10 @@
 # export KUSAMA=http://$SRV:9933
 # export POLKADOT=http://$SRV:9934
 
-mkdir -p data/polkadot/V12 data/polkadot/V13 data/polkadot/V14 data/kusama/V12 data/kusama/V13 data/kusama/V14
+mkdir -p \
+    data/polkadot/V12 data/polkadot/V13 data/polkadot/V14 \
+    data/kusama/V12 data/kusama/V13 data/kusama/V14 \
+    data/westend/V12 data/westend/V13 data/westend/V14
 
 # Kusama
 # cargo run --profile production -p subwasm -- get --url $KUSAMA --block 0x476801cf6aac6ed4f8d782c96b450ba9444b545459fe0a30e1cea99c4dba4420 --output kusama/kusama-1050.wasm
@@ -95,5 +98,8 @@ for chain in polkadot kusama; do
     done
 done
 
+wget https://github.com/paritytech/polkadot/releases/download/v0.8.30/kusama_runtime-v2030.compact.wasm -O data/kusama/V12/2030.wasm
+wget https://github.com/paritytech/polkadot/releases/download/v0.8.30/polkadot_runtime-v30.compact.wasm -O data/polkadot/V12/2030.wasm
 
-wget https://github.com/mdn/webassembly-examples/blob/master/other-examples/simple.wasm -O data/wasm/qjs.wasm
+wget https://github.com/paritytech/polkadot/releases/download/v0.8.29/kusama_runtime-v2029.compact.wasm -O data/kusama/V12/2029.wasm
+wget https://github.com/paritytech/polkadot/releases/download/v0.8.29/polkadot_runtime-v29.compact.wasm -O data/polkadot/V12/2029.wasm

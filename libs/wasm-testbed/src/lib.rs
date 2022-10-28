@@ -206,14 +206,14 @@ mod tests {
 	const WASM_NO_SUBSTRATE: &str = "../../data/wasm/qjs.wasm";
 	const KUSAMA_1050_VXX: &str = "../../data/kusama/V11/kusama-1050.wasm";
 	const KUSAMA_1062_VXX: &str = "../../data/kusama/V11/kusama-1062.wasm";
-	const KUSAMA_2030_VXX: &str = "../../data/kusama/V12/kusama-2030.wasm";
+	const KUSAMA_2030_VXX: &str = "../../data/kusama/V12/2030.wasm";
 	const POLKADOT_01_V11: &str = "../../data/polkadot/V11/polkadot-01.wasm";
-	const POLKADOT_29_V12: &str = "../../data/polkadot/V12/polkadot-29.wasm";
-	const WESTEND_V30_V12: &str = "../../data/westend/westend_runtime-v900-rc2.compact.wasm";
+	const POLKADOT_29_V12: &str = "../../data/polkadot/V12/2029.wasm";
+	const WESTEND_V30_V12: &str = "../../data/westend/V12/westend_runtime-v900-rc2.compact.wasm";
 	const POLKADOT_DEV: &str = "../../data/v900/polkadot-dev-v900-rc1.wasm";
-	const RUNTIME_V12: &str = "../../data/kusama/V12/kusama-2030.wasm";
-	const RUNTIME_V13: &str = "../../data/kusama/V13/kusama-9080.wasm";
-	const RUNTIME_V14: &str = "../../data/polkadot/V14/polkadot_runtime.compact.compressed.wasm";
+	const RUNTIME_V12: &str = "../../data/kusama/V12/2030.wasm";
+	const RUNTIME_V13: &str = "../../data/kusama/V13/9090.wasm";
+	const RUNTIME_V14: &str = "../../data/polkadot/V14/9100.wasm";
 
 	#[cfg(test)]
 	mod common {
@@ -295,7 +295,7 @@ mod tests {
 
 		#[test]
 		#[ignore = "local data"]
-		fn it_loads_kusama_metdata() {
+		fn it_loads_kusama_metadata() {
 			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_2030_VXX))).unwrap();
 			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 12);

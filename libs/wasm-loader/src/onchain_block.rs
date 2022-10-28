@@ -1,6 +1,6 @@
 use crate::{error::WasmLoaderError, NodeEndpoint};
 use std::str::FromStr;
-pub type BlockRef = String; // TODO: can do better with a real Hash
+pub type BlockRef = String;
 
 /// This structure points to a node url and an optional block reference.
 #[derive(Debug, Clone, PartialEq)]

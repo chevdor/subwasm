@@ -3,7 +3,7 @@
 /// as a variant of `PalletItem`. The reduction however, gives them the same common struct.
 #[cfg(feature = "v13")]
 #[derive(Debug)]
-// TODO: This is no longer required and should be removed, for now, this is 'hidden' behind 
+// TODO: V13 This is no longer required and should be removed, for now, this is 'hidden' behind teh v13 feature
 pub struct PalletData {
 	/// The name of the Pallet Item
 	pub name: String,

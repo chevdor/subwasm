@@ -64,10 +64,7 @@ impl Subwasm {
 
 		if let Some(reduced_pallet) = pallet_maybe {
 			if json {
-				println!(
-					"{}",
-					serde_json::to_string_pretty(&reduced_pallet).expect("Failed encoding reduced runtime")
-				);
+				println!("{}", serde_json::to_string_pretty(&reduced_pallet).expect("Failed encoding reduced runtime"));
 			} else {
 				println!("{reduced_pallet}");
 			}

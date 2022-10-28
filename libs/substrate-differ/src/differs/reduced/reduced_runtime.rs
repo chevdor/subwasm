@@ -144,6 +144,8 @@ impl ReducedRuntime {
 		// TODO: deal with extrinsic as well
 		let _extrinsics = &v14.extrinsic;
 
+		println!("_extrinsics = {:#?}", _extrinsics);
+
 		let pallets = &v14.pallets;
 		let reduced_pallets: HashMap<PalletId, ReducedPallet> = pallets
 			.iter()
@@ -188,7 +190,7 @@ impl Display for ReducedRuntime {
 		let _ = writeln!(f, "ReducedRuntime:");
 
 		self.pallets.iter().for_each(|(_id, pallet)| {
-			let _ = writeln!(f, "{}", pallet);
+			let _ = writeln!(f, "{pallet}");
 		});
 
 		Ok(())

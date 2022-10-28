@@ -45,7 +45,6 @@ impl Display for ReducedPallet {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		let _ = f.write_fmt(format_args!("Pallet #{}: {}\n", self.index, self.name));
 
-		// TODO: Show more than the calls
 		display_pallet_items!(self, f, calls);
 		display_pallet_items!(self, f, events);
 		display_pallet_items!(self, f, errors);
