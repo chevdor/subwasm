@@ -14,8 +14,8 @@ pub mod reduced_pallet_change;
 pub mod reduced_pallet_change_wrapper;
 
 pub mod reduced_extrinsic;
-pub mod reduced_extrinsic_change;
-pub mod reduced_extrinsic_change_wrapper;
+// pub mod reduced_extrinsic_change;
+// pub mod reduced_extrinsic_change_wrapper;
 
 pub mod reduced_runtime;
 pub mod reduced_runtime_change_wrapper;

@@ -53,7 +53,6 @@ impl fmt::Debug for WasmTestBed {
 impl WasmTestBed {
 	pub fn new(source: &Source) -> Result<Self> {
 		let loader = WasmLoader::load_from_source(source).map_err(|_| WasmTestbedError::Loading(source.to_string()))?;
-
 		let wasm = loader.uncompressed_bytes().to_vec();
 		let metadata_encoded = Self::call(&wasm, "Metadata_metadata", &[])?;
 		let metadata =
