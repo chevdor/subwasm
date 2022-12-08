@@ -19,8 +19,8 @@ impl fmt::Display for WasmTestbedError {
 				write!(f, "The runtime could not be decoded. Here are the first bytes:\n{:02x?}", bytes[0..64].to_vec())
 			}
 
-			WasmTestbedError::Calling(method) => write!(f, "Failed calling: {:?}", method),
-			WasmTestbedError::Loading(src) => write!(f, "Failed Loading: {:?}", src),
+			WasmTestbedError::Calling(method) => write!(f, "Failed calling: {method:?}"),
+			WasmTestbedError::Loading(src) => write!(f, "Failed Loading: {src:?}"),
 		}
 	}
 }

@@ -20,7 +20,7 @@ pub enum Error {
 impl Display for Error {
 	fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		match self {
-			Error::Parsing(m) => write!(fmt, "Filter parsing failed: {}", m),
+			Error::Parsing(m) => write!(fmt, "Filter parsing failed: {m}"),
 			// _ => write!(fmt, "Unknown error"),
 		}
 	}

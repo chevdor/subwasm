@@ -37,7 +37,7 @@ impl<'a, T: Serialize> RawDiffer<'a, T> {
 		if options.ignore_version {
 			let va = jsona.as_object().expect("Shoud be a json object").iter().next().expect("Should have a version").0;
 			let vb = jsonb.as_object().expect("Shoud be a json object").iter().next().expect("Should have a version").0;
-			println!("Comparing {} with {}", va, vb);
+			println!("Comparing {va} with {vb}");
 
 			diff(&jsona[va], &jsonb[vb], &mut recorder);
 		} else {
@@ -59,7 +59,7 @@ impl<'a, T: Serialize> RawDiffer<'a, T> {
 					{
 						skip_counter.bytes += 1;
 					} else {
-						println!("{}", wrapped_call)
+						println!("{wrapped_call}")
 					}
 
 					// if !k.contains(&doc) || k.contains(&doc) && !options.skip_doc {

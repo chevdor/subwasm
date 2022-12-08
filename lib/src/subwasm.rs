@@ -13,16 +13,16 @@ impl Subwasm {
 	pub fn new(source: &Source) -> Self {
 		let testbed = WasmTestBed::new(source)
 			.map_err(|e| {
-				eprintln!("{}", e);
+				eprintln!("{e}");
 				if let WasmTestbedError::Decoding(data) = e {
 					WasmTestBed::print_magic_and_version(&data);
 				}
 				const REPO: &str = env!("CARGO_PKG_REPOSITORY");
 				const NAME: &str = env!("CARGO_PKG_NAME");
 				const VERSION: &str = env!("CARGO_PKG_VERSION");
-				println!("🗣️ If you think it should have worked, please open an issue at {}/issues", REPO);
-				println!("and attach your runtime and mention using {} v{}", NAME, VERSION);
-				println!("The source was {} ", source);
+				println!("🗣️ If you think it should have worked, please open an issue at {REPO}/issues");
+				println!("and attach your runtime and mention using {NAME} v{VERSION}");
+				println!("The source was {source} ");
 
 				panic!("Could not load runtime");
 			})

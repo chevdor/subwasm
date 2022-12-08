@@ -88,7 +88,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 			let mut path;
 
 			loop {
-				path = format!("runtime_{:03?}.wasm", i);
+				path = format!("runtime_{i:03?}.wasm");
 				i += 1;
 				assert!(i < 1000, "Ran out of indexes");
 				if !Path::new(&path).exists() {
@@ -99,7 +99,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 		}
 	};
 
-	info!("Saving runtime to {:?}", outfile);
+	info!("Saving runtime to {outfile:?}");
 	let mut buffer = File::create(outfile)?;
 	buffer.write_all(wasm)?;
 	Ok(())
@@ -109,9 +109,9 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 /// then their metata.
 pub fn diff(src_a: Source, src_b: Source) {
 	debug!("Loading WASM runtimes:");
-	println!("  🅰️  {:?}", src_a);
+	println!("  🅰️  {src_a:?}");
 	let runtime_a = WasmTestBed::new(&src_a).expect("Can only diff if the 2 runtimes can load");
-	println!("  🅱️  {:?}", src_b);
+	println!("  🅱️  {src_b:?}");
 	let runtime_b = WasmTestBed::new(&src_b).expect("Can only diff if the 2 runtimes can load");
 
 	// ==== RUNTIME

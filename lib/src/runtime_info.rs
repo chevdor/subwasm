@@ -45,16 +45,16 @@ impl RuntimeInfo {
 	pub fn print(&self, json: bool) {
 		if json {
 			let serialized = serde_json::to_string_pretty(self).unwrap();
-			println!("{}", serialized);
+			println!("{serialized}");
 		} else {
-			println!("{}", self);
+			println!("{self}");
 		}
 	}
 
 	pub fn print_version(&self, json: bool) {
 		if json {
 			let serialized = serde_json::to_string_pretty(&self.core_version).unwrap();
-			println!("{}", serialized);
+			println!("{serialized}");
 		} else {
 			println!("specifications : {} v{}", self.core_version.spec_name, self.core_version.spec_version);
 			println!("implementation : {} v{}", self.core_version.impl_name, self.core_version.impl_version);

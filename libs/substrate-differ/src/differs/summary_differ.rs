@@ -36,11 +36,11 @@ impl<'a> RuntimeSummaryDiffer<'a> {
 		let metadata_b_version = self.r2.metadata_version();
 		println!("Checking metadata versions:");
 		if metadata_a_version == metadata_b_version {
-			println!("  ✅ Both metadata versions are identical: V{:?}", metadata_a_version);
+			println!("  ✅ Both metadata versions are identical: V{metadata_a_version:?}");
 		} else {
 			println!("Found different metadata versions:");
-			println!("  🅰️  V{:?}", metadata_a_version);
-			println!("  🅱️  V{:?}", metadata_b_version);
+			println!("  🅰️  V{metadata_a_version:?}");
+			println!("  🅱️  V{metadata_b_version:?}");
 		}
 
 		// CORE VERSIONS
@@ -50,13 +50,11 @@ impl<'a> RuntimeSummaryDiffer<'a> {
 
 		if version_a == version_b {
 			print!("  ✅  The 2 core versions are identical: ");
-			println!("{}", version_a);
+			println!("{version_a}");
 		} else {
 			println!("  ❌ The 2 core versions are different: ");
-			// println!("{:#?}", version_a);
-			println!("  🅰️  {}", version_a);
-			// println!("{:#?}", version_b);
-			println!("  🅱️  {}", version_b);
+			println!("  🅰️  {version_a}");
+			println!("  🅱️  {version_b}");
 		}
 
 		println!("Checking runtime metadata:");
@@ -64,7 +62,6 @@ impl<'a> RuntimeSummaryDiffer<'a> {
 		let metadata_b = self.r2.metadata();
 
 		if metadata_a == metadata_b {
-			// println!("  {}", version_a);
 			println!("  ✅  The metadata are identical");
 		} else {
 			println!("  ❌  The metadata are different");
