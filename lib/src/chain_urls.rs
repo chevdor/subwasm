@@ -42,6 +42,9 @@ pub fn get_chain_urls(name: &str) -> Option<Vec<NodeEndpoint>> {
 			"wss://karura-rpc-1.aca-api.network:443",
 			"wss://karura-rpc-2.aca-api.network:443/ws",
 		]),
+		"moonbase" => Some(vec!["wss://wss.api.moonbase.moonbeam.network:443"]),
+		"moonriver" | "movr" => Some(vec!["wss://wss.api.moonriver.moonbeam.network:443"]),
+		"moonbeam" | "glmr" => Some(vec!["wss://wss.api.moonbeam.network:443"]),
 		"local" => Some(vec!["http://localhost:9933"]),
 		_ => None,
 	}
