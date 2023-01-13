@@ -26,8 +26,8 @@ frame-metadata = { package = "frame-metadata", git = "https://github.com/parityt
 ] }
 blake2 = "0.10"
 codec = { version = "3.1", package = "parity-scale-codec" }
-sp-core = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
-sp-io = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
-sp-runtime = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
-sp-wasm-interface = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
+sp-core = { tag = "monthly-2023-01", git = "https://github.com/paritytech/substrate" }
+sp-io = { tag = "monthly-2023-01", git = "https://github.com/paritytech/substrate" }
+sp-runtime = { tag = "monthly-2023-01", git = "https://github.com/paritytech/substrate" }
+sp-wasm-interface = { tag = "monthly-2023-01", git = "https://github.com/paritytech/substrate" }
 hex = "0.4"
