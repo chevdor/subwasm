@@ -1,5 +1,5 @@
 [package]
-name = "subwasm-cli"
+name = "subwasm"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
