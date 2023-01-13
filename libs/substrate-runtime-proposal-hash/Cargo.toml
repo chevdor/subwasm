@@ -1,6 +1,8 @@
 [package]
-authors = ["chevdor <chevdor@gmail.com>"]
-edition = "2021"
+name = "substrate-runtime-proposal-hash"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
 homepage = "https://github.com/chevdor/subwasm"
 keywords = [
     "wasm",
@@ -12,13 +14,16 @@ keywords = [
     "kusama",
 ]
 license = "MIT"
-name = "substrate-runtime-proposal-hash"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
-version = "0.18.0"
 
 [dependencies]
-frame-metadata = {package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main", features = ["v12", "v13", "v14", "std"] }
+frame-metadata = { package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main", features = [
+    "v12",
+    "v13",
+    "v14",
+    "std",
+] }
 blake2 = "0.10"
 codec = { version = "3.1", package = "parity-scale-codec" }
 sp-core = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }

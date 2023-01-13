@@ -1,6 +1,9 @@
 [package]
-authors = ["chevdor <chevdor@gmail.com>"]
-edition = "2021"
+name = "wasm-loader"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
 homepage = "https://github.com/chevdor/subwasm"
 keywords = [
     "wasm",
@@ -12,19 +15,17 @@ keywords = [
     "kusama",
 ]
 license = "MIT"
-name = "wasm-loader"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
-version = "0.18.0"
 
 [dependencies]
 hex = "0.4"
-jsonrpsee = { version = "0.15", git = "https://github.com/paritytech/jsonrpsee", features = [
+jsonrpsee = { version = "0.16", git = "https://github.com/paritytech/jsonrpsee", features = [
     "client",
 ] }
 log = "0.4"
 multibase = "0.9"
-multihash = "0.16"
+multihash = "0.18"
 serde = { version = "1.0", features = ["derive"] }
 sp-maybe-compressed-blob = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate/" }
 tokio = { version = "1.19", features = ["full"] }

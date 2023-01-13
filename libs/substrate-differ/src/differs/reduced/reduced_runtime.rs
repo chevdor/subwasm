@@ -142,9 +142,9 @@ impl ReducedRuntime {
 		let registry = &v14.types;
 
 		// TODO: deal with extrinsic as well
-		let _extrinsics = &v14.extrinsic;
+		// let extrinsics = &v14.extrinsic;
 
-		println!("_extrinsics = {:#?}", _extrinsics);
+		// println!("extrinsics = {:#?}", extrinsics);
 
 		let pallets = &v14.pallets;
 		let reduced_pallets: HashMap<PalletId, ReducedPallet> = pallets

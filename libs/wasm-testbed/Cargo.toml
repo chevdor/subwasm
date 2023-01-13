@@ -1,6 +1,8 @@
 [package]
-authors = ["chevdor <chevdor@gmail.com>"]
-edition = "2021"
+name = "wasm-testbed"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
 homepage = "https://github.com/chevdor/subwasm"
 keywords = [
     "wasm",
@@ -12,10 +14,8 @@ keywords = [
     "kusama",
 ]
 license = "MIT"
-name = "wasm-testbed"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
-version = "0.18.0"
 
 [dependencies]
 scale-info = { version = "2.1", default-features = false, features = [
@@ -37,6 +37,6 @@ sp-io = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrat
 sp-runtime = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
 sp-state-machine = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
 sp-wasm-interface = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
-substrate-runtime-proposal-hash = { version = "0.18.0", path = "../substrate-runtime-proposal-hash" }
-wasm-loader = { version = "0.18.0", path = "../wasm-loader" }
+substrate-runtime-proposal-hash = { version = "1.0.0-alpha5", path = "../substrate-runtime-proposal-hash" }
+wasm-loader = { version = "1.0.0-alpha5", path = "../wasm-loader" }
 sp-version = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
