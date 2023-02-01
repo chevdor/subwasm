@@ -1,6 +1,9 @@
+use std::io::Write;
+
 use crate::{convert::convert, metadata_wrapper::MetadataWrapper, RuntimeInfo};
 use calm_io::stdoutln;
 use frame_metadata::{decode_different::DecodeDifferent, RuntimeMetadata};
+use scale_info::scale::Encode;
 use wasm_loader::Source;
 use wasm_testbed::{WasmTestBed, WasmTestbedError};
 
@@ -111,5 +114,21 @@ impl Subwasm {
 				_ => Err(e),
 			},
 		};
+	}
+
+	/// Write the prefixed runtime metadata as scale encoded bytes to a file
+	pub fn write_metadata_scale<T: AsRef<std::path::Path>>(&self, path: T) {
+		let metadata = self.testbed.runtime_metadata_prefixed();
+		let mut file = std::fs::File::create(path).unwrap();
+		let mut bytes = Vec::new();
+		metadata.encode_to(&mut bytes);
+		file.write_all(&bytes).unwrap();
+	}
+
+	/// Write the prefixed runtime metadata as json to a file
+	pub fn write_metadata_json<T: AsRef<std::path::Path>>(&self, path: T) {
+		let metadata = self.testbed.runtime_metadata_prefixed();
+		let mut file = std::fs::File::create(path).unwrap();
+		serde_json::to_writer_pretty(&mut file, &metadata).unwrap();
 	}
 }

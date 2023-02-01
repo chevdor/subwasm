@@ -132,6 +132,10 @@ pub struct MetaOpts {
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
 	pub block: Option<String>, // TODO: can do better...
+
+	/// You may specifiy the output filename where the metadata will be saved.
+	#[clap(short, long)]
+	pub output: Option<String>,
 }
 
 /// Compare 2 runtimes

@@ -58,6 +58,12 @@ fn main() -> color_eyre::Result<()> {
 
 			if let Some(filter) = meta_opts.module {
 				subwasm.display_module(filter);
+			} else if let Some(output) = meta_opts.output {
+				if opts.json {
+					subwasm.write_metadata_json(&output);
+				}else{
+					subwasm.write_metadata_scale(&output);
+				}
 			} else if opts.json {
 				subwasm.display_metadata_json()
 			} else {
