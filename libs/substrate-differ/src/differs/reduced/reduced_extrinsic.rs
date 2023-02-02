@@ -1,12 +1,44 @@
 use comparable::Comparable;
+use frame_metadata::{ExtrinsicMetadata, SignedExtensionMetadata};
+use scale_info::form::PortableForm;
 use serde::Serialize;
-// use super::calls::{prelude::PalletId, *};
-// use frame_metadata::PalletMetadata;
-// use scale_info::form::PortableForm;
-// use std::{collections::BTreeMap, fmt::Display};
 
-/// A [ReducedPallet] could be a `Vec` or [PalletItem] but it ends
-/// but providing a much more useful output after diffing when using
-/// separated fields.
 #[derive(Debug, PartialEq, Hash, Comparable, Serialize, Clone)]
-pub struct ReducedExtrinsic {}
+pub struct ReducedExtrinsic {
+	version: u8,
+	signed_extensions: Vec<ReducedSignedExtension>,
+}
+
+impl ReducedExtrinsic {
+	pub fn from(extrinsic: &ExtrinsicMetadata<PortableForm>) -> Self {
+		let version = extrinsic.version;
+		let signed_extensions = extrinsic
+			.signed_extensions
+			.iter()
+			.map(|e| {
+				let rse = ReducedSignedExtension::from(e);
+				rse
+			})
+			.collect();
+
+		Self { version, signed_extensions }
+	}
+}
+
+// TODO: To remove, this is only a placeholder
+pub type Unknown = u8;
+
+#[derive(Debug, PartialEq, Hash, Comparable, Serialize, Clone)]
+pub struct ReducedSignedExtension {
+	identifier: String,
+	// TODO:
+	// additional_signed: Unknown,
+	// type: ?
+}
+
+impl ReducedSignedExtension {
+	pub fn from(e: &SignedExtensionMetadata<PortableForm>) -> Self {
+		let identifier = e.identifier.clone();
+		Self { identifier }
+	}
+}

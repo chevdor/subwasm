@@ -1,0 +1,3 @@
+
+- [ ] byte arrays should be smartly displayed: Short ones can be shown as such but long ones should be encoded to hex and truncated. The user can still use the json output to get the full data
+- [ ] Show extrinsics: see `// TODO: deal with extrinsic as well`

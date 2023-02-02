@@ -1,6 +1,9 @@
 use super::{calls::PalletId, changed_wapper::ChangedWrapper, reduced_pallet::*};
+use super::reduced_runtime::ReducedRuntimeChange;
+
 use comparable::MapChange;
 use std::rc::Rc;
+
 
 pub trait Compatible {
 	/// This function reports whether the 2 runtimes APIs are compatible or not.
@@ -31,17 +34,34 @@ impl DiffAnalyzer {
 
 impl Compatible for DiffAnalyzer {
 	fn compatible(&self) -> bool {
-		self.changes
-			.0
-			.changes
-			.pallets
-			.iter()
-			.map(|p| match p {
-				comparable::MapChange::Added(_k, _d) => true,
-				comparable::MapChange::Removed(_k) => false,
-				comparable::MapChange::Changed(_k, c) => c.iter().map(|x| x.compatible()).all(|x| x),
-			})
-			.all(|x| x)
+		match self.changes.0.changes {
+			ReducedRuntimeChange::Extrinsic(extrinsic) => {
+				extrinsic.iter().map(|p| match p {
+					ReducedExtrinsicChange::Version(version) => {
+						// match versiopn {
+
+						// }
+						// TODO
+						true
+					},
+					ReducedExtrinsicChange::SignedExtensions(signed_extensions) => {
+						// match signed_extensions {
+							
+							// }
+						// TODO
+						true
+					},
+				}).all(|x| x),
+			},
+			ReducedRuntimeChange::Pallets(pallets) => pallets
+				.iter()
+				.map(|p| match p {
+					comparable::MapChange::Added(_key, _ddesc) => true,
+					comparable::MapChange::Removed(_key) => false,
+					comparable::MapChange::Changed(_key, change) => change.iter().map(|x| x.compatible()).all(|x| x),
+				})
+				.all(|x| x),
+		}
 	}
 }
 

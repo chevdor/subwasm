@@ -1,5 +1,6 @@
 use super::{
 	calls::{call::Call, error::Error, event::Event, prelude::PalletId},
+	reduced_extrinsic::ReducedExtrinsic,
 	reduced_pallet::ReducedPallet,
 };
 use crate::differs::reduced::calls::{
@@ -23,16 +24,24 @@ pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
 
 #[derive(Debug, PartialEq, Comparable, Serialize)]
 pub struct ReducedRuntime {
+	pub extrinsic: ReducedExtrinsic,
 	pub pallets: HashMap<PalletId, ReducedPallet>,
 }
 
-impl From<HashMap<PalletId, ReducedPallet>> for ReducedRuntime {
-	fn from(pallets: HashMap<PalletId, ReducedPallet>) -> Self {
-		Self { pallets }
-	}
-}
+// impl From<HashMap<PalletId, ReducedPallet>> for ReducedRuntime {
+// 	fn from(pallets: HashMap<PalletId, ReducedPallet>) -> Self {
+// 		Self { pallets }
+// 	}
+// }
 
 impl ReducedRuntime {
+	pub fn new(extrinsic: ReducedExtrinsic, pallets: HashMap<PalletId, ReducedPallet>) -> Self {
+		Self { 
+			extrinsic, 
+			pallets
+		}
+	}
+
 	#[cfg(feature = "v13")]
 	/// Reduce a RuntimeMetadataV13 into a normalized ReducedRuntime
 	pub fn from_v13(v13: &v13::RuntimeMetadataV13) -> Result<Self> {
@@ -43,6 +52,7 @@ impl ReducedRuntime {
 		Ok(r_rtm)
 	}
 
+	#[cfg(feature = "v14")]
 	pub fn get_reduced_pallet_from_v14_pallet(
 		p: &PalletMetadata<PortableForm>,
 		registry: &PortableRegistry,
@@ -142,20 +152,21 @@ impl ReducedRuntime {
 		let registry = &v14.types;
 
 		// TODO: deal with extrinsic as well
-		// let extrinsics = &v14.extrinsic;
+		let extrinsic = &v14.extrinsic;
 
-		// println!("extrinsics = {:#?}", extrinsics);
+		println!("extrinsic = {:#?}", extrinsic);
 
 		let pallets = &v14.pallets;
 		let reduced_pallets: HashMap<PalletId, ReducedPallet> = pallets
 			.iter()
 			.map(|p| {
-				let reduced_runtime = ReducedRuntime::get_reduced_pallet_from_v14_pallet(p, registry);
-				(reduced_runtime.index, reduced_runtime)
+				let reduced_pallet = ReducedRuntime::get_reduced_pallet_from_v14_pallet(p, registry);
+				(reduced_pallet.index, reduced_pallet)
 			})
 			.collect();
+		let reduced_extrinsic = ReducedExtrinsic::from(extrinsic);
 
-		let r_rtm: ReducedRuntime = reduced_pallets.into();
+		let r_rtm = ReducedRuntime::new(reduced_extrinsic, reduced_pallets);
 		Ok(r_rtm)
 	}
 
@@ -227,5 +238,19 @@ mod test_reduced_runtime {
 		let reduced_runtime: ReducedRuntime = WasmTestBed::new(&Source::File(runtime_file)).unwrap().metadata().into();
 		assert_eq!(0_u32, reduced_runtime.get_pallet_by_name("System").unwrap().index);
 		assert_eq!(1_u32, reduced_runtime.get_pallet_by_name("Scheduler").unwrap().index);
+	}
+
+	#[test]
+	#[cfg(feature = "v14")]
+	#[ignore = "local data"]
+	fn test_show_reduced_runtime_v14_polkadot_9290() {
+		use wasm_loader::Source;
+		use wasm_testbed::WasmTestBed;
+
+		let runtime_file =
+			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).expect("Runtime file should exist");
+		let reduced_runtime: ReducedRuntime = WasmTestBed::new(&Source::File(runtime_file)).unwrap().metadata().into();
+
+		println!("extrinsics = {:#?}", reduced_runtime.extrinsics);
 	}
 }
