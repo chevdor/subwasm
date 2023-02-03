@@ -58,7 +58,7 @@ fn main() -> color_eyre::Result<()> {
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
 
-			let fmt: OutputFormat = meta_opts.format.unwrap_or("human".into()).into();
+			let fmt: OutputFormat = meta_opts.format.unwrap_or_else(|| "human".into()).into();
 			let mut output = meta_opts.output;
 			if let Some(out) = &output {
 				if out.is_empty() {

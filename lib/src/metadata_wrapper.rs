@@ -98,14 +98,14 @@ impl<'a> MetadataWrapper<'a> {
 				let mut modules = convert(&v12.modules).clone();
 				modules.sort_by(|a, b| a.index.cmp(&b.index));
 				modules.iter().try_for_each(|module| -> std::io::Result<()> {
-					write!(out, " - {:02}: {}\n", module.index, convert(&module.name))
+					writeln!(out, " - {:02}: {}", module.index, convert(&module.name))
 				})?;
 			}
 			RuntimeMetadata::V13(v13) => {
 				let mut modules = convert(&v13.modules).clone();
 				modules.sort_by(|a, b| a.index.cmp(&b.index));
 				modules.iter().try_for_each(|module| -> std::io::Result<()> {
-					write!(out, " - {:02}: {}\n", module.index, convert(&module.name))
+					writeln!(out, " - {:02}: {}", module.index, convert(&module.name))
 				})?;
 			}
 			RuntimeMetadata::V14(v14) => {
@@ -113,7 +113,7 @@ impl<'a> MetadataWrapper<'a> {
 				// pallets.sort_by(|a,b| a.index.cmp(&b.index));
 				pallets.sort_by_key(|p| p.index);
 				pallets.iter().try_for_each(|pallet| -> std::io::Result<()> {
-					write!(out, " - {:02}: {}\n", pallet.index, pallet.name)
+					writeln!(out, " - {:02}: {}", pallet.index, pallet.name)
 				})?;
 			}
 			_ => panic!("Runtime not supported. Subwasm supports V12 and above."),
@@ -142,27 +142,27 @@ impl<'a> MetadataWrapper<'a> {
 					})
 					.expect("pallet not found in metadata");
 
-				write!(out, "Module {:02}: {}\n", meta.index, &meta.name)?;
+				writeln!(out, "Module {:02}: {}", meta.index, &meta.name)?;
 
-				write!(out, "🤙 Calls:\n")?;
+				writeln!(out, "🤙 Calls:")?;
 				write_v14_meta!(v14, meta, calls, out);
 
-				write!(out, "📢 Events:\n")?;
+				writeln!(out, "📢 Events:")?;
 				write_v14_meta!(v14, meta, event, out);
 
-				write!(out, "⛔️ Errors:\n")?;
+				writeln!(out, "⛔️ Errors:")?;
 				write_v14_meta!(v14, meta, error, out);
 
-				write!(out, "📦 Storage:\n")?;
+				writeln!(out, "📦 Storage:")?;
 				if let Some(meta) = &meta.storage {
 					for entry in &meta.entries {
-						write!(out, "- {}\n", entry.name)?;
+						writeln!(out, "- {}", entry.name)?;
 					}
 				}
 
-				write!(out, "💎 Constants:\n")?;
+				writeln!(out, "💎 Constants:")?;
 				for item in &meta.constants {
-					write!(out, "- {}\n", item.name)?;
+					writeln!(out, "- {}", item.name)?;
 				}
 			}
 			_ => panic!("Runtime not supported\n"),

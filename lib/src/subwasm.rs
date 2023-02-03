@@ -4,9 +4,7 @@ use crate::{
 	metadata_wrapper::{self, MetadataWrapper},
 	RuntimeInfo,
 };
-use calm_io::stdoutln;
-use frame_metadata::{decode_different::DecodeDifferent, RuntimeMetadata, RuntimeMetadataPrefixed};
-use scale_info::scale::Encode;
+
 use wasm_loader::Source;
 use wasm_testbed::{WasmTestBed, WasmTestbedError};
 

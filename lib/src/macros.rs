@@ -53,13 +53,13 @@ macro_rules! write_v14_meta {
 #[macro_export]
 macro_rules! display_module {
 	($modules: expr, $filter: ident) => {
-		crate::write_module!($modules, $filter, std::io::stdout());
+		$crate::write_module!($modules, $filter, std::io::stdout());
 	};
 }
 
 #[macro_export]
 macro_rules! display_v14_meta {
 	($v14: expr, $meta: expr, $type: ident) => {
-		crate::write_v14_meta!($v14, $meta, $type, std::io::stdout());
+		$crate::write_v14_meta!($v14, $meta, $type, std::io::stdout());
 	};
 }
