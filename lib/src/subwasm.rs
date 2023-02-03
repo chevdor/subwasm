@@ -1,8 +1,11 @@
 use std::io::Write;
 
-use crate::{convert::convert, metadata_wrapper::MetadataWrapper, RuntimeInfo};
+use crate::{
+	metadata_wrapper::{self, MetadataWrapper},
+	RuntimeInfo,
+};
 use calm_io::stdoutln;
-use frame_metadata::{decode_different::DecodeDifferent, RuntimeMetadata};
+use frame_metadata::{decode_different::DecodeDifferent, RuntimeMetadata, RuntimeMetadataPrefixed};
 use scale_info::scale::Encode;
 use wasm_loader::Source;
 use wasm_testbed::{WasmTestBed, WasmTestbedError};
@@ -58,77 +61,14 @@ impl Subwasm {
 	// 	Ok(())
 	// }
 
-	pub fn display_module(&self, filter: String) {
+	pub fn write_metadata<O: Write>(
+		&self,
+		fmt: metadata_wrapper::OutputFormat,
+		filter: Option<String>,
+		out: &mut O,
+	) -> Result<(), Box<dyn std::error::Error>> {
 		let metadata = self.testbed.runtime_metadata_prefixed();
 		let wrapper = MetadataWrapper(&metadata.1);
-		wrapper.display_single_module(&filter);
-	}
-
-	pub fn display_modules_list(&self) {
-		let metadata = self.testbed.runtime_metadata_prefixed();
-		let wrapper = MetadataWrapper(&metadata.1);
-		wrapper.display_modules_list();
-	}
-
-	/// Display the metadata as json
-	pub fn display_metadata_json(&self) {
-		let pallet_filter: Option<String> = None;
-		let metadata = self.testbed.metadata();
-
-		let serialized = if let Some(ref pallet) = pallet_filter {
-			match metadata {
-				RuntimeMetadata::V12(v12) => {
-					let modules = convert(&v12.modules);
-
-					let pallet_metadata = modules
-						.iter()
-						.find(|module| module.name == DecodeDifferent::Decoded(pallet.into()))
-						.expect("pallet not found in metadata");
-					serde_json::to_string_pretty(&pallet_metadata)
-				}
-				// RuntimeMetadata::V13(v13) => {
-				// 	let pallet = v13
-				// 		.modules
-				// 		.iter()
-				// 		.find(|m| &m.name == pallet)
-				// 		.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
-				// 	serde_json::to_string_pretty(&pallet)?
-				// }
-				_ => panic!("Unsupported metadata version"),
-			}
-		} else {
-			serde_json::to_string_pretty(&metadata)
-		};
-
-		// The following fails if piped to another command that truncates the output.
-		// Typical use case here is: subwasm meta | head
-		// The failure is due to https://github.com/rust-lang/rust/issues/46016
-		// TODO: Once the above is fixed, we can remove the dependency on calm_io
-		// println!("{}", serialized);
-
-		let serialized = serialized.unwrap();
-		let _ = match stdoutln!("{}", serialized) {
-			Ok(_) => Ok(()),
-			Err(e) => match e.kind() {
-				std::io::ErrorKind::BrokenPipe => Ok(()),
-				_ => Err(e),
-			},
-		};
-	}
-
-	/// Write the prefixed runtime metadata as scale encoded bytes to a file
-	pub fn write_metadata_scale<T: AsRef<std::path::Path>>(&self, path: T) {
-		let metadata = self.testbed.runtime_metadata_prefixed();
-		let mut file = std::fs::File::create(path).unwrap();
-		let mut bytes = Vec::new();
-		metadata.encode_to(&mut bytes);
-		file.write_all(&bytes).unwrap();
-	}
-
-	/// Write the prefixed runtime metadata as json to a file
-	pub fn write_metadata_json<T: AsRef<std::path::Path>>(&self, path: T) {
-		let metadata = self.testbed.runtime_metadata_prefixed();
-		let mut file = std::fs::File::create(path).unwrap();
-		serde_json::to_writer_pretty(&mut file, &metadata).unwrap();
+		wrapper.write(fmt, filter, out)
 	}
 }

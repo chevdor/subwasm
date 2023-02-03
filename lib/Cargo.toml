@@ -39,3 +39,4 @@ substrate-differ = { version = "0.18.0", path = "../libs/substrate-differ" }
 wasm-loader = { version = "0.18.0", path = "../libs/wasm-loader" }
 wasm-testbed = { version = "0.18.0", path = "../libs/wasm-testbed" }
 sp-version = { tag = "monthly-2022-07", git = "https://github.com/paritytech/substrate" }
+hex = "0.4"

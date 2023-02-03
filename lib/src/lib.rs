@@ -17,6 +17,7 @@ mod subwasm;
 mod types;
 pub use chain_info::*;
 use log::{debug, info};
+pub use metadata_wrapper::OutputFormat;
 pub use runtime_info::*;
 pub use subwasm::*;
 pub use types::*;

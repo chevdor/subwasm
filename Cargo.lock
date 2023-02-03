@@ -3210,6 +3210,7 @@ dependencies = [
  "calm_io",
  "color-eyre",
  "frame-metadata",
+ "hex",
  "ipfs-hasher",
  "log",
  "num-format",

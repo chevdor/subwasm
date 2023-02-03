@@ -133,6 +133,10 @@ pub struct MetaOpts {
 	#[clap(short, long)]
 	pub block: Option<String>, // TODO: can do better...
 
+	/// You may specifiy the output format. One of "human", "scale", "json", "json+scale", "hex+scale"
+	#[clap(long, short, default_value = "human")]
+	pub format: Option<String>,
+
 	/// You may specifiy the output filename where the metadata will be saved.
 	#[clap(short, long)]
 	pub output: Option<String>,

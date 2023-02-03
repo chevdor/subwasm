@@ -1,6 +1,6 @@
 #[macro_export]
-macro_rules! display_module {
-	($modules: expr, $filter: ident) => {
+macro_rules! write_module {
+	($modules: expr, $filter: ident, $out: ident) => {
 		let meta = $modules
 			.iter()
 			.find(|module| {
@@ -9,29 +9,29 @@ macro_rules! display_module {
 			})
 			.expect("pallet not found in metadata");
 
-		println!("Module {:02}: {}", meta.index, convert(&meta.name));
+		write!($out, "Module {:02}: {}\n", meta.index, convert(&meta.name));
 
-		println!("🤙 Calls:");
+		write!($out, "🤙 Calls:\n");
 		if let Some(item) = meta.calls.as_ref() {
 			let calls = convert(&item);
 			for call in calls {
-				println!("  - {}", convert(&call.name));
+				write!($out, "  - {}\n", convert(&call.name));
 			}
 		}
 
-		println!("📢 Events:");
+		write!($out, "📢 Events:\n");
 		if let Some(item) = meta.event.as_ref() {
 			let events = convert(&item);
 			for event in events {
-				println!("  - {}", convert(&event.name));
+				write!($out, "  - {}\n", convert(&event.name));
 			}
 		}
 	};
 }
 
 #[macro_export]
-macro_rules! display_v14_meta {
-	($v14: expr, $meta: expr, $type: ident) => {
+macro_rules! write_v14_meta {
+	($v14: expr, $meta: expr, $type: ident, $out: ident) => {
 		if let Some(metadata) = &$meta.$type {
 			let type_id = metadata.ty.id();
 			// log::debug!("type_id: {:?}", type_id);
@@ -41,11 +41,25 @@ macro_rules! display_v14_meta {
 			match type_info.type_def() {
 				scale_info::TypeDef::Variant(v) => {
 					for variant in v.variants() {
-						println!("- {:?}: {}", variant.index(), variant.name());
+						write!($out, "- {:?}: {}\n", variant.index(), variant.name());
 					}
 				}
 				o => panic!("Unsupported variant: {:?}", o),
 			}
 		}
+	};
+}
+
+#[macro_export]
+macro_rules! display_module {
+	($modules: expr, $filter: ident) => {
+		crate::write_module!($modules, $filter, std::io::stdout());
+	};
+}
+
+#[macro_export]
+macro_rules! display_v14_meta {
+	($v14: expr, $meta: expr, $type: ident) => {
+		crate::write_v14_meta!($v14, $meta, $type, std::io::stdout());
 	};
 }

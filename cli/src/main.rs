@@ -1,5 +1,7 @@
 mod opts;
 
+use std::io::Write;
+
 use clap::{crate_name, crate_version, Parser};
 use env_logger::Env;
 use log::info;
@@ -56,19 +58,27 @@ fn main() -> color_eyre::Result<()> {
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
 
-			if let Some(filter) = meta_opts.module {
-				subwasm.display_module(filter);
-			} else if let Some(output) = meta_opts.output {
-				if opts.json {
-					subwasm.write_metadata_json(&output);
-				}else{
-					subwasm.write_metadata_scale(&output);
+			let fmt: OutputFormat = meta_opts.format.unwrap_or("human".into()).into();
+			let mut output = meta_opts.output;
+			if let Some(out) = &output {
+				if out.is_empty() {
+					match fmt {
+						OutputFormat::Human => output = Some("metadata.txt".into()),
+						OutputFormat::Json => output = Some("metadata.json".into()),
+						OutputFormat::Scale => output = Some("metadata.scale".into()),
+						OutputFormat::HexScale => output = Some("metadata.hex".into()),
+						OutputFormat::JsonScale => output = Some("metadata.jscale".into()),
+					}
 				}
-			} else if opts.json {
-				subwasm.display_metadata_json()
-			} else {
-				subwasm.display_modules_list()
 			}
+
+			let mut out: Box<dyn Write> = if output.is_none() {
+				Box::new(std::io::stdout())
+			} else {
+				Box::new(std::fs::File::create(output.as_ref().unwrap())?)
+			};
+
+			subwasm.write_metadata(fmt, meta_opts.module, &mut out).unwrap();
 		}
 
 		SubCommand::Diff(diff_opts) => {
