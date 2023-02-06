@@ -1,5 +1,6 @@
 use std::io::Write;
 
+use color_eyre::eyre::eyre;
 use frame_metadata::RuntimeMetadata;
 use log::debug;
 use scale_info::scale::Encode;
@@ -37,12 +38,7 @@ impl<S: AsRef<str>> From<S> for OutputFormat {
 pub struct MetadataWrapper<'a>(pub &'a RuntimeMetadata);
 
 impl<'a> MetadataWrapper<'a> {
-	pub fn write<O: Write>(
-		&self,
-		fmt: OutputFormat,
-		filter: Option<String>,
-		out: &mut O,
-	) -> Result<(), Box<dyn std::error::Error>> {
+	pub fn write<O: Write>(&self, fmt: OutputFormat, filter: Option<String>, out: &mut O) -> color_eyre::Result<()> {
 		debug!("Writing metadata: fmt={:?}, filter={:?}", fmt, filter);
 
 		match fmt {
@@ -55,21 +51,21 @@ impl<'a> MetadataWrapper<'a> {
 			}
 			OutputFormat::Json => {
 				if filter.is_some() {
-					return Err("Cannot filter metadata in json format".into());
+					return Err(eyre!("Cannot filter metadata in json format"));
 				} else {
 					serde_json::to_writer_pretty(out, &self.0)?;
 				}
 			}
 			OutputFormat::Scale => {
 				if filter.is_some() {
-					return Err("Cannot filter metadata in scale format".into());
+					return Err(eyre!("Cannot filter metadata in scale format"));
 				} else {
 					out.write_all(&self.0.encode())?;
 				}
 			}
 			OutputFormat::HexScale => {
 				if filter.is_some() {
-					return Err("Cannot filter metadata in hex+scale format".into());
+					return Err(eyre!("Cannot filter metadata in hex+scale format"));
 				} else {
 					let encoded = self.0.encode();
 					write!(out, "0x{}", hex::encode(encoded))?;
@@ -77,7 +73,7 @@ impl<'a> MetadataWrapper<'a> {
 			}
 			OutputFormat::JsonScale => {
 				if filter.is_some() {
-					return Err("Cannot filter metadata in json+scale format".into());
+					return Err(eyre!("Cannot filter metadata in json+scale format"));
 				} else {
 					let encoded = self.0.encode();
 					let hex = format!("0x{}", hex::encode(encoded));
@@ -92,7 +88,7 @@ impl<'a> MetadataWrapper<'a> {
 	/// Display a simple list of the modules.
 	/// Starting with V12, modules are identified by indexes so
 	/// the order they appear in the metadata no longer matters and we sort them by indexes.
-	pub fn write_modules_list<O: Write>(&self, out: &mut O) -> Result<(), Box<dyn std::error::Error>> {
+	pub fn write_modules_list<O: Write>(&self, out: &mut O) -> color_eyre::Result<()> {
 		match &self.0 {
 			RuntimeMetadata::V12(v12) => {
 				let mut modules = convert(&v12.modules).clone();
@@ -116,13 +112,13 @@ impl<'a> MetadataWrapper<'a> {
 					writeln!(out, " - {:02}: {}", pallet.index, pallet.name)
 				})?;
 			}
-			_ => panic!("Runtime not supported. Subwasm supports V12 and above."),
+			_ => return Err(eyre!("Runtime not supported. Subwasm supports V12 and above.")),
 		};
 		Ok(())
 	}
 
 	/// Display a single module
-	pub fn write_single_module<O: Write>(&self, filter: &str, out: &mut O) -> Result<(), Box<dyn std::error::Error>> {
+	pub fn write_single_module<O: Write>(&self, filter: &str, out: &mut O) -> color_eyre::Result<()> {
 		debug!("metadata_wapper::write_module with filter: {:?}", filter);
 
 		match &self.0 {
@@ -140,7 +136,7 @@ impl<'a> MetadataWrapper<'a> {
 						let name_str = pallet.name.to_lowercase();
 						name_str == filter.to_lowercase()
 					})
-					.expect("pallet not found in metadata");
+					.ok_or_else(|| eyre!("Pallet not found in metadata"))?;
 
 				writeln!(out, "Module {:02}: {}", meta.index, &meta.name)?;
 
@@ -165,7 +161,7 @@ impl<'a> MetadataWrapper<'a> {
 					writeln!(out, "- {}", item.name)?;
 				}
 			}
-			_ => panic!("Runtime not supported\n"),
+			_ => return Err(eyre!("Runtime not supported")),
 		};
 		Ok(())
 	}

@@ -64,7 +64,7 @@ impl Subwasm {
 		fmt: metadata_wrapper::OutputFormat,
 		filter: Option<String>,
 		out: &mut O,
-	) -> Result<(), Box<dyn std::error::Error>> {
+	) -> color_eyre::Result<()> {
 		let metadata = self.testbed.runtime_metadata_prefixed();
 		let wrapper = MetadataWrapper(&metadata.1);
 		wrapper.write(fmt, filter, out)
