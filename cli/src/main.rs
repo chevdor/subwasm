@@ -78,7 +78,23 @@ fn main() -> color_eyre::Result<()> {
 				Box::new(std::fs::File::create(output.as_ref().unwrap())?)
 			};
 
-			subwasm.write_metadata(fmt, meta_opts.module, &mut out).unwrap();
+			match subwasm.write_metadata(fmt, meta_opts.module, &mut out) {
+				Ok(_) => Ok(()),
+				Err(e) => {
+					// check if e is a broken pipe io error
+					if let Some(io_error) = e.downcast_ref::<std::io::Error>() {
+						if io_error.kind() == std::io::ErrorKind::BrokenPipe {
+							// broken pipe is not an error, just exit
+							Ok(())
+						} else {
+							Err(e)
+						}
+					} else {
+						Err(e)
+					}
+				}
+			}
+			.unwrap();
 		}
 
 		SubCommand::Diff(diff_opts) => {
