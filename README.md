@@ -63,209 +63,143 @@ MacOS Homebrew users can use:
 
 ### Command: --help
 
-    subwasm 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-    `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based
-    chains
+    `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains
 
-    USAGE:
-        subwasm [OPTIONS] <SUBCOMMAND>
+    Usage: subwasm [OPTIONS] <COMMAND>
 
-    OPTIONS:
-        -h, --help       Print help information
-        -j, --json       Output as json
-        -q, --quiet      Less output
-        -V, --version    Print version information
+    Commands:
+      get         Get/Download the runtime wasm from a running node through rpc
+      info        The `info` command returns summarized information about a runtime
+      version     The `version` command returns summarized information about the versions of a runtime
+      metadata    Returns the metadata as a json object. You may also use the "meta" alias
+      diff        Compare 2 runtimes
+      compress    Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is already compressed
+      decompress  Decompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that case, you will get the same content as output. This is useful if you want to decompress "no matter what" and don't really know whether the input will be compressed or not
+      help        Print this message or the help of the given subcommand(s)
 
-    SUBCOMMANDS:
-        compress      Compress a given runtime wasm file. You will get an error if you try
-                          compressing a runtime that is already compressed
-        decompress    Decompress a given runtime wasm file. You may pass a runtime that is
-                          uncompressed already. In that case, you will get the same content as output.
-                          This is useful if you want to decompress "no matter what" and don't really
-                          know whether the input will be compressed or not
-        diff          Compare 2 runtimes
-        get           Get/Download the runtime wasm from a running node through rpc
-        help          Print this message or the help of the given subcommand(s)
-        info          The `info` command returns summarized information about a runtime
-        metadata      Returns the metadata as a json object. You may also use the "meta" alias
-        version       The `version` command returns summarized information about the versions of a
-                          runtime
+    Options:
+      -j, --json     Output as json
+      -q, --quiet    Less output
+      -h, --help     Print help information
+      -V, --version  Print version information
 
 ### Command: get
 
-    subwasm-get 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Get/Download the runtime wasm from a running node through rpc
 
-    USAGE:
-        subwasm get [OPTIONS] [URL]
+    Usage: subwasm get [OPTIONS] [URL]
 
-    ARGS:
-        <URL>    The node url including (mandatory) the port number. Example: ws://localhost:9944 or
-                 http://localhost:9933 [default: http://localhost:9933]
+    Arguments:
+      [URL]  The node url including (mandatory) the port number. Example: ws://localhost:9944 or http://localhost:9933 [default: http://localhost:9933]
 
-    OPTIONS:
-        -b, --block <BLOCK>      The optional block where to fetch the runtime. That allows fetching
-                                 older runtimes but you will need to connect to archive nodes.
-                                 Currently, you must pass a block hash. Passing the block numbers is not
-                                 supported
-            --chain <CHAIN>      Provide the name of a chain and a random url amongst a list of known
-                                 nodes will be used. If you pass a valid --chain, --url will be ignored
-                                 --chain local = http://localhost:9933
-        -h, --help               Print help information
-        -j, --json               Output as json
-        -o, --output <OUTPUT>    You may specifiy the output filename where the runtime will be saved.
-                                 If not provided, we will figure out an appropriate default name based
-                                 on a counter: runtime_NNN.wasm where NNN is incrementing to make sure
-                                 you do not override previous runtime. If you specify an existing file
-                                 as output, it will be overwritten
-        -V, --version            Print version information
+    Options:
+          --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
+      -j, --json             Output as json
+      -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
+      -o, --output <OUTPUT>  You may specifiy the output filename where the runtime will be saved. If not provided, we will figure out an appropriate default name based on a counter: runtime_NNN.wasm where NNN is incrementing to make sure you do not override previous runtime. If you specify an existing file as output, it will be overwritten
+      -h, --help             Print help information
+      -V, --version          Print version information
 
 ### Command: info
 
-    subwasm-info 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     The `info` command returns summarized information about a runtime
 
-    USAGE:
-        subwasm info [OPTIONS] [SOURCE]
+    Usage: subwasm info [OPTIONS] [SOURCE]
 
-    ARGS:
-        <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
-                    /tmp/runtime.wasm or a node url such as http://localhost:9933 or
-                    ws://localhost:9944 [default: runtime_000.wasm]
+    Arguments:
+      [SOURCE]  The wasm file to load. It can be a path on your local filesystem such as /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944 [default: runtime_000.wasm]
 
-    OPTIONS:
-        -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older
-                               runtimes but you will need to connect to archive nodes. Currently, you
-                               must pass a block hash. Passing the block numbers is not supported
-            --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known
-                               nodes will be used. If you pass a valid --chain, --url will be ignored
-                               --chain local = http://localhost:9933
-        -h, --help             Print help information
-        -j, --json             Output as json
-        -V, --version          Print version information
+    Options:
+          --chain <CHAIN>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
+      -j, --json           Output as json
+      -b, --block <BLOCK>  The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
+      -h, --help           Print help information
+      -V, --version        Print version information
 
 By default, the ID for the Parachain pallet is expected to be `0x01` and the call ID for `authorize_upgrade` is expected to be `0x03`.
 This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to the ID of your parachain pallet and the `AUTHORIZE_UPGRADE_PREFIX` to the ID of your choice.
 
 ### Command: version
 
-    subwasm-version 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     The `version` command returns summarized information about the versions of a runtime
 
-    USAGE:
-        subwasm version [OPTIONS] [SOURCE]
+    Usage: subwasm version [OPTIONS] [SOURCE]
 
-    ARGS:
-        <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
-                    /tmp/runtime.wasm or a node url such as http://localhost:9933 or
-                    ws://localhost:9944 [default: runtime_000.wasm]
+    Arguments:
+      [SOURCE]  The wasm file to load. It can be a path on your local filesystem such as /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944 [default: runtime_000.wasm]
 
-    OPTIONS:
-        -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older
-                               runtimes but you will need to connect to archive nodes. Currently, you
-                               must pass a block hash. Passing the block numbers is not supported
-            --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known
-                               nodes will be used. If you pass a valid --chain, --url will be ignored
-                               --chain local = http://localhost:9933
-        -h, --help             Print help information
-        -j, --json             Output as json
-        -V, --version          Print version information
+    Options:
+          --chain <CHAIN>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
+      -j, --json           Output as json
+      -b, --block <BLOCK>  The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
+      -h, --help           Print help information
+      -V, --version        Print version information
 
 ### Command: meta
 
-    subwasm-metadata 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Returns the metadata as a json object. You may also use the "meta" alias
 
-    USAGE:
-        subwasm metadata [OPTIONS] [SOURCE]
+    Usage: subwasm metadata [OPTIONS] [SOURCE]
 
-    ARGS:
-        <SOURCE>    The wasm file to load. It can be a path on your local filesystem such as
-                    /tmp/runtime.wasm or a node url such as http://localhost:9933 or
-                    ws://localhost:9944 [default: runtime_000.wasm]
+    Arguments:
+      [SOURCE]  The wasm file to load. It can be a path on your local filesystem such as /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944 [default: runtime_000.wasm]
 
-    OPTIONS:
-        -b, --block <BLOCK>      The optional block where to fetch the runtime. That allows fetching
-                                 older runtimes but you will need to connect to archive nodes.
-                                 Currently, you must pass a block hash. Passing the block numbers is not
-                                 supported
-            --chain <CHAIN>      Provide the name of a chain and a random url amongst a list of known
-                                 nodes will be used. If you pass a valid --chain, --url will be ignored
-                                 --chain local = http://localhost:9933
-        -h, --help               Print help information
-        -j, --json               Output as json
-        -m, --module <MODULE>    Without this flag, the metadata command display the list of all
-                                 modules. Using this flag, you will only see the module of your choice
-                                 and a few details about it
-        -V, --version            Print version information
+    Options:
+          --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
+      -j, --json             Output as json
+      -m, --module <MODULE>  Without this flag, the metadata command display the list of all modules. Using this flag, you will only see the module of your choice and a few details about it
+      -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
+      -f, --format <FORMAT>  You may specifiy the output format. One of "human", "scale", "json", "json+scale", "hex+scale" [default: human]
+      -o, --output <OUTPUT>  You may specifiy the output filename where the metadata will be saved. Alternatively, you may use `auto` and an appropriate name will be generated according to the `format` your chose
+      -h, --help             Print help information
+      -V, --version          Print version information
 
 ### Command: diff
 
-    subwasm-diff 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
     Compare 2 runtimes
 
-    USAGE:
-        subwasm diff [OPTIONS] [ARGS]
+    Usage: subwasm diff [OPTIONS] [SRC_A] [SRC_B]
 
-    ARGS:
-        <SRC_A>    The first source [default: runtime_000.wasm]
-        <SRC_B>    The second source [default: runtime_001.wasm]
+    Arguments:
+      [SRC_A]  The first source [default: runtime_000.wasm]
+      [SRC_B]  The second source [default: runtime_001.wasm]
 
-    OPTIONS:
-        -a, --chain-a <CHAIN_A>    Provide the name of a chain and a random url amongst a list of known
-                                   nodes will be used. If you pass a valid --chain, --url will be
-                                   ignored --chain local = http://localhost:9933
-        -b, --chain-b <CHAIN_B>    Provide the name of a chain and a random url amongst a list of known
-                                   nodes will be used. If you pass a valid --chain, --url will be
-                                   ignored --chain local = http://localhost:9933
-        -h, --help                 Print help information
-        -j, --json                 Output as json
-        -V, --version              Print version information
+    Options:
+      -a, --chain-a <CHAIN_A>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
+      -j, --json               Output as json
+      -b, --chain-b <CHAIN_B>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
+      -h, --help               Print help information
+      -V, --version            Print version information
 
 ### Command: compress
 
-    subwasm-compress 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-    Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is
-    already compressed
+    Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is already compressed
 
-    USAGE:
-        subwasm compress [OPTIONS] <INPUT> <OUTPUT>
+    Usage: subwasm compress [OPTIONS] <INPUT> <OUTPUT>
 
-    ARGS:
-        <INPUT>     The path of uncompressed wasm file to load
-        <OUTPUT>    The path of the file where the compressed runtime will be stored
+    Arguments:
+      <INPUT>   The path of uncompressed wasm file to load
+      <OUTPUT>  The path of the file where the compressed runtime will be stored
 
-    OPTIONS:
-        -h, --help       Print help information
-        -j, --json       Output as json
-        -V, --version    Print version information
+    Options:
+      -j, --json     Output as json
+      -h, --help     Print help information
+      -V, --version  Print version information
 
 ### Command: decompress
 
-    subwasm-decompress 0.18.0
-    chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-    Decompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that
-    case, you will get the same content as output. This is useful if you want to decompress "no matter
-    what" and don't really know whether the input will be compressed or not
+    Decompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that case, you will get the same content as output. This is useful if you want to decompress "no matter what" and don't really know whether the input will be compressed or not
 
-    USAGE:
-        subwasm decompress [OPTIONS] <INPUT> <OUTPUT>
+    Usage: subwasm decompress [OPTIONS] <INPUT> <OUTPUT>
 
-    ARGS:
-        <INPUT>     The path of the compressed or uncompressed wasm file to load
-        <OUTPUT>    The path of the file where the uncompressed runtime will be stored
+    Arguments:
+      <INPUT>   The path of the compressed or uncompressed wasm file to load
+      <OUTPUT>  The path of the file where the uncompressed runtime will be stored
 
-    OPTIONS:
-        -h, --help       Print help information
-        -j, --json       Output as json
-        -V, --version    Print version information
+    Options:
+      -j, --json     Output as json
+      -h, --help     Print help information
+      -V, --version  Print version information
 
 ### Environment variables
 
@@ -321,10 +255,9 @@ Here is a list of other projects allowing to get the raw metadata through a rpc 
 -   [PolkadotJS](https://github.com/polkadot-js/apps) from Jaco / Parity
 
 -   [subsee](https://github.com/ascjones/subsee) from Andrew / Parity
+
 -   [substrate-api-client](https://github.com/scs/substrate-api-client) from SCS
 
 -   [subxt](https://github.com/paritytech/substrate-subxt) from Parity
 
 All those alternatives require a running node and access it via jsonrpc.
-
--   [smoldot](https://github.com/paritytech/smoldot) light client from Parity allows to [get metadata](https://github.com/AcalaNetwork/chopsticks/pull/80) from wasm
