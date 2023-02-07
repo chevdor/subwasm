@@ -5,7 +5,7 @@ use wasm_loader::{OnchainBlock, Source};
 
 /// `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains.
 #[derive(Parser)]
-#[clap(version = crate_version!(), author = crate_authors!(), color=ColorChoice::Always)]
+#[clap(version = crate_version!(), author = crate_authors!(), color=ColorChoice::Auto)]
 pub struct Opts {
 	/// Output as json
 	#[clap(short, long, global = true)]
@@ -138,23 +138,23 @@ pub struct MetaOpts {
 #[derive(Parser)]
 pub struct DiffOpts {
 	/// The first source
-	#[clap(index = 1, alias = "src-a", default_value = "runtime_000.wasm", required_unless_present = "chain-a")]
+	#[clap(index = 1, alias = "src-a", default_value = "runtime_000.wasm", required_unless_present = "chain_a")]
 	pub src_a: Source,
 
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
-	#[clap(long, short('a'), conflicts_with = "src-a")]
+	#[clap(long, short('a'), conflicts_with = "src_a")]
 	pub chain_a: Option<ChainInfo>,
 
 	/// The second source
-	#[clap(index = 2, alias = "src-b", default_value = "runtime_001.wasm", required_unless_present = "chain-b")]
+	#[clap(index = 2, alias = "src-b", default_value = "runtime_001.wasm", required_unless_present = "chain_b")]
 	pub src_b: Source,
 
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
-	#[clap(long, short('b'), conflicts_with = "src-b")]
+	#[clap(long, short('b'), conflicts_with = "src_b")]
 	pub chain_b: Option<ChainInfo>,
 }
 

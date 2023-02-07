@@ -1,17 +1,12 @@
-subwasm-decompress 0.18.0
-chevdor <chevdor@gmail.com>:Wilfried Kopp <wilfried@parity.io
-Decompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that
-case, you will get the same content as output. This is useful if you want to decompress "no matter
-what" and don't really know whether the input will be compressed or not
+Decompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that case, you will get the same content as output. This is useful if you want to decompress "no matter what" and don't really know whether the input will be compressed or not
 
-USAGE:
-    subwasm decompress [OPTIONS] <INPUT> <OUTPUT>
+Usage: subwasm decompress [OPTIONS] <INPUT> <OUTPUT>
 
-ARGS:
-    <INPUT>     The path of the compressed or uncompressed wasm file to load
-    <OUTPUT>    The path of the file where the uncompressed runtime will be stored
+Arguments:
+  <INPUT>   The path of the compressed or uncompressed wasm file to load
+  <OUTPUT>  The path of the file where the uncompressed runtime will be stored
 
-OPTIONS:
-    -h, --help       Print help information
-    -j, --json       Output as json
-    -V, --version    Print version information
+Options:
+  -j, --json     Output as json
+  -h, --help     Print help information
+  -V, --version  Print version information

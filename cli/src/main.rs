@@ -1,6 +1,7 @@
 mod opts;
 
 use clap::{crate_name, crate_version, Parser};
+// use color_eyre::owo_colors::OwoColorize;
 use env_logger::Env;
 use log::info;
 use opts::*;
