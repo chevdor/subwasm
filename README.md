@@ -320,6 +320,7 @@ Here is a list of other projects allowing to get the raw metadata through a rpc 
 
 -   [PolkadotJS](https://github.com/polkadot-js/apps) from Jaco / Parity
 
+-   [subsee](https://github.com/ascjones/subsee) from Andrew / Parity
 -   [substrate-api-client](https://github.com/scs/substrate-api-client) from SCS
 
 -   [subxt](https://github.com/paritytech/substrate-subxt) from Parity
