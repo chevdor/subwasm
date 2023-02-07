@@ -69,7 +69,7 @@ fn main() -> color_eyre::Result<()> {
 
 			let mut output = meta_opts.output;
 			if let Some(out) = &output {
-				if out.is_empty() {
+				if out.is_empty() || out == "auto" {
 					match fmt {
 						OutputFormat::Human => output = Some("metadata.txt".into()),
 						OutputFormat::Json => output = Some("metadata.json".into()),
