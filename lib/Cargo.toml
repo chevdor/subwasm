@@ -18,7 +18,6 @@ repository = "https://github.com/chevdor/subwasm"
 version = "0.18.0"
 
 [dependencies]
-calm_io = "0.1"
 color-eyre = "0.6"
 frame-metadata = { version = "15", package = "frame-metadata", features = [
     "v12",
@@ -39,3 +38,4 @@ substrate-differ = { version = "0.18.0", path = "../libs/substrate-differ" }
 wasm-loader = { version = "0.18.0", path = "../libs/wasm-loader" }
 wasm-testbed = { version = "0.18.0", path = "../libs/wasm-testbed" }
 sp-version = { tag = "monthly-2023-01", git = "https://github.com/paritytech/substrate" }
+hex = "0.4"

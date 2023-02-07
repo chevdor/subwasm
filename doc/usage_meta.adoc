@@ -10,5 +10,7 @@ Options:
   -j, --json             Output as json
   -m, --module <MODULE>  Without this flag, the metadata command display the list of all modules. Using this flag, you will only see the module of your choice and a few details about it
   -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
+  -f, --format <FORMAT>  You may specifiy the output format. One of "human", "scale", "json", "json+scale", "hex+scale" [default: human]
+  -o, --output <OUTPUT>  You may specifiy the output filename where the metadata will be saved. Alternatively, you may use `auto` and an appropriate name will be generated according to the `format` your chose
   -h, --help             Print help information
   -V, --version          Print version information

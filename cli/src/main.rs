@@ -1,5 +1,7 @@
 mod opts;
 
+use std::io::Write;
+
 use clap::{crate_name, crate_version, Parser};
 // use color_eyre::owo_colors::OwoColorize;
 use env_logger::Env;
@@ -20,6 +22,8 @@ macro_rules! noquiet {
 fn main() -> color_eyre::Result<()> {
 	env_logger::Builder::from_env(Env::default().default_filter_or("none")).init();
 	let opts: Opts = Opts::parse();
+	color_eyre::install()?;
+
 	noquiet!(opts, println!("Running {} v{}", crate_name!(), crate_version!()));
 
 	match opts.subcmd {
@@ -57,13 +61,43 @@ fn main() -> color_eyre::Result<()> {
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
 
-			if let Some(filter) = meta_opts.module {
-				subwasm.display_module(filter);
-			} else if opts.json {
-				subwasm.display_metadata_json()
-			} else {
-				subwasm.display_modules_list()
+			let mut fmt: OutputFormat = meta_opts.format.unwrap_or_else(|| "human".into()).into();
+			if opts.json {
+				eprintln!("--json is DEPRECATED, use --format=json instead");
+				fmt = OutputFormat::Json;
 			}
+
+			let mut output = meta_opts.output;
+			if let Some(out) = &output {
+				if out.is_empty() || out == "auto" {
+					match fmt {
+						OutputFormat::Human => output = Some("metadata.txt".into()),
+						OutputFormat::Json => output = Some("metadata.json".into()),
+						OutputFormat::Scale => output = Some("metadata.scale".into()),
+						OutputFormat::HexScale => output = Some("metadata.hex".into()),
+						OutputFormat::JsonScale => output = Some("metadata.jscale".into()),
+					}
+				}
+			}
+
+			let mut out: Box<dyn Write> = if let Some(output) = &output {
+				Box::new(std::fs::File::create(output)?)
+			} else {
+				Box::new(std::io::stdout())
+			};
+
+			match subwasm.write_metadata(fmt, meta_opts.module, &mut out) {
+				Ok(_) => Ok(()),
+				Err(e) => {
+					if let Some(e) = e.root_cause().downcast_ref::<std::io::Error>() {
+						if e.kind() == std::io::ErrorKind::BrokenPipe {
+							log::debug!("ignoring broken pipe error: {:?}", e);
+							return Ok(());
+						}
+					}
+					Err(e)
+				}
+			}?
 		}
 
 		SubCommand::Diff(diff_opts) => {
@@ -77,11 +111,11 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		SubCommand::Compress(copts) => {
-			compress(copts.input, copts.output).unwrap();
+			compress(copts.input, copts.output)?;
 		}
 
 		SubCommand::Decompress(dopts) => {
-			decompress(dopts.input, dopts.output).unwrap();
+			decompress(dopts.input, dopts.output)?;
 		}
 	};
 

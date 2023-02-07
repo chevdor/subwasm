@@ -336,25 +336,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dfb24e866b15a1af2a1b663f10c6b6b8f397a84aadb828f12e5b289ec23a3a3c"
 
 [[package]]
-name = "calm_io"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2ea0608700fe42d90ec17ad0f86335cf229b67df2e34e7f463e8241ce7b8fa5f"
-dependencies = [
- "calmio_filters",
-]
-
-[[package]]
-name = "calmio_filters"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "846501f4575cd66766a40bb7ab6d8e960adc7eb49f753c8232bd8e0e09cf6ca2"
-dependencies = [
- "quote",
- "syn",
-]
-
-[[package]]
 name = "cc"
 version = "1.0.77"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3532,9 +3513,9 @@ dependencies = [
 name = "subwasmlib"
 version = "0.18.0"
 dependencies = [
- "calm_io",
  "color-eyre",
  "frame-metadata",
+ "hex",
  "ipfs-hasher",
  "log",
  "num-format",

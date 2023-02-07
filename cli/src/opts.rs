@@ -132,6 +132,15 @@ pub struct MetaOpts {
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
 	pub block: Option<String>, // TODO: can do better...
+
+	/// You may specifiy the output format. One of "human", "scale", "json", "json+scale", "hex+scale"
+	#[clap(long, short, default_value = "human")]
+	pub format: Option<String>,
+
+	/// You may specifiy the output filename where the metadata will be saved.
+	/// Alternatively, you may use `auto` and an appropriate name will be generated according to the `format` your chose.
+	#[clap(short, long)]
+	pub output: Option<String>,
 }
 
 /// Compare 2 runtimes
