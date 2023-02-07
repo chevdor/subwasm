@@ -28,8 +28,8 @@ impl<S: AsRef<str>> From<S> for OutputFormat {
 			"human" => OutputFormat::Human,
 			"json" => OutputFormat::Json,
 			"scale" => OutputFormat::Scale,
-			"hex+scale" => OutputFormat::HexScale,
-			"json+scale" => OutputFormat::JsonScale,
+			"hex+scale" | "scale+hex" => OutputFormat::HexScale,
+			"json+scale" | "scale+json" => OutputFormat::JsonScale,
 			_ => panic!("Unknown output format"),
 		}
 	}
@@ -78,7 +78,7 @@ impl<'a> MetadataWrapper<'a> {
 					let encoded = self.0.encode();
 					let hex = format!("0x{}", hex::encode(encoded));
 					let json = serde_json::to_string_pretty(&serde_json::json!({ "result": hex }))?;
-					write!(out, "{}", json)?;
+					write!(out, "{json}")?;
 				}
 			}
 		}
