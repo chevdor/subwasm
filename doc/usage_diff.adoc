@@ -10,5 +10,5 @@ Options:
   -a, --chain-a <CHAIN_A>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
   -j, --json               Output as json
   -b, --chain-b <CHAIN_B>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
-  -h, --help               Print help information
-  -V, --version            Print version information
+  -h, --help               Print help
+  -V, --version            Print version

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 export human="pv -p -qL $[30+(-2 + RANDOM%10)]"
+export RUST_LOG=info
 # export y="\e[33m"
 # export b="\e[1m"
 # export n="\e[0m"
