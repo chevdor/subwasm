@@ -82,6 +82,11 @@ coverage:
 
 tag:
     #!/bin/sh
-    echo Tagging version v$TAG
+    echo "Tagging version v$TAG"
     git tag "v$TAG" -f
     git tag | sort -Vr | head
+
+tag-push:
+	#!/bin/sh
+	echo "Pushing version v$TAG"
+	git push origin "v$TAG"
