@@ -17,7 +17,9 @@ type Prefix = (u8, u8);
 /// The PREFIX is prepended to the data before hashing
 pub const PREFIX_SYSTEM_SETCODE: Prefix = (0x00, 0x03);
 const PARACHAIN_PALLET_ID_ENV: &str = "PARACHAIN_PALLET_ID";
+const DEFAULT_PARACHAIN_PALLET_ID: &str = "0x01";
 const AUTHORIZE_UPGRADE_PREFIX_ENV: &str = "AUTHORIZE_UPGRADE_PREFIX";
+const DEFAULT_AUTHORIZE_UPGRADE_PREFIX: &str = "0x02";
 
 /// This struct is a container for whatever we calculated.
 #[derive(Debug)]
@@ -62,8 +64,12 @@ pub fn get_system_setcode(wasm_blob: &[u8]) -> CalllHash {
 }
 
 pub fn get_parachainsystem_authorize_upgrade(wasm_blob: &[u8]) -> CalllHash {
-	let s1 = env::var(PARACHAIN_PALLET_ID_ENV).unwrap_or_else(|_| String::from("0x01")).replace("0x", "");
-	let s2 = env::var(AUTHORIZE_UPGRADE_PREFIX_ENV).unwrap_or_else(|_| String::from("0x03")).replace("0x", "");
+	let s1 = env::var(PARACHAIN_PALLET_ID_ENV)
+		.unwrap_or_else(|_| String::from(DEFAULT_PARACHAIN_PALLET_ID))
+		.replace("0x", "");
+	let s2 = env::var(AUTHORIZE_UPGRADE_PREFIX_ENV)
+		.unwrap_or_else(|_| String::from(DEFAULT_AUTHORIZE_UPGRADE_PREFIX))
+		.replace("0x", "");
 	let decoded1 = <[u8; 1]>::from_hex(s1).expect("Decoding failed");
 	let decoded2 = <[u8; 1]>::from_hex(s2).expect("Decoding failed");
 
