@@ -7,6 +7,31 @@ fn main() {
 
 /// Generate the `cargo:` key output
 pub fn generate_cargo_keys() {
+	generate_cargo_key_git();
+	generate_cargo_key_build_date();
+}
+
+pub fn generate_cargo_key_build_date() {
+	let build_date = match Command::new("date").args(["-u", "+%FT%TZ"]).output() {
+		Ok(o) if o.status.success() => {
+			let sha = String::from_utf8_lossy(&o.stdout).trim().to_owned();
+			Cow::from(sha)
+		}
+		Ok(o) => {
+			let status = o.status;
+			println!("cargo:warning=Failed fetching the date timestamp: {status}");
+			Cow::from("unknown")
+		}
+		Err(err) => {
+			println!("cargo:warning=Failed fetching the datge: {err}");
+			Cow::from("unknown")
+		}
+	};
+
+	println!("cargo:rustc-env=SUBWASM_CLI_BUILD_DATE={build_date}");
+}
+
+pub fn generate_cargo_key_git() {
 	let commit = if let Ok(hash) = std::env::var("SUBWASM_CLI_GIT_COMMIT_HASH") {
 		Cow::from(hash.trim().to_owned())
 	} else {
@@ -30,22 +55,5 @@ pub fn generate_cargo_keys() {
 		}
 	};
 
-	let build_date = match Command::new("date").args(["+%Y-%m-%dT%H:%M:%S%z"]).output() {
-		Ok(o) if o.status.success() => {
-			let sha = String::from_utf8_lossy(&o.stdout).trim().to_owned();
-			Cow::from(sha)
-		}
-		Ok(o) => {
-			let status = o.status;
-			println!("cargo:warning=Failed fetching the date timestamp: {status}");
-			Cow::from("unknown")
-		}
-		Err(err) => {
-			println!("cargo:warning=Failed fetching the datge: {err}");
-			Cow::from("unknown")
-		}
-	};
-
-	println!("cargo:rustc-env=SUBWASM_CLI_BUILD_DATE={build_date}");
 	println!("cargo:rustc-env=SUBWASM_CLI_GIT_COMMIT_HASH={commit}");
 }
