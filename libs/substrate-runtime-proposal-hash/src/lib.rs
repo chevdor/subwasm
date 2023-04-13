@@ -16,8 +16,12 @@ type Prefix = (u8, u8);
 
 /// The PREFIX is prepended to the data before hashing
 pub const PREFIX_SYSTEM_SETCODE: Prefix = (0x00, 0x03);
+
 const PARACHAIN_PALLET_ID_ENV: &str = "PARACHAIN_PALLET_ID";
+const DEFAULT_PARACHAIN_PALLET_ID: &str = "0x01";
+
 const AUTHORIZE_UPGRADE_PREFIX_ENV: &str = "AUTHORIZE_UPGRADE_PREFIX";
+const DEFAULT_AUTHORIZE_UPGRADE_PREFIX: &str = "0x02";
 
 /// This struct is a container for whatever we calculated.
 #[derive(Debug)]
@@ -62,8 +66,11 @@ pub fn get_system_setcode(wasm_blob: &[u8]) -> CalllHash {
 }
 
 pub fn get_parachainsystem_authorize_upgrade(wasm_blob: &[u8]) -> CalllHash {
-	let s1 = env::var(PARACHAIN_PALLET_ID_ENV).unwrap_or_else(|_| String::from("0x01")).replace("0x", "");
-	let s2 = env::var(AUTHORIZE_UPGRADE_PREFIX_ENV).unwrap_or_else(|_| String::from("0x02")).replace("0x", "");
+	let s1 =
+		env::var(PARACHAIN_PALLET_ID_ENV).unwrap_or_else(|_| DEFAULT_PARACHAIN_PALLET_ID.into()).replacen("0x", "", 1);
+	let s2 = env::var(AUTHORIZE_UPGRADE_PREFIX_ENV)
+		.unwrap_or_else(|_| DEFAULT_AUTHORIZE_UPGRADE_PREFIX.into())
+		.replacen("0x", "", 1);
 	let decoded1 = <[u8; 1]>::from_hex(s1).expect("Decoding failed");
 	let decoded2 = <[u8; 1]>::from_hex(s2).expect("Decoding failed");
 
@@ -111,8 +118,8 @@ mod prop_hash_tests {
 
 	#[test]
 	fn test_parachain_upgrade() {
-		env::set_var(PARACHAIN_PALLET_ID_ENV, "0x01");
-		env::set_var(AUTHORIZE_UPGRADE_PREFIX_ENV, "0x02");
+		env::set_var(PARACHAIN_PALLET_ID_ENV, DEFAULT_PARACHAIN_PALLET_ID);
+		env::set_var(AUTHORIZE_UPGRADE_PREFIX_ENV, DEFAULT_AUTHORIZE_UPGRADE_PREFIX);
 		assert_eq!(
 			get_parachainsystem_authorize_upgrade(&[
 				0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f
@@ -127,7 +134,7 @@ mod prop_hash_tests {
 	#[test]
 	fn test_custom_parachain_upgrade() {
 		env::set_var(PARACHAIN_PALLET_ID_ENV, "0x32");
-		env::set_var(AUTHORIZE_UPGRADE_PREFIX_ENV, "0x02");
+		env::set_var(AUTHORIZE_UPGRADE_PREFIX_ENV, DEFAULT_AUTHORIZE_UPGRADE_PREFIX);
 		assert_eq!(
 			get_parachainsystem_authorize_upgrade(&[
 				0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f
