@@ -116,7 +116,7 @@ MacOS Homebrew users can use:
       -h, --help           Print help information
       -V, --version        Print version information
 
-By default, the ID for the Parachain pallet is expected to be `0x01` and the call ID for `authorize_upgrade` is expected to be `0x03`.
+By default, the ID for the Parachain pallet is expected to be `0x01` and the call ID for `authorize_upgrade` is expected to be `0x02`.
 This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to the ID of your parachain pallet and the `AUTHORIZE_UPGRADE_PREFIX` to the ID of your choice.
 
 ### Command: version
@@ -212,7 +212,7 @@ In addition to the command line flags, you can also pass one of the following EN
     # POLKADOT_HTTP=http://localhost:9933
     # POLKADOT_WS=ws://localhost:9944
     # PARACHAIN_PALLET_ID=0x01
-    # AUTHORIZE_UPGRADE_PREFIX=0x03
+    # AUTHORIZE_UPGRADE_PREFIX=0x02
 
 ## Sample runs
 
