@@ -5,7 +5,7 @@ use wasm_loader::{OnchainBlock, Source};
 
 /// `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains.
 #[derive(Parser)]
-#[clap(version = crate_version!(), author = crate_authors!(), color=ColorChoice::Auto)]
+#[clap(color=ColorChoice::Auto, disable_version_flag = true)]
 pub struct Opts {
 	/// Output as json
 	#[clap(short, long, global = true)]
@@ -16,7 +16,11 @@ pub struct Opts {
 	pub quiet: bool,
 
 	#[clap(subcommand)]
-	pub subcmd: SubCommand,
+	pub subcmd: Option<SubCommand>,
+
+	/// Show the version
+	#[clap(short, long, alias = "V")]
+	pub version: bool,
 }
 
 /// You can find all available commands below.

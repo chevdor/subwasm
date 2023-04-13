@@ -3578,6 +3578,7 @@ dependencies = [
  "color-eyre",
  "env_logger",
  "log",
+ "serde_json",
  "substrate-runtime-proposal-hash",
  "subwasmlib",
  "wasm-loader",
