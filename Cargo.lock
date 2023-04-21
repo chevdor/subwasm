@@ -3612,7 +3612,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-runtime-proposal-hash"
-version = "0.19.0"
+version = "0.19.1"
 dependencies = [
  "blake2",
  "hex",
@@ -3631,7 +3631,7 @@ checksum = "6bdef32e8150c2a081110b42772ffe7d7c9032b606bc226c8260fd97e0976601"
 
 [[package]]
 name = "subwasm"
-version = "0.19.0"
+version = "0.19.1"
 dependencies = [
  "assert_cmd",
  "clap",
@@ -3647,7 +3647,7 @@ dependencies = [
 
 [[package]]
 name = "subwasmlib"
-version = "0.19.0"
+version = "0.19.1"
 dependencies = [
  "color-eyre",
  "frame-metadata",
@@ -4259,7 +4259,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-loader"
-version = "0.19.0"
+version = "0.19.1"
 dependencies = [
  "hex",
  "jsonrpsee",
@@ -4271,7 +4271,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-testbed"
-version = "0.19.0"
+version = "0.19.1"
 dependencies = [
  "frame-metadata",
  "hex",

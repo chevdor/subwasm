@@ -10,4 +10,3 @@ Options:
   -j, --json           Output as json
   -b, --block <BLOCK>  The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
   -h, --help           Print help
-  -V, --version        Print version

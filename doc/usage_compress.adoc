@@ -7,6 +7,5 @@ Arguments:
   <OUTPUT>  The path of the file where the compressed runtime will be stored
 
 Options:
-  -j, --json     Output as json
-  -h, --help     Print help
-  -V, --version  Print version
+  -j, --json  Output as json
+  -h, --help  Print help
