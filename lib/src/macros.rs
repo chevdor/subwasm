@@ -41,15 +41,15 @@ macro_rules! write_v14_meta {
 			use color_eyre::eyre::eyre;
 
 			if let Some(metadata) = &$meta.$type {
-				let type_id = metadata.ty.id();
+				let type_id = metadata.ty.id;
 				// log::debug!("type_id: {:?}", type_id);
 				let registry = &$v14.types;
 
 				let type_info = registry.resolve(type_id).unwrap();
-				match type_info.type_def() {
+				match &type_info.type_def {
 					scale_info::TypeDef::Variant(v) => {
-						for variant in v.variants() {
-							write!($out, "- {:?}: {}\n", variant.index(), variant.name())?;
+						for variant in &v.variants {
+							write!($out, "- {:?}: {}\n", variant.index, variant.name)?;
 						}
 					}
 					o => return Err(eyre!("Unsupported variant: {:?}", o)),
