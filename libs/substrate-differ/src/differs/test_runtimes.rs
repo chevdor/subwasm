@@ -22,6 +22,7 @@ pub enum Chain {
 	Polkadot,
 	Kusama,
 	Westend,
+	CollectivesPolkadot,
 }
 
 impl Display for Chain {
@@ -33,6 +34,7 @@ impl Display for Chain {
 			Chain::Polkadot => write!(f, "polkadot"),
 			Chain::Kusama => write!(f, "kusama"),
 			Chain::Westend => write!(f, "westend"),
+			Chain::CollectivesPolkadot => write!(f, "collectives-polkadot"),
 		}
 	}
 }

@@ -26,7 +26,7 @@ impl ReducedExtrinsic {
 }
 
 // TODO: To remove, this is only a placeholder
-pub type Unknown = u8;
+// pub type Unknown = u8;
 
 #[derive(Debug, PartialEq, Hash, Comparable, Serialize, Clone)]
 pub struct ReducedSignedExtension {

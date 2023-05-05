@@ -1,9 +1,8 @@
-use super::{calls::PalletId, changed_wapper::ChangedWrapper, reduced_pallet::*};
 use super::reduced_runtime::ReducedRuntimeChange;
+use super::{calls::PalletId, changed_wapper::ChangedWrapper, reduced_pallet::*};
 
 use comparable::MapChange;
 use std::rc::Rc;
-
 
 pub trait Compatible {
 	/// This function reports whether the 2 runtimes APIs are compatible or not.
@@ -34,34 +33,45 @@ impl DiffAnalyzer {
 
 impl Compatible for DiffAnalyzer {
 	fn compatible(&self) -> bool {
-		match self.changes.0.changes {
-			ReducedRuntimeChange::Extrinsic(extrinsic) => {
-				extrinsic.iter().map(|p| match p {
-					ReducedExtrinsicChange::Version(version) => {
-						// match versiopn {
+		self.changes
+			.0
+			.changes
+			.iter()
+			.map(|change| {
+				match change {
+					// ReducedRuntimeChange::Extrinsic(extrinsic) => {
+					// 	todo!("Extrinsic diff not implemented yet")
+					// 	// 		extrinsic.iter().map(|p| match p {
+					// 	// 	ReducedExtrinsicChange::Version(version) => {
+					// 	// 		// match versiopn {
 
-						// }
-						// TODO
-						true
-					},
-					ReducedExtrinsicChange::SignedExtensions(signed_extensions) => {
-						// match signed_extensions {
-							
-							// }
-						// TODO
-						true
-					},
-				}).all(|x| x),
-			},
-			ReducedRuntimeChange::Pallets(pallets) => pallets
-				.iter()
-				.map(|p| match p {
-					comparable::MapChange::Added(_key, _ddesc) => true,
-					comparable::MapChange::Removed(_key) => false,
-					comparable::MapChange::Changed(_key, change) => change.iter().map(|x| x.compatible()).all(|x| x),
-				})
-				.all(|x| x),
-		}
+					// 	// 		// }
+					// 	// 		// TODO
+					// 	// 		true
+					// 	// 	},
+					// 	// 	ReducedExtrinsicChange::SignedExtensions(signed_extensions) => {
+					// 	// 		// match signed_extensions {
+
+					// 	// 			// }
+					// 	// 		// TODO
+					// 	// 		true
+					// 	// 	},
+					// 	// }).all(|x| x),
+					// }
+					ReducedRuntimeChange::Pallets(pallets) => pallets
+						.iter()
+						.map(|p| match p {
+							comparable::MapChange::Added(_key, _ddesc) => true,
+							comparable::MapChange::Removed(_key) => false,
+							comparable::MapChange::Changed(_key, change) => {
+								change.iter().map(|x| x.compatible()).all(|x| x)
+							}
+						})
+						.all(|x| x),
+					_ => todo!(),
+				}
+			})
+			.all(|x| x)
 	}
 }
 
@@ -116,6 +126,24 @@ mod test_diffanalyzer {
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).unwrap(),
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).unwrap(),
 		));
+	}
+
+	#[test]
+	#[ignore = "local data"]
+	fn test_compatible_9400_9420() {
+		let r1 = get_runtime_file(RuntimeFile::new(Chain::Statemint, 14, 9400)).unwrap();
+		let r2 = get_runtime_file(RuntimeFile::new(Chain::Statemint, 14, 9420)).unwrap();
+		let compat = compare_runtimes_compatibility(r1, r2);
+		assert!(compat);
+	}
+
+	#[test]
+	#[ignore = "local data"]
+	fn test_incompatible_collectives_9400_9420() {
+		let r1 = get_runtime_file(RuntimeFile::new(Chain::CollectivesPolkadot, 14, 9400)).unwrap();
+		let r2 = get_runtime_file(RuntimeFile::new(Chain::CollectivesPolkadot, 14, 9420)).unwrap();
+		let compat = compare_runtimes_compatibility(r1, r2);
+		assert!(!compat);
 	}
 
 	#[test]

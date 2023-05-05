@@ -36,10 +36,7 @@ pub struct ReducedRuntime {
 
 impl ReducedRuntime {
 	pub fn new(extrinsic: ReducedExtrinsic, pallets: HashMap<PalletId, ReducedPallet>) -> Self {
-		Self { 
-			extrinsic, 
-			pallets
-		}
+		Self { extrinsic, pallets }
 	}
 
 	#[cfg(feature = "v13")]
@@ -154,7 +151,7 @@ impl ReducedRuntime {
 		// TODO: deal with extrinsic as well
 		let extrinsic = &v14.extrinsic;
 
-		println!("extrinsic = {:#?}", extrinsic);
+		// println!("extrinsic = {:#?}", extrinsic);
 
 		let pallets = &v14.pallets;
 		let reduced_pallets: HashMap<PalletId, ReducedPallet> = pallets
@@ -251,6 +248,6 @@ mod test_reduced_runtime {
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).expect("Runtime file should exist");
 		let reduced_runtime: ReducedRuntime = WasmTestBed::new(&Source::File(runtime_file)).unwrap().metadata().into();
 
-		println!("extrinsics = {:#?}", reduced_runtime.extrinsics);
+		println!("extrinsics = {:#?}", reduced_runtime.extrinsic);
 	}
 }
