@@ -1775,7 +1775,7 @@ dependencies = [
 
 [[package]]
 name = "ipfs-hasher"
-version = "1.0.0-alpha5"
+version = "1.0.0-alpha6"
 dependencies = [
  "ipfs-unixfs",
  "wasm-loader",
@@ -3757,7 +3757,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-differ"
-version = "1.0.0-alpha5"
+version = "1.0.0-alpha6"
 dependencies = [
  "comparable",
  "document-features",
@@ -3774,7 +3774,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-runtime-proposal-hash"
-version = "1.0.0-alpha5"
+version = "1.0.0-alpha6"
 dependencies = [
  "blake2",
  "frame-metadata 15.1.0 (git+https://github.com/paritytech/frame-metadata?branch=main)",
@@ -3794,7 +3794,7 @@ checksum = "6bdef32e8150c2a081110b42772ffe7d7c9032b606bc226c8260fd97e0976601"
 
 [[package]]
 name = "subwasm"
-version = "1.0.0-alpha5"
+version = "1.0.0-alpha6"
 dependencies = [
  "assert_cmd",
  "clap",
@@ -3812,7 +3812,7 @@ dependencies = [
 
 [[package]]
 name = "subwasmlib"
-version = "1.0.0-alpha5"
+version = "1.0.0-alpha6"
 dependencies = [
  "calm_io",
  "color-eyre",
@@ -4436,7 +4436,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-loader"
-version = "1.0.0-alpha5"
+version = "1.0.0-alpha6"
 dependencies = [
  "hex",
  "jsonrpsee",
@@ -4450,7 +4450,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-testbed"
-version = "1.0.0-alpha5"
+version = "1.0.0-alpha6"
 dependencies = [
  "frame-metadata 15.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "hex",
