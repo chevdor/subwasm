@@ -18,9 +18,13 @@ repository = "https://github.com/chevdor/subwasm"
 version = "0.19.1"
 
 [dependencies]
-hex = "0.4"
-jsonrpsee = { version = "0.17", features = ["client", ] }
+array-bytes = { version = "6.1" }
 log = "0.4"
 serde = { version = "1.0", features = ["derive"] }
 sp-maybe-compressed-blob = { tag = "monthly-2023-04", git = "https://github.com/paritytech/substrate/" }
-tokio = { version = "1.19", features = ["full"] }
+
+# RPC components
+serde_json = { version = "1.0" }
+subrpcer = { version = "0.10" }
+tungstenite = { version = "0.19", features = ["rustls-tls-native-roots"] }
+ureq = { version = "2.6", features = ["json"] }
