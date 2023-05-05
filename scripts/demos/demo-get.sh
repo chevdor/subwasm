@@ -11,7 +11,7 @@ sleep 0.5
 echo -e "First let's download the latest Polkadot runtime" | $human
 sleep 0.5
 
-cmd="subwasm get wss://rpc.polkadot.io --output runtime.wasm"
+cmd="subwasm -q get --chain polkadot --output runtime.wasm"
 echo -e "We use the following command:" | $human
 echo -e "$cmd" | $human
 $cmd
@@ -22,7 +22,7 @@ ls -al runtime.wasm
 sleep 0.5
 
 echo -e "Check the --help to see the other options, you can specify the name of the output file and also the block hash" | $human
-subwasm get --help
+subwasm -q get --help
 sleep 1
 
 echo -e

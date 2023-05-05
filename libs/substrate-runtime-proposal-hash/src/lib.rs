@@ -16,8 +16,12 @@ type Prefix = (u8, u8);
 
 /// The PREFIX is prepended to the data before hashing
 pub const PREFIX_SYSTEM_SETCODE: Prefix = (0x00, 0x03);
+
 const PARACHAIN_PALLET_ID_ENV: &str = "PARACHAIN_PALLET_ID";
+const DEFAULT_PARACHAIN_PALLET_ID: &str = "0x01";
+
 const AUTHORIZE_UPGRADE_PREFIX_ENV: &str = "AUTHORIZE_UPGRADE_PREFIX";
+const DEFAULT_AUTHORIZE_UPGRADE_PREFIX: &str = "0x02";
 
 /// This struct is a container for whatever we calculated.
 #[derive(Debug)]
@@ -62,8 +66,11 @@ pub fn get_system_setcode(wasm_blob: &[u8]) -> CalllHash {
 }
 
 pub fn get_parachainsystem_authorize_upgrade(wasm_blob: &[u8]) -> CalllHash {
-	let s1 = env::var(PARACHAIN_PALLET_ID_ENV).unwrap_or_else(|_| String::from("0x01")).replace("0x", "");
-	let s2 = env::var(AUTHORIZE_UPGRADE_PREFIX_ENV).unwrap_or_else(|_| String::from("0x03")).replace("0x", "");
+	let s1 =
+		env::var(PARACHAIN_PALLET_ID_ENV).unwrap_or_else(|_| DEFAULT_PARACHAIN_PALLET_ID.into()).replacen("0x", "", 1);
+	let s2 = env::var(AUTHORIZE_UPGRADE_PREFIX_ENV)
+		.unwrap_or_else(|_| DEFAULT_AUTHORIZE_UPGRADE_PREFIX.into())
+		.replacen("0x", "", 1);
 	let decoded1 = <[u8; 1]>::from_hex(s1).expect("Decoding failed");
 	let decoded2 = <[u8; 1]>::from_hex(s2).expect("Decoding failed");
 
@@ -111,15 +118,15 @@ mod prop_hash_tests {
 
 	#[test]
 	fn test_parachain_upgrade() {
-		env::set_var(PARACHAIN_PALLET_ID_ENV, "0x01");
-		env::set_var(AUTHORIZE_UPGRADE_PREFIX_ENV, "0x03");
+		env::set_var(PARACHAIN_PALLET_ID_ENV, DEFAULT_PARACHAIN_PALLET_ID);
+		env::set_var(AUTHORIZE_UPGRADE_PREFIX_ENV, DEFAULT_AUTHORIZE_UPGRADE_PREFIX);
 		assert_eq!(
 			get_parachainsystem_authorize_upgrade(&[
 				0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f
 			]),
 			[
-				136, 242, 183, 110, 31, 66, 126, 20, 192, 209, 151, 203, 156, 215, 131, 200, 97, 163, 230, 157, 86,
-				220, 102, 180, 58, 141, 176, 52, 178, 133, 149, 179
+				231, 116, 0, 171, 31, 105, 209, 55, 219, 85, 107, 244, 188, 127, 92, 82, 111, 152, 5, 80, 44, 48, 66,
+				9, 156, 175, 248, 163, 40, 92, 101, 11
 			]
 		);
 	}
@@ -127,14 +134,14 @@ mod prop_hash_tests {
 	#[test]
 	fn test_custom_parachain_upgrade() {
 		env::set_var(PARACHAIN_PALLET_ID_ENV, "0x32");
-		env::set_var(AUTHORIZE_UPGRADE_PREFIX_ENV, "0x03");
+		env::set_var(AUTHORIZE_UPGRADE_PREFIX_ENV, DEFAULT_AUTHORIZE_UPGRADE_PREFIX);
 		assert_eq!(
 			get_parachainsystem_authorize_upgrade(&[
 				0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f
 			]),
 			[
-				29, 53, 127, 234, 110, 75, 67, 238, 243, 171, 65, 93, 187, 246, 0, 84, 166, 88, 161, 205, 95, 62, 135,
-				99, 121, 139, 154, 39, 207, 121, 98, 87
+				51, 203, 30, 131, 48, 13, 150, 26, 217, 87, 213, 55, 43, 10, 200, 193, 248, 254, 202, 83, 165, 231, 4,
+				59, 213, 247, 98, 153, 119, 166, 175, 133
 			]
 		);
 	}

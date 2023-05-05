@@ -1,16 +1,14 @@
-[0mThe `version` command returns summarized information about the versions of a runtime[0m[0m
-[0m[0m
-[0m[0m[1m[4mUsage:[0m[0m [0m[0m[1msubwasm version[0m[0m [OPTIONS][0m[0m [0m[0m[SOURCE][0m[0m
+The `version` command returns summarized information about the versions of a runtime
 
-[0m[0m[1m[4mArguments:
-[0m[0m  [0m[0m[SOURCE][0m[0m  [0m[0mThe wasm file to load. It can be a path on your local filesystem such as /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944[0m[0m [0m[0m[default: runtime_000.wasm][0m[0m
+Usage: subwasm version [OPTIONS] [SOURCE]
 
-[0m[0m[1m[4mOptions:
-[0m[0m  [0m[0m    [0m[0m[1m--chain[0m[0m [0m[0m<CHAIN>[0m[0m  [0m[0mProvide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933[0m[0m
-[0m[0m  [0m[0m[1m-j[0m[0m, [0m[0m[1m--json[0m[0m           [0m[0mOutput as json[0m[0m
-[0m[0m  [0m[0m[1m-b[0m[0m, [0m[0m[1m--block[0m[0m [0m[0m<BLOCK>[0m[0m  [0m[0mThe optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported[0m[0m
-[0m[0m  [0m[0m[1m-q[0m[0m, [0m[0m[1m--quiet[0m[0m          [0m[0mLess output[0m[0m
-[0m[0m  [0m[0m[1m-n[0m[0m, [0m[0m[1m--no-color[0m[0m       [0m[0m[env: NO_COLOR=][0m[0m
-[0m[0m  [0m[0m[1m-h[0m[0m, [0m[0m[1m--help[0m[0m           [0m[0mPrint help information[0m[0m
-[0m[0m  [0m[0m[1m-V[0m[0m, [0m[0m[1m--version[0m[0m        [0m[0mPrint version information[0m[0m
-[0m
+Arguments:
+  [SOURCE]  The wasm file to load. It can be a path on your local filesystem such as /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944 [default: runtime_000.wasm]
+
+Options:
+      --chain <CHAIN>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
+  -j, --json           Output as json
+  -b, --block <BLOCK>  The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
+  -q, --quiet          Less output
+  -n, --no-color       [env: NO_COLOR=]
+  -h, --help           Print help

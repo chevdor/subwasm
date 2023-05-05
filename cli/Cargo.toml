@@ -38,13 +38,13 @@ clap = { version = "4.0", features = [
 color-eyre = "0.6"
 env_logger = "0.10"
 log = "0.4"
-substrate-runtime-proposal-hash = { version = "1.0.0-alpha5", path = "../libs/substrate-runtime-proposal-hash", optional = true }
-subwasmlib = { version = "1.0.0-alpha5", path = "../lib" }
-wasm-loader = { version = "1.0.0-alpha5", path = "../libs/wasm-loader" }
-wasm-testbed = { version = "1.0.0-alpha5", path = "../libs/wasm-testbed" }
+substrate-runtime-proposal-hash = { version = "1.0.0-alpha6", path = "../libs/substrate-runtime-proposal-hash", optional = true }
+subwasmlib = { version = "1.0.0-alpha6", path = "../lib" }
+wasm-loader = { version = "1.0.0-alpha6", path = "../libs/wasm-loader" }
+wasm-testbed = { version = "1.0.0-alpha6", path = "../libs/wasm-testbed" }
 serde_json = "1.0"
 text-style = { version = "0.3", features = ["termion"] }
-sp-runtime = { tag = "monthly-2023-01", git = "https://github.com/paritytech/substrate" }
+sp-runtime = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 
 [dev-dependencies]
 assert_cmd = "2.0"

@@ -53,9 +53,7 @@ impl<'a> RuntimeSummaryDiffer<'a> {
 			println!("{version_a}");
 		} else {
 			println!("  ❌ The 2 core versions are different: ");
-			// println!("{:#?}", version_a);
 			println!("  🅰️  {version_a}");
-			// println!("{:#?}", version_b);
 			println!("  🅱️  {version_b}");
 		}
 
@@ -64,7 +62,6 @@ impl<'a> RuntimeSummaryDiffer<'a> {
 		let metadata_b = self.r2.metadata();
 
 		if metadata_a == metadata_b {
-			// println!("  {}", version_a);
 			println!("  ✅  The metadata are identical");
 		} else {
 			println!("  ❌  The metadata are different");

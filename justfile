@@ -89,7 +89,7 @@ coverage:
 
 tag:
     #!/bin/sh
-    echo Tagging version v$TAG
+    echo "Tagging version v$TAG"
     git tag "v$TAG" -f
     git tag | sort -Vr | head
 
@@ -107,3 +107,8 @@ get_runtimes:
 		subwasm get --chain $chain -o data/$chain/V$METADATA_VERSION/$SPEC_VERSION.wasm
 	done
 	find data -newermt "-15 minutes" -iname "*.wasm" -ls
+
+tag-push:
+	#!/bin/sh
+	echo "Pushing version v$TAG"
+	git push origin "v$TAG"

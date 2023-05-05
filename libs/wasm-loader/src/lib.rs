@@ -8,19 +8,19 @@ mod source;
 
 pub use compression::Compression;
 use error::WasmLoaderError;
-use jsonrpsee::core::client::ClientT;
-use jsonrpsee::core::{Error, JsonValue};
-use jsonrpsee::rpc_params;
 use log::*;
 
-use jsonrpsee::{http_client::HttpClientBuilder, ws_client::WsClientBuilder};
+use serde::Deserialize;
+use std::fmt::Debug;
+use subrpcer::state;
+use tungstenite::Message;
+
 pub use node_endpoint::NodeEndpoint;
 pub use onchain_block::{BlockRef, OnchainBlock};
 pub use source::Source;
 
 use std::io::Read;
 use std::{fs::File, path::Path};
-use tokio::runtime::Runtime;
 
 const CODE: &str = "0x3a636f6465"; // :code in hex
 pub const CODE_BLOB_BOMB_LIMIT: usize = 50 * 1024 * 1024;
@@ -41,31 +41,56 @@ pub struct WasmLoader {
 impl WasmLoader {
 	/// Fetch the wasm blob from a node
 	fn fetch_wasm(reference: &OnchainBlock) -> Result<WasmBytes, WasmLoaderError> {
-		let block_ref = reference.block_ref.as_ref();
-		let params = match block_ref {
-			Some(blockref) => rpc_params!(JsonValue::from(CODE), JsonValue::from(blockref.to_string())),
-			None => rpc_params!(JsonValue::from(CODE).as_str()),
-		};
+		#[derive(Deserialize)]
+		struct Response {
+			result: String,
+		}
 
-		// Create the runtime
-		let rt = Runtime::new().unwrap();
-		let response: Result<String, Error> = match &reference.endpoint {
+		fn map_err<O, E1, E2>(r: Result<O, E1>, e: E2) -> Result<O, E2>
+		where
+			E1: Debug,
+		{
+			r.map_err(|e_| {
+				eprintln!("{e_:?}");
+				e
+			})
+		}
+
+		let block_ref = reference.block_ref.as_ref();
+		let data = state::get_storage(0, CODE, block_ref);
+		let wasm_hex = match &reference.endpoint {
 			NodeEndpoint::Http(url) => {
-				let client = HttpClientBuilder::default().build(url).map_err(|_e| WasmLoaderError::HttpClient())?;
-				rt.block_on(client.request("state_getStorage", params))
+				map_err(ureq::post(url).send_json(data), WasmLoaderError::HttpClient())?
+					.into_json::<Response>()
+					.expect("unexpected response from node")
+					.result
 			}
 			NodeEndpoint::WebSocket(url) => {
-				let client = rt.block_on(WsClientBuilder::default().build(url)).map_err(|e| {
-					println!("{e:?}");
-					WasmLoaderError::WsClient()
-				})?;
-				rt.block_on(client.request("state_getStorage", params))
+				let mut ws = map_err(tungstenite::connect(url), WasmLoaderError::WsClient())?.0;
+
+				map_err(
+					ws.write_message(Message::Binary(serde_json::to_vec(&data).expect("invalid data"))),
+					WasmLoaderError::WsClient(),
+				)?;
+
+				let mut wasm_hex = None;
+
+				// One for Ping, one for response.
+				for _ in 0..2_u8 {
+					let Message::Text(t) = map_err(ws.read_message(), WasmLoaderError::WsClient())? else {
+						continue
+
+					};
+
+					wasm_hex = serde_json::from_str::<Response>(&t).map(|r| r.result).ok();
+				}
+
+				wasm_hex.expect("unexpected response from node")
 			}
 		};
+		let wasm = array_bytes::hex2bytes(wasm_hex).expect("Decoding bytes");
 
-		let wasm = response.unwrap();
-		let bytes = hex::decode(wasm.trim_start_matches("0x")).expect("Decoding bytes");
-		Ok(bytes)
+		Ok(wasm)
 	}
 
 	/// Load some binary from a file
@@ -152,6 +177,13 @@ mod tests {
 
 	fn get_ws_node() -> String {
 		env::var("POLKADOT_WS").unwrap_or_else(|_| "ws://localhost:9944".to_string())
+	}
+
+	#[test]
+	#[ignore = "needs node"]
+	fn fetch_should_work() {
+		assert!(WasmLoader::fetch_wasm(&OnchainBlock::new("https://rpc.polkadot.io", None)).is_ok());
+		assert!(WasmLoader::fetch_wasm(&OnchainBlock::new("wss://rpc.polkadot.io", None)).is_ok());
 	}
 
 	#[test]

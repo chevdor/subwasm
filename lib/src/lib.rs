@@ -1,4 +1,12 @@
 #![allow(clippy::derive_partial_eq_without_eq)]
+use color_eyre::eyre::eyre;
+// use std::path::Path;
+// use std::{fs::File, path::PathBuf};
+// use std::{io::prelude::*, str::FromStr};
+// use substrate_differ::differs::raw_differ::RawDiffer;
+// use substrate_differ::differs::raw_differ_options::RawDifferOptions;
+// use substrate_differ::differs::summary_differ::RuntimeSummaryDiffer;
+use wasm_testbed::WasmTestBed;
 
 mod chain_info;
 mod chain_urls;
@@ -11,6 +19,7 @@ mod subwasm;
 mod types;
 
 use log::{debug, info};
+pub use metadata_wrapper::OutputFormat;
 use std::{
 	fs::File,
 	io::prelude::*,
@@ -20,7 +29,6 @@ use std::{
 pub use substrate_differ::differs::diff_method::DiffMethod;
 use substrate_differ::differs::reduced::{reduced_diff_result::ReducedDiffResult, reduced_runtime::ReducedRuntime};
 use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, WasmLoader};
-use wasm_testbed::WasmTestBed;
 
 pub use chain_info::*;
 pub use runtime_info::*;
@@ -73,7 +81,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 	let url = match url {
 		url if url.starts_with("ws") => NodeEndpoint::WebSocket(url.to_string()),
 		url if url.starts_with("http") => NodeEndpoint::Http(url.to_string()),
-		_ => panic!("The url should either start with http or ws"),
+		_ => return Err(eyre!("The url should either start with http or ws")),
 	};
 
 	let reference = OnchainBlock { endpoint: url, block_ref };
@@ -104,7 +112,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 		}
 	};
 
-	log::info!("Saving runtime to {:?}", outfile);
+	info!("Saving runtime to {outfile:?}");
 	let mut buffer = File::create(outfile)?;
 	buffer.write_all(wasm)?;
 	Ok(())
@@ -130,41 +138,41 @@ pub fn reduced_diff(src_a: Source, src_b: Source) -> ReducedDiffResult {
 
 /// Compress a given runtime into a new file. You cannot compress
 /// a runtime that is already compressed.
-pub fn compress(input: PathBuf, output: PathBuf) -> Result<(), String> {
-	let wasm = WasmLoader::load_from_source(&Source::File(input)).unwrap();
+pub fn compress(input: PathBuf, output: PathBuf) -> color_eyre::Result<()> {
+	let wasm = WasmLoader::load_from_source(&Source::File(input))?;
 
 	if wasm.compression().compressed() {
-		return Err("The input is already compressed".into());
+		return Err(eyre!("The input is already compressed"));
 	}
 
-	let bytes_compressed = Compression::compress(wasm.original_bytes()).unwrap();
+	let bytes_compressed = Compression::compress(wasm.original_bytes()).map_err(|e| eyre!(e))?;
 
 	debug!("original   = {:?}", wasm.original_bytes().len());
 	debug!("compressed = {:?}", bytes_compressed.len());
 	info!("Saving compressed runtime to {:?}", output);
 
-	let mut buffer = File::create(output).unwrap();
-	buffer.write_all(&bytes_compressed.to_vec()).unwrap();
+	let mut buffer = File::create(output)?;
+	buffer.write_all(&bytes_compressed.to_vec())?;
 
 	Ok(())
 }
 
 /// Decompress a given runtime file. It is fine decompressing an already
 /// decompressed runtime, you will just get the same.
-pub fn decompress(input: PathBuf, output: PathBuf) -> Result<(), String> {
-	let wasm = WasmLoader::load_from_source(&Source::File(input)).unwrap();
+pub fn decompress(input: PathBuf, output: PathBuf) -> color_eyre::Result<()> {
+	let wasm = WasmLoader::load_from_source(&Source::File(input))?;
 
 	let bytes_decompressed = match wasm.compression().compressed() {
 		false => wasm.original_bytes().clone(),
-		true => Compression::decompress(wasm.original_bytes()).unwrap(),
+		true => Compression::decompress(wasm.original_bytes()).map_err(|e| eyre!(e))?,
 	};
 
 	debug!("original     = {:?}", wasm.original_bytes().len());
 	debug!("decompressed = {:?}", bytes_decompressed.len());
 
 	info!("Saving decompressed runtime to {:?}", output);
-	let mut buffer = File::create(output).unwrap();
-	buffer.write_all(&bytes_decompressed.to_vec()).unwrap();
+	let mut buffer = File::create(output)?;
+	buffer.write_all(&bytes_decompressed.to_vec())?;
 
 	Ok(())
 }

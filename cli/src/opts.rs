@@ -5,7 +5,7 @@ use wasm_loader::{BlockRef, OnchainBlock, Source};
 
 /// `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains.
 #[derive(Parser)]
-#[clap(version = crate_version!(), author = crate_authors!(), color=ColorChoice::Always)]
+#[clap(color=ColorChoice::Auto, disable_version_flag = true)]
 pub struct Opts {
 	/// Output as json
 	#[clap(short, long, global = true)]
@@ -19,7 +19,11 @@ pub struct Opts {
 	pub no_color: bool,
 
 	#[clap(subcommand)]
-	pub subcmd: SubCommand,
+	pub subcmd: Option<SubCommand>,
+
+	/// Show the version
+	#[clap(short, long, alias = "V")]
+	pub version: bool,
 }
 
 /// You can find all available commands below.
@@ -140,6 +144,15 @@ pub struct MetaOpts {
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
 	pub block: Option<BlockRef>,
+
+	/// You may specifiy the output format. One of "human", "scale", "json", "json+scale", "hex+scale"
+	#[clap(long, short, default_value = "human")]
+	pub format: Option<String>,
+
+	/// You may specifiy the output filename where the metadata will be saved.
+	/// Alternatively, you may use `auto` and an appropriate name will be generated according to the `format` your chose.
+	#[clap(short, long)]
+	pub output: Option<String>,
 }
 
 /// Compare 2 runtimes after converting them to ReducedRuntime.

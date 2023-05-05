@@ -1,18 +1,16 @@
-[0mCompare 2 runtimes after converting them to ReducedRuntime[0m[0m
-[0m[0m
-[0m[0m[1m[4mUsage:[0m[0m [0m[0m[1msubwasm diff[0m[0m [OPTIONS][0m[0m [0m[0m[SRC_A][0m[0m [0m[0m[SRC_B][0m[0m
+Compare 2 runtimes after converting them to ReducedRuntime
 
-[0m[0m[1m[4mArguments:
-[0m[0m  [0m[0m[SRC_A][0m[0m  [0m[0mThe first source[0m[0m [0m[0m[default: runtime_000.wasm][0m[0m
-[0m[0m  [0m[0m[SRC_B][0m[0m  [0m[0mThe second source[0m[0m [0m[0m[default: runtime_001.wasm][0m[0m
+Usage: subwasm diff [OPTIONS] [SRC_A] [SRC_B]
 
-[0m[0m[1m[4mOptions:
-[0m[0m  [0m[0m[1m-a[0m[0m, [0m[0m[1m--chain-a[0m[0m [0m[0m<CHAIN_A>[0m[0m  [0m[0mProvide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933[0m[0m
-[0m[0m  [0m[0m[1m-j[0m[0m, [0m[0m[1m--json[0m[0m               [0m[0mOutput as json[0m[0m
-[0m[0m  [0m[0m[1m-b[0m[0m, [0m[0m[1m--chain-b[0m[0m [0m[0m<CHAIN_B>[0m[0m  [0m[0mProvide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933[0m[0m
-[0m[0m  [0m[0m[1m-q[0m[0m, [0m[0m[1m--quiet[0m[0m              [0m[0mLess output[0m[0m
-[0m[0m  [0m[0m[1m-m[0m[0m, [0m[0m[1m--method[0m[0m [0m[0m<METHOD>[0m[0m    [0m[0mYou probably want to use `Reduced`[0m[0m [0m[0m[default: reduced][0m[0m
-[0m[0m  [0m[0m[1m-n[0m[0m, [0m[0m[1m--no-color[0m[0m           [0m[0m[env: NO_COLOR=][0m[0m
-[0m[0m  [0m[0m[1m-h[0m[0m, [0m[0m[1m--help[0m[0m               [0m[0mPrint help information[0m[0m
-[0m[0m  [0m[0m[1m-V[0m[0m, [0m[0m[1m--version[0m[0m            [0m[0mPrint version information[0m[0m
-[0m
+Arguments:
+  [SRC_A]  The first source [default: runtime_000.wasm]
+  [SRC_B]  The second source [default: runtime_001.wasm]
+
+Options:
+  -a, --chain-a <CHAIN_A>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
+  -j, --json               Output as json
+  -b, --chain-b <CHAIN_B>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
+  -q, --quiet              Less output
+  -m, --method <METHOD>    You probably want to use `Reduced` [default: reduced]
+  -n, --no-color           [env: NO_COLOR=]
+  -h, --help               Print help
