@@ -111,17 +111,19 @@ fn main() -> color_eyre::Result<()> {
 			if opts.version {
 				let name = crate_name!();
 				let version = crate_version!();
-				let commit_hash = env::var("SUBWASM_CLI_GIT_COMMIT_HASH").unwrap_or_else(|_| "n/a".to_string());
-				let build_date = env::var("SUBWASM_CLI_BUILD_DATE").unwrap_or_else(|_| "n/a".to_string());
+				let commit_hash = env::var("SUBWASM_CLI_GIT_COMMIT_HASH");
+				let build_date = env::var("SUBWASM_CLI_BUILD_DATE");
 
 				if !opts.json {
-					println!("{name} v{version}-{commit_hash} built {build_date}");
+					let commit_hash_str = if let Ok(s) = commit_hash { format!("-{s}") } else { String::from("") };
+					let build_date_str = if let Ok(s) = build_date { format!(" built {s}") } else { String::from("") };
+					println!("{name} v{version}{commit_hash_str}{build_date_str}");
 				} else {
 					let version_data = json!({
 						"name": name,
 						"version": version,
-						"commit": commit_hash,
-						"build_date": build_date,
+						"commit": commit_hash.unwrap_or_default(),
+						"build_date": build_date.unwrap_or_default(),
 					});
 					let s = serde_json::to_string_pretty(&version_data).unwrap();
 					println!("{s}");

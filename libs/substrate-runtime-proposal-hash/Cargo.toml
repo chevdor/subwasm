@@ -15,13 +15,13 @@ license = "MIT"
 name = "substrate-runtime-proposal-hash"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
-version = "0.19.1"
+version = "0.19.2"
 
 [dependencies]
 blake2 = "0.10"
 codec = { version = "3.1", package = "parity-scale-codec" }
-sp-core = { tag = "monthly-2023-04", git = "https://github.com/paritytech/substrate" }
-sp-io = { tag = "monthly-2023-04", git = "https://github.com/paritytech/substrate" }
-sp-runtime = { tag = "monthly-2023-04", git = "https://github.com/paritytech/substrate" }
-sp-wasm-interface = { tag = "monthly-2023-04", git = "https://github.com/paritytech/substrate" }
+sp-core = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
+sp-io = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
+sp-runtime = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
+sp-wasm-interface = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 hex = "0.4"

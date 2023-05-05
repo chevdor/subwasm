@@ -15,7 +15,7 @@ license = "MIT"
 name = "wasm-testbed"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
-version = "0.19.1"
+version = "0.19.2"
 
 [dependencies]
 frame-metadata = { version = "15", package = "frame-metadata", features = [
@@ -26,14 +26,14 @@ frame-metadata = { version = "15", package = "frame-metadata", features = [
 ] }
 hex = "0.4"
 log = "0.4"
-sc-executor = { tag = "monthly-2023-04", git = "https://github.com/paritytech/substrate" }
-sc-executor-common = { tag = "monthly-2023-04", git = "https://github.com/paritytech/substrate" }
+sc-executor = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
+sc-executor-common = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 scale = { version = "3.1", package = "parity-scale-codec", default-features = false }
-sp-core = { tag = "monthly-2023-04", git = "https://github.com/paritytech/substrate" }
-sp-io = { tag = "monthly-2023-04", git = "https://github.com/paritytech/substrate" }
-sp-runtime = { tag = "monthly-2023-04", git = "https://github.com/paritytech/substrate" }
-sp-state-machine = { tag = "monthly-2023-04", git = "https://github.com/paritytech/substrate" }
-sp-wasm-interface = { tag = "monthly-2023-04", git = "https://github.com/paritytech/substrate" }
-substrate-runtime-proposal-hash = { version = "0.19.0", path = "../substrate-runtime-proposal-hash" }
-wasm-loader = { version = "0.19.0", path = "../wasm-loader" }
-sp-version = { tag = "monthly-2023-04", git = "https://github.com/paritytech/substrate" }
+sp-core = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
+sp-io = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
+sp-runtime = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
+sp-state-machine = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
+sp-wasm-interface = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
+substrate-runtime-proposal-hash = { version = "0.19", path = "../substrate-runtime-proposal-hash" }
+wasm-loader = { version = "0.19", path = "../wasm-loader" }
+sp-version = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
