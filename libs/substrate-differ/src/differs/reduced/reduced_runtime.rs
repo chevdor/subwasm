@@ -58,10 +58,10 @@ impl ReducedRuntime {
 
 		// calls
 		let calls = if let Some(calls) = &p.calls {
-			let id = calls.ty.id();
+			let id = calls.ty.id;
 			let ty = registry.resolve(id.to_owned()).unwrap();
 
-			match ty.type_def() {
+			match &ty.type_def {
 				scale_info::TypeDef::Variant(v) => {
 					let calls: BTreeMap<PalletId, Call> = variant_to_calls(v);
 
@@ -77,10 +77,10 @@ impl ReducedRuntime {
 
 		// events
 		let events = if let Some(item) = &p.event {
-			let id = item.ty.id();
+			let id = item.ty.id;
 			let ty = registry.resolve(id.to_owned()).unwrap();
 
-			match ty.type_def() {
+			match &ty.type_def {
 				scale_info::TypeDef::Variant(v) => {
 					let events: BTreeMap<PalletId, Event> = variant_to_events(v);
 
@@ -96,10 +96,10 @@ impl ReducedRuntime {
 
 		// errors
 		let errors = if let Some(item) = &p.error {
-			let id = item.ty.id();
+			let id = item.ty.id;
 			let ty = registry.resolve(id.to_owned()).unwrap();
 
-			match ty.type_def() {
+			match &ty.type_def {
 				scale_info::TypeDef::Variant(v) => {
 					let errors: BTreeMap<PalletId, Error> = variant_to_errors(v);
 					errors

@@ -12,14 +12,7 @@ pub struct ReducedExtrinsic {
 impl ReducedExtrinsic {
 	pub fn from(extrinsic: &ExtrinsicMetadata<PortableForm>) -> Self {
 		let version = extrinsic.version;
-		let signed_extensions = extrinsic
-			.signed_extensions
-			.iter()
-			.map(|e| {
-				let rse = ReducedSignedExtension::from(e);
-				rse
-			})
-			.collect();
+		let signed_extensions = extrinsic.signed_extensions.iter().map(ReducedSignedExtension::from).collect();
 
 		Self { version, signed_extensions }
 	}

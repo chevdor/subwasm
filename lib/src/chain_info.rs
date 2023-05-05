@@ -45,20 +45,20 @@ impl ChainInfo {
 }
 
 #[derive(Debug)]
-pub enum Error {
+pub enum ChainInfoError {
 	ChainUsupported(String),
 }
 
-impl Display for Error {
+impl Display for ChainInfoError {
 	fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		match self {
-			Error::ChainUsupported(s) => write!(fmt, "Chain not supported: {s}"),
+			ChainInfoError::ChainUsupported(s) => write!(fmt, "Chain not supported: {s}"),
 		}
 	}
 }
 
 impl FromStr for ChainInfo {
-	type Err = Error;
+	type Err = ChainInfoError;
 
 	fn from_str(name: &str) -> Result<Self, Self::Err> {
 		let name = name.to_lowercase();
@@ -67,7 +67,7 @@ impl FromStr for ChainInfo {
 		if let Some(endpoints) = urls {
 			Ok(Self { name, endpoints })
 		} else {
-			Err(Error::ChainUsupported(name))
+			Err(ChainInfoError::ChainUsupported(name))
 		}
 	}
 }

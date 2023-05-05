@@ -11,13 +11,11 @@ use super::storage::*;
 
 impl Compatible for CallChange {
 	fn compatible(&self) -> bool {
-		let res = match self {
+		match self {
 			CallChange::Index(_) => false,
 			CallChange::Name(_) => true,
 			CallChange::Signature(s) => s.compatible(),
-		};
-		// println!("call = {:?} {:?}", self, res);
-		res
+		}
 	}
 }
 

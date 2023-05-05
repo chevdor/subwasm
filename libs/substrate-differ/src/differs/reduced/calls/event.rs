@@ -26,25 +26,22 @@ impl Display for Event {
 }
 
 pub fn variant_to_events(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Event> {
-	td.variants()
+	td.variants
 		.iter()
 		.map(|vv| {
 			let args = vv
-				.fields()
+				.fields
 				.iter()
-				.map(|f| Arg {
-					name: f.name().unwrap_or(&String::from("")).into(),
-					ty: f.type_name().unwrap_or(&String::from("")).into(),
-				})
+				.map(|f| Arg { name: f.name.clone().unwrap_or_default(), ty: f.type_name.clone().unwrap_or_default() })
 				.collect();
 
 			(
-				vv.index() as PalletId,
+				vv.index as PalletId,
 				Event {
-					index: vv.index() as PalletId,
-					name: vv.name().to_string(),
+					index: vv.index as PalletId,
+					name: vv.name.to_string(),
 					signature: Signature { args },
-					docs: vv.docs().iter().map(|f| f.into()).collect(),
+					docs: vv.docs.iter().map(|f| f.into()).collect(),
 				},
 			)
 		})

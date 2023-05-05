@@ -43,7 +43,7 @@ impl ChangedWrapper {
 				}),
 			})
 			.collect();
-		res.into_iter().nth(0)
+		res.into_iter().next()
 	}
 }
 

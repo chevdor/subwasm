@@ -34,16 +34,13 @@ impl Display for Call {
 // }
 
 pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Call> {
-	td.variants()
+	td.variants
 		.iter()
 		.map(|vv| {
 			let args = vv
-				.fields()
+				.fields
 				.iter()
-				.map(|f| Arg {
-					name: f.name().unwrap_or(&String::from("")).into(),
-					ty: f.type_name().unwrap_or(&String::from("")).into(),
-				})
+				.map(|f| Arg { name: f.name.clone().unwrap_or_default(), ty: f.type_name.clone().unwrap_or_default() })
 				.collect();
 
 			// PalletItem::Call(PalletData {
@@ -53,12 +50,12 @@ pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId,
 			// 	documentation: vv.docs().iter().map(|f| f.into()).collect(),
 			// })
 			(
-				vv.index() as PalletId,
+				vv.index as PalletId,
 				Call {
-					index: vv.index() as PalletId,
-					name: vv.name().to_string(),
+					index: vv.index as PalletId,
+					name: vv.name.to_string(),
 					signature: Signature { args },
-					docs: vv.docs().iter().map(|f| f.into()).collect(),
+					docs: vv.docs.iter().map(|f| f.into()).collect(),
 				},
 			)
 		})

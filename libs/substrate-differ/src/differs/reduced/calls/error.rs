@@ -22,15 +22,15 @@ impl Display for Error {
 }
 
 pub fn variant_to_errors(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Error> {
-	td.variants()
+	td.variants
 		.iter()
 		.map(|vv| {
 			(
-				vv.index() as PalletId,
+				vv.index as PalletId,
 				Error {
-					index: vv.index() as PalletId,
-					name: vv.name().to_string(),
-					docs: vv.docs().iter().map(|f| f.into()).collect(),
+					index: vv.index as PalletId,
+					name: vv.name.to_string(),
+					docs: vv.docs.iter().map(|f| f.into()).collect(),
 				},
 			)
 		})
