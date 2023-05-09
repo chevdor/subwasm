@@ -9,8 +9,13 @@ use crate::{NodeEndpoint, OnchainBlock};
 /// The source of the wasm. It can come from the local file system (`File`) or from a chain (`Chain`).
 #[derive(Debug, Clone, PartialEq)]
 pub enum Source {
+	/// A file on your local filesystem
 	File(PathBuf),
+
+	/// A remote endpoint we can connect to
 	Chain(OnchainBlock),
+	// /// A chain alias such as "westend"
+	//Alias(String),
 }
 
 impl Display for Source {
@@ -85,4 +90,13 @@ mod tests {
 			assert!(Source::from_str(url) == Ok(Source::File(PathBuf::from(url))));
 		}
 	}
+
+	// #[test]
+	// fn it_converts_from_alias() {
+	// 	let urls = vec!["foo", "bar"];
+
+	// 	for url in urls {
+	// 		assert!(Source::from_str(url) == Ok(Source::Alias(url.into())));
+	// 	}
+	// }
 }

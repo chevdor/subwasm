@@ -1,12 +1,11 @@
 mod opts;
 
-use std::{env, io::Write};
-
 use clap::{crate_name, crate_version, Parser};
 use env_logger::Env;
 use log::info;
 use opts::*;
 use serde_json::json;
+use std::{env, io::Write};
 use subwasmlib::*;
 use text_style::{AnsiColor, StyledStr};
 
@@ -102,7 +101,7 @@ fn main() -> color_eyre::Result<()> {
 
 			match diff_opts.method {
 				DiffMethod::Reduced => {
-					let diff_result = reduced_diff(src_a, src_b);
+					let diff_result = reduced_diff(src_a, src_b).expect("Reduced diff failed");
 					if opts.json {
 						let s = serde_json::to_string_pretty(&diff_result).unwrap();
 						println!("{s}");
@@ -121,8 +120,7 @@ fn main() -> color_eyre::Result<()> {
 						println!("{diff_result}");
 						text_style::termion::render(std::io::stdout(), &warning).expect("Could not render line");
 					}
-				}
-				DiffMethod::Summary => todo!(),
+				} // DiffMethod::Summary => todo!(),
 			}
 		}
 
@@ -165,9 +163,10 @@ fn main() -> color_eyre::Result<()> {
 			let subwasm = Subwasm::new(&source);
 
 			if let Some(pallet) = sr_opts.pallet {
-				subwasm.display_reduced_pallet(&pallet, opts.json)
+				// todo: fix previous branches and DO return an anyhow:Result<()> instead of ignoring the output
+				let _ = subwasm.display_reduced_pallet(&pallet, opts.json);
 			} else {
-				subwasm.display_reduced_runtime(opts.json)
+				let _ = subwasm.display_reduced_runtime(opts.json);
 			}
 		}
 	};

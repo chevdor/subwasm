@@ -1,3 +1,16 @@
+== TODOS:
 
 - [ ] byte arrays should be smartly displayed: Short ones can be shown as such but long ones should be encoded to hex and truncated. The user can still use the json output to get the full data
 - [ ] Show extrinsics: see `// TODO: deal with extrinsic as well`
+
+- [x] load wasm file
+- [x] add ws support (= switch to substrate-api-client ?)
+- [x] compute section hashes
+- [ ] show sections summary as diff
+- [ ] fix subwasm meta | head => piping fails
+- [ ] add --chain to meta command
+The main command loads ONE wasm and analyses it (meta + version).
+- [ ] Add option to SHOW a runtime as a ReducedRuntime
+- [ ] hunt down expects and unwrap
+- [ ] remove those --chain-a --chain-b and use ONE enum that can handle 3 sources: file / url / alias
+- [ ] integrate with subrpc

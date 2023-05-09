@@ -1,4 +1,5 @@
 #![allow(clippy::derive_partial_eq_without_eq)]
+use anyhow::Result;
 use color_eyre::eyre::eyre;
 // use std::path::Path;
 // use std::{fs::File, path::PathBuf};
@@ -17,6 +18,7 @@ mod metadata_wrapper;
 mod runtime_info;
 mod subwasm;
 mod types;
+mod utils;
 
 use log::{debug, info};
 pub use metadata_wrapper::OutputFormat;
@@ -119,21 +121,17 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 }
 
 //todo: return Result and no expect
-pub fn reduced_diff(src_a: Source, src_b: Source) -> ReducedDiffResult {
+pub fn reduced_diff(src_a: Source, src_b: Source) -> Result<ReducedDiffResult> {
 	log::debug!("REDUCED: Loading WASM runtimes:");
 	log::info!("  🅰️  {:?}", src_a);
-	let runtime_a = WasmTestBed::new(&src_a).expect("Can only diff if the 2 runtimes can load");
+	let runtime_a = WasmTestBed::new(&src_a)?;
 	log::info!("  🅱️  {:?}", src_b);
-	let runtime_b = WasmTestBed::new(&src_b).expect("Can only diff if the 2 runtimes can load");
+	let runtime_b = WasmTestBed::new(&src_b)?;
 
-	// let differ = ReducedDiffer::new(, runtime_b.metadata());
 	let ra = ReducedRuntime::from(runtime_a.metadata());
 	let rb = ReducedRuntime::from(runtime_b.metadata());
-	// let changes = ReducedDiffer::compare(&ra, &rb);
-	// let da = DiffAnalyzer::new(&ra, &rb, &changes);
-	// let compatible = da.compatible();
 
-	ReducedDiffResult::new(ra, rb)
+	Ok(ReducedDiffResult::new(ra, rb))
 }
 
 /// Compress a given runtime into a new file. You cannot compress

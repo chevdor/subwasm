@@ -40,3 +40,5 @@ wasm-loader = { version = "1.0.0-alpha6", path = "../libs/wasm-loader" }
 wasm-testbed = { version = "1.0.0-alpha6", path = "../libs/wasm-testbed" }
 sp-version = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 hex = "0.4"
+anyhow = "1.0"
+calm_io = "0.1"

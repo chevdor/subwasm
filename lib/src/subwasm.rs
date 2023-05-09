@@ -2,9 +2,11 @@ use std::io::Write;
 
 use crate::{
 	metadata_wrapper::{self, MetadataWrapper},
+	utils::print_big_output_safe,
 	RuntimeInfo,
 };
 
+use anyhow::bail;
 use substrate_differ::differs::reduced::reduced_runtime::ReducedRuntime;
 use wasm_loader::Source;
 use wasm_testbed::{WasmTestBed, WasmTestbedError};
@@ -41,26 +43,6 @@ impl Subwasm {
 		&self.runtime_info
 	}
 
-	// pub fn display_module(&self, filter: String) {
-	// TODO: clean up
-	// pub fn display_infos(&self) -> color_eyre::Result<()> {
-	// 	let metadata = self.testbed.runtime_metadata_prefixed();
-
-	// 	match &metadata.1 {
-	// 		RuntimeMetadata::V12(_v12) => {
-	// 			println!("Detected Substrate Runtime V12");
-	// 		}
-	// 		RuntimeMetadata::V13(_v13) => {
-	// 			println!("Detected Substrate Runtime V13");
-	// 		}
-	// 		RuntimeMetadata::V14(_v14) => {
-	// 			println!("Detected Substrate Runtime V14");
-	// 		}
-	// 		_ => return Err(eyre::eyre!("Unsupported metadata version")),
-	// 	};
-	// 	Ok(())
-	// }
-
 	pub fn write_metadata<O: Write>(
 		&self,
 		fmt: metadata_wrapper::OutputFormat,
@@ -72,80 +54,31 @@ impl Subwasm {
 		wrapper.write(fmt, filter, out)
 	}
 
-	// pub fn display_modules_list(&self) {
-	// 	let metadata = self.testbed.runtime_metadata_prefixed();
-	// 	let wrapper = MetadataWrapper(&metadata.1);
-	// 	wrapper.display_modules_list();
-	// }
-
-	pub fn display_reduced_runtime(&self, json: bool) {
+	pub fn display_reduced_runtime(&self, json: bool) -> anyhow::Result<()> {
 		let reduced_runtime: ReducedRuntime = self.testbed.metadata().into();
+
 		if json {
-			println!("{}", serde_json::to_string_pretty(&reduced_runtime).expect("Failed encoding reduced runtime"));
+			let serialized = serde_json::to_string_pretty(&reduced_runtime)?;
+			print_big_output_safe(&serialized)
 		} else {
-			println!("{reduced_runtime}");
+			print_big_output_safe(&reduced_runtime.to_string())
 		}
 	}
 
-	pub fn display_reduced_pallet(&self, pallet: &str, json: bool) {
+	pub fn display_reduced_pallet(&self, pallet: &str, json: bool) -> anyhow::Result<()> {
 		let reduced_runtime: ReducedRuntime = self.testbed.metadata().into();
 		let pallet_maybe = reduced_runtime.get_pallet_by_name(pallet);
 
 		if let Some(reduced_pallet) = pallet_maybe {
 			if json {
-				println!("{}", serde_json::to_string_pretty(&reduced_pallet).expect("Failed encoding reduced runtime"));
+				let serialized = serde_json::to_string_pretty(&reduced_pallet)?;
+
+				print_big_output_safe(&serialized)
 			} else {
-				println!("{reduced_pallet}");
+				print_big_output_safe(&reduced_pallet.to_string())
 			}
 		} else {
-			println!("Pallet '{pallet}' not found.");
+			bail!("Pallet '{pallet}' not found.")
 		}
 	}
-
-	// /// Display the metadata as json
-	// pub fn display_metadata_json(&self) {
-	// 	let pallet_filter: Option<String> = None;
-	// 	let metadata = self.testbed.metadata();
-
-	// 	let serialized = if let Some(ref pallet) = pallet_filter {
-	// 		match metadata {
-	// 			RuntimeMetadata::V12(v12) => {
-	// 				let modules = convert(&v12.modules);
-
-	// 				let pallet_metadata = modules
-	// 					.iter()
-	// 					.find(|module| module.name == DecodeDifferent::Decoded(pallet.into()))
-	// 					.expect("pallet not found in metadata");
-	// 				serde_json::to_string_pretty(&pallet_metadata)
-	// 			}
-	// 			// RuntimeMetadata::V13(v13) => {
-	// 			// 	let pallet = v13
-	// 			// 		.modules
-	// 			// 		.iter()
-	// 			// 		.find(|m| &m.name == pallet)
-	// 			// 		.ok_or_else(|| eyre::eyre!("pallet not found in metadata"))?;
-	// 			// 	serde_json::to_string_pretty(&pallet)?
-	// 			// }
-	// 			_ => panic!("Unsupported metadata version"),
-	// 		}
-	// 	} else {
-	// 		serde_json::to_string_pretty(&metadata)
-	// 	};
-
-	// 	// The following fails if piped to another command that truncates the output.
-	// 	// Typical use case here is: subwasm meta | head
-	// 	// The failure is due to https://github.com/rust-lang/rust/issues/46016
-	// 	// TODO: Once the above is fixed, we can remove the dependency on calm_io
-	// 	// println!("{}", serialized);
-
-	// 	let serialized = serialized.unwrap();
-	// 	let _ = match stdoutln!("{}", serialized) {
-	// 		Ok(_) => Ok(()),
-	// 		Err(e) => match e.kind() {
-	// 			std::io::ErrorKind::BrokenPipe => Ok(()),
-	// 			_ => Err(e),
-	// 		},
-	// 	};
-	// 	wrapper.write(fmt, filter, out)
-	// }
 }

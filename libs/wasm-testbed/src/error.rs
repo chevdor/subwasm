@@ -1,4 +1,4 @@
-use std::fmt;
+use std::{error::Error, fmt};
 
 pub type Result<T> = std::result::Result<T, WasmTestbedError>;
 
@@ -9,6 +9,8 @@ pub enum WasmTestbedError {
 	Calling(String),
 	Decoding(Vec<u8>),
 }
+
+impl Error for WasmTestbedError {}
 
 impl fmt::Display for WasmTestbedError {
 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
