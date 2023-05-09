@@ -1,6 +1,5 @@
 use super::{raw_differ_options::RawDifferOptions, skip_counter::SkipCounter};
 use crate::{
-	call_wrapper::CallWrapper,
 	differs::{
 		change_counter::{ChangeCounter, ChangeType},
 		json_utils::json_collapse_byte_arrays,
