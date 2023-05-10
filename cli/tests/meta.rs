@@ -16,11 +16,6 @@ mod cli_tests {
 			assert.success().code(0);
 		}
 
-		// todo: test/fix following
-		// c run -- meta --chain wnd -f json | head        # OK
-		// c run -- meta --chain wnd -f scale | head       # FAIL
-		// c run -- meta --chain wnd -f hex+scale | head    # FIXED
-		// c run -- meta --chain wnd -f json+scale | head   # FIXED
 		// #[test]
 		// fn it_shows_when_piped() {
 		// 	// let mut cmd = AssertCommand::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();

@@ -1,11 +1,9 @@
-use std::io::Write;
-
+use crate::{convert::convert, utils::print_big_output_safe, write_module, write_v14_meta};
 use color_eyre::eyre::eyre;
 use frame_metadata::{RuntimeMetadata, RuntimeMetadataPrefixed};
 use log::debug;
 use scale_info::scale::Encode;
-
-use crate::{convert::convert, utils::print_big_output_safe, write_module, write_v14_meta};
+use std::io::Write;
 
 /// The output format for the metadata
 #[derive(Debug, Clone, Copy)]
@@ -59,40 +57,38 @@ impl<'a> MetadataWrapper<'a> {
 					self.write_modules_list(out)?;
 				}
 			}
-			OutputFormat::Json => {
-				if filter.is_some() {
-					return Err(eyre!("Cannot filter metadata in json format"));
-				} else {
-					let serialized = serde_json::to_string_pretty(self.runtime_metadata())?;
-					let _ = print_big_output_safe(&serialized);
-				}
+
+			OutputFormat::Json if filter.is_none() => {
+				let serialized = serde_json::to_string_pretty(self.runtime_metadata())?;
+				let _ = print_big_output_safe(&serialized);
 			}
-			OutputFormat::Scale => {
-				if filter.is_some() {
-					return Err(eyre!("Cannot filter metadata in scale format"));
-				} else {
-					out.write_all(&self.runtime_metadata_prefixed().encode())?;
-				}
+
+			OutputFormat::Scale if filter.is_none() => {
+				match out.write_all(&self.runtime_metadata_prefixed().encode()) {
+					Ok(_) => {}
+					Err(_) => {} // Silence broken pipe errors
+				};
 			}
-			OutputFormat::HexScale => {
-				if filter.is_some() {
-					return Err(eyre!("Cannot filter metadata in hex+scale format"));
-				} else {
-					let encoded = self.runtime_metadata_prefixed().encode();
-					let hexscale = format!("0x{}", hex::encode(encoded));
-					let _ = print_big_output_safe(&hexscale);
-				}
+
+			OutputFormat::HexScale if filter.is_none() => {
+				let encoded = self.runtime_metadata_prefixed().encode();
+				let hexscale = format!("0x{}", hex::encode(encoded));
+				let _ = print_big_output_safe(&hexscale);
 			}
-			OutputFormat::JsonScale => {
-				if filter.is_some() {
-					return Err(eyre!("Cannot filter metadata in json+scale format"));
-				} else {
-					let encoded = self.runtime_metadata_prefixed().encode();
-					let hex = format!("0x{}", hex::encode(encoded));
-					let json = serde_json::to_string_pretty(&serde_json::json!({ "result": hex }))?;
-					let _ = print_big_output_safe(&json);
-				}
+
+			OutputFormat::JsonScale if filter.is_none() => {
+				let encoded = self.runtime_metadata_prefixed().encode();
+				let hex = format!("0x{}", hex::encode(encoded));
+				let serialized = serde_json::to_string_pretty(&serde_json::json!({ "result": hex }))?;
+				let _ = print_big_output_safe(&serialized);
 			}
+
+			OutputFormat::Json | OutputFormat::Scale | OutputFormat::HexScale | OutputFormat::JsonScale
+				if filter.is_some() =>
+			{
+				return Err(eyre!("Cannot filter metadata for this format"));
+			}
+			_ => unreachable!(),
 		}
 		Ok(())
 	}
