@@ -1,7 +1,7 @@
 use std::io::Write;
 
 use color_eyre::eyre::eyre;
-use frame_metadata::RuntimeMetadata;
+use frame_metadata::{RuntimeMetadata, RuntimeMetadataPrefixed};
 use log::debug;
 use scale_info::scale::Encode;
 
@@ -35,7 +35,7 @@ impl<S: AsRef<str>> From<S> for OutputFormat {
 	}
 }
 
-pub struct MetadataWrapper<'a>(pub &'a RuntimeMetadata);
+pub struct MetadataWrapper<'a>(pub &'a RuntimeMetadataPrefixed);
 
 impl<'a> MetadataWrapper<'a> {
 	pub fn write<O: Write>(&self, fmt: OutputFormat, filter: Option<String>, out: &mut O) -> color_eyre::Result<()> {
@@ -89,7 +89,7 @@ impl<'a> MetadataWrapper<'a> {
 	/// Starting with V12, modules are identified by indexes so
 	/// the order they appear in the metadata no longer matters and we sort them by indexes.
 	pub fn write_modules_list<O: Write>(&self, out: &mut O) -> color_eyre::Result<()> {
-		match &self.0 {
+		match &self.0 .1 {
 			RuntimeMetadata::V12(v12) => {
 				let mut modules = convert(&v12.modules).clone();
 				modules.sort_by(|a, b| a.index.cmp(&b.index));
@@ -121,7 +121,7 @@ impl<'a> MetadataWrapper<'a> {
 	pub fn write_single_module<O: Write>(&self, filter: &str, out: &mut O) -> color_eyre::Result<()> {
 		debug!("metadata_wapper::write_module with filter: {:?}", filter);
 
-		match &self.0 {
+		match &self.0 .1 {
 			RuntimeMetadata::V12(v12) => {
 				write_module!(convert(&v12.modules), filter, out);
 			}
