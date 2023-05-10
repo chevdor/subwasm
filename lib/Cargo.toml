@@ -4,41 +4,40 @@ version.workspace = true
 edition.workspace = true
 authors.workspace = true
 
-homepage = "https://github.com/chevdor/subwasm"
-keywords = [
-    "wasm",
-    "cli",
-    "substrate",
-    "blockchain",
-    "runtime",
-    "polkadot",
-    "kusama",
-]
-license = "MIT"
 readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/chevdor/subwasm"
 repository = "https://github.com/chevdor/subwasm"
+keywords = [
+	"wasm",
+	"cli",
+	"substrate",
+	"blockchain",
+	"runtime",
+	"polkadot",
+	"kusama",
+]
 
 [dependencies]
-color-eyre = "0.6"
 frame-metadata = { version = "15", package = "frame-metadata", features = [
-    "v12",
-    "v13",
-    "v14",
-    "std",
+	"v12",
+	"v13",
+	"v14",
+	"std",
 ] }
-ipfs-hasher = { version = "1.0.0-alpha6", path = "../libs/ipfs-hasher" }
 log = "0.4"
-num-format = "0.4"
+hex = "0.4"
 rand = "0.8"
-scale-info = { version = "2.1", default-features = false, features = [
-    "derive",
-] }
-serde = { version = "1.0", features = ["derive"] }
+calm_io = "0.1"
+thiserror = "1.0"
+num-format = "0.4"
 serde_json = "1.0"
-substrate-differ = { version = "1.0.0-alpha6", path = "../libs/substrate-differ" }
+serde = { version = "1.0", features = ["derive"] }
+scale-info = { version = "2.1", default-features = false, features = [
+	"derive",
+] }
+sp-version = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
+ipfs-hasher = { version = "1.0.0-alpha6", path = "../libs/ipfs-hasher" }
 wasm-loader = { version = "1.0.0-alpha6", path = "../libs/wasm-loader" }
 wasm-testbed = { version = "1.0.0-alpha6", path = "../libs/wasm-testbed" }
-sp-version = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
-hex = "0.4"
-anyhow = "1.0"
-calm_io = "0.1"
+substrate-differ = { version = "1.0.0-alpha6", path = "../libs/substrate-differ" }

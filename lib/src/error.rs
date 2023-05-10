@@ -1,12 +1,72 @@
-use std::fmt;
+use thiserror::Error;
+use wasm_loader::WasmLoaderError;
+use wasm_testbed::WasmTestbedError;
 
-#[derive(Debug, Clone)]
-pub enum Error {
-	// Generic,
+pub type Result<T> = std::result::Result<T, SubwasmLibError>;
+
+#[derive(Error, Debug)]
+pub enum SubwasmLibError {
+	#[error("The following pallet was not found: `{0}`")]
+	PalletNotFound(String),
+
+	#[error("The following item was not found: `{0}`")]
+	NotFound(String),
+
+	#[error("Not metadata found")]
+	NoMetadataFound(),
+
+	#[error("The input is already compressed")]
+	AlreadyCompressed(),
+
+	#[error("The compression failed")]
+	CompressionFailed(),
+
+	#[error("The decompression failed")]
+	DecompressionFailed(),
+
+	#[error("Unsupported variant")]
+	UnsupportedVariant(),
+
+	#[error("Unsupported Runtime version. Subwasm supports V12 and above")]
+	UnsupportedRuntimeVersion(),
+
+	/// (name, hint)
+	#[error("Error parsing `{0}`.{1}")]
+	Parsing(String, String),
+
+	#[error("i/o error")]
+	Io,
+
+	#[error("Generic error")]
+	Generic(String),
+
+	#[error("Cannot filter with this format")]
+	UnsupportedFilter(),
+
+	#[error("Unknown error")]
+	Unknown(),
 }
 
-impl fmt::Display for Error {
-	fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-		write!(fmt, "{self:?}")
+impl From<std::io::Error> for SubwasmLibError {
+	fn from(_e: std::io::Error) -> Self {
+		SubwasmLibError::Unknown()
+	}
+}
+
+impl From<WasmTestbedError> for SubwasmLibError {
+	fn from(_e: WasmTestbedError) -> Self {
+		SubwasmLibError::Generic("WasmTestbedError".to_string())
+	}
+}
+
+impl From<WasmLoaderError> for SubwasmLibError {
+	fn from(_e: WasmLoaderError) -> Self {
+		SubwasmLibError::Generic("WasmLoaderError".to_string())
+	}
+}
+
+impl From<serde_json::Error> for SubwasmLibError {
+	fn from(_e: serde_json::Error) -> Self {
+		SubwasmLibError::Generic("SerdeJsonError".to_string())
 	}
 }

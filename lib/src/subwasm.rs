@@ -1,15 +1,14 @@
 use std::io::Write;
-
-use crate::{
-	metadata_wrapper::{self, MetadataWrapper},
-	utils::print_big_output_safe,
-	RuntimeInfo,
-};
-
-use anyhow::bail;
 use substrate_differ::differs::reduced::reduced_runtime::ReducedRuntime;
 use wasm_loader::Source;
 use wasm_testbed::{WasmTestBed, WasmTestbedError};
+
+use crate::{
+	error,
+	metadata_wrapper::{self, MetadataWrapper},
+	utils::print_big_output_safe,
+	RuntimeInfo, SubwasmLibError,
+};
 
 pub struct Subwasm {
 	testbed: WasmTestBed,
@@ -48,13 +47,13 @@ impl Subwasm {
 		fmt: metadata_wrapper::OutputFormat,
 		filter: Option<String>,
 		out: &mut O,
-	) -> color_eyre::Result<()> {
+	) -> error::Result<()> {
 		let metadata = self.testbed.runtime_metadata_prefixed();
 		let wrapper = MetadataWrapper(metadata);
 		wrapper.write(fmt, filter, out)
 	}
 
-	pub fn display_reduced_runtime(&self, json: bool) -> anyhow::Result<()> {
+	pub fn display_reduced_runtime(&self, json: bool) -> error::Result<()> {
 		let reduced_runtime: ReducedRuntime = self.testbed.metadata().into();
 
 		if json {
@@ -65,20 +64,21 @@ impl Subwasm {
 		}
 	}
 
-	pub fn display_reduced_pallet(&self, pallet: &str, json: bool) -> anyhow::Result<()> {
+	pub fn display_reduced_pallet(&self, pallet: &str, json: bool) -> error::Result<()> {
 		let reduced_runtime: ReducedRuntime = self.testbed.metadata().into();
 		let pallet_maybe = reduced_runtime.get_pallet_by_name(pallet);
 
 		if let Some(reduced_pallet) = pallet_maybe {
 			if json {
-				let serialized = serde_json::to_string_pretty(&reduced_pallet)?;
+				let serialized = serde_json::to_string_pretty(&reduced_pallet)
+					.map_err(|_| error::SubwasmLibError::Generic(reduced_pallet.name.clone()))?;
 
 				print_big_output_safe(&serialized)
 			} else {
 				print_big_output_safe(&reduced_pallet.to_string())
 			}
 		} else {
-			bail!("Pallet '{pallet}' not found.")
+			Err(SubwasmLibError::PalletNotFound(pallet.to_string()))
 		}
 	}
 }

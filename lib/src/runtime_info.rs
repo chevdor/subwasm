@@ -6,6 +6,8 @@ use std::fmt::Display;
 use wasm_loader::Compression;
 use wasm_testbed::{ReservedMeta, WasmTestBed};
 
+use crate::error;
+
 #[derive(Debug, Serialize)]
 pub struct RuntimeInfo {
 	size: usize,
@@ -42,16 +44,17 @@ impl RuntimeInfo {
 
 	/// Print the RuntimeInfo either using the Display impl
 	/// or serde as json.
-	pub fn print(&self, json: bool) {
+	pub fn print(&self, json: bool) -> error::Result<()> {
 		if json {
 			let serialized = serde_json::to_string_pretty(self).unwrap();
 			println!("{serialized}");
 		} else {
 			println!("{self}");
 		}
+		Ok(())
 	}
 
-	pub fn print_version(&self, json: bool) {
+	pub fn print_version(&self, json: bool) -> error::Result<()> {
 		if json {
 			let serialized = serde_json::to_string_pretty(&self.core_version).unwrap();
 			println!("{serialized}");
@@ -61,6 +64,7 @@ impl RuntimeInfo {
 			println!("transaction    : v{}", self.core_version.transaction_version);
 			println!("authoring      : v{}", self.core_version.authoring_version);
 		}
+		Ok(())
 	}
 }
 

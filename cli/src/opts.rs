@@ -145,7 +145,8 @@ pub struct MetaOpts {
 	#[clap(short, long)]
 	pub block: Option<BlockRef>,
 
-	/// You may specifiy the output format. One of "human", "scale", "json", "json+scale", "hex+scale"
+	/// You may specifiy the output format. One of "human", "scale", "json", "json+scale", "hex+scale".
+	/// If you use the default: human, you may want to check out the "show_reduced" command instead.
 	#[clap(long, short, default_value = "human")]
 	pub format: Option<String>,
 

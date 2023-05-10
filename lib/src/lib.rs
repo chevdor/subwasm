@@ -1,13 +1,4 @@
 #![allow(clippy::derive_partial_eq_without_eq)]
-use anyhow::Result;
-use color_eyre::eyre::eyre;
-// use std::path::Path;
-// use std::{fs::File, path::PathBuf};
-// use std::{io::prelude::*, str::FromStr};
-// use substrate_differ::differs::raw_differ::RawDiffer;
-// use substrate_differ::differs::raw_differ_options::RawDifferOptions;
-// use substrate_differ::differs::summary_differ::RuntimeSummaryDiffer;
-use wasm_testbed::WasmTestBed;
 
 mod chain_info;
 mod chain_urls;
@@ -20,6 +11,7 @@ mod subwasm;
 mod types;
 mod utils;
 
+pub use error::*;
 use log::{debug, info};
 pub use metadata_wrapper::OutputFormat;
 use std::{
@@ -31,6 +23,7 @@ use std::{
 pub use substrate_differ::differs::diff_method::DiffMethod;
 use substrate_differ::differs::reduced::{reduced_diff_result::ReducedDiffResult, reduced_runtime::ReducedRuntime};
 use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, WasmLoader};
+use wasm_testbed::WasmTestBed;
 
 pub use chain_info::*;
 pub use runtime_info::*;
@@ -75,11 +68,16 @@ pub fn get_source(chain: Option<&str>, source: Source, block_ref: Option<String>
 }
 
 /// Fetch the runtime from a node and store the wasm locally
-pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<PathBuf>) -> color_eyre::Result<()> {
+pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<PathBuf>) -> Result<()> {
 	let url = match url {
 		url if url.starts_with("ws") => NodeEndpoint::WebSocket(url.to_string()),
 		url if url.starts_with("http") => NodeEndpoint::Http(url.to_string()),
-		_ => return Err(eyre!("The url should either start with http or ws")),
+		_ => {
+			return Err(SubwasmLibError::Parsing(
+				url.to_string(),
+				"The url should either start with http or ws".to_string(),
+			));
+		}
 	};
 
 	let reference = OnchainBlock { endpoint: url, block_ref };
@@ -116,7 +114,6 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 	Ok(())
 }
 
-//todo: return Result and no expect
 pub fn reduced_diff(src_a: Source, src_b: Source) -> Result<ReducedDiffResult> {
 	log::debug!("REDUCED: Loading WASM runtimes:");
 	log::info!("  🅰️  {:?}", src_a);
@@ -132,14 +129,15 @@ pub fn reduced_diff(src_a: Source, src_b: Source) -> Result<ReducedDiffResult> {
 
 /// Compress a given runtime into a new file. You cannot compress
 /// a runtime that is already compressed.
-pub fn compress(input: PathBuf, output: PathBuf) -> color_eyre::Result<()> {
+pub fn compress(input: PathBuf, output: PathBuf) -> Result<()> {
 	let wasm = WasmLoader::load_from_source(&Source::File(input))?;
 
 	if wasm.compression().compressed() {
-		return Err(eyre!("The input is already compressed"));
+		return Err(error::SubwasmLibError::AlreadyCompressed());
 	}
 
-	let bytes_compressed = Compression::compress(wasm.original_bytes()).map_err(|e| eyre!(e))?;
+	let bytes_compressed =
+		Compression::compress(wasm.original_bytes()).map_err(|_e| error::SubwasmLibError::CompressionFailed())?;
 
 	debug!("original   = {:?}", wasm.original_bytes().len());
 	debug!("compressed = {:?}", bytes_compressed.len());
@@ -153,12 +151,13 @@ pub fn compress(input: PathBuf, output: PathBuf) -> color_eyre::Result<()> {
 
 /// Decompress a given runtime file. It is fine decompressing an already
 /// decompressed runtime, you will just get the same.
-pub fn decompress(input: PathBuf, output: PathBuf) -> color_eyre::Result<()> {
+pub fn decompress(input: PathBuf, output: PathBuf) -> Result<()> {
 	let wasm = WasmLoader::load_from_source(&Source::File(input))?;
 
 	let bytes_decompressed = match wasm.compression().compressed() {
 		false => wasm.original_bytes().clone(),
-		true => Compression::decompress(wasm.original_bytes()).map_err(|e| eyre!(e))?,
+		true => Compression::decompress(wasm.original_bytes())
+			.map_err(|_e| error::SubwasmLibError::DecompressionFailed())?,
 	};
 
 	debug!("original     = {:?}", wasm.original_bytes().len());

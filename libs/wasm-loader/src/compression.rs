@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::{WasmBytes, CODE_BLOB_BOMB_LIMIT};
+use crate::{error, WasmBytes, CODE_BLOB_BOMB_LIMIT};
 
 /// Stores compression information
 #[derive(Debug, Clone, Copy, Serialize)]
@@ -33,18 +33,18 @@ impl Compression {
 	}
 
 	/// Compress a runtime
-	pub fn compress(bytes: &[u8]) -> Result<WasmBytes, String> {
+	pub fn compress(bytes: &[u8]) -> error::Result<WasmBytes> {
 		match sp_maybe_compressed_blob::compress(bytes, CODE_BLOB_BOMB_LIMIT) {
 			Some(bytes) => Ok(bytes.to_vec()),
-			None => Err(String::from("Compression failed and returned nothing")),
+			None => Err(error::WasmLoaderError::CompressionFailed()),
 		}
 	}
 
 	/// Decompress a runtime
-	pub fn decompress(bytes: &[u8]) -> Result<WasmBytes, String> {
+	pub fn decompress(bytes: &[u8]) -> error::Result<WasmBytes> {
 		sp_maybe_compressed_blob::decompress(bytes, CODE_BLOB_BOMB_LIMIT)
 			.map(|res| res.to_vec())
-			.map_err(|err| err.to_string())
+			.map_err(|_err| error::WasmLoaderError::DecompressionFailed())
 	}
 }
 

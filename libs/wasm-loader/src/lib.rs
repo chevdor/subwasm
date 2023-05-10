@@ -7,20 +7,18 @@ mod onchain_block;
 mod source;
 
 pub use compression::Compression;
-use error::WasmLoaderError;
-use log::*;
-
-use serde::Deserialize;
-use std::fmt::Debug;
-use subrpcer::state;
-use tungstenite::Message;
-
+pub use error::WasmLoaderError;
 pub use node_endpoint::NodeEndpoint;
 pub use onchain_block::{BlockRef, OnchainBlock};
 pub use source::Source;
 
+use log::*;
+use serde::Deserialize;
+use std::fmt::Debug;
 use std::io::Read;
 use std::{fs::File, path::Path};
+use subrpcer::state;
+use tungstenite::Message;
 
 const CODE: &str = "0x3a636f6465"; // :code in hex
 pub const CODE_BLOB_BOMB_LIMIT: usize = 50 * 1024 * 1024;
@@ -40,7 +38,7 @@ pub struct WasmLoader {
 
 impl WasmLoader {
 	/// Fetch the wasm blob from a node
-	fn fetch_wasm(reference: &OnchainBlock) -> Result<WasmBytes, WasmLoaderError> {
+	fn fetch_wasm(reference: &OnchainBlock) -> error::Result<WasmBytes> {
 		#[derive(Deserialize)]
 		struct Response {
 			result: String,
@@ -60,24 +58,24 @@ impl WasmLoader {
 		let data = state::get_storage(0, CODE, block_ref);
 		let wasm_hex = match &reference.endpoint {
 			NodeEndpoint::Http(url) => {
-				map_err(ureq::post(url).send_json(data), WasmLoaderError::HttpClient())?
+				map_err(ureq::post(url).send_json(data), WasmLoaderError::HttpClient(url.to_string()))?
 					.into_json::<Response>()
 					.expect("unexpected response from node")
 					.result
 			}
 			NodeEndpoint::WebSocket(url) => {
-				let mut ws = map_err(tungstenite::connect(url), WasmLoaderError::WsClient())?.0;
+				let mut ws = map_err(tungstenite::connect(url), WasmLoaderError::WsClient(url.to_string()))?.0;
 
 				map_err(
 					ws.write_message(Message::Binary(serde_json::to_vec(&data).expect("invalid data"))),
-					WasmLoaderError::WsClient(),
+					WasmLoaderError::WsClient(url.to_string()),
 				)?;
 
 				let mut wasm_hex = None;
 
 				// One for Ping, one for response.
 				for _ in 0..2_u8 {
-					let Message::Text(t) = map_err(ws.read_message(), WasmLoaderError::WsClient())? else {
+					let Message::Text(t) = map_err(ws.read_message(), WasmLoaderError::WsClient(url.to_string()))? else {
 						continue
 
 					};
@@ -107,7 +105,7 @@ impl WasmLoader {
 	}
 
 	/// Load wasm from a node
-	fn load_from_node(reference: &OnchainBlock) -> Result<WasmBytes, WasmLoaderError> {
+	fn load_from_node(reference: &OnchainBlock) -> error::Result<WasmBytes> {
 		WasmLoader::fetch_wasm(reference)
 	}
 
@@ -131,12 +129,12 @@ impl WasmLoader {
 		}
 	}
 
-	pub fn load_from_bytes(bytes: CompressedMaybe, compression: Compression) -> Result<Self, WasmLoaderError> {
+	pub fn load_from_bytes(bytes: CompressedMaybe, compression: Compression) -> error::Result<Self> {
 		Ok(Self { bytes, compression })
 	}
 
 	/// Load the binary wasm from a file or from a running node via rpc
-	pub fn load_from_source(source: &Source) -> Result<Self, WasmLoaderError> {
+	pub fn load_from_source(source: &Source) -> error::Result<Self> {
 		log::debug!("Loading from {:?}", source);
 		let bytes = match source {
 			Source::File(f) => Ok(Self::load_from_file(f)),

@@ -60,7 +60,7 @@ impl WasmTestBed {
 
 		log::debug!("decoded_metadata bytes, length: {}", metadata.len());
 		if !WasmTestBed::is_substrate_wasm(&metadata) {
-			return Err(WasmTestbedError::Unsupported);
+			return Err(WasmTestbedError::UnsupportedRuntime);
 		}
 
 		// Self::print_magic_and_version(&metadata);

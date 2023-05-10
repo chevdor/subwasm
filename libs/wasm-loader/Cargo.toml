@@ -25,6 +25,7 @@ multibase = "0.9"
 multihash = "0.18"
 serde = { version = "1.0", features = ["derive"] }
 sp-maybe-compressed-blob = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate/" }
+thiserror = "1.0"
 
 # RPC components
 serde_json = { version = "1.0" }

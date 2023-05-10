@@ -39,25 +39,6 @@ impl Compatible for DiffAnalyzer {
 			.iter()
 			.map(|change| {
 				match change {
-					// ReducedRuntimeChange::Extrinsic(extrinsic) => {
-					// 	todo!("Extrinsic diff not implemented yet")
-					// 	// 		extrinsic.iter().map(|p| match p {
-					// 	// 	ReducedExtrinsicChange::Version(version) => {
-					// 	// 		// match versiopn {
-
-					// 	// 		// }
-					// 	// 		// TODO
-					// 	// 		true
-					// 	// 	},
-					// 	// 	ReducedExtrinsicChange::SignedExtensions(signed_extensions) => {
-					// 	// 		// match signed_extensions {
-
-					// 	// 			// }
-					// 	// 		// TODO
-					// 	// 		true
-					// 	// 	},
-					// 	// }).all(|x| x),
-					// }
 					ReducedRuntimeChange::Pallets(pallets) => pallets
 						.iter()
 						.map(|p| match p {
@@ -68,7 +49,26 @@ impl Compatible for DiffAnalyzer {
 							}
 						})
 						.all(|x| x),
-					_ => todo!(),
+					ReducedRuntimeChange::Extrinsic(_extrinsic) => {
+						todo!("Extrinsic diff not implemented yet and usually does not change")
+						// 	// 		extrinsic.iter().map(|p| match p {
+						// 	// 	ReducedExtrinsicChange::Version(version) => {
+						// 	// 		// match versiopn {
+
+						// 	// 		// }
+						// 	// 		// TODO
+						// 	// 		true
+						// 	// 	},
+						// 	// 	ReducedExtrinsicChange::SignedExtensions(signed_extensions) => {
+						// 	// 		// match signed_extensions {
+
+						// 	// 			// }
+						// 	// 		// TODO
+						// 	// 		true
+						// 	// 	},
+						// 	// }).all(|x| x),
+						// }
+					}
 				}
 			})
 			.all(|x| x)

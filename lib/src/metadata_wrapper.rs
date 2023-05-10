@@ -1,5 +1,4 @@
-use crate::{convert::convert, utils::print_big_output_safe, write_module, write_v14_meta};
-use color_eyre::eyre::eyre;
+use crate::{convert::convert, error, utils::print_big_output_safe, write_module, write_v14_meta};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadataPrefixed};
 use log::debug;
 use scale_info::scale::Encode;
@@ -46,7 +45,7 @@ impl<'a> MetadataWrapper<'a> {
 		&self.0.1
 	}
 
-	pub fn write<O: Write>(&self, fmt: OutputFormat, filter: Option<String>, out: &mut O) -> color_eyre::Result<()> {
+	pub fn write<O: Write>(&self, fmt: OutputFormat, filter: Option<String>, out: &mut O) -> error::Result<()> {
 		debug!("Writing metadata: fmt={:?}, filter={:?}", fmt, filter);
 
 		match fmt {
@@ -86,7 +85,7 @@ impl<'a> MetadataWrapper<'a> {
 			OutputFormat::Json | OutputFormat::Scale | OutputFormat::HexScale | OutputFormat::JsonScale
 				if filter.is_some() =>
 			{
-				return Err(eyre!("Cannot filter metadata for this format"));
+				return Err(error::SubwasmLibError::UnsupportedFilter());
 			}
 			_ => unreachable!(),
 		}
@@ -96,7 +95,7 @@ impl<'a> MetadataWrapper<'a> {
 	/// Display a simple list of the modules.
 	/// Starting with V12, modules are identified by indexes so
 	/// the order they appear in the metadata no longer matters and we sort them by indexes.
-	pub fn write_modules_list<O: Write>(&self, out: &mut O) -> color_eyre::Result<()> {
+	pub fn write_modules_list<O: Write>(&self, out: &mut O) -> error::Result<()> {
 		match self.runtime_metadata() {
 			RuntimeMetadata::V12(v12) => {
 				let mut modules = convert(&v12.modules).clone();
@@ -120,13 +119,13 @@ impl<'a> MetadataWrapper<'a> {
 					writeln!(out, " - {:02}: {}", pallet.index, pallet.name)
 				})?;
 			}
-			_ => return Err(eyre!("Runtime not supported. Subwasm supports V12 and above.")),
+			_ => return Err(error::SubwasmLibError::UnsupportedRuntimeVersion()),
 		};
 		Ok(())
 	}
 
 	/// Display a single module
-	pub fn write_single_module<O: Write>(&self, filter: &str, out: &mut O) -> color_eyre::Result<()> {
+	pub fn write_single_module<O: Write>(&self, filter: &str, out: &mut O) -> error::Result<()> {
 		debug!("metadata_wapper::write_module with filter: {:?}", filter);
 
 		match &self.runtime_metadata() {
@@ -144,7 +143,7 @@ impl<'a> MetadataWrapper<'a> {
 						let name_str = pallet.name.to_lowercase();
 						name_str == filter.to_lowercase()
 					})
-					.ok_or_else(|| eyre!("Pallet not found in metadata"))?;
+					.ok_or_else(|| error::SubwasmLibError::PalletNotFound(filter.to_string()))?;
 
 				writeln!(out, "Module {:02}: {}", meta.index, &meta.name)?;
 
@@ -169,7 +168,7 @@ impl<'a> MetadataWrapper<'a> {
 					writeln!(out, "- {}", item.name)?;
 				}
 			}
-			_ => return Err(eyre!("Runtime not supported")),
+			_ => return Err(error::SubwasmLibError::UnsupportedRuntimeVersion()),
 		};
 		Ok(())
 	}

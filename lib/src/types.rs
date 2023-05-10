@@ -1,5 +1,7 @@
 use log::debug;
-use std::{fmt::Display, str::FromStr};
+use std::str::FromStr;
+
+use crate::error::SubwasmLibError;
 
 /// A Filter struct initially planned to filter module/call
 /// While module is implemented, the filter on call is not and
@@ -12,34 +14,20 @@ pub struct Filter {
 	pub call: Option<String>,
 }
 
-#[derive(Debug)]
-pub enum Error {
-	Parsing(String),
-}
-
-impl Display for Error {
-	fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		match self {
-			Error::Parsing(m) => write!(fmt, "Filter parsing failed: {m}"),
-			// _ => write!(fmt, "Unknown error"),
-		}
-	}
-}
-
 impl FromStr for Filter {
-	type Err = Error;
+	type Err = SubwasmLibError;
 
 	fn from_str(input: &str) -> Result<Self, Self::Err> {
 		let input = input.to_lowercase();
 		if input.is_empty() {
-			return Err(Error::Parsing("Cannot have a filter without at least a module".to_string()));
+			return Err(SubwasmLibError::Parsing(input, "Cannot have a filter without at least a module".to_string()));
 		}
 
 		let mut chunks = input.split('.');
 		let module = chunks
 			.next()
 			.map(|s| s.to_string())
-			.ok_or_else(|| Error::Parsing("Cannot have a filter without at least a module".to_string()))?;
+			.ok_or_else(|| SubwasmLibError::Generic("Cannot have a filter without at least a module".to_string()))?;
 		let call = chunks.next().map(|s| s.to_string());
 
 		let result = Self { module, call };

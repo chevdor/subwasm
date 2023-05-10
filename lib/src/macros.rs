@@ -1,16 +1,14 @@
 #[macro_export]
 macro_rules! write_module {
 	($modules: expr, $filter: ident, $out: ident) => {
-		|| -> color_eyre::Result<()> {
-			use color_eyre::eyre::eyre;
-
+		|| -> error::Result<()> {
 			let meta = $modules
 				.iter()
 				.find(|module| {
 					let name_str = convert(&module.name).to_lowercase();
 					name_str == $filter.to_lowercase()
 				})
-				.ok_or_else(|| eyre!("pallet not found in metadata"))?;
+				.ok_or_else(|| error::SubwasmLibError::PalletNotFound($filter.to_string()))?;
 
 			writeln!($out, "Module {:02}: {}", meta.index, convert(&meta.name))?;
 
@@ -37,9 +35,7 @@ macro_rules! write_module {
 #[macro_export]
 macro_rules! write_v14_meta {
 	($v14: expr, $meta: expr, $type: ident, $out: ident) => {
-		|| -> color_eyre::Result<()> {
-			use color_eyre::eyre::eyre;
-
+		|| -> error::Result<()> {
 			if let Some(metadata) = &$meta.$type {
 				let type_id = metadata.ty.id;
 				// log::debug!("type_id: {:?}", type_id);
@@ -52,10 +48,10 @@ macro_rules! write_v14_meta {
 							write!($out, "- {:?}: {}\n", variant.index, variant.name)?;
 						}
 					}
-					o => return Err(eyre!("Unsupported variant: {:?}", o)),
+					_o => return Err(error::SubwasmLibError::UnsupportedVariant()),
 				}
 			} else {
-				return Err(eyre!("No metadata found\n"));
+				return Err(error::SubwasmLibError::NoMetadataFound());
 			}
 			Ok(())
 		}()?

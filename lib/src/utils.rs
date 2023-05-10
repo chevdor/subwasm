@@ -1,11 +1,11 @@
-use anyhow::bail;
+use crate::error::SubwasmLibError;
 
 // TODO: Once the lined issue is fixed, we can remove the dependency on calm_io
 /// There is a bug caused by printing big output to stdout.
 ///
 /// We need to take extra precautions due to the following bug:
 /// https://github.com/rust-lang/rust/issues/46016
-pub fn print_big_output_safe(s: &str) -> anyhow::Result<()> {
+pub fn print_big_output_safe(s: &str) -> Result<(), SubwasmLibError> {
 	// The following fails if piped to another command that truncates the output.
 	// println!("{}", s);
 	// Typical use cases here are:
@@ -15,7 +15,7 @@ pub fn print_big_output_safe(s: &str) -> anyhow::Result<()> {
 		Ok(_) => Ok(()),
 		Err(e) => match e.kind() {
 			std::io::ErrorKind::BrokenPipe => Ok(()),
-			_ => bail!(e),
+			_ => Err(SubwasmLibError::Io),
 		},
 	}
 }
