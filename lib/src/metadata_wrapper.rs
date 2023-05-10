@@ -53,21 +53,24 @@ impl<'a> MetadataWrapper<'a> {
 				if filter.is_some() {
 					return Err(eyre!("Cannot filter metadata in json format"));
 				} else {
-					serde_json::to_writer_pretty(out, &self.0 .1)?;
+					let runtime_metadata = &self.0 .1;
+					serde_json::to_writer_pretty(out, runtime_metadata)?;
 				}
 			}
 			OutputFormat::Scale => {
 				if filter.is_some() {
 					return Err(eyre!("Cannot filter metadata in scale format"));
 				} else {
-					out.write_all(&self.0.encode())?;
+					let runtime_metadata_prefixed = &self.0;
+					out.write_all(&runtime_metadata_prefixed.encode())?;
 				}
 			}
 			OutputFormat::HexScale => {
 				if filter.is_some() {
 					return Err(eyre!("Cannot filter metadata in hex+scale format"));
 				} else {
-					let encoded = self.0.encode();
+					let runtime_metadata_prefixed = &self.0;
+					let encoded = runtime_metadata_prefixed.encode();
 					write!(out, "0x{}", hex::encode(encoded))?;
 				}
 			}
@@ -75,7 +78,8 @@ impl<'a> MetadataWrapper<'a> {
 				if filter.is_some() {
 					return Err(eyre!("Cannot filter metadata in json+scale format"));
 				} else {
-					let encoded = self.0.encode();
+					let runtime_metadata_prefixed = &self.0;
+					let encoded = runtime_metadata_prefixed.encode();
 					let hex = format!("0x{}", hex::encode(encoded));
 					let json = serde_json::to_string_pretty(&serde_json::json!({ "result": hex }))?;
 					write!(out, "{json}")?;
