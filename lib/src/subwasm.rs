@@ -50,7 +50,7 @@ impl Subwasm {
 		out: &mut O,
 	) -> color_eyre::Result<()> {
 		let metadata = self.testbed.runtime_metadata_prefixed();
-		let wrapper = MetadataWrapper(&metadata.1);
+		let wrapper = MetadataWrapper(metadata);
 		wrapper.write(fmt, filter, out)
 	}
 
