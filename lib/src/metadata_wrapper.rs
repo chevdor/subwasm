@@ -38,6 +38,16 @@ impl<S: AsRef<str>> From<S> for OutputFormat {
 pub struct MetadataWrapper<'a>(pub &'a RuntimeMetadataPrefixed);
 
 impl<'a> MetadataWrapper<'a> {
+	/// Returns a ref to the inner `RuntimeMetadataPrefixed`
+	pub fn runtime_metadata_prefixed(&self) -> &RuntimeMetadataPrefixed {
+		self.0
+	}
+
+	/// Returns a ref to the inner `RuntimeMetadata`
+	pub fn runtime_metadata(&self) -> &RuntimeMetadata {
+		&self.0.1
+	}
+
 	pub fn write<O: Write>(&self, fmt: OutputFormat, filter: Option<String>, out: &mut O) -> color_eyre::Result<()> {
 		debug!("Writing metadata: fmt={:?}, filter={:?}", fmt, filter);
 
@@ -53,8 +63,7 @@ impl<'a> MetadataWrapper<'a> {
 				if filter.is_some() {
 					return Err(eyre!("Cannot filter metadata in json format"));
 				} else {
-					let runtime_metadata = &self.0.1;
-					let serialized = serde_json::to_string_pretty(runtime_metadata)?;
+					let serialized = serde_json::to_string_pretty(self.runtime_metadata())?;
 					let _ = print_big_output_safe(&serialized);
 				}
 			}
@@ -62,16 +71,14 @@ impl<'a> MetadataWrapper<'a> {
 				if filter.is_some() {
 					return Err(eyre!("Cannot filter metadata in scale format"));
 				} else {
-					let runtime_metadata_prefixed = &self.0;
-					out.write_all(&runtime_metadata_prefixed.encode())?;
+					out.write_all(&self.runtime_metadata_prefixed().encode())?;
 				}
 			}
 			OutputFormat::HexScale => {
 				if filter.is_some() {
 					return Err(eyre!("Cannot filter metadata in hex+scale format"));
 				} else {
-					let runtime_metadata_prefixed = &self.0;
-					let encoded = runtime_metadata_prefixed.encode();
+					let encoded = self.runtime_metadata_prefixed().encode();
 					let hexscale = format!("0x{}", hex::encode(encoded));
 					let _ = print_big_output_safe(&hexscale);
 				}
@@ -80,8 +87,7 @@ impl<'a> MetadataWrapper<'a> {
 				if filter.is_some() {
 					return Err(eyre!("Cannot filter metadata in json+scale format"));
 				} else {
-					let runtime_metadata_prefixed = &self.0;
-					let encoded = runtime_metadata_prefixed.encode();
+					let encoded = self.runtime_metadata_prefixed().encode();
 					let hex = format!("0x{}", hex::encode(encoded));
 					let json = serde_json::to_string_pretty(&serde_json::json!({ "result": hex }))?;
 					let _ = print_big_output_safe(&json);
@@ -95,7 +101,7 @@ impl<'a> MetadataWrapper<'a> {
 	/// Starting with V12, modules are identified by indexes so
 	/// the order they appear in the metadata no longer matters and we sort them by indexes.
 	pub fn write_modules_list<O: Write>(&self, out: &mut O) -> color_eyre::Result<()> {
-		match &self.0 .1 {
+		match self.runtime_metadata() {
 			RuntimeMetadata::V12(v12) => {
 				let mut modules = convert(&v12.modules).clone();
 				modules.sort_by(|a, b| a.index.cmp(&b.index));
@@ -127,7 +133,7 @@ impl<'a> MetadataWrapper<'a> {
 	pub fn write_single_module<O: Write>(&self, filter: &str, out: &mut O) -> color_eyre::Result<()> {
 		debug!("metadata_wapper::write_module with filter: {:?}", filter);
 
-		match &self.0 .1 {
+		match &self.runtime_metadata() {
 			RuntimeMetadata::V12(v12) => {
 				write_module!(convert(&v12.modules), filter, out);
 			}

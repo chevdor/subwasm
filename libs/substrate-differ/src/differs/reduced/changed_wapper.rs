@@ -12,16 +12,16 @@ type Change = MapChange<PalletId, ReducedPalletDesc, Vec<ReducedPalletChange>>;
 impl ChangedWrapper {
 	//todo
 	// pub fn get_pallets_changes(&self) -> &Vec<Change> {
-	// 	// &self.0.changes.pallets
-	// 	match &self.0.changes {
+	// 	// &self.runtime_metadata().changes.pallets
+	// 	match &self.runtime_metadata().changes {
 	// 		super::reduced_runtime::ReducedRuntimeChange::Extrinsic(_) => &vec![],
 	// 		super::reduced_runtime::ReducedRuntimeChange::Pallets(p) => p,
 	// 	}
 	// }
 
 	// pub fn get_extrinsic_changes(&self) -> &Vec<Change> {
-	// 	// &self.0.changes.pallets
-	// 	match &self.0.changes {
+	// 	// &self.runtime_metadata().changes.pallets
+	// 	match &self.runtime_metadata().changes {
 	// 		super::reduced_runtime::ReducedRuntimeChange::Extrinsics(_) => &vec![],
 	// 		super::reduced_runtime::ReducedRuntimeChange::Pallets(p) => p,
 	// 	}
