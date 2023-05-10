@@ -53,7 +53,7 @@ impl<'a> MetadataWrapper<'a> {
 				if filter.is_some() {
 					return Err(eyre!("Cannot filter metadata in json format"));
 				} else {
-					serde_json::to_writer_pretty(out, &self.0)?;
+					serde_json::to_writer_pretty(out, &self.0 .1)?;
 				}
 			}
 			OutputFormat::Scale => {
