@@ -32,3 +32,6 @@ serde_json = { version = "1.0" }
 subrpcer = { version = "0.10" }
 tungstenite = { version = "0.19", features = ["rustls-tls-native-roots"] }
 ureq = { version = "2.6", features = ["json"] }
+
+[dev-dependencies]
+assert_cmd = "2.0"

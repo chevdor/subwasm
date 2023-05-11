@@ -131,10 +131,12 @@ mod prop_hash_tests {
 		);
 	}
 
+	// todo: sporadic errors
 	#[test]
 	fn test_custom_parachain_upgrade() {
 		env::set_var(PARACHAIN_PALLET_ID_ENV, "0x32");
 		env::set_var(AUTHORIZE_UPGRADE_PREFIX_ENV, DEFAULT_AUTHORIZE_UPGRADE_PREFIX);
+
 		assert_eq!(
 			get_parachainsystem_authorize_upgrade(&[
 				0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f

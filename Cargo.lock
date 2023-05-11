@@ -4198,6 +4198,7 @@ name = "wasm-loader"
 version = "1.0.0-alpha6"
 dependencies = [
  "array-bytes 6.1.0",
+ "assert_cmd",
  "log",
  "multibase 0.9.1",
  "multihash 0.18.1",

@@ -165,29 +165,57 @@ impl WasmLoader {
 }
 
 #[cfg(test)]
-mod tests {
+pub mod tests {
 	use super::*;
 	use std::env;
 
-	// fn get_http_node() -> String {
-	// 	env::var("POLKADOT_HTTP").unwrap_or_else(|_| "http://localhost:9933".to_string())
-	// }
+	#[cfg(test)]
+	pub fn ensure_local_wasm() -> String {
+		use assert_cmd::Command;
+		use std::path::PathBuf;
 
-	fn get_ws_node() -> String {
-		env::var("POLKADOT_WS").unwrap_or_else(|_| "ws://localhost:9944".to_string())
+		const MAX_RETRIES: u8 = 10;
+		const WASM_FILE: &str = "/tmp/runtime.wasm";
+		let mut retry = 0;
+
+		let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
+
+		if PathBuf::from(WASM_FILE).exists() {
+			return WASM_FILE.to_string();
+		} else {
+			while retry < MAX_RETRIES {
+				let assert = cmd.args(["get", "wss://rpc.polkadot.io:443", "--output", WASM_FILE]).assert();
+
+				if assert.try_success().is_ok() {
+					return String::from(WASM_FILE);
+				}
+
+				retry += 1
+			}
+		}
+
+		panic!("Failed fetching a runtime")
+	}
+
+	fn get_ws_node(archive: bool) -> String {
+		if !archive {
+			env::var("POLKADOT_WS").unwrap_or_else(|_| "ws://localhost:9944".to_string())
+		} else {
+			env::var("POLKADOT_WS_ARCHIVE").unwrap_or_else(|_| "ws://localhost:9944".to_string())
+		}
 	}
 
 	#[test]
-	#[ignore = "needs node"]
+	#[ignore = "need node"]
 	fn fetch_should_work() {
 		assert!(WasmLoader::fetch_wasm(&OnchainBlock::new("https://rpc.polkadot.io", None)).is_ok());
 		assert!(WasmLoader::fetch_wasm(&OnchainBlock::new("wss://rpc.polkadot.io", None)).is_ok());
 	}
 
 	#[test]
-	#[ignore = "needs node"]
+	#[ignore = "need node"]
 	fn it_fetches_a_wasm_from_node_via_ws() {
-		let url = get_ws_node();
+		let url = get_ws_node(false);
 		println!("Connecting to {:?}", &url);
 		let reference = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: None };
 		let loader = WasmLoader::load_from_source(&Source::Chain(reference)).unwrap();
@@ -197,9 +225,9 @@ mod tests {
 	}
 
 	#[test]
-	#[ignore = "needs node"]
+	#[ignore = "need node"]
 	fn it_fetches_the_compressed_runtime() {
-		let url = get_ws_node();
+		let url = get_ws_node(false);
 		println!("Connecting to {:?}", &url);
 		let reference = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: None };
 		let loader = WasmLoader::load_from_source(&Source::Chain(reference)).unwrap();
@@ -212,11 +240,11 @@ mod tests {
 	}
 
 	#[test]
-	#[ignore = "needs node"]
+	#[ignore = "need archive node"]
 	fn it_fetches_wasm_from_a_given_block() {
 		const POLKADOT_BLOCK20: &str = "0x4d6a0bca208b85d41833a7f35cf73d1ae6974f4bad8ab576e2c3f751d691fe6c"; // Polkadot Block #20
 
-		let url = get_ws_node();
+		let url = get_ws_node(true);
 		println!("Connecting to {:?}", &url);
 		let latest = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url.clone()), block_ref: None };
 		let older =
