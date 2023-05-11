@@ -53,7 +53,7 @@ impl<'a> MetadataWrapper<'a> {
 				if filter.is_some() {
 					return Err(eyre!("Cannot filter metadata in json format"));
 				} else {
-					let runtime_metadata = &self.0.1;
+					let runtime_metadata = &self.0 .1;
 					serde_json::to_writer_pretty(out, runtime_metadata)?;
 				}
 			}
@@ -93,7 +93,7 @@ impl<'a> MetadataWrapper<'a> {
 	/// Starting with V12, modules are identified by indexes so
 	/// the order they appear in the metadata no longer matters and we sort them by indexes.
 	pub fn write_modules_list<O: Write>(&self, out: &mut O) -> color_eyre::Result<()> {
-		match &self.0.1 {
+		match &self.0 .1 {
 			RuntimeMetadata::V12(v12) => {
 				let mut modules = convert(&v12.modules).clone();
 				modules.sort_by(|a, b| a.index.cmp(&b.index));
@@ -125,7 +125,7 @@ impl<'a> MetadataWrapper<'a> {
 	pub fn write_single_module<O: Write>(&self, filter: &str, out: &mut O) -> color_eyre::Result<()> {
 		debug!("metadata_wapper::write_module with filter: {:?}", filter);
 
-		match &self.0.1 {
+		match &self.0 .1 {
 			RuntimeMetadata::V12(v12) => {
 				write_module!(convert(&v12.modules), filter, out);
 			}

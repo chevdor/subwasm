@@ -42,7 +42,11 @@ pub fn get_url(chain: Option<&str>, reference: &OnchainBlock) -> String {
 	let url = reference.endpoint.to_string();
 	let node_url = get_node_url(chain);
 
-	if let Some(chain_url) = node_url { chain_url } else { url }
+	if let Some(chain_url) = node_url {
+		chain_url
+	} else {
+		url
+	}
 }
 
 /// Get the Source of some wasm based on the user's input
