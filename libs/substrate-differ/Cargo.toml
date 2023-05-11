@@ -4,34 +4,36 @@ version.workspace = true
 edition.workspace = true
 authors.workspace = true
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-frame-metadata = { version = "15", package = "frame-metadata", features = [
-    "v12",
-    "v13",
-    "v14",
-    "std",
-] }
 log = "0.4"
 num-format = "0.4"
-serde = { version = "1.0", features = ["derive", "rc"] }
 serde_json = "1.0"
+document-features = { version = "0.2" }
+serde = { version = "1.0", features = ["derive", "rc"] }
+comparable = { version = ">=0.5.3", features = ["derive", "serde"] }
 wasm-testbed = { version = "1.0.0-alpha6", path = "../wasm-testbed" }
 scale-info = { version = "2.1.2", default-features = false, features = [
-    "derive",
-    "std",
-    "serde",
+	"derive",
+	"std",
+	"serde",
 ] }
-document-features = { version = "0.2" }
-comparable = { version = ">=0.5.3", features = ["derive", "serde"] }
+frame-metadata = { version = "15", package = "frame-metadata", features = [
+	"v12",
+	"v13",
+	"v14",
+	"std",
+] }
 
 [dev-dependencies]
 wasm-loader = { version = "1.0.0-alpha6", path = "../wasm-loader" }
 
 [features]
-## The default feature currently hides feature that are deprecated
+## The default feature currently excludes feature that are deprecated
 default = ["v14", "reduced"]
+deprecated = ["v12", "v13"]
+
+## v12 runtimes
+v12 = []
 
 ## v13 runtimes
 v13 = []

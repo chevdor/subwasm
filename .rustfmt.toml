@@ -1,4 +1,5 @@
-version = "Two"
+# The cli is not stable yet
+# version = "Two"
 hard_tabs = true
 max_width = 120
 use_small_heuristics = "Max"

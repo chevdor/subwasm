@@ -5,30 +5,23 @@ edition.workspace = true
 authors.workspace = true
 homepage = "https://github.com/chevdor/subwasm"
 keywords = [
-    "wasm",
-    "cli",
-    "substrate",
-    "blockchain",
-    "runtime",
-    "polkadot",
-    "kusama",
+	"wasm",
+	"cli",
+	"substrate",
+	"blockchain",
+	"runtime",
+	"polkadot",
+	"kusama",
 ]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
 
 [dependencies]
-scale-info = { version = "2.1", default-features = false, features = [
-    "derive",
-] }
-frame-metadata = { version = "15", package = "frame-metadata", features = [
-    "v12",
-    "v13",
-    "v14",
-    "std",
-] }
 hex = "0.4"
 log = "0.4"
+thiserror = "1.0"
+wasm-loader = { version = "1.0.0-alpha6", path = "../wasm-loader" }
 sc-executor = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 sc-executor-common = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 scale = { version = "3.1", package = "parity-scale-codec", default-features = false }
@@ -38,6 +31,13 @@ sp-runtime = { tag = "monthly-2023-05", git = "https://github.com/paritytech/sub
 sp-state-machine = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 sp-wasm-interface = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 substrate-runtime-proposal-hash = { version = "1.0.0-alpha6", path = "../substrate-runtime-proposal-hash" }
-wasm-loader = { version = "1.0.0-alpha6", path = "../wasm-loader" }
 sp-version = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
-thiserror = "1.0"
+scale-info = { version = "2.1", default-features = false, features = [
+	"derive",
+] }
+frame-metadata = { version = "15", package = "frame-metadata", features = [
+	"v12",
+	"v13",
+	"v14",
+	"std",
+] }

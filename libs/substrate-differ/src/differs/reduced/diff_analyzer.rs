@@ -51,22 +51,22 @@ impl Compatible for DiffAnalyzer {
 						.all(|x| x),
 					ReducedRuntimeChange::Extrinsic(_extrinsic) => {
 						todo!("Extrinsic diff not implemented yet and usually does not change")
-						// 	// 		extrinsic.iter().map(|p| match p {
-						// 	// 	ReducedExtrinsicChange::Version(version) => {
-						// 	// 		// match versiopn {
+						// 		extrinsic.iter().map(|p| match p {
+						// 	ReducedExtrinsicChange::Version(version) => {
+						// 		// match versiopn {
 
-						// 	// 		// }
-						// 	// 		// TODO
-						// 	// 		true
-						// 	// 	},
-						// 	// 	ReducedExtrinsicChange::SignedExtensions(signed_extensions) => {
-						// 	// 		// match signed_extensions {
+						// 		// }
+						// 		// TODO
+						// 		true
+						// 	},
+						// 	ReducedExtrinsicChange::SignedExtensions(signed_extensions) => {
+						// 		// match signed_extensions {
 
-						// 	// 			// }
-						// 	// 		// TODO
-						// 	// 		true
-						// 	// 	},
-						// 	// }).all(|x| x),
+						// 			// }
+						// 		// TODO
+						// 		true
+						// 	},
+						// }).all(|x| x),
 						// }
 					}
 				}

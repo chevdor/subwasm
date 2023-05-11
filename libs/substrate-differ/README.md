@@ -1,5 +1,7 @@
 # Substrate Differ
 
+<!-- TODO: UPDATE THIS PAGE -->
+
 ## Overview
 
 This crate helps comparing/diffing 2 version of Substrate metadata or 2 Runtimes. A basic solution consists in serializing the metadata as a json string and comparing visually the ....16534 lines you will see. That is just not serioulsy doable.

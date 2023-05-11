@@ -42,7 +42,7 @@ impl<'a> MetadataWrapper<'a> {
 
 	/// Returns a ref to the inner `RuntimeMetadata`
 	pub fn runtime_metadata(&self) -> &RuntimeMetadata {
-		&self.0.1
+		&self.0 .1
 	}
 
 	pub fn write<O: Write>(&self, fmt: OutputFormat, filter: Option<String>, out: &mut O) -> error::Result<()> {

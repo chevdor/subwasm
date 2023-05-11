@@ -5,19 +5,19 @@ edition = "2021"
 
 [workspace]
 members = [
-    "cli",
-    "lib",
-    "libs/wasm-loader",
-    "libs/wasm-testbed",
-    "libs/substrate-runtime-proposal-hash",
-    "libs/substrate-differ",
-    "libs/ipfs-hasher",
+	"cli",
+	"lib",
+	"libs/wasm-loader",
+	"libs/wasm-testbed",
+	"libs/substrate-runtime-proposal-hash",
+	"libs/substrate-differ",
+	"libs/ipfs-hasher",
 ]
 
 # 59.31s
 [profile.production]
-codegen-units = 1
 inherits = "release"
 lto = true
-opt-level = "z"
 panic = "abort"
+opt-level = "z"
+codegen-units = 1

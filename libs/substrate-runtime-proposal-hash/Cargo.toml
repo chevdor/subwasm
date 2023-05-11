@@ -5,29 +5,29 @@ edition.workspace = true
 authors.workspace = true
 homepage = "https://github.com/chevdor/subwasm"
 keywords = [
-    "wasm",
-    "cli",
-    "substrate",
-    "blockchain",
-    "runtime",
-    "polkadot",
-    "kusama",
+	"wasm",
+	"cli",
+	"substrate",
+	"blockchain",
+	"runtime",
+	"polkadot",
+	"kusama",
 ]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
 
 [dependencies]
-frame-metadata = { package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main", features = [
-    "v12",
-    "v13",
-    "v14",
-    "std",
-] }
+hex = "0.4"
 blake2 = "0.10"
 codec = { version = "3.1", package = "parity-scale-codec" }
 sp-core = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 sp-io = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 sp-runtime = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 sp-wasm-interface = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
-hex = "0.4"
+frame-metadata = { package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main", features = [
+	"v12",
+	"v13",
+	"v14",
+	"std",
+] }

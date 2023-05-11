@@ -20,6 +20,7 @@ impl<'a, T: Serialize> RawDiffer<'a, T> {
 	}
 
 	// TODO: return a result object instead of just printing
+	// TODO: Remove that, this is useless
 	/// This is a raw comparison based on the json serialization of the metadata
 	pub fn compare(&self, options: RawDifferOptions) {
 		let mut recorder = Recorder::default();
