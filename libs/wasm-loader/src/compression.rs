@@ -63,16 +63,15 @@ mod tests_compression {
 	#[test]
 	fn test_compression() {
 		let bytes = vec![0, 42, 7, 27, 0, 0, 0, 27, 26, 27];
-		let compressed = Compression::compress(&bytes);
-		assert!(compressed.is_ok());
+		let compressed = Compression::compress(&bytes).unwrap();
 		assert_eq!(
-			Ok(vec![
+			vec![
 				82, 188, 83, 118, 70, 219, 142, 5, 40, 181, 47, 253, 0, 88, 81, 0, 0, 0, 42, 7, 27, 0, 0, 0, 27, 26, 27
-			]),
+			],
 			compressed
 		);
 
-		let decompressed = Compression::decompress(&compressed.unwrap());
+		let decompressed = Compression::decompress(&compressed);
 		assert_eq!(bytes, decompressed.unwrap());
 	}
 }
