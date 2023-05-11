@@ -77,14 +77,23 @@ md:
 
 release: check test_all bump demos doc md
 
-coverage:
+coverage_html:
 	#!/usr/bin/env bash
 	export RUSTFLAGS="-Zinstrument-coverage"
 	export LLVM_PROFILE_FILE="chevdor-%p-%m.profraw"
-	cargo +nightly build
 	cargo +nightly test
 	grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./target/debug/coverage/
 	open target/debug/coverage/index.html
+
+coverage_lcov:
+	#!/usr/bin/env bash
+	export RUSTFLAGS="-Zinstrument-coverage"
+	export LLVM_PROFILE_FILE="chevdor-%p-%m.profraw"
+	cargo +nightly test
+	grcov . -s . --binary-path ./target/debug/deps -t lcov --branch --ignore-not-existing --ignore '../*' -o ./target/debug/tests.lcov
+	# grcov . --binary-path ./target/debug/deps/ -s . -t lcov --branch --ignore-not-existing --ignore '../*' --ignore "/*" -o coverage/tests.lcov
+
+clean_coverage:
 	find . -type f -name '*.profraw' -exec rm '{}' \;
 
 tag:

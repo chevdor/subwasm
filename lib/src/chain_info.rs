@@ -111,4 +111,10 @@ mod tests {
 		let endpoint = info.get_random_url(Some(EndpointType::WesbSocket)).unwrap();
 		assert!(endpoint.starts_with("ws"));
 	}
+
+	#[test]
+	fn test_chain_info() {
+		let ci = ChainInfo::from_str("polkadot").unwrap();
+		assert!(!ci.endpoints.is_empty());
+	}
 }

@@ -1,4 +1,7 @@
-use super::{diff_analyzer::Compatible, reduced_pallet};
+use super::{
+	diff_analyzer::{Compatible, RequireTransactionVersionBump},
+	reduced_pallet,
+};
 // use crate::differs::reduced::change_type::Change;
 use comparable::MapChange;
 use reduced_pallet::*;
@@ -37,6 +40,36 @@ impl ReducedPalletChange {
 			}
 		});
 		Ok(())
+	}
+}
+
+impl RequireTransactionVersionBump for ReducedPalletChange {
+	fn require_tx_version_bump(&self) -> bool {
+		match self {
+			ReducedPalletChange::Index(_) => false,
+			ReducedPalletChange::Name(_) => true,
+
+			ReducedPalletChange::Calls(x) => x
+				.iter()
+				.map(|i| match i {
+					MapChange::Added(_k, _d) => true,
+					MapChange::Removed(_k) => false,
+					MapChange::Changed(_k, c) => c.iter().map(|cc| cc.require_tx_version_bump()).all(|x| x),
+				})
+				.all(|x| x),
+			ReducedPalletChange::Events(_x) => true,
+			ReducedPalletChange::Errors(_x) => true,
+
+			ReducedPalletChange::Constants(_x) => true,
+			// x.iter()
+			// .map(|i| match i {
+			// 	MapChange::Added(_k, _d) => true,
+			// 	MapChange::Removed(_k) => true,
+			// 	MapChange::Changed(_k, c) => c.iter().map(|cc| cc.compatible()).all(|x| x.into()),
+			// })
+			// .all(|x| x.into()),
+			ReducedPalletChange::Storages(_x) => true,
+		}
 	}
 }
 

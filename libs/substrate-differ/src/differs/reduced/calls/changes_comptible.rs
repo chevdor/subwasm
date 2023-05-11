@@ -13,7 +13,7 @@ impl Compatible for CallChange {
 	fn compatible(&self) -> bool {
 		match self {
 			CallChange::Index(_) => false,
-			CallChange::Name(_) => true,
+			CallChange::Name(_) => false,
 			CallChange::Signature(s) => s.compatible(),
 		}
 	}
@@ -21,25 +21,39 @@ impl Compatible for CallChange {
 
 impl Compatible for ConstantChange {
 	fn compatible(&self) -> bool {
-		true
+		match self {
+			ConstantChange::Name(_) => false,
+			ConstantChange::Value(_) => true,
+		}
 	}
 }
 
 impl Compatible for EventChange {
 	fn compatible(&self) -> bool {
-		true
+		match self {
+			EventChange::Index(_) => false,
+			EventChange::Name(_) => false,
+			EventChange::Signature(s) => s.compatible(),
+		}
 	}
 }
 
 impl Compatible for ErrorChange {
 	fn compatible(&self) -> bool {
-		true
+		match self {
+			ErrorChange::Index(_) => false,
+			ErrorChange::Name(_) => false,
+		}
 	}
 }
 
 impl Compatible for StorageChange {
 	fn compatible(&self) -> bool {
-		true
+		match self {
+			StorageChange::Name(_) => false,
+			StorageChange::Modifier(_) => false,
+			StorageChange::DefaultValue(_) => true,
+		}
 	}
 }
 
@@ -68,9 +82,7 @@ impl Compatible for Vec<ArgChange> {
 impl Compatible for ArgChange {
 	fn compatible(&self) -> bool {
 		match self {
-			// Changing the name is fine
-			ArgChange::Name(_) => true,
-			// Changing the type is not
+			ArgChange::Name(_) => false,
 			ArgChange::Ty(_) => false,
 		}
 	}

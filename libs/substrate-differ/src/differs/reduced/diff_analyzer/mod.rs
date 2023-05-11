@@ -1,14 +1,14 @@
-use super::reduced_runtime::ReducedRuntimeChange;
-use super::{calls::PalletId, changed_wapper::ChangedWrapper, reduced_pallet::*};
+mod compatible;
+mod require_tx_version_bump;
+mod traits;
 
+pub use compatible::*;
+pub use require_tx_version_bump::*;
+pub use traits::*;
+
+use super::{calls::PalletId, changed_wapper::ChangedWrapper, reduced_pallet::*};
 use comparable::MapChange;
 use std::rc::Rc;
-
-pub trait Compatible {
-	/// This function reports whether the 2 runtimes APIs are compatible or not.
-	/// This helps decide whether the runtime's `transaction_version` should be bumped or not.
-	fn compatible(&self) -> bool;
-}
 
 /// This struct holds both the [ReducedRuntime] and its changes.
 /// It allows computing stats about the amount of changes,
@@ -31,50 +31,6 @@ impl DiffAnalyzer {
 	}
 }
 
-impl Compatible for DiffAnalyzer {
-	fn compatible(&self) -> bool {
-		self.changes
-			.0
-			.changes
-			.iter()
-			.map(|change| {
-				match change {
-					ReducedRuntimeChange::Pallets(pallets) => pallets
-						.iter()
-						.map(|p| match p {
-							comparable::MapChange::Added(_key, _ddesc) => true,
-							comparable::MapChange::Removed(_key) => false,
-							comparable::MapChange::Changed(_key, change) => {
-								change.iter().map(|x| x.compatible()).all(|x| x)
-							}
-						})
-						.all(|x| x),
-					ReducedRuntimeChange::Extrinsic(_extrinsic) => {
-						todo!("Extrinsic diff not implemented yet and usually does not change")
-						// 		extrinsic.iter().map(|p| match p {
-						// 	ReducedExtrinsicChange::Version(version) => {
-						// 		// match versiopn {
-
-						// 		// }
-						// 		// TODO
-						// 		true
-						// 	},
-						// 	ReducedExtrinsicChange::SignedExtensions(signed_extensions) => {
-						// 		// match signed_extensions {
-
-						// 			// }
-						// 		// TODO
-						// 		true
-						// 	},
-						// }).all(|x| x),
-						// }
-					}
-				}
-			})
-			.all(|x| x)
-	}
-}
-
 #[cfg(test)]
 mod test_diffanalyzer {
 	use super::*;
@@ -91,7 +47,7 @@ mod test_diffanalyzer {
 		ReducedDiffResult::new(ra, rb).changes.map(DiffAnalyzer::new)
 	}
 
-	fn compare_runtimes_compatibility(runtime_a: PathBuf, runtime_b: PathBuf) -> bool {
+	fn check_tx_version_bump(runtime_a: PathBuf, runtime_b: PathBuf) -> bool {
 		let a = WasmTestBed::new(&Source::File(runtime_a)).unwrap();
 		let b = WasmTestBed::new(&Source::File(runtime_b)).unwrap();
 
@@ -108,9 +64,9 @@ mod test_diffanalyzer {
 					a.core_version().transaction_version,
 					b.core_version().transaction_version
 				);
-				let compatible = da.compatible();
-				println!("compatible = {compatible:?}");
-				compatible
+				let require_tx_version_bump: bool = da.require_tx_version_bump();
+				println!("require_tx_version_bump = {require_tx_version_bump:?}");
+				require_tx_version_bump
 			}
 			None => {
 				println!("No change found");
@@ -121,8 +77,8 @@ mod test_diffanalyzer {
 
 	#[test]
 	#[ignore = "local data"]
-	fn test_compatible_9260_9260() {
-		assert!(compare_runtimes_compatibility(
+	fn test_require_tx_version_bump_9260_9260() {
+		assert!(check_tx_version_bump(
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).unwrap(),
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).unwrap(),
 		));
@@ -130,26 +86,26 @@ mod test_diffanalyzer {
 
 	#[test]
 	#[ignore = "local data"]
-	fn test_compatible_9400_9420() {
+	fn test_require_tx_version_bump_9400_9420() {
 		let r1 = get_runtime_file(RuntimeFile::new(Chain::Statemint, 14, 9400)).unwrap();
 		let r2 = get_runtime_file(RuntimeFile::new(Chain::Statemint, 14, 9420)).unwrap();
-		let compat = compare_runtimes_compatibility(r1, r2);
+		let compat = check_tx_version_bump(r1, r2);
 		assert!(compat);
 	}
 
 	#[test]
 	#[ignore = "local data"]
-	fn test_incompatible_collectives_9400_9420() {
+	fn test_not_require_tx_version_bump_collectives_9400_9420() {
 		let r1 = get_runtime_file(RuntimeFile::new(Chain::CollectivesPolkadot, 14, 9400)).unwrap();
 		let r2 = get_runtime_file(RuntimeFile::new(Chain::CollectivesPolkadot, 14, 9420)).unwrap();
-		let compat = compare_runtimes_compatibility(r1, r2);
+		let compat = check_tx_version_bump(r1, r2);
 		assert!(!compat);
 	}
 
 	#[test]
 	#[ignore = "local data"]
-	fn test_compatible_9270_9270() {
-		assert!(compare_runtimes_compatibility(
+	fn test_require_tx_version_bump_9270_9270() {
+		assert!(check_tx_version_bump(
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9270)).unwrap(),
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9270)).unwrap(),
 		));
@@ -157,8 +113,8 @@ mod test_diffanalyzer {
 
 	#[test]
 	#[ignore = "local data"]
-	fn test_compatible_not_9260_9270() {
-		assert!(!compare_runtimes_compatibility(
+	fn test_require_tx_version_bump_not_9260_9270() {
+		assert!(!check_tx_version_bump(
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).unwrap(),
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9280)).unwrap(),
 		));
@@ -166,8 +122,8 @@ mod test_diffanalyzer {
 
 	#[test]
 	#[ignore = "local data"]
-	fn test_compatible_ksm_not_9280_9290() {
-		assert!(!compare_runtimes_compatibility(
+	fn test_require_tx_version_bump_ksm_not_9280_9290() {
+		assert!(!check_tx_version_bump(
 			get_runtime_file(RuntimeFile::new(Chain::Kusama, 14, 9280)).unwrap(),
 			get_runtime_file(RuntimeFile::new(Chain::Kusama, 14, 9290)).unwrap(),
 		));
@@ -175,8 +131,8 @@ mod test_diffanalyzer {
 
 	#[test]
 	#[ignore = "local data"]
-	fn test_compatible_dot_not_9280_9290() {
-		assert!(!compare_runtimes_compatibility(
+	fn test_require_tx_version_bump_dot_not_9280_9290() {
+		assert!(!check_tx_version_bump(
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9280)).unwrap(),
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).unwrap(),
 		));
@@ -196,7 +152,7 @@ mod test_diffanalyzer {
 				assert_eq!(&0, k);
 				assert_eq!(1, changes.len());
 				let change = &changes[0];
-				assert!(change.compatible());
+				assert!(change.require_tx_version_bump());
 			}
 			_ => panic!("Unexpected change while comparing 9280 and 9290"),
 		}
@@ -210,7 +166,7 @@ mod test_diffanalyzer {
 				assert_eq!(&4, k);
 				assert_eq!(1, changes.len());
 				let change = &changes[0];
-				assert!(!change.compatible());
+				assert!(!change.require_tx_version_bump());
 			}
 			_ => panic!("Unexpected change while comparing 9280 and 9290"),
 		}
@@ -250,7 +206,7 @@ mod test_diffanalyzer {
 		let diff =
 			analyze(RuntimeFile::new(Chain::Polkadot, 14, 9100), RuntimeFile::new(Chain::Polkadot, 14, 9260)).unwrap();
 
-		assert!(!diff.compatible())
+		assert!(!diff.require_tx_version_bump())
 	}
 
 	#[test]
@@ -260,7 +216,19 @@ mod test_diffanalyzer {
 		let diff =
 			analyze(RuntimeFile::new(Chain::Polkadot, 14, 9260), RuntimeFile::new(Chain::Polkadot, 14, 9270)).unwrap();
 
-		assert!(!diff.compatible())
+		assert!(!diff.require_tx_version_bump())
+	}
+
+	#[test]
+	#[cfg(feature = "v14")]
+	#[ignore = "local data"]
+	fn test_v14_polkadot_9260_9270_content() {
+		let analyzer =
+			analyze(RuntimeFile::new(Chain::Polkadot, 14, 9260), RuntimeFile::new(Chain::Polkadot, 14, 9270)).unwrap();
+		let pallet_changes = analyzer.changes.get_pallets_changes();
+		assert_eq!(4, pallet_changes.len());
+		assert!(!analyzer.require_tx_version_bump());
+		assert!(!analyzer.compatible());
 	}
 
 	#[test]
@@ -270,7 +238,7 @@ mod test_diffanalyzer {
 		let diff =
 			analyze(RuntimeFile::new(Chain::Polkadot, 12, 9000), RuntimeFile::new(Chain::Polkadot, 12, 9000)).unwrap();
 
-		assert!(!diff.compatible())
+		assert!(!diff.require_tx_version_bump())
 	}
 
 	#[test]
@@ -279,7 +247,7 @@ mod test_diffanalyzer {
 	fn test_v14_polkadot_9280_9290_full() {
 		let diff =
 			analyze(RuntimeFile::new(Chain::Polkadot, 14, 9280), RuntimeFile::new(Chain::Polkadot, 14, 9290)).unwrap();
-		assert!(!diff.compatible());
+		assert!(!diff.require_tx_version_bump());
 
 		println!("changes = {:?}", diff.changes);
 		// assert_eq!(12, diff.changes.get )

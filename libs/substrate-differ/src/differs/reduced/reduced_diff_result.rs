@@ -4,7 +4,7 @@ use std::rc::Rc;
 
 use super::{
 	changed_wapper::ChangedWrapper,
-	diff_analyzer::{Compatible, DiffAnalyzer},
+	diff_analyzer::{Compatible, DiffAnalyzer, RequireTransactionVersionBump},
 	reduced_runtime::ReducedRuntime,
 	reduced_runtime_change_wrapper::ReducedRuntimeChangeWrapper,
 };
@@ -26,14 +26,23 @@ pub struct ReducedDiffResult {
 	pub(crate) changes: Option<Rc<ChangedWrapper>>,
 
 	/// After computing the [changes] we analysis the content of the changes and set this flag depending
-	/// on whether we consider the runtimes compatible or not. If they are not compatible, the `transaction_version` of
-	/// [runtime_b] should be bumped before releasing.
-	compatible: bool,
+	/// on whether the `transaction_version` of [runtime_b] should be bumped before releasing.
+	require_transaction_version_bump: Option<bool>,
+
+	/// After computing the [changes] we analysis the content of the changes and set this flag depending
+	/// on whether we consider the runtimes compatible or not.
+	compatible: Option<bool>,
 }
 
 impl ReducedDiffResult {
 	pub fn new(ra: ReducedRuntime, rb: ReducedRuntime) -> Self {
-		let instance = Self { runtime_a: Rc::new(ra), runtime_b: Rc::new(rb), changes: None, compatible: false };
+		let instance = Self {
+			runtime_a: Rc::new(ra),
+			runtime_b: Rc::new(rb),
+			changes: None,
+			require_transaction_version_bump: None,
+			compatible: None,
+		};
 		instance.init()
 	}
 
@@ -49,15 +58,17 @@ impl ReducedDiffResult {
 
 		if let Some(changes) = &self.changes {
 			let da = DiffAnalyzer::new(changes.clone());
-			self.compatible = da.compatible();
+			self.require_transaction_version_bump = Some(da.require_tx_version_bump());
+			self.compatible = Some(da.compatible());
 		} else {
-			self.compatible = true;
+			self.require_transaction_version_bump = Some(false);
+			self.compatible = Some(false);
 		}
 		self
 	}
 
-	pub fn compatible(&self) -> bool {
-		self.compatible
+	pub fn require_transaction_version_bump(&self) -> Option<bool> {
+		self.require_transaction_version_bump
 	}
 }
 
@@ -68,6 +79,17 @@ impl Display for ReducedDiffResult {
 			None => f.write_str("No change detected\n"),
 		};
 
-		f.write_fmt(format_args!("compatible: {}", self.compatible))
+		let _ = f.write_fmt(format_args!("SUMMARY:\n"));
+		let _ = f.write_fmt(format_args!(
+			"{:.<35}: {}\n",
+			"- Compatible",
+			self.compatible.map(|v| v.to_string()).unwrap_or(String::from("not computed"))
+		));
+		let _ = f.write_fmt(format_args!(
+			"{:.<35}: {}\n",
+			"- Require transaction_version bump",
+			self.require_transaction_version_bump.map(|v| v.to_string()).unwrap_or(String::from("n/a"))
+		));
+		Ok(())
 	}
 }

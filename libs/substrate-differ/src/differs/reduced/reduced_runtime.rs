@@ -28,12 +28,6 @@ pub struct ReducedRuntime {
 	pub pallets: HashMap<PalletId, ReducedPallet>,
 }
 
-// impl From<HashMap<PalletId, ReducedPallet>> for ReducedRuntime {
-// 	fn from(pallets: HashMap<PalletId, ReducedPallet>) -> Self {
-// 		Self { pallets }
-// 	}
-// }
-
 impl ReducedRuntime {
 	pub fn new(extrinsic: ReducedExtrinsic, pallets: HashMap<PalletId, ReducedPallet>) -> Self {
 		Self { extrinsic, pallets }

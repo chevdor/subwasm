@@ -5,19 +5,24 @@ use comparable::MapChange;
 use serde::Serialize;
 use std::fmt::Display;
 
+type Change = MapChange<PalletId, ReducedPalletDesc, Vec<ReducedPalletChange>>;
+
 #[derive(Debug, Serialize)]
 pub struct ChangedWrapper(pub(crate) ReducedRuntimeChangeWrapper);
 
-type Change = MapChange<PalletId, ReducedPalletDesc, Vec<ReducedPalletChange>>;
 impl ChangedWrapper {
-	//todo
-	// pub fn get_pallets_changes(&self) -> &Vec<Change> {
-	// 	// &self.runtime_metadata().changes.pallets
-	// 	match &self.runtime_metadata().changes {
-	// 		super::reduced_runtime::ReducedRuntimeChange::Extrinsic(_) => &vec![],
-	// 		super::reduced_runtime::ReducedRuntimeChange::Pallets(p) => p,
-	// 	}
-	// }
+	/// Loop though the changes and filter to keep only the changes related to pallets
+	pub fn get_pallets_changes(&self) -> Vec<&Change> {
+		self.0
+			.changes
+			.iter()
+			.filter_map(|c| match c {
+				ReducedRuntimeChange::Extrinsic(_) => None,
+				ReducedRuntimeChange::Pallets(p) => Some(p),
+			})
+			.flatten()
+			.collect()
+	}
 
 	// pub fn get_extrinsic_changes(&self) -> &Vec<Change> {
 	// 	// &self.runtime_metadata().changes.pallets
@@ -32,7 +37,6 @@ impl ChangedWrapper {
 			.0
 			.changes
 			.iter()
-			// todo: find map ?
 			.flat_map(|change| match change {
 				ReducedRuntimeChange::Extrinsic(_ex) => None,
 				ReducedRuntimeChange::Pallets(pallets) => pallets.iter().find(|&map_change| {
