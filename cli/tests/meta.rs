@@ -3,7 +3,6 @@ mod cli_tests {
 	#[cfg(test)]
 	mod meta {
 		use assert_cmd::Command as AssertCommand;
-		use std::process::{Command, Stdio};
 
 		#[test]
 		fn it_shows_metadata() {
