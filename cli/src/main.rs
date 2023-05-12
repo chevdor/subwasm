@@ -26,7 +26,7 @@ fn main() -> color_eyre::Result<()> {
 
 		Some(SubCommand::Info(info_opts)) => {
 			let chain_name = info_opts.chain.map(|some| some.name);
-			let source = get_source(chain_name.as_deref(), info_opts.source, info_opts.block);
+			let source = get_source(chain_name.as_deref(), info_opts.source, info_opts.block)?;
 
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
@@ -36,7 +36,7 @@ fn main() -> color_eyre::Result<()> {
 
 		Some(SubCommand::Version(version_opts)) => {
 			let chain_name = version_opts.chain.map(|some| some.name);
-			let source = get_source(chain_name.as_deref(), version_opts.source, version_opts.block);
+			let source = get_source(chain_name.as_deref(), version_opts.source, version_opts.block)?;
 
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
@@ -46,7 +46,7 @@ fn main() -> color_eyre::Result<()> {
 
 		Some(SubCommand::Metadata(meta_opts)) => {
 			let chain_name = meta_opts.chain.map(|some| some.name);
-			let source = get_source(chain_name.as_deref(), meta_opts.source, meta_opts.block);
+			let source = get_source(chain_name.as_deref(), meta_opts.source, meta_opts.block)?;
 
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
@@ -89,16 +89,16 @@ fn main() -> color_eyre::Result<()> {
 			log::debug!("Method: {:?}", diff_opts.method);
 
 			let chain_a = diff_opts.chain_a.map(|some| some.name);
-			let src_a = get_source(chain_a.as_deref(), diff_opts.src_a, None);
+			let src_a = get_source(chain_a.as_deref(), diff_opts.src_a, None)?;
 
 			let chain_b = diff_opts.chain_b.map(|some| some.name);
-			let src_b = get_source(chain_b.as_deref(), diff_opts.src_b, None);
+			let src_b = get_source(chain_b.as_deref(), diff_opts.src_b, None)?;
 
 			match diff_opts.method {
 				DiffMethod::Reduced => {
 					let diff_result = reduced_diff(src_a, src_b).expect("Reduced diff failed");
 					if opts.json {
-						let s = serde_json::to_string_pretty(&diff_result).unwrap();
+						let s = serde_json::to_string_pretty(&diff_result).expect("serde_json ran into issues");
 						println!("{s}");
 						Ok(())
 					} else {
@@ -144,7 +144,7 @@ fn main() -> color_eyre::Result<()> {
 						"commit": commit_hash.unwrap_or_default(),
 						"build_date": build_date.unwrap_or_default(),
 					});
-					let s = serde_json::to_string_pretty(&version_data).unwrap();
+					let s = serde_json::to_string_pretty(&version_data).expect("serde_json ran into issues");
 					println!("{s}");
 				}
 			}
@@ -153,7 +153,7 @@ fn main() -> color_eyre::Result<()> {
 
 		Some(SubCommand::ShowReduced(sr_opts)) => {
 			let chain_name = sr_opts.chain.map(|some| some.name);
-			let source = get_source(chain_name.as_deref(), sr_opts.src, sr_opts.block);
+			let source = get_source(chain_name.as_deref(), sr_opts.src, sr_opts.block)?;
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source);
 

@@ -38,7 +38,6 @@ macro_rules! write_v14_meta {
 		|| -> error::Result<()> {
 			if let Some(metadata) = &$meta.$type {
 				let type_id = metadata.ty.id;
-				// log::debug!("type_id: {:?}", type_id);
 				let registry = &$v14.types;
 
 				let type_info = registry.resolve(type_id).unwrap();
