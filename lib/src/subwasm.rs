@@ -1,6 +1,6 @@
 use error::*;
 use std::io::Write;
-use substrate_differ::differs::reduced::reduced_runtime::ReducedRuntime;
+use substrate_differ::differs::reduced::{reduced_runtime::ReducedRuntime, reduced_runtime_summary::*};
 use wasm_loader::Source;
 use wasm_testbed::{WasmTestBed, WasmTestbedError};
 
@@ -78,6 +78,17 @@ impl Subwasm {
 			}
 		} else {
 			Err(SubwasmLibError::PalletNotFound(pallet.to_string()))
+		}
+	}
+
+	pub fn display_reduced_summary(&self, json: bool) -> Result<()> {
+		let reduced_runtime: ReducedRuntime = self.testbed.metadata().try_into()?;
+		let reduced_runtime_summary: ReducedRuntimeSummary = ReducedRuntimeSummary::from(&reduced_runtime);
+		if json {
+			let serialized = serde_json::to_string_pretty(&reduced_runtime_summary)?;
+			print_big_output_safe(&serialized)
+		} else {
+			print_big_output_safe(&reduced_runtime_summary.to_string())
 		}
 	}
 }

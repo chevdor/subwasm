@@ -77,9 +77,9 @@ fn main() -> color_eyre::Result<()> {
 
 			subwasm.write_metadata(fmt, meta_opts.module, &mut out)?;
 
-			// TODO: Remove that when deprecating the --json flag
+			// TODO: Remove that when deprecating the --json flag but beware, --json is a global flag used by other commands...
 			if opts.json {
-				eprintln!("--json is DEPRECATED, use --format=json instead");
+				eprintln!("The --json flag is DEPRECATED for the metadata command, use --format=json instead");
 			}
 
 			Ok(())
@@ -147,20 +147,26 @@ fn main() -> color_eyre::Result<()> {
 					let s = serde_json::to_string_pretty(&version_data).expect("serde_json ran into issues");
 					println!("{s}");
 				}
+				Ok(())
+			} else {
+				unreachable!("We show help if there is no arg");
 			}
-			Ok(())
 		}
 
-		Some(SubCommand::Show(sr_opts)) => {
-			let chain_name = sr_opts.chain.map(|some| some.name);
-			let source = get_source(chain_name.as_deref(), sr_opts.src, sr_opts.block)?;
+		Some(SubCommand::Show(show_opts)) => {
+			let chain_name = show_opts.chain.map(|some| some.name);
+			let source = get_source(chain_name.as_deref(), show_opts.src, show_opts.block)?;
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source)?;
 
-			if let Some(pallet) = sr_opts.pallet {
-				Ok(subwasm.display_reduced_pallet(&pallet, opts.json)?)
+			if show_opts.summary {
+				Ok(subwasm.display_reduced_summary(opts.json)?)
 			} else {
-				Ok(subwasm.display_reduced_runtime(opts.json)?)
+				if let Some(pallet) = show_opts.pallet {
+					Ok(subwasm.display_reduced_pallet(&pallet, opts.json)?)
+				} else {
+					Ok(subwasm.display_reduced_runtime(opts.json)?)
+				}
 			}
 		}
 	}
