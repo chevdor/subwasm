@@ -40,7 +40,7 @@ macro_rules! write_v14_meta {
 				let type_id = metadata.ty.id;
 				let registry = &$v14.types;
 
-				let type_info = registry.resolve(type_id).unwrap(); // todo: error handling
+				let type_info = registry.resolve(type_id).unwrap();
 				match &type_info.type_def {
 					scale_info::TypeDef::Variant(v) => {
 						for variant in &v.variants {
@@ -72,7 +72,7 @@ macro_rules! display_v14_meta {
 			// log::debug!("type_id: {:?}", type_id);
 			let registry = &$v14.types;
 
-			let type_info = registry.resolve(type_id).unwrap(); // todo: error handling
+			let type_info = registry.resolve(type_id).unwrap();
 			match &type_info.type_def {
 				scale_info::TypeDef::Variant(v) => {
 					for variant in &v.variants {

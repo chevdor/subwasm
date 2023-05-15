@@ -29,7 +29,7 @@ fn main() -> color_eyre::Result<()> {
 			let source = get_source(chain_name.as_deref(), info_opts.source, info_opts.block)?;
 
 			info!("⏱️  Loading WASM from {:?}", &source);
-			let subwasm = Subwasm::new(&source)?;
+			let subwasm = Subwasm::new(&source);
 
 			Ok(subwasm.runtime_info().print(opts.json)?)
 		}
@@ -39,7 +39,7 @@ fn main() -> color_eyre::Result<()> {
 			let source = get_source(chain_name.as_deref(), version_opts.source, version_opts.block)?;
 
 			info!("⏱️  Loading WASM from {:?}", &source);
-			let subwasm = Subwasm::new(&source)?;
+			let subwasm = Subwasm::new(&source);
 
 			Ok(subwasm.runtime_info().print_version(opts.json)?)
 		}
@@ -49,7 +49,7 @@ fn main() -> color_eyre::Result<()> {
 			let source = get_source(chain_name.as_deref(), meta_opts.source, meta_opts.block)?;
 
 			info!("⏱️  Loading WASM from {:?}", &source);
-			let subwasm = Subwasm::new(&source)?;
+			let subwasm = Subwasm::new(&source);
 
 			let mut fmt: OutputFormat = meta_opts.format.unwrap_or_else(|| "human".into()).into();
 			if opts.json {
@@ -155,7 +155,7 @@ fn main() -> color_eyre::Result<()> {
 			let chain_name = sr_opts.chain.map(|some| some.name);
 			let source = get_source(chain_name.as_deref(), sr_opts.src, sr_opts.block)?;
 			info!("⏱️  Loading WASM from {:?}", &source);
-			let subwasm = Subwasm::new(&source)?;
+			let subwasm = Subwasm::new(&source);
 
 			if let Some(pallet) = sr_opts.pallet {
 				Ok(subwasm.display_reduced_pallet(&pallet, opts.json)?)

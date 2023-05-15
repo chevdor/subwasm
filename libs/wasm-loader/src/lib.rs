@@ -143,8 +143,7 @@ impl WasmLoader {
 		log::debug!("Loaded {:?} bytes", bytes.len());
 
 		debug!("code size before decompression: {:?}", bytes.len());
-		let bytes_decompressed = sp_maybe_compressed_blob::decompress(&bytes, CODE_BLOB_BOMB_LIMIT)
-			.map_err(|_| WasmLoaderError::DecompressionError())?;
+		let bytes_decompressed = sp_maybe_compressed_blob::decompress(&bytes, CODE_BLOB_BOMB_LIMIT).unwrap();
 
 		let compression = Compression::new(&bytes, &bytes_decompressed);
 
@@ -209,8 +208,8 @@ pub mod tests {
 	#[test]
 	#[ignore = "need node"]
 	fn fetch_should_work() {
-		assert!(WasmLoader::fetch_wasm(&OnchainBlock::new("https://rpc.polkadot.io", None).unwrap()).is_ok());
-		assert!(WasmLoader::fetch_wasm(&OnchainBlock::new("wss://rpc.polkadot.io", None).unwrap()).is_ok());
+		assert!(WasmLoader::fetch_wasm(&OnchainBlock::new("https://rpc.polkadot.io", None)).is_ok());
+		assert!(WasmLoader::fetch_wasm(&OnchainBlock::new("wss://rpc.polkadot.io", None)).is_ok());
 	}
 
 	#[test]

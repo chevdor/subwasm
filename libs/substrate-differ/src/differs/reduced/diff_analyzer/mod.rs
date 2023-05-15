@@ -41,9 +41,9 @@ mod test_diffanalyzer {
 
 	fn analyze(rf1: RuntimeFile, rf2: RuntimeFile) -> Option<DiffAnalyzer> {
 		let a = get_runtime_file(rf1).expect("Runtime file should exist");
-		let ra = WasmTestBed::new(&Source::File(a)).unwrap().metadata().try_into().unwrap();
+		let ra = WasmTestBed::new(&Source::File(a)).unwrap().metadata().into();
 		let b = get_runtime_file(rf2).expect("Runtime file should exist");
-		let rb = WasmTestBed::new(&Source::File(b)).unwrap().metadata().try_into().unwrap();
+		let rb = WasmTestBed::new(&Source::File(b)).unwrap().metadata().into();
 		ReducedDiffResult::new(ra, rb).changes.map(DiffAnalyzer::new)
 	}
 
@@ -51,8 +51,8 @@ mod test_diffanalyzer {
 		let a = WasmTestBed::new(&Source::File(runtime_a)).unwrap();
 		let b = WasmTestBed::new(&Source::File(runtime_b)).unwrap();
 
-		let ra = a.metadata().try_into().unwrap();
-		let rb = b.metadata().try_into().unwrap();
+		let ra = a.metadata().into();
+		let rb = b.metadata().into();
 		let res = ReducedDiffResult::new(ra, rb);
 
 		match res.changes {

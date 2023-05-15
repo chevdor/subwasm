@@ -1699,7 +1699,6 @@ name = "ipfs-hasher"
 version = "1.0.0-alpha6"
 dependencies = [
  "ipfs-unixfs",
- "thiserror",
  "wasm-loader",
 ]
 
@@ -3596,7 +3595,6 @@ dependencies = [
  "scale-info",
  "serde",
  "serde_json",
- "thiserror",
  "wasm-loader",
  "wasm-testbed",
 ]
@@ -3613,7 +3611,6 @@ dependencies = [
  "sp-io",
  "sp-runtime",
  "sp-wasm-interface",
- "thiserror",
 ]
 
 [[package]]

@@ -11,9 +11,6 @@ pub enum WasmTestbedError {
 	#[error("Error while calling method: `{0}`")]
 	Calling(String),
 
-	#[error("Error computing a hash")]
-	Hashing(),
-
 	#[error("Failed decoding bytes: {0:?}")]
 	Decoding(Vec<u8>),
 
