@@ -1,3 +1,4 @@
+use substrate_differ::SubstrateDifferError;
 use thiserror::Error;
 use wasm_loader::WasmLoaderError;
 use wasm_testbed::WasmTestbedError;
@@ -18,6 +19,9 @@ pub enum SubwasmLibError {
 	#[error("The input is already compressed")]
 	AlreadyCompressed(),
 
+	#[error("The was a hashing error")]
+	Hashing(),
+
 	#[error("The compression failed")]
 	CompressionFailed(),
 
@@ -29,6 +33,9 @@ pub enum SubwasmLibError {
 
 	#[error("Unsupported Runtime version. Subwasm supports V12 and above")]
 	UnsupportedRuntimeVersion(),
+
+	#[error("Registry error")]
+	Registry(),
 
 	/// (name, hint)
 	#[error("Error parsing `{0}`.{1}")]
@@ -68,5 +75,11 @@ impl From<WasmLoaderError> for SubwasmLibError {
 impl From<serde_json::Error> for SubwasmLibError {
 	fn from(_e: serde_json::Error) -> Self {
 		SubwasmLibError::Generic("SerdeJsonError".to_string())
+	}
+}
+
+impl From<SubstrateDifferError> for SubwasmLibError {
+	fn from(_e: SubstrateDifferError) -> Self {
+		SubwasmLibError::Generic("SubstrateDifferError".to_string())
 	}
 }

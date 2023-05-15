@@ -23,7 +23,7 @@ use std::fmt::Display;
 /// Some keys are duplicate data. We remove them here.
 fn purge_v13_keys(value: Value) -> Value {
 	let mut serialized = value.serialize();
-	let mut c = serialized.as_object_mut().unwrap().to_owned(); // TODO: V13 could use a match and prevent the unwrap()
+	let mut c = serialized.as_object_mut().unwrap().to_owned(); // TODO: error handling V13 could use a match and prevent the unwrap()
 
 	// println!("c before = {:?}", &c);
 	let _ = c.remove("name");

@@ -8,6 +8,7 @@ authors.workspace = true
 log = "0.4"
 num-format = "0.4"
 serde_json = "1.0"
+thiserror = "1.0"
 document-features = { version = "0.2" }
 serde = { version = "1.0", features = ["derive", "rc"] }
 comparable = { version = ">=0.5.3", features = ["derive", "serde"] }

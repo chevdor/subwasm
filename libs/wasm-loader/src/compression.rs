@@ -36,7 +36,7 @@ impl Compression {
 	pub fn compress(bytes: &[u8]) -> error::Result<WasmBytes> {
 		match sp_maybe_compressed_blob::compress(bytes, CODE_BLOB_BOMB_LIMIT) {
 			Some(bytes) => Ok(bytes.to_vec()),
-			None => Err(error::WasmLoaderError::CompressionFailed()),
+			None => Err(error::WasmLoaderError::CompressionError()),
 		}
 	}
 
@@ -44,7 +44,7 @@ impl Compression {
 	pub fn decompress(bytes: &[u8]) -> error::Result<WasmBytes> {
 		sp_maybe_compressed_blob::decompress(bytes, CODE_BLOB_BOMB_LIMIT)
 			.map(|res| res.to_vec())
-			.map_err(|_err| error::WasmLoaderError::DecompressionFailed())
+			.map_err(|_err| error::WasmLoaderError::DecompressionError())
 	}
 }
 

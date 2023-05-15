@@ -1,3 +1,4 @@
+use crate::error::*;
 use ipfs_hasher::IpfsHasher;
 use num_format::{Locale, ToFormattedString};
 use serde::Serialize;
@@ -5,8 +6,6 @@ use sp_version::RuntimeVersion as SubstrateRuntimeVersion;
 use std::fmt::Display;
 use wasm_loader::Compression;
 use wasm_testbed::{ReservedMeta, WasmTestBed};
-
-use crate::error;
 
 #[derive(Debug, Serialize)]
 pub struct RuntimeInfo {
@@ -23,30 +22,30 @@ pub struct RuntimeInfo {
 }
 
 impl RuntimeInfo {
-	pub fn new(testbed: &WasmTestBed) -> Self {
+	pub fn new(testbed: &WasmTestBed) -> Result<Self> {
 		let core_version = testbed.core_version();
 
 		let hasher = IpfsHasher::default();
 
-		Self {
+		Ok(Self {
 			size: testbed.size(),
 			compression: testbed.compression(),
 			reserved_meta: testbed.reserved_meta(),
 			reserved_meta_valid: testbed.reserved_meta_valid(),
 			metadata_version: *testbed.metadata_version(),
 			core_version,
-			proposal_hash: testbed.proposal_hash(),
-			parachain_authorize_upgrade_hash: testbed.parachain_authorize_upgrade_hash(),
-			ipfs_hash: hasher.compute(testbed.raw_bytes()),
+			proposal_hash: testbed.proposal_hash()?,
+			parachain_authorize_upgrade_hash: testbed.parachain_authorize_upgrade_hash()?,
+			ipfs_hash: hasher.compute(testbed.raw_bytes()).map_err(|_| SubwasmLibError::Hashing())?,
 			blake2_256: testbed.blake2_256_hash(),
-		}
+		})
 	}
 
 	/// Print the RuntimeInfo either using the Display impl
 	/// or serde as json.
-	pub fn print(&self, json: bool) -> error::Result<()> {
+	pub fn print(&self, json: bool) -> Result<()> {
 		if json {
-			let serialized = serde_json::to_string_pretty(self).unwrap();
+			let serialized = serde_json::to_string_pretty(self)?;
 			println!("{serialized}");
 		} else {
 			println!("{self}");
@@ -54,9 +53,9 @@ impl RuntimeInfo {
 		Ok(())
 	}
 
-	pub fn print_version(&self, json: bool) -> error::Result<()> {
+	pub fn print_version(&self, json: bool) -> Result<()> {
 		if json {
-			let serialized = serde_json::to_string_pretty(&self.core_version).unwrap();
+			let serialized = serde_json::to_string_pretty(&self.core_version)?;
 			println!("{serialized}");
 		} else {
 			println!("specifications : {} v{}", self.core_version.spec_name, self.core_version.spec_version);

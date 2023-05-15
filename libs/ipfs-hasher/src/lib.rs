@@ -1,5 +1,7 @@
-use ipfs_unixfs::file::adder::Chunker;
-use ipfs_unixfs::file::adder::FileAdder;
+mod error;
+pub use error::*;
+
+use ipfs_unixfs::file::adder::{Chunker, FileAdder};
 
 /// Provide the bytes of your content and IpfsHasher
 /// will return the IPFS hash.
@@ -24,7 +26,7 @@ impl IpfsHasher {
 	}
 
 	/// Compute and return the IPFS Hash (cid) as String
-	pub fn compute(&self, content: &[u8]) -> String {
+	pub fn compute(&self, content: &[u8]) -> Result<String> {
 		let mut adder = match self.chunk_size {
 			None => FileAdder::default(),
 			Some(size) => FileAdder::builder().with_chunker(Chunker::Size(size)).build(),
@@ -39,9 +41,9 @@ impl IpfsHasher {
 		}
 
 		let res = adder.finish();
-		let (cid, _data) = res.last().unwrap();
+		let (cid, _data) = res.last().ok_or(IpfsHasherError::Unknown)?;
 
-		cid.to_string()
+		Ok(cid.to_string())
 	}
 }
 
@@ -53,14 +55,14 @@ mod tests {
 	#[test]
 	fn it_works_with_single_block() {
 		let hasher = IpfsHasher::default();
-		let ipfs = hasher.compute(b"foobar\n");
+		let ipfs = hasher.compute(b"foobar\n").unwrap();
 		assert!(ipfs == "QmRgutAxd8t7oGkSm4wmeuByG6M51wcTso6cubDdQtuEfL");
 	}
 
 	#[test]
 	fn it_works_with_multiple_blocks() {
 		let hasher = IpfsHasher::new(2);
-		let ipfs = hasher.compute(b"foobar\n");
+		let ipfs = hasher.compute(b"foobar\n").unwrap();
 		assert!(ipfs == "QmRJHYTNvC3hmd9gJQARxLR1QMEincccBV53bBw524yyq6");
 	}
 
@@ -69,10 +71,10 @@ mod tests {
 	fn it_computes_a_runtime_ipfs_hash() {
 		const POLKADOT_BLOCK20: &str = "0x4d6a0bca208b85d41833a7f35cf73d1ae6974f4bad8ab576e2c3f751d691fe6c"; // Polkadot Block #20
 
-		let ocb = OnchainBlock::new("wss://rpc.polkadot.io:443", Some(POLKADOT_BLOCK20.to_string()));
+		let ocb = OnchainBlock::new("wss://rpc.polkadot.io:443", Some(POLKADOT_BLOCK20.to_string())).unwrap();
 		let loader = WasmLoader::load_from_source(&Source::Chain(ocb)).unwrap();
 		let hasher = IpfsHasher::default();
-		let cid = hasher.compute(loader.uncompressed_bytes());
+		let cid = hasher.compute(loader.uncompressed_bytes()).unwrap();
 		assert!(cid == "QmevKMGkRViXfQMSZ38DBdcJ1cXcXf9sXdfXie8Jkc7ZGs");
 	}
 }

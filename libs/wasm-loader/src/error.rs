@@ -15,10 +15,10 @@ pub enum WasmLoaderError {
 	NotSupported(String),
 
 	#[error("Compression failed and returned nothing")]
-	CompressionFailed(),
+	CompressionError(),
 
 	#[error("Decompression failed")]
-	DecompressionFailed(),
+	DecompressionError(),
 
 	#[error("HTTP Client error, url: `{0}`")]
 	HttpClient(String),
