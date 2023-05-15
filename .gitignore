@@ -1,9 +1,12 @@
-/target
-*.wasm
+target
 data
 .env
 scripts/out
+
+metadata.*
+
+*.wasm
 *.gz
 *.jscale
-metadata.*
 *.profraw
+*.deb
