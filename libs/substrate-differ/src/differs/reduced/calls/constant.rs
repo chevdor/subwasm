@@ -26,9 +26,8 @@ impl Constant {
 
 impl Display for Constant {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let _ = f.write_fmt(format_args!("{}: {:?}", self.name, self.value));
-
-		Ok(())
+		let displayable_value = DisplayableVec::new(&self.value, None).init().to_short_string();
+		f.write_fmt(format_args!("{}: {}", self.name, displayable_value))
 	}
 }
 

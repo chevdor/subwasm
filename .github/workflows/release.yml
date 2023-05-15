@@ -31,12 +31,8 @@ jobs:
 
       - name: Build debian package
         shell: bash
-        # dirty fix due to https://github.com/kornelski/cargo-deb/issues/87
         run: |
-          cargo build --profile production -p subwasm
-          mkdir -p cli/target/release
-          cp -rpf target/production/subwasm cli/target/release/subwasm
-          cargo deb --profile production --no-build --strip -p subwasm -o "subwasm_linux_amd64.deb"
+          cargo deb --profile production --strip -p subwasm -o "subwasm_linux_amd64.deb"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2

@@ -8,6 +8,8 @@ pub mod prelude;
 pub mod signature;
 pub mod storage;
 
+mod displayable_vec;
+
 pub use call::*;
 pub use constant::*;
 pub use error::*;

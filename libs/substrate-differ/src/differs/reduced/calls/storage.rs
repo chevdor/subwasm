@@ -35,21 +35,12 @@ impl Storage {
 			docs,
 		}
 	}
-
-	/// Lots of the default values are arrays of zeroes. This helper shows those long
-	/// arrays in a compressed form more appropriate to display.
-	fn format_compress_vec(&self) -> String {
-		const LIMIT: usize = 1;
-		if self.default_value.len() > LIMIT && self.default_value.iter().all(|x| x == &0) {
-			return format!("[0; {}]", self.default_value.len());
-		}
-		format!("{:?}", self.default_value)
-	}
 }
 
 impl Display for Storage {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		f.write_fmt(format_args!("mod:{} name:{} value:{}", self.modifier, self.name, self.format_compress_vec()))
+		let displayable_value = DisplayableVec::new(&self.default_value, None).init().to_short_string();
+		f.write_fmt(format_args!("{:<8} {}: {}", self.modifier, self.name, displayable_value))
 	}
 }
 

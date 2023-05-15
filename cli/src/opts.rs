@@ -42,7 +42,7 @@ pub enum SubCommand {
 	Metadata(MetaOpts),
 
 	#[clap(version = crate_version!(), author = crate_authors!())]
-	ShowReduced(ShowReducedOpts),
+	Show(ShowOpts),
 
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Diff(DiffOpts),
@@ -120,8 +120,7 @@ pub struct VersionOpts {
 }
 
 /// Returns the metadata as a json object. You may also use the "meta" alias.
-/// It is no longer possible to have a "printable" output, for that, please
-/// use the 'show-reduced' sub-command.
+/// See also the 'show' sub-command.
 #[derive(Parser)]
 pub struct MetaOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such as
@@ -184,9 +183,9 @@ pub struct DiffOpts {
 	pub method: DiffMethod,
 }
 
-/// Shows the ReducedRuntime.
+/// Shows the a reduced view of the runtime where the types have been resolved.
 #[derive(Parser)]
-pub struct ShowReducedOpts {
+pub struct ShowOpts {
 	/// The first source
 	#[clap(index = 1, alias = "src", default_value = "runtime_000.wasm", required_unless_present = "chain")]
 	pub src: Source,
@@ -202,9 +201,12 @@ pub struct ShowReducedOpts {
 	#[clap(short, long)]
 	pub block: Option<BlockRef>,
 
-	/// You probably want to use `Reduced`.
+	/// Show only information related to the provided pallet
 	#[clap(long, short)]
 	pub pallet: Option<String>,
+
+	#[clap(long, short)]
+	pub summary: bool,
 }
 
 /// Compress a given runtime wasm file.
@@ -220,8 +222,9 @@ pub struct CompressOpts {
 	pub output: PathBuf,
 }
 
-/// Decompress a given runtime wasm file. You may pass a runtime that is uncompressed
-/// already. In that case, you will get the same content as output. This is useful
+/// Decompress a given runtime wasm file. You may pass a runtime that is already uncompressed.
+///
+/// In that case, you will get the same content as output. This is useful
 /// if you want to decompress "no matter what" and don't really know whether the input
 /// will be compressed or not.
 #[derive(Parser)]

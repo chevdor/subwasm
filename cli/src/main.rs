@@ -151,7 +151,7 @@ fn main() -> color_eyre::Result<()> {
 			Ok(())
 		}
 
-		Some(SubCommand::ShowReduced(sr_opts)) => {
+		Some(SubCommand::Show(sr_opts)) => {
 			let chain_name = sr_opts.chain.map(|some| some.name);
 			let source = get_source(chain_name.as_deref(), sr_opts.src, sr_opts.block)?;
 			info!("⏱️  Loading WASM from {:?}", &source);
