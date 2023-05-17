@@ -1,8 +1,9 @@
 use rand::seq::SliceRandom;
-use std::{fmt::Display, str::FromStr};
+use std::str::FromStr;
+use thiserror::Error;
 use wasm_loader::NodeEndpoint;
 
-use crate::chain_urls::get_chain_urls;
+use crate::{chain_urls::get_chain_urls, SubwasmLibError};
 #[derive(Debug, PartialEq)]
 pub enum EndpointType {
 	Http,
@@ -44,16 +45,17 @@ impl ChainInfo {
 	}
 }
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum ChainInfoError {
+	#[error("Unsupported chain: {0}")]
 	ChainUsupported(String),
+	#[error("Chain not found: {0}")]
+	ChainNotFound(String),
 }
 
-impl Display for ChainInfoError {
-	fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		match self {
-			ChainInfoError::ChainUsupported(s) => write!(fmt, "Chain not supported: {s}"),
-		}
+impl From<SubwasmLibError> for ChainInfoError {
+	fn from(e: SubwasmLibError) -> Self {
+		Self::ChainNotFound(e.to_string())
 	}
 }
 
@@ -62,9 +64,9 @@ impl FromStr for ChainInfo {
 
 	fn from_str(name: &str) -> Result<Self, Self::Err> {
 		let name = name.to_lowercase();
-		let urls: Option<Vec<_>> = get_chain_urls(name.as_str());
+		let endpoints = get_chain_urls(name.as_str())?;
 
-		if let Some(endpoints) = urls {
+		if !endpoints.is_empty() {
 			Ok(Self { name, endpoints })
 		} else {
 			Err(ChainInfoError::ChainUsupported(name))

@@ -10,6 +10,9 @@ pub enum RuntimePropHashError {
 	#[error("Failure while fecthing the ENV: `{0}`")]
 	MissingEnvironmentVariable(&'static str),
 
+	#[error("Failure while fecthing the ENV: `{0}`")]
+	HexDecoding(String),
+
 	#[error("Unknown")]
 	Unknown(),
 }

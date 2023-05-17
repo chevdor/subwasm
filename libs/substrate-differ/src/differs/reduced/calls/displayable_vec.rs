@@ -76,7 +76,7 @@ mod test_vec_display {
 	#[test]
 	fn test_vec_display() {
 		assert_eq!("[0]", DisplayableVec::new(&vec![0], None).init().to_short_string());
-		assert_eq!("[0, 0, 0, 0]", DisplayableVec::new(&vec![0, 0, 0, 0], None).init().to_short_string());
+		assert_eq!("[0; 4]", DisplayableVec::new(&vec![0, 0, 0, 0], None).init().to_short_string());
 		assert_eq!("[42; 4]", DisplayableVec::new(&vec![42, 42, 42, 42], Some(3)).init().to_short_string());
 		assert_eq!("[99; 4]", DisplayableVec::new(&vec![99, 99, 99, 99], None).init().to_short_string_with_max(3));
 		assert_eq!("[1, 2, 3, 4]", DisplayableVec::new(&vec![1, 2, 3, 4], None).init().to_short_string());

@@ -1,8 +1,11 @@
+use error::*;
 use std::str::FromStr;
 use wasm_loader::NodeEndpoint;
 
+use crate::error;
+
 // TODO: use subrpc !
-pub fn get_chain_urls(name: &str) -> Option<Vec<NodeEndpoint>> {
+pub fn get_chain_urls(name: &str) -> Result<Vec<NodeEndpoint>> {
 	match name {
 		"polkadot" | "dot" => Some(vec![
 			"wss://rpc.polkadot.io:443",
@@ -57,5 +60,6 @@ pub fn get_chain_urls(name: &str) -> Option<Vec<NodeEndpoint>> {
 		"local" => Some(vec!["http://localhost:9933"]),
 		_ => None,
 	}
-	.map(|s| s.into_iter().map(|s| NodeEndpoint::from_str(s).expect("Valid chain name")).collect())
+	.map(|s| s.into_iter().flat_map(|s| NodeEndpoint::from_str(s)).collect())
+	.ok_or_else(|| SubwasmLibError::EndpointNotFound(name.to_string()))
 }

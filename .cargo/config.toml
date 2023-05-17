@@ -6,7 +6,7 @@ rustflags = [
 #   "-Dmissing_docs",
   "-Aclippy::all",
   "-Dclippy::correctness",
-  "-Dclippy::unwrap_used",				 # time to cleanup
+  "-Dclippy::unwrap_used",
 #   "-Aclippy::allow-unwrap-in-tests",     		 # time to cleanup
 #   "-Wclippy::expect_used",			 # not there yet
   "-Aclippy::if-same-then-else",

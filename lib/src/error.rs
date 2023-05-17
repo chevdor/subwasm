@@ -44,6 +44,9 @@ pub enum SubwasmLibError {
 	#[error("i/o error")]
 	Io,
 
+	#[error("Endpoint not found for `{0}`")]
+	EndpointNotFound(String),
+
 	#[error("Generic error")]
 	Generic(String),
 

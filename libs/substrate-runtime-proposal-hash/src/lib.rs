@@ -75,8 +75,8 @@ pub fn get_parachainsystem_authorize_upgrade(wasm_blob: &[u8]) -> Result<CalllHa
 	let s2 = env::var(AUTHORIZE_UPGRADE_PREFIX_ENV)
 		.unwrap_or_else(|_| DEFAULT_AUTHORIZE_UPGRADE_PREFIX.into())
 		.replacen("0x", "", 1);
-	let decoded1 = <[u8; 1]>::from_hex(s1).expect("Decoding failed");
-	let decoded2 = <[u8; 1]>::from_hex(s2).expect("Decoding failed");
+	let decoded1 = <[u8; 1]>::from_hex(&s1).map_err(|_| RuntimePropHashError::HexDecoding(s1))?;
+	let decoded2 = <[u8; 1]>::from_hex(&s2).map_err(|_| RuntimePropHashError::HexDecoding(s2))?;
 
 	let parachain_pallet_id =
 		*decoded1.first().ok_or_else(|| RuntimePropHashError::MissingEnvironmentVariable("PARACHAIN_PALLET_ID_ENV"))?;
