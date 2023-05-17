@@ -21,7 +21,7 @@ repository = "https://github.com/chevdor/subwasm"
 hex = "0.4"
 log = "0.4"
 thiserror = "1.0"
-wasm-loader = { version = "1.0.0-alpha6", path = "../wasm-loader" }
+wasm-loader = { version = "1.0.0-alpha8", path = "../wasm-loader" }
 sc-executor = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 sc-executor-common = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 scale = { version = "3.1", package = "parity-scale-codec", default-features = false }
@@ -30,7 +30,7 @@ sp-io = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrat
 sp-runtime = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 sp-state-machine = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 sp-wasm-interface = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
-substrate-runtime-proposal-hash = { version = "1.0.0-alpha6", path = "../substrate-runtime-proposal-hash" }
+substrate-runtime-proposal-hash = { version = "1.0.0-alpha8", path = "../substrate-runtime-proposal-hash" }
 sp-version = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 scale-info = { version = "2.1", default-features = false, features = [
 	"derive",

@@ -37,7 +37,7 @@ scale-info = { version = "2.1", default-features = false, features = [
 	"derive",
 ] }
 sp-version = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
-ipfs-hasher = { version = "1.0.0-alpha6", path = "../libs/ipfs-hasher" }
-wasm-loader = { version = "1.0.0-alpha6", path = "../libs/wasm-loader" }
-wasm-testbed = { version = "1.0.0-alpha6", path = "../libs/wasm-testbed" }
-substrate-differ = { version = "1.0.0-alpha6", path = "../libs/substrate-differ" }
+ipfs-hasher = { version = "1.0.0-alpha8", path = "../libs/ipfs-hasher" }
+wasm-loader = { version = "1.0.0-alpha8", path = "../libs/wasm-loader" }
+wasm-testbed = { version = "1.0.0-alpha8", path = "../libs/wasm-testbed" }
+substrate-differ = { version = "1.0.0-alpha8", path = "../libs/substrate-differ" }
