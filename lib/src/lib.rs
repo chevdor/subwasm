@@ -125,8 +125,8 @@ pub fn reduced_diff(src_a: Source, src_b: Source) -> Result<ReducedDiffResult> {
 	log::info!("  🅱️  {:?}", src_b);
 	let runtime_b = WasmTestBed::new(&src_b)?;
 
-	let ra = ReducedRuntime::from(runtime_a.metadata().try_into()?);
-	let rb = ReducedRuntime::from(runtime_b.metadata().try_into()?);
+	let ra = ReducedRuntime::from(runtime_a.metadata());
+	let rb = ReducedRuntime::from(runtime_b.metadata());
 
 	Ok(ReducedDiffResult::new(ra, rb))
 }

@@ -3,7 +3,6 @@ CARGO_WORKSPACE_DIR = { value = "", relative = true }
 
 [target.'cfg(feature = "cargo-clippy")']
 rustflags = [
-#   "-Dmissing_docs",
   "-Aclippy::all",
   "-Dclippy::correctness",
   "-Dclippy::unwrap_used",

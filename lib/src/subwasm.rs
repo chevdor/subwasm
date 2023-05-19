@@ -1,4 +1,3 @@
-use error::*;
 use std::io::Write;
 use substrate_differ::differs::reduced::{reduced_runtime::ReducedRuntime, reduced_runtime_summary::*};
 use wasm_loader::Source;
@@ -17,24 +16,26 @@ pub struct Subwasm {
 }
 
 impl Subwasm {
-	pub fn new(source: &Source) -> Result<Self> {
-		let testbed = WasmTestBed::new(source).map_err(|e| {
-			eprintln!("{e}");
-			if let WasmTestbedError::Decoding(data) = e.clone() {
-				WasmTestBed::print_magic_and_version(&data);
-			}
-			const REPO: &str = env!("CARGO_PKG_REPOSITORY");
-			const NAME: &str = env!("CARGO_PKG_NAME");
-			const VERSION: &str = env!("CARGO_PKG_VERSION");
-			println!("🗣️ If you think it should have worked, please open an issue at {REPO}/issues");
-			println!("and attach your runtime and mention using {NAME} v{VERSION}");
-			println!("The source was {source} ");
+	pub fn new(source: &Source) -> Self {
+		let testbed = WasmTestBed::new(source)
+			.map_err(|e| {
+				eprintln!("{e}");
+				if let WasmTestbedError::Decoding(data) = e {
+					WasmTestBed::print_magic_and_version(&data);
+				}
+				const REPO: &str = env!("CARGO_PKG_REPOSITORY");
+				const NAME: &str = env!("CARGO_PKG_NAME");
+				const VERSION: &str = env!("CARGO_PKG_VERSION");
+				println!("🗣️ If you think it should have worked, please open an issue at {REPO}/issues");
+				println!("and attach your runtime and mention using {NAME} v{VERSION}");
+				println!("The source was {source} ");
 
-			e
-		})?;
+				panic!("Could not load runtime");
+			})
+			.unwrap();
 
-		let runtime_info = RuntimeInfo::new(&testbed)?;
-		Ok(Self { testbed, runtime_info })
+		let runtime_info = RuntimeInfo::new(&testbed);
+		Self { testbed, runtime_info }
 	}
 
 	pub fn runtime_info(&self) -> &RuntimeInfo {
@@ -46,14 +47,14 @@ impl Subwasm {
 		fmt: metadata_wrapper::OutputFormat,
 		filter: Option<String>,
 		out: &mut O,
-	) -> Result<()> {
+	) -> error::Result<()> {
 		let metadata = self.testbed.runtime_metadata_prefixed();
 		let wrapper = MetadataWrapper(metadata);
 		wrapper.write(fmt, filter, out)
 	}
 
-	pub fn display_reduced_runtime(&self, json: bool) -> Result<()> {
-		let reduced_runtime: ReducedRuntime = self.testbed.metadata().try_into()?;
+	pub fn display_reduced_runtime(&self, json: bool) -> error::Result<()> {
+		let reduced_runtime: ReducedRuntime = self.testbed.metadata().into();
 
 		if json {
 			let serialized = serde_json::to_string_pretty(&reduced_runtime)?;
@@ -63,8 +64,8 @@ impl Subwasm {
 		}
 	}
 
-	pub fn display_reduced_pallet(&self, pallet: &str, json: bool) -> Result<()> {
-		let reduced_runtime: ReducedRuntime = self.testbed.metadata().try_into()?;
+	pub fn display_reduced_pallet(&self, pallet: &str, json: bool) -> error::Result<()> {
+		let reduced_runtime: ReducedRuntime = self.testbed.metadata().into();
 		let pallet_maybe = reduced_runtime.get_pallet_by_name(pallet);
 
 		if let Some(reduced_pallet) = pallet_maybe {

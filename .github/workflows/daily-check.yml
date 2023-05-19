@@ -27,7 +27,7 @@ jobs:
             target
           key: ${{ runner.os }}-${{ matrix.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Install Rust stable toolchain
+      - name: Install Rust ${{ matrix.rust }} toolchain
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -45,12 +45,14 @@ jobs:
       - name: Cargo fmt
         uses: actions-rs/cargo@v1
         with:
+          toolchain: nightly
           command: fmt
           args: --all -- --check
 
       - name: Cargo clippy
         uses: actions-rs/cargo@v1
         with:
+          toolchain: nightly
           command: clippy
           args: -- -D warnings
 

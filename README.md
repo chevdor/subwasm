@@ -5,18 +5,45 @@
 </figure>
 
 <figure>
-<img src="resources/logos/Logo_1024.png" alt="Logo 1024" />
+<img src="resources/logos/Logo_256.png" alt="Logo 256" />
 </figure>
-
-Unfortunately, the crate of the project and its dependencies are squatted on crates.io. The squatter remains unresponsive and the crates.io team does not care. I strongly recommend NOT to install the old version from crates.io. Check the [Install](#_install) chapter below to see how to install from this repo or use the official binary packages.
 
 ## Introduction
 
-The metadata of a given runtime is a critical piece of information as it describes how one can interact with the runtime, what operations are possible and what are the signatures of the calls. It contains the exhaustive list of all the features publicly exposed by the runtime.
+The metadata of a given runtime is a critical piece of information as it describes how one can interact with the runtime,
+what operations are possible and what are the signatures of the calls.
+It contains the exhaustive list of all the features publicly exposed by the runtime.
 
 This tool only works with Substrate-based runtimes which are `>=V11`. For earlier versions, you’ll need to connect to an archive node.
 
-Any node can be queried to provide its current metadata. This can be displayed in json format for instance. This is a great way to have a peek at what the runtime can do.
+Any node can be queried to provide its current metadata. This can be displayed in json format for instance.
+This is a great way to have a peek at what the runtime can do. You may however want to inspect a runtime that was not deployed yet to any node.
+
+**`subwasm`** can work on wasm files without any node or internet connectivity.
+
+## Capabilities & features
+
+`subwasm` can:
+
+-   get the metadata from a a wasm file directly (no need for a node)
+
+-   show summary information and version of a runtime
+
+-   diff between two runtime to help users spot changes and difference
+
+-   show the list of pallets and their content (calls, events, errors, storage, constants)
+
+-   analyse 2 runtimes to figure out whether they are comptible
+
+-   compress and decompress a runtime WASM
+
+-   get the latest metadata from a running node
+
+-   fetch the latest runtime (wasm) from a running node
+
+-   get runtime and metadata at any point of time using a Block hash as reference
+
+-   do all of the above with an output for human or as json
 
 ## Sample runs
 
@@ -39,22 +66,6 @@ Any node can be queried to provide its current metadata. This can be displayed i
 <img src="scripts/demos/gif/demo-diff.gif" alt="demo diff" />
 <figcaption>subwasm diff</figcaption>
 </figure>
-
-## Capabilities
-
-`subwasm` allows:
-
--   getting the latest metadata from a running node
-
--   getting the latest runtime (wasm) from a running node
-
--   getting runtime and metadata at any point of time using a Block hash as reference
-
--   getting the metadata from a a wasm file without any node
-
--   extracting information (those not requiring storage) from a runtime as wasm file
-
--   (de)compress a given runtime WASM
 
 ## Install
 

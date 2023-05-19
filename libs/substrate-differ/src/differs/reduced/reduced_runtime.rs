@@ -3,13 +3,9 @@ use super::{
 	reduced_extrinsic::ReducedExtrinsic,
 	reduced_pallet::ReducedPallet,
 };
-use crate::{
-	differs::reduced::calls::{
-		call::variant_to_calls, constant::Constant, error::variant_to_errors, event::variant_to_events, storage::*,
-	},
-	error::*,
+use crate::differs::reduced::calls::{
+	call::variant_to_calls, constant::Constant, error::variant_to_errors, event::variant_to_events, storage::*,
 };
-
 use comparable::Comparable;
 use frame_metadata::{
 	v14, PalletMetadata,
@@ -22,6 +18,9 @@ use std::{
 	collections::{BTreeMap, HashMap},
 	fmt::Display,
 };
+
+pub type ReducedRuntimeError = String;
+pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
 
 #[derive(Debug, PartialEq, Comparable, Serialize)]
 pub struct ReducedRuntime {
@@ -48,13 +47,13 @@ impl ReducedRuntime {
 	pub fn get_reduced_pallet_from_v14_pallet(
 		p: &PalletMetadata<PortableForm>,
 		registry: &PortableRegistry,
-	) -> Result<ReducedPallet> {
+	) -> ReducedPallet {
 		let name = &p.name;
 
 		// calls
 		let calls = if let Some(calls) = &p.calls {
 			let id = calls.ty.id;
-			let ty = registry.resolve(id.to_owned()).ok_or_else(|| SubstrateDifferError::RegistryError(id))?;
+			let ty = registry.resolve(id.to_owned()).unwrap();
 
 			match &ty.type_def {
 				scale_info::TypeDef::Variant(v) => {
@@ -73,7 +72,7 @@ impl ReducedRuntime {
 		// events
 		let events = if let Some(item) = &p.event {
 			let id = item.ty.id;
-			let ty = registry.resolve(id.to_owned()).ok_or_else(|| SubstrateDifferError::RegistryError(id))?;
+			let ty = registry.resolve(id.to_owned()).unwrap();
 
 			match &ty.type_def {
 				scale_info::TypeDef::Variant(v) => {
@@ -92,7 +91,7 @@ impl ReducedRuntime {
 		// errors
 		let errors = if let Some(item) = &p.error {
 			let id = item.ty.id;
-			let ty = registry.resolve(id.to_owned()).ok_or_else(|| SubstrateDifferError::RegistryError(id))?;
+			let ty = registry.resolve(id.to_owned()).unwrap();
 
 			match &ty.type_def {
 				scale_info::TypeDef::Variant(v) => {
@@ -135,7 +134,7 @@ impl ReducedRuntime {
 			.map(|i| (i.name.clone(), Constant::new(&i.name, i.value.clone(), i.docs.clone())))
 			.collect();
 
-		Ok(ReducedPallet { index: p.index.into(), name: name.into(), calls, events, errors, constants, storages })
+		ReducedPallet { index: p.index.into(), name: name.into(), calls, events, errors, constants, storages }
 	}
 
 	#[cfg(feature = "v14")]
@@ -143,22 +142,19 @@ impl ReducedRuntime {
 	pub fn from_v14(v14: &v14::RuntimeMetadataV14) -> Result<Self> {
 		let registry = &v14.types;
 
-		fn map_reduced_pallet(
-			registry: &PortableRegistry,
-			p: &PalletMetadata<PortableForm>,
-		) -> Result<(PalletId, ReducedPallet)> {
-			let reduced_pallet = ReducedRuntime::get_reduced_pallet_from_v14_pallet(p, registry)?;
-			Ok((reduced_pallet.index, reduced_pallet))
-		}
-
-		let pallets = &v14.pallets;
-		let reduced_pallets: Result<HashMap<PalletId, ReducedPallet>> =
-			pallets.iter().map(|p| map_reduced_pallet(registry, p)).collect();
-		let reduced_pallets = reduced_pallets?;
-
 		// TODO: deal with extrinsic as well
 		let extrinsic = &v14.extrinsic;
+
 		// println!("extrinsic = {:#?}", extrinsic);
+
+		let pallets = &v14.pallets;
+		let reduced_pallets: HashMap<PalletId, ReducedPallet> = pallets
+			.iter()
+			.map(|p| {
+				let reduced_pallet = ReducedRuntime::get_reduced_pallet_from_v14_pallet(p, registry);
+				(reduced_pallet.index, reduced_pallet)
+			})
+			.collect();
 		let reduced_extrinsic = ReducedExtrinsic::from(extrinsic);
 
 		let r_rtm = ReducedRuntime::new(reduced_extrinsic, reduced_pallets);
@@ -178,20 +174,16 @@ impl ReducedRuntime {
 	}
 }
 
-impl TryFrom<&RuntimeMetadata> for ReducedRuntime {
-	type Error = SubstrateDifferError;
-
-	fn try_from(runtime_metadata: &RuntimeMetadata) -> std::result::Result<Self, Self::Error> {
-		Ok(match &runtime_metadata {
+impl From<&RuntimeMetadata> for ReducedRuntime {
+	fn from(runtime_metadata: &RuntimeMetadata) -> Self {
+		match &runtime_metadata {
 			// TODO: V13 Bring back v13 eventually
 			#[cfg(feature = "v13")]
-			V13(v13) => ReducedRuntime::from_v13(v13)?,
-
+			V13(v13) => ReducedRuntime::from_v13(v13).unwrap(),
 			#[cfg(feature = "v14")]
-			V14(v14) => ReducedRuntime::from_v14(v14)?,
-
+			V14(v14) => ReducedRuntime::from_v14(v14).unwrap(),
 			_ => panic!("Unsupported metadata version"),
-		})
+		}
 	}
 }
 
@@ -221,8 +213,7 @@ mod test_reduced_runtime {
 
 		let runtime_file =
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).expect("Runtime file should exist");
-		let _reduced_runtime: ReducedRuntime =
-			WasmTestBed::new(&Source::File(runtime_file)).unwrap().metadata().try_into().unwrap();
+		let _reduced_runtime: ReducedRuntime = WasmTestBed::new(&Source::File(runtime_file)).unwrap().metadata().into();
 	}
 
 	#[test]
@@ -235,8 +226,7 @@ mod test_reduced_runtime {
 
 		let runtime_file =
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).expect("Runtime file should exist");
-		let reduced_runtime: ReducedRuntime =
-			WasmTestBed::new(&Source::File(runtime_file)).unwrap().metadata().try_into().unwrap();
+		let reduced_runtime: ReducedRuntime = WasmTestBed::new(&Source::File(runtime_file)).unwrap().metadata().into();
 		assert_eq!(0_u32, reduced_runtime.get_pallet_by_name("System").unwrap().index);
 		assert_eq!(1_u32, reduced_runtime.get_pallet_by_name("Scheduler").unwrap().index);
 	}
@@ -250,8 +240,7 @@ mod test_reduced_runtime {
 
 		let runtime_file =
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).expect("Runtime file should exist");
-		let reduced_runtime: ReducedRuntime =
-			WasmTestBed::new(&Source::File(runtime_file)).unwrap().metadata().try_into().unwrap();
+		let reduced_runtime: ReducedRuntime = WasmTestBed::new(&Source::File(runtime_file)).unwrap().metadata().into();
 
 		println!("extrinsics = {:#?}", reduced_runtime.extrinsic);
 	}
