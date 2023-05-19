@@ -21,6 +21,12 @@ impl Display for Error {
 	}
 }
 
+// impl Display for ErrorChange {
+// 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+// 		f.write_fmt(format_args!("ERR {self}"))
+// 	}
+// }
+
 pub fn variant_to_errors(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Error> {
 	td.variants
 		.iter()

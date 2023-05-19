@@ -24,11 +24,8 @@ use std::fmt::Display;
 fn purge_v13_keys(value: Value) -> Value {
 	let mut serialized = value.serialize();
 	let mut c = serialized.as_object_mut().unwrap().to_owned();
-
-	// println!("c before = {:?}", &c);
 	let _ = c.remove("name");
 	let _ = c.remove("documentation");
-	// println!("c after = {:?}", &c);
 	Value::Object(c)
 }
 

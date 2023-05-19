@@ -27,6 +27,12 @@ impl Display for Signature {
 	}
 }
 
+// impl Display for SignatureChange {
+// 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+// 		f.write_fmt(format_args!("SIG {self}"))
+// 	}
+// }
+
 impl Display for Arg {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		f.write_fmt(format_args!("{}: {}", self.name, self.ty))

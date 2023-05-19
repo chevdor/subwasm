@@ -46,7 +46,7 @@ macro_rules! fmt_vec_changes {
 					let _item_b = $self.pallet_b.map(|pallet| pallet.$field.get(id)).flatten();
 					writeln!($f, "    [+] {:?}", desc)
 				}
-				comparable::MapChange::Changed(id, change) => {
+				comparable::MapChange::Changed(id, changes) => {
 					let item_a = $self.pallet_a.map(|pallet| pallet.$field.get(id)).flatten();
 					let _item_b = $self.pallet_b.map(|pallet| pallet.$field.get(id)).flatten();
 					let indent: usize = 4;
@@ -56,7 +56,11 @@ macro_rules! fmt_vec_changes {
 						" ",
 						item = if let Some(item) = item_a { item.to_string() } else { "n/a".to_string() },
 					);
-					let _ = writeln!($f, "{:indent$}    {change:?}", " ");
+					// TODO: The debug render of `change` is very verbose. It would be great to make it more compact/readable
+					// for change in changes {
+					// 	println!("{change}");
+					// }
+					let _ = writeln!($f, "{:indent$}    {changes:?}", " ");
 					Ok(())
 				}
 				comparable::MapChange::Removed(id) => {

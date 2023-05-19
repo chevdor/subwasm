@@ -18,11 +18,10 @@ impl ReducedExtrinsic {
 	}
 }
 
-
+// TODO:
 #[derive(Debug, PartialEq, Hash, Comparable, Serialize, Clone)]
 pub struct ReducedSignedExtension {
 	identifier: String,
-	// TODO:
 	// additional_signed: Unknown,
 	// type: ?
 }

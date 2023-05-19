@@ -24,6 +24,12 @@ impl Display for Call {
 	}
 }
 
+// impl Display for CallChange {
+// 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+// 		f.write_fmt(format_args!("CALL {self}"))
+// 	}
+// }
+
 // impl Call {
 // 	pub fn comp(&self) {
 // 		let c: Changed<_> = self.comparison(self);

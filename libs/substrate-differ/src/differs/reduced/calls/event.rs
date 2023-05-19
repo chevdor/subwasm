@@ -25,6 +25,12 @@ impl Display for Event {
 	}
 }
 
+// impl Display for EventChange {
+// 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+// 		f.write_fmt(format_args!("EVNT {self}"))
+// 	}
+// }
+
 pub fn variant_to_events(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Event> {
 	td.variants
 		.iter()

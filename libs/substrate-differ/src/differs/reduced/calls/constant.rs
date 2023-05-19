@@ -31,6 +31,12 @@ impl Display for Constant {
 	}
 }
 
+// impl Display for ConstantChange {
+// 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+// 		f.write_fmt(format_args!("CST {}", self.to_string()))
+// 	}
+// }
+
 #[cfg(test)]
 mod test_reduced_constant {
 	use super::*;
