@@ -23,7 +23,7 @@ use std::fmt::Display;
 /// Some keys are duplicate data. We remove them here.
 fn purge_v13_keys(value: Value) -> Value {
 	let mut serialized = value.serialize();
-	let mut c = serialized.as_object_mut().unwrap().to_owned(); // TODO: V13 could use a match and prevent the unwrap()
+	let mut c = serialized.as_object_mut().unwrap().to_owned();
 
 	// println!("c before = {:?}", &c);
 	let _ = c.remove("name");
@@ -146,14 +146,11 @@ mod test_reduced_conversion {
 	use wasm_loader::Source;
 	use wasm_testbed::WasmTestBed;
 
-	// TODO: V13 put that in a single file
-	// const RUNTIME_V12: &str = "../../data/runtime_v12.wasm";
-	const RUNTIME_V13: &str = "../../data/polkadot/V13/polkadot-9030.wasm";
-
 	#[test]
 	#[cfg(feature = "v13")]
 	fn test_reduce_v13() {
-		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).unwrap();
+		let runtime_v13 = get_runtime_file(RuntimeFile::new(Chain::Polkadot, 13, 9030)).unwrap();
+		let testbed = WasmTestBed::new(&Source::File(PathBuf::from(runtime_v13))).unwrap();
 		let metadata = testbed.metadata();
 		match metadata {
 			V13(v13) => {

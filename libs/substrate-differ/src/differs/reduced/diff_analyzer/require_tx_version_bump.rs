@@ -24,16 +24,12 @@ impl RequireTransactionVersionBump for DiffAnalyzer {
 						// 		extrinsic.iter().map(|p| match p {
 						// 	ReducedExtrinsicChange::Version(version) => {
 						// 		// match versiopn {
-
 						// 		// }
-						// 		// TODO
 						// 		true
 						// 	},
 						// 	ReducedExtrinsicChange::SignedExtensions(signed_extensions) => {
 						// 		// match signed_extensions {
-
 						// 			// }
-						// 		// TODO
 						// 		true
 						// 	},
 						// }).all(|x| x),
