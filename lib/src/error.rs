@@ -1,3 +1,4 @@
+use ipfs_hasher::error::IpfsHasherError;
 use thiserror::Error;
 use wasm_loader::WasmLoaderError;
 use wasm_testbed::WasmTestbedError;
@@ -40,6 +41,9 @@ pub enum SubwasmLibError {
 	#[error("Endpoint not found for `{0}`")]
 	EndpointNotFound(String),
 
+	#[error("Hash error")]
+	HashError(),
+
 	#[error("Generic error")]
 	Generic(String),
 
@@ -71,5 +75,11 @@ impl From<WasmLoaderError> for SubwasmLibError {
 impl From<serde_json::Error> for SubwasmLibError {
 	fn from(_e: serde_json::Error) -> Self {
 		SubwasmLibError::Generic("SerdeJsonError".to_string())
+	}
+}
+
+impl From<IpfsHasherError> for SubwasmLibError {
+	fn from(_e: IpfsHasherError) -> Self {
+		SubwasmLibError::HashError()
 	}
 }

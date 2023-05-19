@@ -1,13 +1,13 @@
 #![allow(clippy::derive_partial_eq_without_eq)]
 
 mod compression;
-mod error;
+pub mod error;
 mod node_endpoint;
 mod onchain_block;
 mod source;
 
 pub use compression::Compression;
-pub use error::WasmLoaderError;
+pub use error::*;
 pub use node_endpoint::NodeEndpoint;
 pub use onchain_block::{BlockRef, OnchainBlock};
 pub use source::Source;
@@ -38,13 +38,13 @@ pub struct WasmLoader {
 
 impl WasmLoader {
 	/// Fetch the wasm blob from a node
-	fn fetch_wasm(reference: &OnchainBlock) -> error::Result<WasmBytes> {
+	fn fetch_wasm(reference: &OnchainBlock) -> Result<WasmBytes> {
 		#[derive(Deserialize)]
 		struct Response {
 			result: String,
 		}
 
-		fn map_err<O, E1, E2>(r: Result<O, E1>, e: E2) -> Result<O, E2>
+		fn map_err<O, E1, E2>(r: std::result::Result<O, E1>, e: E2) -> std::result::Result<O, E2>
 		where
 			E1: Debug,
 		{
@@ -105,7 +105,7 @@ impl WasmLoader {
 	}
 
 	/// Load wasm from a node
-	fn load_from_node(reference: &OnchainBlock) -> error::Result<WasmBytes> {
+	fn load_from_node(reference: &OnchainBlock) -> Result<WasmBytes> {
 		WasmLoader::fetch_wasm(reference)
 	}
 
@@ -129,12 +129,12 @@ impl WasmLoader {
 		}
 	}
 
-	pub fn load_from_bytes(bytes: CompressedMaybe, compression: Compression) -> error::Result<Self> {
+	pub fn load_from_bytes(bytes: CompressedMaybe, compression: Compression) -> Result<Self> {
 		Ok(Self { bytes, compression })
 	}
 
 	/// Load the binary wasm from a file or from a running node via rpc
-	pub fn load_from_source(source: &Source) -> error::Result<Self> {
+	pub fn load_from_source(source: &Source) -> Result<Self> {
 		log::debug!("Loading from {:?}", source);
 		let bytes = match source {
 			Source::File(f) => Ok(Self::load_from_file(f)),
@@ -143,7 +143,7 @@ impl WasmLoader {
 		log::debug!("Loaded {:?} bytes", bytes.len());
 
 		debug!("code size before decompression: {:?}", bytes.len());
-		let bytes_decompressed = sp_maybe_compressed_blob::decompress(&bytes, CODE_BLOB_BOMB_LIMIT).unwrap();
+		let bytes_decompressed = sp_maybe_compressed_blob::decompress(&bytes, CODE_BLOB_BOMB_LIMIT)?;
 
 		let compression = Compression::new(&bytes, &bytes_decompressed);
 
@@ -208,8 +208,12 @@ pub mod tests {
 	#[test]
 	#[ignore = "need node"]
 	fn fetch_should_work() {
-		assert!(WasmLoader::fetch_wasm(&OnchainBlock::new("https://rpc.polkadot.io", None)).is_ok());
-		assert!(WasmLoader::fetch_wasm(&OnchainBlock::new("wss://rpc.polkadot.io", None)).is_ok());
+		assert!(WasmLoader::fetch_wasm(
+			&OnchainBlock::new("https://rpc.polkadot.io", None).expect("Can parse RPC node")
+		)
+		.is_ok());
+		assert!(WasmLoader::fetch_wasm(&OnchainBlock::new("wss://rpc.polkadot.io", None).expect("Can parse RPC node"))
+			.is_ok());
 	}
 
 	#[test]

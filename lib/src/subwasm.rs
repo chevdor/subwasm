@@ -5,6 +5,7 @@ use wasm_testbed::{WasmTestBed, WasmTestbedError};
 
 use crate::{
 	error,
+	error::*,
 	metadata_wrapper::{self, MetadataWrapper},
 	utils::print_big_output_safe,
 	RuntimeInfo, SubwasmLibError,
@@ -16,26 +17,24 @@ pub struct Subwasm {
 }
 
 impl Subwasm {
-	pub fn new(source: &Source) -> Self {
-		let testbed = WasmTestBed::new(source)
-			.map_err(|e| {
-				eprintln!("{e}");
-				if let WasmTestbedError::Decoding(data) = e {
-					WasmTestBed::print_magic_and_version(&data);
-				}
-				const REPO: &str = env!("CARGO_PKG_REPOSITORY");
-				const NAME: &str = env!("CARGO_PKG_NAME");
-				const VERSION: &str = env!("CARGO_PKG_VERSION");
-				println!("🗣️ If you think it should have worked, please open an issue at {REPO}/issues");
-				println!("and attach your runtime and mention using {NAME} v{VERSION}");
-				println!("The source was {source} ");
+	pub fn new(source: &Source) -> Result<Self> {
+		let testbed = WasmTestBed::new(source).map_err(|e| {
+			eprintln!("{e}");
+			if let WasmTestbedError::Decoding(data) = e {
+				WasmTestBed::print_magic_and_version(&data);
+			}
+			const REPO: &str = env!("CARGO_PKG_REPOSITORY");
+			const NAME: &str = env!("CARGO_PKG_NAME");
+			const VERSION: &str = env!("CARGO_PKG_VERSION");
+			println!("🗣️ If you think it should have worked, please open an issue at {REPO}/issues");
+			println!("and attach your runtime and mention using {NAME} v{VERSION}");
+			println!("The source was {source} ");
 
-				panic!("Could not load runtime");
-			})
-			.unwrap();
+			SubwasmLibError::Generic("Failed loading runtime".to_string())
+		})?;
 
-		let runtime_info = RuntimeInfo::new(&testbed);
-		Self { testbed, runtime_info }
+		let runtime_info = RuntimeInfo::new(&testbed)?;
+		Ok(Self { testbed, runtime_info })
 	}
 
 	pub fn runtime_info(&self) -> &RuntimeInfo {
@@ -83,7 +82,7 @@ impl Subwasm {
 	}
 
 	pub fn display_reduced_summary(&self, json: bool) -> Result<()> {
-		let reduced_runtime: ReducedRuntime = self.testbed.metadata().try_into()?;
+		let reduced_runtime: ReducedRuntime = self.testbed.metadata().into();
 		let reduced_runtime_summary: ReducedRuntimeSummary = ReducedRuntimeSummary::from(&reduced_runtime);
 		if json {
 			let serialized = serde_json::to_string_pretty(&reduced_runtime_summary)?;

@@ -6,8 +6,8 @@ rustflags = [
   "-Aclippy::all",
   "-Dclippy::correctness",
   "-Dclippy::unwrap_used",
-#   "-Aclippy::allow-unwrap-in-tests",     		 # time to cleanup
 #   "-Wclippy::expect_used",			 # not there yet
+#   "-Aclippy::allow-unwrap-in-tests", 	 # time to cleanup
   "-Aclippy::if-same-then-else",
   "-Asuspicious_double_ref_op",
   "-Dclippy::complexity",

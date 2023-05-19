@@ -24,7 +24,7 @@ thiserror = "1.0"
 wasm-loader = { version = "1.0.0-alpha8", path = "../wasm-loader" }
 sc-executor = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 sc-executor-common = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
-scale = { version = "3.1", package = "parity-scale-codec", default-features = false }
+scale = { version = "3", package = "parity-scale-codec", default-features = false }
 sp-core = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 sp-io = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 sp-runtime = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }

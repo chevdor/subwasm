@@ -4,3 +4,4 @@
 #![doc = document_features::document_features!()]
 
 pub mod differs;
+pub mod error;

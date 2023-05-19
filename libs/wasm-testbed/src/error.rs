@@ -1,4 +1,6 @@
+use sc_executor_common::error::WasmError;
 // use std::fmt;
+use substrate_runtime_proposal_hash::error::RuntimePropHashError;
 use thiserror::Error;
 
 pub type Result<T> = std::result::Result<T, WasmTestbedError>;
@@ -14,21 +16,27 @@ pub enum WasmTestbedError {
 	#[error("Failed decoding bytes: {0:?}")]
 	Decoding(Vec<u8>),
 
+	#[error("Hash Error")]
+	HashError(),
+
 	#[error("This runtime is not supported")]
 	UnsupportedRuntime,
 }
 
-// impl fmt::Display for WasmTestbedError {
-// 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-// 		match self {
-// 			WasmTestbedError::Unsupported => write!(f, "This runtime is not supported"),
+impl From<RuntimePropHashError> for WasmTestbedError {
+	fn from(_e: RuntimePropHashError) -> Self {
+		WasmTestbedError::HashError()
+	}
+}
 
-// 			WasmTestbedError::Decoding(bytes) => {
-// 				write!(f, "The runtime could not be decoded. Here are the first bytes:\n{:02x?}", bytes[0..64].to_vec())
-// 			}
+impl From<WasmError> for WasmTestbedError {
+	fn from(_e: WasmError) -> Self {
+		WasmTestbedError::HashError()
+	}
+}
 
-// 			WasmTestbedError::Calling(method) => write!(f, "Failed calling: {method:?}"),
-// 			WasmTestbedError::Loading(src) => write!(f, "Failed Loading: {src:?}"),
-// 		}
-// 	}
-// }
+impl From<scale::Error> for WasmTestbedError {
+	fn from(_e: scale::Error) -> Self {
+		WasmTestbedError::HashError()
+	}
+}

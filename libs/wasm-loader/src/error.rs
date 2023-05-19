@@ -15,7 +15,7 @@ pub enum WasmLoaderError {
 	NotSupported(String),
 
 	#[error("Compression failed and returned nothing")]
-	CompressionFailed(),
+	CompressionError(),
 
 	#[error("Decompression failed")]
 	DecompressionFailed(),
@@ -27,30 +27,8 @@ pub enum WasmLoaderError {
 	WsClient(String),
 }
 
-// impl fmt::Display for WasmLoaderError {
-// 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-// 		match self {
-// 			WasmLoaderError::EndpointParsing(s) | WasmLoaderError::OnchainBlockParsing(s) => {
-// 				write!(f, "Parsing issue: {s:?}")
-// 			}
-
-// 			WasmLoaderError::NotSupported(s) => write!(f, "Unsupported: {s:?}"),
-// 			WasmLoaderError::HttpClient() => write!(f, "HttpClient Error"),
-// 			WasmLoaderError::WsClient() => write!(f, "WsClient Error"),
-// 		}
-// 	}
-// }
-
-// impl std::error::Error for WasmLoaderError {
-// 	fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-// 		None
-// 	}
-
-// 	fn description(&self) -> &str {
-// 		"description() is deprecated; use Display"
-// 	}
-
-// 	fn cause(&self) -> Option<&dyn std::error::Error> {
-// 		self.source()
-// 	}
-// }
+impl From<sp_maybe_compressed_blob::Error> for WasmLoaderError {
+	fn from(_e: sp_maybe_compressed_blob::Error) -> Self {
+		Self::CompressionError()
+	}
+}

@@ -71,7 +71,7 @@ impl WasmTestBed {
 				WasmTestbedError::Decoding(metadata[..128].to_vec())
 			})?;
 
-		let core_version = Self::get_core_version(&wasm);
+		let core_version = Self::get_core_version(&wasm)?;
 		let metadata_version = Self::get_metadata_version(&metadata);
 
 		Ok(Self {
@@ -139,15 +139,16 @@ impl WasmTestBed {
 			.with_runtime_cache_size(2)
 			.build();
 
-		let runtime_blob = RuntimeBlob::new(wasm).unwrap();
+		let runtime_blob = RuntimeBlob::new(wasm)?;
 		executor
 			.uncached_call(runtime_blob, &mut ext, true, method, call_data)
 			.map_err(|_| WasmTestbedError::Calling(method.to_string()))
 	}
 
-	pub fn get_core_version(wasm: &[u8]) -> SubstrateRuntimeVersion {
-		let encoded = Self::call(wasm, "Core_version", &[]).unwrap();
-		<SubstrateRuntimeVersion>::decode(&mut &encoded[..]).expect("Failed decoding runtime version")
+	pub fn get_core_version(wasm: &[u8]) -> Result<SubstrateRuntimeVersion> {
+		let encoded = Self::call(wasm, "Core_version", &[])?;
+		let version = <SubstrateRuntimeVersion>::decode(&mut &encoded[..])?;
+		Ok(version)
 	}
 
 	/// We probably don't need to maintain this as decoding the runtime will
@@ -182,21 +183,21 @@ impl WasmTestBed {
 	}
 
 	/// Compute the proposal hash of the runtime
-	pub fn proposal_hash(&self) -> String {
-		let result: SrhResult = get_result(substrate_runtime_proposal_hash::PREFIX_SYSTEM_SETCODE, &self.bytes);
-		format!("0x{}", &result.encodedd_hash)
+	pub fn proposal_hash(&self) -> Result<String> {
+		let result: SrhResult = get_result(substrate_runtime_proposal_hash::PREFIX_SYSTEM_SETCODE, &self.bytes)?;
+		Ok(format!("0x{}", &result.encodedd_hash))
 	}
 
 	/// Compute the proposal hash of the runtime
-	pub fn parachain_authorize_upgrade_hash(&self) -> String {
-		let result = get_parachainsystem_authorize_upgrade(&self.bytes);
-		format!("0x{}", hex::encode(result))
+	pub fn parachain_authorize_upgrade_hash(&self) -> Result<String> {
+		let result = get_parachainsystem_authorize_upgrade(&self.bytes)?;
+		Ok(format!("0x{}", hex::encode(result)))
 	}
 
 	/// Compute the blake2-256 hash of the runtime
-	pub fn blake2_256_hash(&self) -> String {
+	pub fn blake2_256_hash(&self) -> Result<String> {
 		let result = BlakeTwo256::hash(&self.bytes);
-		format!("{result:?}")
+		Ok(format!("{result:?}"))
 	}
 }
 

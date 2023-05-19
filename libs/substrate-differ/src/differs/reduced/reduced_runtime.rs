@@ -6,6 +6,7 @@ use super::{
 use crate::differs::reduced::calls::{
 	call::variant_to_calls, constant::Constant, error::variant_to_errors, event::variant_to_events, storage::*,
 };
+use crate::error::*;
 use comparable::Comparable;
 use frame_metadata::{
 	v14, PalletMetadata,
@@ -47,13 +48,15 @@ impl ReducedRuntime {
 	pub fn get_reduced_pallet_from_v14_pallet(
 		p: &PalletMetadata<PortableForm>,
 		registry: &PortableRegistry,
-	) -> ReducedPallet {
+	) -> crate::error::Result<ReducedPallet> {
 		let name = &p.name;
 
 		// calls
 		let calls = if let Some(calls) = &p.calls {
 			let id = calls.ty.id;
-			let ty = registry.resolve(id.to_owned()).unwrap();
+			let ty = registry
+				.resolve(id.to_owned())
+				.ok_or_else(|| SubstrateDifferError::RegistryError("call".to_string(), id))?;
 
 			match &ty.type_def {
 				scale_info::TypeDef::Variant(v) => {
@@ -72,7 +75,9 @@ impl ReducedRuntime {
 		// events
 		let events = if let Some(item) = &p.event {
 			let id = item.ty.id;
-			let ty = registry.resolve(id.to_owned()).unwrap();
+			let ty = registry
+				.resolve(id.to_owned())
+				.ok_or_else(|| SubstrateDifferError::RegistryError("event".to_string(), id))?;
 
 			match &ty.type_def {
 				scale_info::TypeDef::Variant(v) => {
@@ -91,7 +96,9 @@ impl ReducedRuntime {
 		// errors
 		let errors = if let Some(item) = &p.error {
 			let id = item.ty.id;
-			let ty = registry.resolve(id.to_owned()).unwrap();
+			let ty = registry
+				.resolve(id.to_owned())
+				.ok_or_else(|| SubstrateDifferError::RegistryError("error".to_string(), id))?;
 
 			match &ty.type_def {
 				scale_info::TypeDef::Variant(v) => {
@@ -134,7 +141,7 @@ impl ReducedRuntime {
 			.map(|i| (i.name.clone(), Constant::new(&i.name, i.value.clone(), i.docs.clone())))
 			.collect();
 
-		ReducedPallet { index: p.index.into(), name: name.into(), calls, events, errors, constants, storages }
+		Ok(ReducedPallet { index: p.index.into(), name: name.into(), calls, events, errors, constants, storages })
 	}
 
 	#[cfg(feature = "v14")]
@@ -144,17 +151,24 @@ impl ReducedRuntime {
 
 		// TODO: deal with extrinsic as well
 		let extrinsic = &v14.extrinsic;
-
 		// println!("extrinsic = {:#?}", extrinsic);
 
 		let pallets = &v14.pallets;
-		let reduced_pallets: HashMap<PalletId, ReducedPallet> = pallets
+		let reduced_pallets = pallets
 			.iter()
 			.map(|p| {
 				let reduced_pallet = ReducedRuntime::get_reduced_pallet_from_v14_pallet(p, registry);
-				(reduced_pallet.index, reduced_pallet)
+				let index = match &reduced_pallet {
+					Ok(p) => p.index,
+					Err(_) => 0,
+				};
+				if let Ok(reduced_pallet) = reduced_pallet {
+					Ok((index, reduced_pallet))
+				} else {
+					Err(crate::error::SubstrateDifferError::RegistryError("pallet".to_string(), p.index as u32))
+				}
 			})
-			.collect();
+			.collect::<crate::error::Result<HashMap<PalletId, ReducedPallet>>>()?;
 		let reduced_extrinsic = ReducedExtrinsic::from(extrinsic);
 
 		let r_rtm = ReducedRuntime::new(reduced_extrinsic, reduced_pallets);
@@ -179,9 +193,9 @@ impl From<&RuntimeMetadata> for ReducedRuntime {
 		match &runtime_metadata {
 			// TODO: V13 Bring back v13 eventually
 			#[cfg(feature = "v13")]
-			V13(v13) => ReducedRuntime::from_v13(v13).unwrap(),
+			V13(v13) => ReducedRuntime::from_v13(v13).expect("Failed reducing runtime from V13"),
 			#[cfg(feature = "v14")]
-			V14(v14) => ReducedRuntime::from_v14(v14).unwrap(),
+			V14(v14) => ReducedRuntime::from_v14(v14).expect("Failed reducing runtime from V14"),
 			_ => panic!("Unsupported metadata version"),
 		}
 	}
