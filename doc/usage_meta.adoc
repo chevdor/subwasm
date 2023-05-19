@@ -1,4 +1,4 @@
-Returns the metadata as a json object. You may also use the "meta" alias. It is no longer possible to have a "printable" output, for that, please use the 'show-reduced' sub-command
+Returns the metadata as a json object. You may also use the "meta" alias. See also the 'show' sub-command
 
 Usage: subwasm metadata [OPTIONS] [SOURCE]
 
@@ -12,6 +12,6 @@ Options:
   -q, --quiet            Less output
   -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
   -n, --no-color         [env: NO_COLOR=]
-  -f, --format <FORMAT>  You may specifiy the output format. One of "human", "scale", "json", "json+scale", "hex+scale" [default: human]
+  -f, --format <FORMAT>  You may specifiy the output format. One of "human", "scale", "json", "json+scale", "hex+scale". If you use the default: human, you may want to check out the "show_reduced" command instead [default: human]
   -o, --output <OUTPUT>  You may specifiy the output filename where the metadata will be saved. Alternatively, you may use `auto` and an appropriate name will be generated according to the `format` your chose
   -h, --help             Print help

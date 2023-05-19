@@ -19,7 +19,8 @@ impl Compatible for DiffAnalyzer {
 					})
 					.all(|x| x),
 				ReducedRuntimeChange::Extrinsic(_extrinsic) => {
-					todo!("Extrinsic diff not implemented yet and usually does not change")
+					// TODO  todo!("Extrinsic diff not implemented yet and usually does not change")
+					false
 				}
 			})
 			.all(|x| x)

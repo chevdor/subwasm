@@ -29,7 +29,7 @@ _usage:
 	cargo run -q -- diff --help > doc/usage_diff.adoc
 	cargo run -q -- compress --help > doc/usage_compress.adoc
 	cargo run -q -- decompress --help > doc/usage_decompress.adoc
-	cargo run -q -- show-reduced --help > doc/usage_show-reduced.adoc
+	cargo run -q -- show --help > doc/usage_show.adoc
 
 # Generate documentation
 doc: _usage

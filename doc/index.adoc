@@ -26,9 +26,9 @@ include::usage_version.adoc[]
 include::usage_meta.adoc[]
 ----
 
-=== Command: show-reduced
+=== Command: show
 ----
-include::usage_show-reduced.adoc[]
+include::usage_show.adoc[]
 ----
 
 === Command: diff

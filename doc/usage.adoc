@@ -3,15 +3,15 @@
 Usage: subwasm [OPTIONS] [COMMAND]
 
 Commands:
-  get           Get/Download the runtime wasm from a running node through rpc
-  info          The `info` command returns summarized information about a runtime
-  version       The `version` command returns summarized information about the versions of a runtime
-  metadata      Returns the metadata as a json object. You may also use the "meta" alias. It is no longer possible to have a "printable" output, for that, please use the 'show-reduced' sub-command
-  show-reduced  Shows the ReducedRuntime
-  diff          Compare 2 runtimes after converting them to ReducedRuntime
-  compress      Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is already compressed
-  decompress    Decompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that case, you will get the same content as output. This is useful if you want to decompress "no matter what" and don't really know whether the input will be compressed or not
-  help          Print this message or the help of the given subcommand(s)
+  get         Get/Download the runtime wasm from a running node through rpc
+  info        The `info` command returns summarized information about a runtime
+  version     The `version` command returns summarized information about the versions of a runtime
+  metadata    Returns the metadata as a json object. You may also use the "meta" alias. See also the 'show' sub-command
+  show        Shows the a reduced view of the runtime where the types have been resolved
+  diff        Compare 2 runtimes after converting them to ReducedRuntime
+  compress    Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is already compressed
+  decompress  Decompress a given runtime wasm file. You may pass a runtime that is already uncompressed
+  help        Print this message or the help of the given subcommand(s)
 
 Options:
   -j, --json      Output as json

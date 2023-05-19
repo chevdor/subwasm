@@ -20,7 +20,9 @@ impl RequireTransactionVersionBump for DiffAnalyzer {
 						})
 						.all(|x| x),
 					ReducedRuntimeChange::Extrinsic(_extrinsic) => {
-						todo!("Extrinsic diff not implemented yet and usually does not change")
+						eprintln!("Extrinsic diff is not implemented yet but subwasm spotted some changes.");
+						eprintln!("This is normal if you compare different chains.");
+						// todo!("Extrinsic diff not implemented yet and usually does not change")
 						// 		extrinsic.iter().map(|p| match p {
 						// 	ReducedExtrinsicChange::Version(version) => {
 						// 		// match versiopn {
@@ -34,6 +36,7 @@ impl RequireTransactionVersionBump for DiffAnalyzer {
 						// 	},
 						// }).all(|x| x),
 						// }
+						false
 					}
 				}
 			})

@@ -95,15 +95,15 @@ MacOS Homebrew users can use:
     Usage: subwasm [OPTIONS] [COMMAND]
 
     Commands:
-      get           Get/Download the runtime wasm from a running node through rpc
-      info          The `info` command returns summarized information about a runtime
-      version       The `version` command returns summarized information about the versions of a runtime
-      metadata      Returns the metadata as a json object. You may also use the "meta" alias. It is no longer possible to have a "printable" output, for that, please use the 'show-reduced' sub-command
-      show-reduced  Shows the ReducedRuntime
-      diff          Compare 2 runtimes after converting them to ReducedRuntime
-      compress      Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is already compressed
-      decompress    Decompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that case, you will get the same content as output. This is useful if you want to decompress "no matter what" and don't really know whether the input will be compressed or not
-      help          Print this message or the help of the given subcommand(s)
+      get         Get/Download the runtime wasm from a running node through rpc
+      info        The `info` command returns summarized information about a runtime
+      version     The `version` command returns summarized information about the versions of a runtime
+      metadata    Returns the metadata as a json object. You may also use the "meta" alias. See also the 'show' sub-command
+      show        Shows the a reduced view of the runtime where the types have been resolved
+      diff        Compare 2 runtimes after converting them to ReducedRuntime
+      compress    Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is already compressed
+      decompress  Decompress a given runtime wasm file. You may pass a runtime that is already uncompressed
+      help        Print this message or the help of the given subcommand(s)
 
     Options:
       -j, --json      Output as json
@@ -169,7 +169,7 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
 
 ### Command: meta
 
-    Returns the metadata as a json object. You may also use the "meta" alias. It is no longer possible to have a "printable" output, for that, please use the 'show-reduced' sub-command
+    Returns the metadata as a json object. You may also use the "meta" alias. See also the 'show' sub-command
 
     Usage: subwasm metadata [OPTIONS] [SOURCE]
 
@@ -183,15 +183,15 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
       -q, --quiet            Less output
       -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
       -n, --no-color         [env: NO_COLOR=]
-      -f, --format <FORMAT>  You may specifiy the output format. One of "human", "scale", "json", "json+scale", "hex+scale" [default: human]
+      -f, --format <FORMAT>  You may specifiy the output format. One of "human", "scale", "json", "json+scale", "hex+scale". If you use the default: human, you may want to check out the "show_reduced" command instead [default: human]
       -o, --output <OUTPUT>  You may specifiy the output filename where the metadata will be saved. Alternatively, you may use `auto` and an appropriate name will be generated according to the `format` your chose
       -h, --help             Print help
 
-### Command: show-reduced
+### Command: show
 
-    Shows the ReducedRuntime
+    Shows the a reduced view of the runtime where the types have been resolved
 
-    Usage: subwasm show-reduced [OPTIONS] [SRC]
+    Usage: subwasm show [OPTIONS] [SRC]
 
     Arguments:
       [SRC]  The first source [default: runtime_000.wasm]
@@ -202,7 +202,8 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
       -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
       -q, --quiet            Less output
       -n, --no-color         [env: NO_COLOR=]
-      -p, --pallet <PALLET>  You probably want to use `Reduced`
+      -p, --pallet <PALLET>  Show only information related to the provided pallet
+      -s, --summary
       -h, --help             Print help
 
 ### Command: diff
@@ -242,19 +243,31 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
 
 ### Command: decompress
 
-    Decompress a given runtime wasm file. You may pass a runtime that is uncompressed already. In that case, you will get the same content as output. This is useful if you want to decompress "no matter what" and don't really know whether the input will be compressed or not
+    Decompress a given runtime wasm file. You may pass a runtime that is already uncompressed.
+
+    In that case, you will get the same content as output. This is useful if you want to decompress "no matter what" and don't really know whether the input will be compressed or not.
 
     Usage: subwasm decompress [OPTIONS] <INPUT> <OUTPUT>
 
     Arguments:
-      <INPUT>   The path of the compressed or uncompressed wasm file to load
-      <OUTPUT>  The path of the file where the uncompressed runtime will be stored
+      <INPUT>
+              The path of the compressed or uncompressed wasm file to load
+
+      <OUTPUT>
+              The path of the file where the uncompressed runtime will be stored
 
     Options:
-      -j, --json      Output as json
-      -q, --quiet     Less output
-      -n, --no-color  [env: NO_COLOR=]
-      -h, --help      Print help
+      -j, --json
+              Output as json
+
+      -q, --quiet
+              Less output
+
+      -n, --no-color
+              [env: NO_COLOR=]
+
+      -h, --help
+              Print help (see a summary with '-h')
 
 ### Environment variables
 
