@@ -3566,6 +3566,7 @@ dependencies = [
  "substrate-runtime-proposal-hash",
  "subwasmlib",
  "text-style",
+ "thiserror",
  "wasm-loader",
  "wasm-testbed",
 ]

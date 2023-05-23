@@ -4,6 +4,7 @@ use thiserror::Error;
 pub type Result<T> = std::result::Result<T, WasmLoaderError>;
 
 #[derive(Error, Debug, Clone)]
+#[cfg_attr(test, derive(PartialEq))]
 pub enum WasmLoaderError {
 	#[error("Issue parsing endpoint: `{0}`")]
 	EndpointParsing(String),
@@ -13,6 +14,9 @@ pub enum WasmLoaderError {
 
 	#[error("Not supported: `{0}`")]
 	NotSupported(String),
+
+	#[error("Unknown source: `{0}`")]
+	UnknownSource(String),
 
 	#[error("Compression failed and returned nothing")]
 	CompressionError(),

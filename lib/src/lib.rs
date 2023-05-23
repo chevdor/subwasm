@@ -7,6 +7,7 @@ mod error;
 mod macros;
 mod metadata_wrapper;
 mod runtime_info;
+pub mod source;
 mod subwasm;
 mod types;
 mod utils;
@@ -27,6 +28,7 @@ use wasm_testbed::WasmTestBed;
 
 pub use chain_info::*;
 pub use runtime_info::*;
+pub use source::*;
 pub use subwasm::*;
 pub use types::*;
 
@@ -56,20 +58,20 @@ pub fn get_url(chain: Option<&str>, reference: &OnchainBlock) -> String {
 	}
 }
 
-/// Get the Source of some wasm based on the user's input
-/// If --chain NAME is passed and NAME is a supported chain
-/// we return a random node from the known list for chain NAME.
-/// If not, we fall back to the `source`
-pub fn get_source(chain: Option<&str>, source: Source, block_ref: Option<String>) -> Result<Source> {
-	let node_url = get_node_url(chain);
+// /// Get the Source of some wasm based on the user's input
+// /// If --chain NAME is passed and NAME is a supported chain
+// /// we return a random node from the known list for chain NAME.
+// /// If not, we fall back to the `source`
+// pub fn get_source(chain: Option<&str>, source: Source, block_ref: Option<String>) -> Result<Source> {
+// 	// let node_url = get_node_url(chain);
 
-	if let Some(chain_url) = node_url {
-		let endpoint = NodeEndpoint::from_str(&chain_url)?;
-		Ok(Source::Chain(OnchainBlock { endpoint, block_ref }))
-	} else {
-		Ok(source)
-	}
-}
+// 	// if let Some(chain_url) = node_url {
+// 	// 	let endpoint = NodeEndpoint::from_str(&chain_url)?;
+// 	// 	Ok(Source::Chain(OnchainBlock { endpoint, block_ref }))
+// 	// } else {
+// 	// 	Ok(source)
+// 	// }
+// }
 
 /// Fetch the runtime from a node and store the wasm locally
 pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<PathBuf>) -> Result<()> {

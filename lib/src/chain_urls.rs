@@ -4,7 +4,8 @@ use wasm_loader::NodeEndpoint;
 
 use crate::error;
 
-// TODO: use subrpc !
+// TODO: switch to subrpc !
+/// Search if we can find a list of endpoint URLs from the input string
 pub fn get_chain_urls(name: &str) -> Result<Vec<NodeEndpoint>> {
 	match name {
 		"polkadot" | "dot" => Some(vec![

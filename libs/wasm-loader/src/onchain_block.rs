@@ -26,6 +26,12 @@ impl FromStr for OnchainBlock {
 
 	fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
 		let endpoint = NodeEndpoint::from_str(s)?;
-		Ok(OnchainBlock { endpoint, block_ref: None })
+		Ok(endpoint.into())
+	}
+}
+
+impl From<NodeEndpoint> for OnchainBlock {
+	fn from(endpoint: NodeEndpoint) -> Self {
+		OnchainBlock { endpoint, block_ref: None }
 	}
 }

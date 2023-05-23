@@ -1,7 +1,9 @@
 use clap::{crate_authors, crate_version, ColorChoice, Parser, Subcommand};
 use std::path::PathBuf;
-use subwasmlib::*;
-use wasm_loader::{BlockRef, OnchainBlock, Source};
+use subwasmlib::{source::Source, *};
+use wasm_loader::{BlockRef, OnchainBlock};
+
+use crate::error::{self, *};
 
 /// `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains.
 #[derive(Parser)]
@@ -84,11 +86,10 @@ pub struct GetOpts {
 pub struct InfoOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such as
 	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
-	#[clap(alias("src"), default_value = "runtime_000.wasm", required_unless_present = "chain", index = 1)]
+	#[clap(alias("src"), required_unless_present = "chain", index = 1, value_parser = parse_source)]
 	pub source: Source,
 
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
-	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
 	#[clap(long, conflicts_with = "source")]
 	pub chain: Option<ChainInfo>,
@@ -104,7 +105,7 @@ pub struct InfoOpts {
 pub struct VersionOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such as
 	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
-	#[clap(alias("src"), default_value = "runtime_000.wasm", required_unless_present = "chain", index = 1)]
+	#[clap(alias("src"), default_value = "runtime_000.wasm", required_unless_present = "chain", index = 1, value_parser = parse_source)]
 	pub source: Source,
 
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
@@ -125,7 +126,7 @@ pub struct VersionOpts {
 pub struct MetaOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such as
 	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
-	#[clap(alias("src"), default_value = "runtime_000.wasm", required_unless_present = "chain", index = 1)]
+	#[clap(alias("src"), default_value = "runtime_000.wasm", required_unless_present = "chain", index = 1, value_parser = parse_source)]
 	pub source: Source,
 
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
@@ -159,25 +160,23 @@ pub struct MetaOpts {
 #[derive(Parser)]
 pub struct DiffOpts {
 	/// The first source
-	#[clap(index = 1, alias = "src-a", default_value = "runtime_000.wasm", required_unless_present = "chain_a")]
+	#[clap(index = 1, alias = "src-a", value_parser = parse_source)]
 	pub src_a: Source,
 
-	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
-	/// If you pass a valid --chain, --url will be ignored
-	/// --chain local = http://localhost:9933
-	#[clap(long, short('a'), conflicts_with = "src_a")]
-	pub chain_a: Option<ChainInfo>,
-
+	// /// Provide the name of a chain and a random url amongst a list of known nodes will be used.
+	// /// If you pass a valid --chain, --url will be ignored
+	// /// --chain local = http://localhost:9933
+	// #[clap(long, short('a'), conflicts_with = "src_a")]
+	// pub chain_a: Option<ChainInfo>,
 	/// The second source
-	#[clap(index = 2, alias = "src-b", default_value = "runtime_001.wasm", required_unless_present = "chain_b")]
+	#[clap(index = 2, alias = "src-b", value_parser = parse_source)]
 	pub src_b: Source,
 
-	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
-	/// If you pass a valid --chain, --url will be ignored
-	/// --chain local = http://localhost:9933
-	#[clap(long, short('b'), conflicts_with = "src_b")]
-	pub chain_b: Option<ChainInfo>,
-
+	// /// Provide the name of a chain and a random url amongst a list of known nodes will be used.
+	// /// If you pass a valid --chain, --url will be ignored
+	// /// --chain local = http://localhost:9933
+	// #[clap(long, short('b'), conflicts_with = "src_b")]
+	// pub chain_b: Option<ChainInfo>,
 	/// You probably want to use `Reduced`.
 	#[clap(long, short, default_value = "reduced")]
 	pub method: DiffMethod,
@@ -187,7 +186,7 @@ pub struct DiffOpts {
 #[derive(Parser)]
 pub struct ShowOpts {
 	/// The first source
-	#[clap(index = 1, alias = "src", default_value = "runtime_000.wasm", required_unless_present = "chain")]
+	#[clap(index = 1, alias = "src", default_value = "runtime_000.wasm", required_unless_present = "chain", value_parser = parse_source)]
 	pub src: Source,
 
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
@@ -236,4 +235,8 @@ pub struct DecompressOpts {
 	/// The path of the file where the uncompressed runtime will be stored.
 	#[clap(alias("out"), index = 2)]
 	pub output: PathBuf,
+}
+
+fn parse_source(s: &str) -> error::Result<Source> {
+	Source::try_from(s).map_err(|_e| SubwasmError::SourceParseError(s.into()))
 }

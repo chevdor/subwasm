@@ -1,10 +1,7 @@
-use std::{
-	fmt::{Display, Error},
-	path::PathBuf,
-	str::FromStr,
-};
+use std::{fmt::Display, path::PathBuf, str::FromStr};
 
-use crate::{NodeEndpoint, OnchainBlock};
+use crate::{error, NodeEndpoint, OnchainBlock};
+use error::*;
 
 /// The source of the wasm. It can come from the local file system (`File`) or from a chain (`Chain`).
 #[derive(Debug, Clone, PartialEq)]
@@ -14,8 +11,22 @@ pub enum Source {
 
 	/// A remote endpoint we can connect to
 	Chain(OnchainBlock),
-	// /// A chain alias such as "westend"
-	//Alias(String),
+}
+
+impl Source {
+	pub fn get_source_type(s: &str) -> Result<Source> {
+		let path = PathBuf::from(s);
+
+		if path.exists() {
+			return Ok(Source::File(path));
+		}
+
+		if let Ok(endpoint) = NodeEndpoint::from_str(s) {
+			return Ok(Self::Chain(endpoint.into()));
+		}
+
+		Err(WasmLoaderError::UnknownSource(s.to_string()))
+	}
 }
 
 impl Display for Source {
@@ -28,27 +39,17 @@ impl Display for Source {
 }
 
 impl FromStr for Source {
-	type Err = Error;
+	type Err = WasmLoaderError;
 
-	fn from_str(s: &str) -> Result<Self, Self::Err> {
-		let endpoint = match s {
-			url if url.starts_with("ws") => Some(NodeEndpoint::WebSocket(url.to_string())),
-			url if url.starts_with("http") => Some(NodeEndpoint::Http(url.to_string())),
-			_ => None,
-		};
-
-		if let Some(endpoint) = endpoint {
-			let reference = OnchainBlock { endpoint, block_ref: None };
-			Ok(Source::Chain(reference))
-		} else {
-			Ok(Source::File(PathBuf::from(s)))
-		}
+	fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
+		Self::get_source_type(s)
 	}
 }
 
 #[cfg(test)]
-mod tests {
+mod tests_source {
 	use super::*;
+	use std::{env::temp_dir, fs::File};
 
 	#[test]
 	fn it_converts_from_ws_url() {
@@ -84,19 +85,24 @@ mod tests {
 
 	#[test]
 	fn it_converts_from_path() {
-		let urls = vec!["/foo/bar.wasm", "/ws/foo/bar.wasm"];
+		let mut dir = temp_dir();
+		let path = dir.display().to_string();
+		let file_name = "{subwasm_fake_runtime}.wasm".to_string();
+		dir.push(file_name);
+		let _fake_wasm = File::create(dir).expect("We should be able to create a tmpdir");
+		let files = vec![path];
 
-		for url in urls {
-			assert!(Source::from_str(url) == Ok(Source::File(PathBuf::from(url))));
+		for file in files {
+			assert!(Source::from_str(&file) == Ok(Source::File(PathBuf::from(file))));
 		}
 	}
 
-	// #[test]
-	// fn it_converts_from_alias() {
-	// 	let urls = vec!["foo", "bar"];
+	#[test]
+	fn it_catches_unknown() {
+		let v = vec!["foo", "bar"];
 
-	// 	for url in urls {
-	// 		assert!(Source::from_str(url) == Ok(Source::Alias(url.into())));
-	// 	}
-	// }
+		for value in v {
+			assert!(Source::from_str(value).is_err());
+		}
+	}
 }

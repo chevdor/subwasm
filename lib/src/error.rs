@@ -50,6 +50,9 @@ pub enum SubwasmLibError {
 	#[error("Cannot filter with this format")]
 	UnsupportedFilter(),
 
+	#[error("Cannot resolve `{0}` to a known Source")]
+	UnknownSource(String),
+
 	#[error("Unknown error")]
 	Unknown(),
 }
