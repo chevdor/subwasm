@@ -118,9 +118,9 @@ fn main() -> color_eyre::Result<()> {
 							warning.on(AnsiColor::Yellow.light()).with(AnsiColor::Red.light()).bold()
 						};
 
-						text_style::termion::render(std::io::stdout(), &warning).expect("Could not render line");
+						text_style::crossterm::render(std::io::stdout(), &warning).expect("Could not render line");
 						println!("{diff_result}");
-						text_style::termion::render(std::io::stdout(), &warning).expect("Could not render line");
+						text_style::crossterm::render(std::io::stdout(), &warning).expect("Could not render line");
 
 						Ok(())
 					}

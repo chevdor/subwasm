@@ -44,7 +44,7 @@ subwasmlib = { version = "1.0.0-alpha9", path = "../lib" }
 wasm-loader = { version = "1.0.0-alpha9", path = "../libs/wasm-loader" }
 wasm-testbed = { version = "1.0.0-alpha9", path = "../libs/wasm-testbed" }
 serde_json = "1.0"
-text-style = { version = "0.3", features = ["termion"] }
+text-style = { version = "0.3", features = ["crossterm"] }
 sp-runtime = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 
 [dev-dependencies]
