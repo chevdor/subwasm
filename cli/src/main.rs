@@ -26,8 +26,6 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		Some(SubCommand::Info(info_opts)) => {
-			// let chain_name = info_opts.chain.map(|some| some.name);
-			// let source = get_source(chain_name.as_deref(), info_opts.source, info_opts.block)?;
 			let gh_url = if let Some(g) = info_opts.github {
 				let (runtime, version) = gh_to_runtime_and_version(&g)?;
 				Some(get_github_artifact_url(runtime, version))
@@ -38,11 +36,10 @@ fn main() -> color_eyre::Result<()> {
 			let url = match (gh_url, info_opts.url) {
 				(None, Some(u)) => Some(u),
 				(Some(u), None) => Some(u),
-				_ => unreachable!(),
+				_ => None,
 			};
 
 			let source: Source = Source::from_options(info_opts.file, info_opts.chain, info_opts.block, url)?;
-
 			// If the source is a URL, we try to fetch it first
 			let source = match source {
 				Source::URL(u) => {
@@ -60,13 +57,34 @@ fn main() -> color_eyre::Result<()> {
 			Ok(subwasm.runtime_info().print(opts.json)?)
 		}
 
-		Some(SubCommand::Version(version_opts)) => {
-			// let chain_name = version_opts.chain.map(|some| some.name);
-			// let source = get_source(chain_name.as_deref(), version_opts.source, version_opts.block)?;
-			let source = version_opts.source.try_into()?;
+		Some(SubCommand::Version(info_opts)) => {
+			let gh_url = if let Some(g) = info_opts.github {
+				let (runtime, version) = gh_to_runtime_and_version(&g)?;
+				Some(get_github_artifact_url(runtime, version))
+			} else {
+				None
+			};
+
+			let url = match (gh_url, info_opts.url) {
+				(None, Some(u)) => Some(u),
+				(Some(u), None) => Some(u),
+				_ => None,
+			};
+
+			let source: Source = Source::from_options(info_opts.file, info_opts.chain, info_opts.block, url)?;
+			// If the source is a URL, we try to fetch it first
+			let source = match source {
+				Source::URL(u) => {
+					debug!("Fetching runtime from {}", u);
+					let runtime_file = fetch_at_url(u)?;
+					debug!("Runtime fetched at {:?}", runtime_file.display());
+					Source::File(runtime_file)
+				}
+				s => s,
+			};
 
 			info!("⏱️  Loading WASM from {:?}", &source);
-			let subwasm = Subwasm::new(&source)?;
+			let subwasm = Subwasm::new(&source.try_into()?)?;
 
 			Ok(subwasm.runtime_info().print_version(opts.json)?)
 		}

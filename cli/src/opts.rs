@@ -122,24 +122,7 @@ pub struct InfoOpts {
 }
 
 /// The `version` command returns summarized information about the versions of a runtime.
-#[derive(Parser)]
-pub struct VersionOpts {
-	/// The wasm file to load. It can be a path on your local filesystem such as
-	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
-	#[clap(alias("src"), default_value = "runtime_000.wasm", required_unless_present = "chain", index = 1, value_parser = parse_source)]
-	pub source: Source,
-
-	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
-	/// If you pass a valid --chain, --url will be ignored
-	/// --chain local = http://localhost:9933
-	#[clap(long, conflicts_with = "source")]
-	pub chain: Option<ChainInfo>,
-
-	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
-	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
-	#[clap(short, long)]
-	pub block: Option<BlockRef>,
-}
+pub type VersionOpts = InfoOpts;
 
 /// Returns the metadata as a json object. You may also use the "meta" alias.
 /// See also the 'show' sub-command.
