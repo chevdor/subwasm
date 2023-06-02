@@ -35,11 +35,13 @@ pub enum SubCommand {
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Get(GetOpts),
 
+	/// The `info` command returns summarized information about a runtime.
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Info(InfoOpts),
 
+	/// The `version` command returns summarized information about the versions of a runtime.
 	#[clap(version = crate_version!(), author = crate_authors!())]
-	Version(VersionOpts),
+	Version(InfoOpts),
 
 	#[clap(version = crate_version!(), author = crate_authors!(), alias("meta"))]
 	Metadata(MetaOpts),
@@ -87,7 +89,6 @@ pub struct GetOpts {
 	pub output: Option<PathBuf>,
 }
 
-/// The `info` command returns summarized information about a runtime.
 #[derive(Parser)]
 pub struct InfoOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such /tmp/runtime.wasm
@@ -120,9 +121,6 @@ pub struct InfoOpts {
 	// #[clap(long, short, conflicts_with = "file")]
 	// pub ipfs: Option<String>,
 }
-
-/// The `version` command returns summarized information about the versions of a runtime.
-pub type VersionOpts = InfoOpts;
 
 /// Returns the metadata as a json object. You may also use the "meta" alias.
 /// See also the 'show' sub-command.
