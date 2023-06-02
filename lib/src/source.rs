@@ -2,11 +2,14 @@ use error::*;
 use std::fmt::Display;
 use std::path::PathBuf;
 use std::str::FromStr;
+use url::Url;
+use wasm_loader::BlockRef;
 use wasm_loader::OnchainBlock;
 use wasm_loader::Source as WasmLoaderSource;
 
 use crate::chain_urls::get_chain_urls;
 use crate::error;
+use crate::ChainInfo;
 
 /// The wasmloader provides a basic Source struct that
 /// can handle only a file or RPC endpoint.
@@ -21,11 +24,9 @@ pub enum Source {
 
 	/// A chain alias such as "westend" or "wnd"
 	Alias(String),
-	// curl / wget
-	// Github?
 
-	// For now, we can use curl/wget
-	// URL // TODO: url such as s3, that should work for github as well
+	// A URL to Github, S3, IPFS, etc...
+	URL(Url),
 }
 
 impl TryFrom<&str> for Source {
@@ -33,6 +34,14 @@ impl TryFrom<&str> for Source {
 
 	fn try_from(s: &str) -> std::result::Result<Self, Self::Error> {
 		Ok(WasmLoaderSource::from_str(s)?.into())
+	}
+}
+
+impl TryFrom<PathBuf> for Source {
+	type Error = SubwasmLibError;
+
+	fn try_from(s: PathBuf) -> std::result::Result<Self, Self::Error> {
+		Ok(WasmLoaderSource::File(s).into())
 	}
 }
 
@@ -58,6 +67,29 @@ impl TryFrom<Source> for WasmLoaderSource {
 }
 
 impl Source {
+	pub fn from_options(
+		file: Option<PathBuf>,
+		chain: Option<ChainInfo>,
+		block: Option<BlockRef>,
+		url: Option<Url>,
+	) -> Result<Self> {
+		if let Some(f) = file {
+			return Ok(Self::File(f));
+		}
+
+		if let Some(c) = chain {
+			let url = c.get_random_url(None).ok_or_else(|| error::SubwasmLibError::EndpointNotFound(c.name))?;
+			let onchain_block = OnchainBlock::new(&url, block)?;
+			return Ok(Self::Chain(onchain_block));
+		}
+
+		if let Some(u) = url {
+			return Ok(Self::URL(u));
+		}
+
+		Err(error::SubwasmLibError::UnknownSource(String::from("No file or chain or url provided!")))
+	}
+
 	pub fn get_source_type(s: &str) -> Result<Source> {
 		// This covers WasmLoaderSource::File and WasmLoaderSource::Chain
 		if let Ok(source) = WasmLoaderSource::from_str(s) {
@@ -80,6 +112,7 @@ impl Display for Source {
 			Source::File(file) => write!(fmt, "{file:?}"),
 			Source::Chain(chain) => write!(fmt, "chain: {chain:?}"),
 			Source::Alias(alias) => write!(fmt, "alias: {alias:?}"),
+			Source::URL(url) => write!(fmt, "url: {url:?}"),
 		}
 	}
 }

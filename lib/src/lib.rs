@@ -31,6 +31,7 @@ pub use runtime_info::*;
 pub use source::*;
 pub use subwasm::*;
 pub use types::*;
+pub use utils::*;
 
 /// Returns Some node url if possible, None otherwise.
 fn get_node_url(chain: Option<&str>) -> Option<String> {

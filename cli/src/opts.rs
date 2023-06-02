@@ -1,6 +1,7 @@
 use clap::{crate_authors, crate_version, ColorChoice, Parser, Subcommand};
 use std::path::PathBuf;
 use subwasmlib::{source::Source, *};
+use url::Url;
 use wasm_loader::{BlockRef, OnchainBlock};
 
 use crate::error::{self, *};
@@ -64,17 +65,22 @@ pub struct GetOpts {
 	pub url: OnchainBlock,
 
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
+	///
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
 	#[clap(long, conflicts_with = "url")]
 	pub chain: Option<ChainInfo>,
 
-	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
+	/// The optional block where to fetch the runtime.
+	///
+	/// That allows fetching older runtimes but you will need to connect to archive nodes.
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
 	#[clap(short, long)]
 	pub block: Option<BlockRef>,
 
-	/// You may specifiy the output filename where the runtime will be saved. If not provided, we will figure out an appropriate default name
+	/// You may specifiy the output filename where the runtime will be saved.
+	///
+	/// If not provided, we will figure out an appropriate default name
 	/// based on a counter: runtime_NNN.wasm where NNN is incrementing to make sure you do not override previous runtime. If you specify an
 	/// existing file as output, it will be overwritten.
 	#[clap(short, long, alias("out"), value_parser)]
@@ -84,20 +90,35 @@ pub struct GetOpts {
 /// The `info` command returns summarized information about a runtime.
 #[derive(Parser)]
 pub struct InfoOpts {
-	/// The wasm file to load. It can be a path on your local filesystem such as
-	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
-	#[clap(alias("src"), required_unless_present = "chain", index = 1, value_parser = parse_source)]
-	pub source: Source,
+	/// The wasm file to load. It can be a path on your local filesystem such /tmp/runtime.wasm
+	///
+	/// You may also fetch the runtime remotely, see `chain` and `url` flags.
+	#[clap(required_unless_present_any = ["chain", "url", "github"], required_unless_present = "url", index = 1)]
+	pub file: Option<PathBuf>,
 
-	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
-	/// --chain local = http://localhost:9933
-	#[clap(long, conflicts_with = "source")]
+	/// Load the wasm from an RPC node url such as http://localhost:9933 or ws://localhost:9944,
+	/// a node alias such as "polkadot" or "dot",
+	///
+	/// NOTE: --chain local = http://localhost:9933
+	#[clap(long, short, conflicts_with = "file")]
 	pub chain: Option<ChainInfo>,
 
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
-	#[clap(short, long)]
+	#[clap(short, long, requires = "chain")]
 	pub block: Option<BlockRef>,
+
+	/// Load the wasm from a URL (no node) such as https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm
+	#[clap(long, short, conflicts_with = "file")]
+	pub url: Option<Url>,
+
+	/// Load the wasm from Github passing a string in the format <runtime>@<version>
+	/// such as `kusama@0.9.42`
+	#[clap(long, short, conflicts_with = "file")]
+	pub github: Option<String>,
+	// /// Load the wasm from IPFS
+	// #[clap(long, short, conflicts_with = "file")]
+	// pub ipfs: Option<String>,
 }
 
 /// The `version` command returns summarized information about the versions of a runtime.

@@ -3,11 +3,11 @@ mod opts;
 
 use clap::{crate_name, crate_version, Parser};
 use env_logger::Env;
-use log::info;
+use log::*;
 use opts::*;
 use serde_json::json;
 use std::{env, io::Write};
-use subwasmlib::*;
+use subwasmlib::{source::Source, *};
 use text_style::{AnsiColor, StyledStr};
 
 /// Main entry point of the `subwasm` cli
@@ -28,10 +28,34 @@ fn main() -> color_eyre::Result<()> {
 		Some(SubCommand::Info(info_opts)) => {
 			// let chain_name = info_opts.chain.map(|some| some.name);
 			// let source = get_source(chain_name.as_deref(), info_opts.source, info_opts.block)?;
-			let source = info_opts.source.try_into()?;
+			let gh_url = if let Some(g) = info_opts.github {
+				let (runtime, version) = gh_to_runtime_and_version(&g)?;
+				Some(get_github_artifact_url(runtime, version))
+			} else {
+				None
+			};
+
+			let url = match (gh_url, info_opts.url) {
+				(None, Some(u)) => Some(u),
+				(Some(u), None) => Some(u),
+				_ => unreachable!(),
+			};
+
+			let source: Source = Source::from_options(info_opts.file, info_opts.chain, info_opts.block, url)?;
+
+			// If the source is a URL, we try to fetch it first
+			let source = match source {
+				Source::URL(u) => {
+					debug!("Fetching runtime from {}", u);
+					let runtime_file = fetch_at_url(u)?;
+					debug!("Runtime fetched at {:?}", runtime_file.display());
+					Source::File(runtime_file)
+				}
+				s => s,
+			};
 
 			info!("⏱️  Loading WASM from {:?}", &source);
-			let subwasm = Subwasm::new(&source)?;
+			let subwasm = Subwasm::new(&source.try_into()?)?;
 
 			Ok(subwasm.runtime_info().print(opts.json)?)
 		}
