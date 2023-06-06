@@ -4588,6 +4588,7 @@ dependencies = [
  "thiserror",
  "tungstenite",
  "ureq",
+ "url",
 ]
 
 [[package]]

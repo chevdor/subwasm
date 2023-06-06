@@ -6,6 +6,7 @@ use std::str::FromStr;
 pub type BlockRef = String;
 
 use error::*;
+use url::Url;
 
 /// This structure points to a node url and an optional block reference.
 #[derive(Debug, Clone, PartialEq)]
@@ -26,6 +27,15 @@ impl FromStr for OnchainBlock {
 
 	fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
 		let endpoint = NodeEndpoint::from_str(s)?;
+		Ok(endpoint.into())
+	}
+}
+
+impl TryFrom<Url> for OnchainBlock {
+	type Error = WasmLoaderError;
+
+	fn try_from(url: Url) -> std::result::Result<Self, Self::Error> {
+		let endpoint = NodeEndpoint::from_str(url.as_str())?;
 		Ok(endpoint.into())
 	}
 }

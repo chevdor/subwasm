@@ -19,10 +19,40 @@ fn main() -> color_eyre::Result<()> {
 
 	match opts.subcmd {
 		Some(SubCommand::Get(get_opts)) => {
-			let chain_name = get_opts.chain.map(|some| some.name);
-			let url = &get_url(chain_name.as_deref(), &get_opts.url);
+			let gh_url = if let Some(g) = get_opts.github {
+				let (runtime, version) = gh_to_runtime_and_version(&g)?;
+				Some(get_github_artifact_url(runtime, version))
+			} else {
+				None
+			};
 
-			Ok(download_runtime(url, get_opts.block, get_opts.output)?)
+			let download_url = match (gh_url, get_opts.url) {
+				(None, Some(u)) => Some(u),
+				(Some(u), None) => Some(u),
+				_ => None,
+			};
+
+			match (download_url, get_opts.rpc_url) {
+				(None, Some(rpc_url)) => {
+					let chain_name = get_opts.chain.map(|some| some.name);
+					let url = &get_url(chain_name.as_deref(), &rpc_url.into());
+					Ok(download_runtime(url, get_opts.block, get_opts.output)?)
+				}
+				(Some(url), None) | (Some(url), Some(_)) => {
+					let target = get_output_file(get_opts.output);
+					let output = fetch_at_url(url, Some(target))?;
+					debug!("Fetched at {output:?}");
+					if output.exists() {
+						info!("Got runtime at {output:?}");
+						Ok(())
+					} else {
+						panic!("Failed fetching file")
+					}
+				}
+				_ => {
+					unreachable!()
+				}
+			}
 		}
 
 		Some(SubCommand::Info(info_opts)) => {
@@ -44,7 +74,7 @@ fn main() -> color_eyre::Result<()> {
 			let source = match source {
 				Source::URL(u) => {
 					debug!("Fetching runtime from {}", u);
-					let runtime_file = fetch_at_url(u)?;
+					let runtime_file = fetch_at_url(u, None)?;
 					debug!("Runtime fetched at {:?}", runtime_file.display());
 					Source::File(runtime_file)
 				}
@@ -76,7 +106,7 @@ fn main() -> color_eyre::Result<()> {
 			let source = match source {
 				Source::URL(u) => {
 					debug!("Fetching runtime from {}", u);
-					let runtime_file = fetch_at_url(u)?;
+					let runtime_file = fetch_at_url(u, None)?;
 					debug!("Runtime fetched at {:?}", runtime_file.display());
 					Source::File(runtime_file)
 				}

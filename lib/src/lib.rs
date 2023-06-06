@@ -45,7 +45,8 @@ fn get_node_url(chain: Option<&str>) -> Option<String> {
 }
 
 /// Get the url of a node based on the user's input
-/// If --chain NAME is passed and NAME is a supported chain
+///
+/// If `chain` is passed and is a supported chain
 /// we return a random node from the known list for chain NAME.
 /// If not, we fall back to the --url flag
 pub fn get_url(chain: Option<&str>, reference: &OnchainBlock) -> String {
@@ -74,6 +75,28 @@ pub fn get_url(chain: Option<&str>, reference: &OnchainBlock) -> String {
 // 	// }
 // }
 
+/// Use the user's wish if any or make up a target
+pub fn get_output_file(wish: Option<PathBuf>) -> PathBuf {
+	match wish {
+		Some(path) => path,
+
+		_ => {
+			let mut i = 0;
+			let mut path;
+
+			loop {
+				path = format!("runtime_{i:03?}.wasm");
+				i += 1;
+				assert!(i < 1000, "Ran out of indexes");
+				if !Path::new(&path).exists() {
+					break;
+				}
+			}
+			PathBuf::from(path)
+		}
+	}
+}
+
 /// Fetch the runtime from a node and store the wasm locally
 pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<PathBuf>) -> Result<()> {
 	let url = match url {
@@ -96,24 +119,7 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 
 	log::info!("Got the runtime, its size is {:?}", wasm.len());
 
-	let outfile = match output {
-		Some(path) => path,
-
-		_ => {
-			let mut i = 0;
-			let mut path;
-
-			loop {
-				path = format!("runtime_{i:03?}.wasm");
-				i += 1;
-				assert!(i < 1000, "Ran out of indexes");
-				if !Path::new(&path).exists() {
-					break;
-				}
-			}
-			PathBuf::from(path)
-		}
-	};
+	let outfile = get_output_file(output);
 
 	info!("Saving runtime to {outfile:?}");
 	let mut buffer = File::create(outfile)?;

@@ -63,8 +63,8 @@ pub enum SubCommand {
 #[derive(Parser)]
 pub struct GetOpts {
 	/// The node url including (mandatory) the port number. Example: ws://localhost:9944 or http://localhost:9933
-	#[clap(default_value = "http://localhost:9933", required_unless_present = "chain", index = 1)]
-	pub url: OnchainBlock,
+	#[clap(default_value = "http://localhost:9933", required_unless_present_any = ["chain", "url", "github"], index = 1)]
+	pub rpc_url: Option<OnchainBlock>,
 
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	///
@@ -77,9 +77,20 @@ pub struct GetOpts {
 	///
 	/// That allows fetching older runtimes but you will need to connect to archive nodes.
 	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
-	#[clap(short, long)]
+	#[clap(short, long, requires = "chain")]
 	pub block: Option<BlockRef>,
 
+	/// Load the wasm from a URL (no node) such as https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm
+	#[clap(long, short, conflicts_with = "rpc_url")]
+	pub url: Option<Url>,
+
+	/// Load the wasm from Github passing a string in the format <runtime>@<version>
+	/// such as `kusama@0.9.42`
+	#[clap(long, short, alias = "gh", conflicts_with = "rpc_url")]
+	pub github: Option<String>,
+	// /// Load the wasm from IPFS
+	// #[clap(long, short, conflicts_with = "file")]
+	// pub ipfs: Option<String>,
 	/// You may specifiy the output filename where the runtime will be saved.
 	///
 	/// If not provided, we will figure out an appropriate default name

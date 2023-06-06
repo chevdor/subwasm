@@ -24,15 +24,21 @@ pub fn print_big_output_safe(s: &str) -> Result<()> {
 }
 
 /// Given a url for a runtime, attempt to fetch the runtime
-/// into a temp file and provide the path back
-pub fn fetch_at_url(url: Url) -> Result<PathBuf> {
-	let mut tmp = std::env::temp_dir();
-	tmp.push("runtime.wasm");
+/// into a file and provide the path back.
+/// If you provide None as `target`, a tmp file will be generated
+pub fn fetch_at_url(url: Url, target: Option<PathBuf>) -> Result<PathBuf> {
+	let target = if let Some(target) = target {
+		target
+	} else {
+		let mut target = std::env::temp_dir();
+		target.push("runtime.wasm");
+		target
+	};
 
 	let mut resp = reqwest::blocking::get(url).map_err(|_e| error::SubwasmLibError::Io)?;
-	let mut out = std::fs::File::create(tmp.clone()).map_err(|_e| error::SubwasmLibError::Io)?;
+	let mut out = std::fs::File::create(target.clone()).map_err(|_e| error::SubwasmLibError::Io)?;
 	resp.copy_to(&mut out).map_err(|_e| error::SubwasmLibError::Io)?;
-	Ok(tmp)
+	Ok(target)
 }
 
 /// 0.9.42
