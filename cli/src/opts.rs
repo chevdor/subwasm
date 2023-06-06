@@ -105,7 +105,7 @@ pub struct InfoOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such /tmp/runtime.wasm
 	///
 	/// You may also fetch the runtime remotely, see `chain` and `url` flags.
-	#[clap(required_unless_present_any = ["chain", "url", "github"], required_unless_present = "url", index = 1)]
+	#[clap(required_unless_present_any = ["chain", "url", "github"], index = 1)]
 	pub file: Option<PathBuf>,
 
 	/// Load the wasm from an RPC node url such as http://localhost:9933 or ws://localhost:9944,
@@ -126,15 +126,16 @@ pub struct InfoOpts {
 
 	/// Load the wasm from Github passing a string in the format <runtime>@<version>
 	/// such as `kusama@0.9.42`
-	#[clap(long, short, conflicts_with = "file")]
+	#[clap(long, short, alias = "gh", conflicts_with = "file")]
 	pub github: Option<String>,
 	// /// Load the wasm from IPFS
 	// #[clap(long, short, conflicts_with = "file")]
 	// pub ipfs: Option<String>,
 }
 
-/// Returns the metadata as a json object. You may also use the "meta" alias.
-/// See also the 'show' sub-command.
+/// Returns the metadata of the given runtime in several format. You may also use the "meta" alias.
+///
+/// If you want to see the content of a runtime, see the `show` sub-command.
 #[derive(Parser)]
 pub struct MetaOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such as
@@ -145,18 +146,27 @@ pub struct MetaOpts {
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
-	#[clap(long, conflicts_with = "source")]
+	#[clap(long, short, conflicts_with = "file")]
 	pub chain: Option<ChainInfo>,
+
+	/// Load the wasm from a URL (no node) such as https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm
+	#[clap(long, short, conflicts_with = "file")]
+	pub url: Option<Url>,
+
+	/// Load the wasm from Github passing a string in the format <runtime>@<version>
+	/// such as `kusama@0.9.42`
+	#[clap(long, short, alias = "gh", conflicts_with = "file")]
+	pub github: Option<String>,
+
+	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
+	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
+	#[clap(short, long, requires = "chain")]
+	pub block: Option<BlockRef>,
 
 	/// Without this flag, the metadata command display the list of all modules.
 	/// Using this flag, you will only see the module of your choice and a few details about it.
 	#[clap(long, short)]
 	pub module: Option<String>,
-
-	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
-	/// Currently, you must pass a block hash. Passing the block numbers is not supported.
-	#[clap(short, long)]
-	pub block: Option<BlockRef>,
 
 	/// You may specifiy the output format. One of "human", "scale", "json", "json+scale", "hex+scale".
 	/// If you use the default: human, you may want to check out the "show_reduced" command instead.
@@ -195,17 +205,19 @@ pub struct DiffOpts {
 	pub method: DiffMethod,
 }
 
-/// Shows the a reduced view of the runtime where the types have been resolved.
+/// Shows the a reduced view of the runtime.
+///
+/// A reduced view makes it much easier to understand the inner workings of a given runtime.
 #[derive(Parser)]
 pub struct ShowOpts {
-	/// The first source
-	#[clap(index = 1, alias = "src", default_value = "runtime_000.wasm", required_unless_present = "chain", value_parser = parse_source)]
-	pub src: Source,
+	/// The runtimwe to analyze
+	#[clap(required_unless_present_any = ["chain", "url", "github"], index = 1)]
+	pub file: Option<PathBuf>,
 
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
 	/// --chain local = http://localhost:9933
-	#[clap(long, conflicts_with = "src")]
+	#[clap(long, conflicts_with = "file")]
 	pub chain: Option<ChainInfo>,
 
 	/// The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes.
@@ -213,10 +225,20 @@ pub struct ShowOpts {
 	#[clap(short, long)]
 	pub block: Option<BlockRef>,
 
+	/// Load the wasm from a URL (no node) such as https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm
+	#[clap(long, short, conflicts_with = "file")]
+	pub url: Option<Url>,
+
+	/// Load the wasm from Github passing a string in the format <runtime>@<version>
+	/// such as `kusama@0.9.42`
+	#[clap(long, short, alias = "gh", conflicts_with = "file")]
+	pub github: Option<String>,
+
 	/// Show only information related to the provided pallet
 	#[clap(long, short)]
 	pub pallet: Option<String>,
 
+	/// The runtime is shown as a table, listing all pallets with their IDs, the count of calls, events, errors, constants and storage items.
 	#[clap(long, short)]
 	pub summary: bool,
 }
@@ -250,6 +272,7 @@ pub struct DecompressOpts {
 	pub output: PathBuf,
 }
 
+// TODO: Remove that
 fn parse_source(s: &str) -> error::Result<Source> {
 	Source::try_from(s).map_err(|_e| SubwasmError::SourceParseError(s.into()))
 }

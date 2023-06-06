@@ -6,9 +6,11 @@ use env_logger::Env;
 use log::*;
 use opts::*;
 use serde_json::json;
-use std::{env, io::Write};
+use std::{env, io::Write, path::PathBuf};
 use subwasmlib::{source::Source, *};
 use text_style::{AnsiColor, StyledStr};
+use url::Url;
+use wasm_loader::BlockRef;
 
 /// Main entry point of the `subwasm` cli
 fn main() -> color_eyre::Result<()> {
@@ -19,18 +21,8 @@ fn main() -> color_eyre::Result<()> {
 
 	match opts.subcmd {
 		Some(SubCommand::Get(get_opts)) => {
-			let gh_url = if let Some(g) = get_opts.github {
-				let (runtime, version) = gh_to_runtime_and_version(&g)?;
-				Some(get_github_artifact_url(runtime, version))
-			} else {
-				None
-			};
-
-			let download_url = match (gh_url, get_opts.url) {
-				(None, Some(u)) => Some(u),
-				(Some(u), None) => Some(u),
-				_ => None,
-			};
+			let gh_url = get_github_url(get_opts.github)?;
+			let download_url = select_url(gh_url, get_opts.url);
 
 			match (download_url, get_opts.rpc_url) {
 				(None, Some(rpc_url)) => {
@@ -56,30 +48,9 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		Some(SubCommand::Info(info_opts)) => {
-			let gh_url = if let Some(g) = info_opts.github {
-				let (runtime, version) = gh_to_runtime_and_version(&g)?;
-				Some(get_github_artifact_url(runtime, version))
-			} else {
-				None
-			};
-
-			let url = match (gh_url, info_opts.url) {
-				(None, Some(u)) => Some(u),
-				(Some(u), None) => Some(u),
-				_ => None,
-			};
-
-			let source: Source = Source::from_options(info_opts.file, info_opts.chain, info_opts.block, url)?;
-			// If the source is a URL, we try to fetch it first
-			let source = match source {
-				Source::URL(u) => {
-					debug!("Fetching runtime from {}", u);
-					let runtime_file = fetch_at_url(u, None)?;
-					debug!("Runtime fetched at {:?}", runtime_file.display());
-					Source::File(runtime_file)
-				}
-				s => s,
-			};
+			let gh_url = get_github_url(info_opts.github)?;
+			let download_url = select_url(gh_url, info_opts.url);
+			let source = get_source(info_opts.file, info_opts.chain, info_opts.block, download_url)?;
 
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source.try_into()?)?;
@@ -88,33 +59,12 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		Some(SubCommand::Version(info_opts)) => {
-			let gh_url = if let Some(g) = info_opts.github {
-				let (runtime, version) = gh_to_runtime_and_version(&g)?;
-				Some(get_github_artifact_url(runtime, version))
-			} else {
-				None
-			};
-
-			let url = match (gh_url, info_opts.url) {
-				(None, Some(u)) => Some(u),
-				(Some(u), None) => Some(u),
-				_ => None,
-			};
-
-			let source: Source = Source::from_options(info_opts.file, info_opts.chain, info_opts.block, url)?;
-			// If the source is a URL, we try to fetch it first
-			let source = match source {
-				Source::URL(u) => {
-					debug!("Fetching runtime from {}", u);
-					let runtime_file = fetch_at_url(u, None)?;
-					debug!("Runtime fetched at {:?}", runtime_file.display());
-					Source::File(runtime_file)
-				}
-				s => s,
-			};
+			let gh_url = get_github_url(info_opts.github)?;
+			let download_url = select_url(gh_url, info_opts.url);
+			let source = get_source(info_opts.file, info_opts.chain, info_opts.block, download_url)?;
 
 			info!("⏱️  Loading WASM from {:?}", &source);
-			let subwasm = Subwasm::new(&source.try_into()?)?;
+			let subwasm: Subwasm = Subwasm::new(&source.try_into()?)?;
 
 			Ok(subwasm.runtime_info().print_version(opts.json)?)
 		}
@@ -123,7 +73,6 @@ fn main() -> color_eyre::Result<()> {
 			// let chain_name = meta_opts.chain.map(|some| some.name);
 			// let source = get_source(chain_name.as_deref(), meta_opts.source, meta_opts.block)?;
 			let source = meta_opts.source.try_into()?;
-
 			info!("⏱️  Loading WASM from {:?}", &source);
 			let subwasm = Subwasm::new(&source)?;
 
@@ -234,11 +183,12 @@ fn main() -> color_eyre::Result<()> {
 		Some(SubCommand::Show(show_opts)) => {
 			// let chain_name = show_opts.chain.map(|some| some.name);
 			// let source = get_source(chain_name.as_deref(), show_opts.src, show_opts.block)?;
-
-			let source = show_opts.src.try_into()?;
+			let gh_url = get_github_url(show_opts.github)?;
+			let download_url = select_url(gh_url, show_opts.url);
+			let source = get_source(show_opts.file, show_opts.chain, show_opts.block, download_url)?;
 
 			info!("⏱️  Loading WASM from {:?}", &source);
-			let subwasm = Subwasm::new(&source)?;
+			let subwasm: Subwasm = Subwasm::new(&source.try_into()?)?;
 
 			if show_opts.summary {
 				Ok(subwasm.display_reduced_summary(opts.json)?)
@@ -251,4 +201,43 @@ fn main() -> color_eyre::Result<()> {
 			}
 		}
 	}
+}
+
+/// Get the github artifacts url
+pub fn get_github_url(s: Option<String>) -> Result<Option<Url>> {
+	if let Some(g) = s {
+		let (runtime, version) = gh_to_runtime_and_version(&g)?;
+		Ok(Some(get_github_artifact_url(runtime, version)))
+	} else {
+		Ok(None)
+	}
+}
+
+/// Depending on the options passed by the user we select and return the URL
+pub fn select_url(gh_url: Option<Url>, dl_url: Option<Url>) -> Option<Url> {
+	match (gh_url, dl_url) {
+		(None, Some(u)) => Some(u),
+		(Some(u), None) => Some(u),
+		_ => None,
+	}
+}
+
+/// Retrive one unique source from all the options the user may pass
+pub fn get_source(
+	file: Option<PathBuf>,
+	chain: Option<ChainInfo>,
+	block: Option<BlockRef>,
+	dl_url: Option<Url>,
+) -> Result<Source> {
+	let source: Source = Source::from_options(file, chain, block, dl_url)?;
+	// If the source is a URL, we try to fetch it first
+	Ok(match source {
+		Source::URL(u) => {
+			debug!("Fetching runtime from {}", u);
+			let runtime_file = fetch_at_url(u, None)?;
+			debug!("Runtime fetched at {:?}", runtime_file.display());
+			Source::File(runtime_file)
+		}
+		s => s,
+	})
 }
