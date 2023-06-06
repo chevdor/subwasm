@@ -70,11 +70,12 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		Some(SubCommand::Metadata(meta_opts)) => {
-			// let chain_name = meta_opts.chain.map(|some| some.name);
-			// let source = get_source(chain_name.as_deref(), meta_opts.source, meta_opts.block)?;
-			let source = meta_opts.source.try_into()?;
+			let gh_url = get_github_url(meta_opts.github)?;
+			let download_url = select_url(gh_url, meta_opts.url);
+			let source = get_source(meta_opts.file, meta_opts.chain, meta_opts.block, download_url)?;
+
 			info!("⏱️  Loading WASM from {:?}", &source);
-			let subwasm = Subwasm::new(&source)?;
+			let subwasm: Subwasm = Subwasm::new(&source.try_into()?)?;
 
 			let mut fmt: OutputFormat = meta_opts.format.unwrap_or_else(|| "human".into()).into();
 			if opts.json {
@@ -181,8 +182,6 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		Some(SubCommand::Show(show_opts)) => {
-			// let chain_name = show_opts.chain.map(|some| some.name);
-			// let source = get_source(chain_name.as_deref(), show_opts.src, show_opts.block)?;
 			let gh_url = get_github_url(show_opts.github)?;
 			let download_url = select_url(gh_url, show_opts.url);
 			let source = get_source(show_opts.file, show_opts.chain, show_opts.block, download_url)?;

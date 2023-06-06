@@ -140,8 +140,8 @@ pub struct InfoOpts {
 pub struct MetaOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such as
 	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
-	#[clap(alias("src"), default_value = "runtime_000.wasm", required_unless_present = "chain", index = 1, value_parser = parse_source)]
-	pub source: Source,
+	#[clap(required_unless_present_any = ["chain", "url", "github"], index = 1)]
+	pub file: Option<PathBuf>,
 
 	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
 	/// If you pass a valid --chain, --url will be ignored
@@ -272,7 +272,7 @@ pub struct DecompressOpts {
 	pub output: PathBuf,
 }
 
-// TODO: Remove that
-fn parse_source(s: &str) -> error::Result<Source> {
-	Source::try_from(s).map_err(|_e| SubwasmError::SourceParseError(s.into()))
-}
+// // TODO: Remove that
+// fn parse_source(s: &str) -> error::Result<Source> {
+// 	Source::try_from(s).map_err(|_e| SubwasmError::SourceParseError(s.into()))
+// }
