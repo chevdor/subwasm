@@ -24,6 +24,9 @@ pub enum WasmLoaderError {
 	#[error("Decompression failed")]
 	DecompressionFailed(),
 
+	#[error("URL Error: {0}")]
+	UrlParsingError(String),
+
 	#[error("HTTP Client error, url: `{0}`")]
 	HttpClient(String),
 

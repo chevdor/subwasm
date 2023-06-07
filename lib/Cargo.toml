@@ -19,6 +19,7 @@ keywords = [
 ]
 
 [dependencies]
+uuid = { version = "1.3", features = ["v4"] }
 frame-metadata = { version = "15", package = "frame-metadata", features = [
 	"v12",
 	"v13",
@@ -43,3 +44,4 @@ wasm-testbed = { version = "1.0.0-alpha9", path = "../libs/wasm-testbed" }
 substrate-differ = { version = "1.0.0-alpha9", path = "../libs/substrate-differ" }
 url = "2.3.1"
 reqwest = { version = "0.11", features = ["blocking"] }
+semver = "1.0.17"

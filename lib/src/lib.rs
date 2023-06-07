@@ -3,7 +3,8 @@
 mod chain_info;
 mod chain_urls;
 mod convert;
-mod error;
+pub mod error;
+mod github_ref;
 mod macros;
 mod metadata_wrapper;
 mod runtime_info;
@@ -13,16 +14,14 @@ mod types;
 mod utils;
 
 pub use error::*;
+pub use github_ref::*;
+
 use log::{debug, info};
 pub use metadata_wrapper::OutputFormat;
-use std::{
-	fs::File,
-	io::prelude::*,
-	path::{Path, PathBuf},
-	str::FromStr,
-};
+use std::{fs::File, io::prelude::*, path::PathBuf, str::FromStr};
 pub use substrate_differ::differs::diff_method::DiffMethod;
 use substrate_differ::differs::reduced::{reduced_diff_result::ReducedDiffResult, reduced_runtime::ReducedRuntime};
+use url::Url;
 use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, WasmLoader};
 use wasm_testbed::WasmTestBed;
 
@@ -34,14 +33,9 @@ pub use types::*;
 pub use utils::*;
 
 /// Returns Some node url if possible, None otherwise.
-fn get_node_url(chain: Option<&str>) -> Option<String> {
-	if let Some(chain) = chain {
-		let chain_info = ChainInfo::from_str(chain).expect("Unknown chain");
-
-		chain_info.get_random_url(None)
-	} else {
-		None
-	}
+fn get_node_url(chain: &str) -> Result<Url> {
+	let chain_info = ChainInfo::from_str(chain).expect("Unknown chain");
+	chain_info.get_random_url(None)
 }
 
 /// Get the url of a node based on the user's input
@@ -49,68 +43,31 @@ fn get_node_url(chain: Option<&str>) -> Option<String> {
 /// If `chain` is passed and is a supported chain
 /// we return a random node from the known list for chain NAME.
 /// If not, we fall back to the --url flag
-pub fn get_url(chain: Option<&str>, reference: &OnchainBlock) -> String {
-	let url = reference.endpoint.to_string();
+pub fn get_url(chain: Option<&str>, reference: &OnchainBlock) -> Result<Url> {
+	if chain.is_none() {
+		return Err(SubwasmLibError::Generic("Missing chain input".to_string()));
+	}
+	let chain = chain.expect("Chain was provided");
+
+	let url =
+		reference.endpoint.as_url().map_err(|_e| SubwasmLibError::EndpointNotFound(reference.endpoint.to_string()));
 	let node_url = get_node_url(chain);
 
-	if let Some(chain_url) = node_url {
-		chain_url
+	if let Ok(chain_url) = node_url {
+		Ok(chain_url)
 	} else {
 		url
 	}
 }
 
-// /// Get the Source of some wasm based on the user's input
-// /// If --chain NAME is passed and NAME is a supported chain
-// /// we return a random node from the known list for chain NAME.
-// /// If not, we fall back to the `source`
-// pub fn get_source(chain: Option<&str>, source: Source, block_ref: Option<String>) -> Result<Source> {
-// 	// let node_url = get_node_url(chain);
-
-// 	// if let Some(chain_url) = node_url {
-// 	// 	let endpoint = NodeEndpoint::from_str(&chain_url)?;
-// 	// 	Ok(Source::Chain(OnchainBlock { endpoint, block_ref }))
-// 	// } else {
-// 	// 	Ok(source)
-// 	// }
-// }
-
-/// Use the user's wish if any or make up a target
-pub fn get_output_file(wish: Option<PathBuf>) -> PathBuf {
-	match wish {
-		Some(path) => path,
-
-		_ => {
-			let mut i = 0;
-			let mut path;
-
-			loop {
-				path = format!("runtime_{i:03?}.wasm");
-				i += 1;
-				assert!(i < 1000, "Ran out of indexes");
-				if !Path::new(&path).exists() {
-					break;
-				}
-			}
-			PathBuf::from(path)
-		}
-	}
-}
-
-/// Fetch the runtime from a node and store the wasm locally
-pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<PathBuf>) -> Result<()> {
-	let url = match url {
-		url if url.starts_with("ws") => NodeEndpoint::WebSocket(url.to_string()),
-		url if url.starts_with("http") => NodeEndpoint::Http(url.to_string()),
-		_ => {
-			return Err(SubwasmLibError::Parsing(
-				url.to_string(),
-				"The url should either start with http or ws".to_string(),
-			));
-		}
-	};
-
-	let reference = OnchainBlock { endpoint: url, block_ref };
+/// Fetch the runtime from a node and store the wasm locally.
+/// The wasm is store at the provided target or into a file name that is generated.
+pub fn download_runtime(
+	endpoint: NodeEndpoint,
+	block_ref: Option<BlockRef>,
+	target: Option<PathBuf>,
+) -> Result<PathBuf> {
+	let reference = OnchainBlock { endpoint, block_ref };
 	log::info!("Downloading runtime from  {:?}", reference);
 
 	let loader =
@@ -119,12 +76,12 @@ pub fn download_runtime(url: &str, block_ref: Option<BlockRef>, output: Option<P
 
 	log::info!("Got the runtime, its size is {:?}", wasm.len());
 
-	let outfile = get_output_file(output);
+	let outfile = get_output_file_local(target);
 
 	info!("Saving runtime to {outfile:?}");
-	let mut buffer = File::create(outfile)?;
+	let mut buffer = File::create(&outfile)?;
 	buffer.write_all(wasm)?;
-	Ok(())
+	Ok(outfile)
 }
 
 pub fn reduced_diff(src_a: Source, src_b: Source) -> Result<ReducedDiffResult> {

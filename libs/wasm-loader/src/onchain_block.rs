@@ -20,6 +20,10 @@ impl OnchainBlock {
 		let endpoint = NodeEndpoint::from_str(url)?;
 		Ok(Self { endpoint, block_ref })
 	}
+
+	pub fn as_url(&self) -> Result<Url> {
+		self.endpoint.as_url()
+	}
 }
 
 impl FromStr for OnchainBlock {

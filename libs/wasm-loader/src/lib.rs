@@ -38,7 +38,7 @@ pub struct WasmLoader {
 
 impl WasmLoader {
 	/// Fetch the wasm blob from a node
-	fn fetch_wasm(reference: &OnchainBlock) -> Result<WasmBytes> {
+	fn fetch_wasm_from_rpc(reference: &OnchainBlock) -> Result<WasmBytes> {
 		#[derive(Deserialize)]
 		struct Response {
 			result: String,
@@ -106,7 +106,7 @@ impl WasmLoader {
 
 	/// Load wasm from a node
 	fn load_from_node(reference: &OnchainBlock) -> Result<WasmBytes> {
-		WasmLoader::fetch_wasm(reference)
+		WasmLoader::fetch_wasm_from_rpc(reference)
 	}
 
 	/// Returns the 'usable' uncompressed bytes. You get either the raw bytes if the
@@ -208,12 +208,14 @@ pub mod tests {
 	#[test]
 	#[ignore = "need node"]
 	fn fetch_should_work() {
-		assert!(WasmLoader::fetch_wasm(
+		assert!(WasmLoader::fetch_wasm_from_rpc(
 			&OnchainBlock::new("https://rpc.polkadot.io", None).expect("Can parse RPC node")
 		)
 		.is_ok());
-		assert!(WasmLoader::fetch_wasm(&OnchainBlock::new("wss://rpc.polkadot.io", None).expect("Can parse RPC node"))
-			.is_ok());
+		assert!(WasmLoader::fetch_wasm_from_rpc(
+			&OnchainBlock::new("wss://rpc.polkadot.io", None).expect("Can parse RPC node")
+		)
+		.is_ok());
 	}
 
 	#[test]

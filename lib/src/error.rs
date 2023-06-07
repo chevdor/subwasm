@@ -1,7 +1,10 @@
 use ipfs_hasher::error::IpfsHasherError;
 use thiserror::Error;
+use url::{ParseError, Url};
 use wasm_loader::WasmLoaderError;
 use wasm_testbed::WasmTestbedError;
+
+use crate::ChainInfoError;
 
 pub type Result<T> = std::result::Result<T, SubwasmLibError>;
 
@@ -44,11 +47,14 @@ pub enum SubwasmLibError {
 	#[error("Hash error")]
 	HashError(),
 
-	#[error("Generic error")]
+	#[error("Generic error: {0}")]
 	Generic(String),
 
 	#[error("Cannot filter with this format")]
 	UnsupportedFilter(),
+
+	#[error("Could not find a valid runtime at {0}")]
+	NoRuntimeAtUrl(Url),
 
 	#[error("Cannot resolve `{0}` to a known Source")]
 	UnknownSource(String),
@@ -84,5 +90,17 @@ impl From<serde_json::Error> for SubwasmLibError {
 impl From<IpfsHasherError> for SubwasmLibError {
 	fn from(_e: IpfsHasherError) -> Self {
 		SubwasmLibError::HashError()
+	}
+}
+
+impl From<ChainInfoError> for SubwasmLibError {
+	fn from(_e: ChainInfoError) -> Self {
+		SubwasmLibError::NotFound("Chain not found: {e:?}".to_string())
+	}
+}
+
+impl From<ParseError> for SubwasmLibError {
+	fn from(e: ParseError) -> Self {
+		SubwasmLibError::Parsing("url".to_string(), e.to_string())
 	}
 }

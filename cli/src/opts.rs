@@ -4,21 +4,21 @@ use subwasmlib::{source::Source, *};
 use url::Url;
 use wasm_loader::{BlockRef, OnchainBlock};
 
-use crate::error::{self, *};
+use crate::error;
 
 /// `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains.
-#[derive(Parser)]
+#[derive(Parser, Debug)]
 #[clap(color=ColorChoice::Auto, disable_version_flag = true, arg_required_else_help = true )]
 pub struct Opts {
 	/// Output as json
-	#[clap(short, long, global = true)]
+	#[clap(short, long, global = true, display_order = 99)]
 	pub json: bool,
 
 	/// Less output
-	#[clap(short, long, global = true)]
+	#[clap(short, long, global = true, display_order = 99)]
 	pub quiet: bool,
 
-	#[clap(short, long, global = true, env = "NO_COLOR")]
+	#[clap(short, long, global = true, env = "NO_COLOR", display_order = 99)]
 	pub no_color: bool,
 
 	#[clap(subcommand)]
@@ -30,7 +30,7 @@ pub struct Opts {
 }
 
 /// You can find all available commands below.
-#[derive(Subcommand)]
+#[derive(Subcommand, Debug)]
 pub enum SubCommand {
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Get(GetOpts),
@@ -60,7 +60,7 @@ pub enum SubCommand {
 }
 
 /// Get/Download the runtime wasm from a running node through rpc
-#[derive(Parser)]
+#[derive(Parser, Debug)]
 pub struct GetOpts {
 	/// The node url including (mandatory) the port number. Example: ws://localhost:9944 or http://localhost:9933
 	#[clap(default_value = "http://localhost:9933", required_unless_present_any = ["chain", "url", "github"], index = 1)]
@@ -100,7 +100,7 @@ pub struct GetOpts {
 	pub output: Option<PathBuf>,
 }
 
-#[derive(Parser)]
+#[derive(Parser, Debug)]
 pub struct InfoOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such /tmp/runtime.wasm
 	///
@@ -136,7 +136,7 @@ pub struct InfoOpts {
 /// Returns the metadata of the given runtime in several format. You may also use the "meta" alias.
 ///
 /// If you want to see the content of a runtime, see the `show` sub-command.
-#[derive(Parser)]
+#[derive(Parser, Debug)]
 pub struct MetaOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such as
 	/// /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
@@ -179,36 +179,43 @@ pub struct MetaOpts {
 	pub output: Option<String>,
 }
 
-/// Compare 2 runtimes after converting them to ReducedRuntime.
-#[derive(Parser)]
+/// Compare 2 runtimes after converting them to `ReducedRuntime`s.
+///
+/// You must pass exactly 2 runtimes.
+#[derive(Parser, Debug)]
 pub struct DiffOpts {
-	/// The first source
-	#[clap(index = 1, alias = "src-a", value_parser = parse_source)]
-	pub src_a: Source,
+	// NOTE: Here I would prefer to remain specific and support the args shown commented out
+	// below but clap+derive does not seem to be able to provide the position/index_of the passed
+	// args to differentiate between `<cli> diff --file file --url url` and `<cli> diff --url url --file file`
 
-	// /// Provide the name of a chain and a random url amongst a list of known nodes will be used.
-	// /// If you pass a valid --chain, --url will be ignored
-	// /// --chain local = http://localhost:9933
-	// #[clap(long, short('a'), conflicts_with = "src_a")]
-	// pub chain_a: Option<ChainInfo>,
-	/// The second source
-	#[clap(index = 2, alias = "src-b", value_parser = parse_source)]
-	pub src_b: Source,
+	// /// File(s) to compare
+	// #[clap(short, long)]
+	// pub file: Vec<PathBuf>,
 
-	// /// Provide the name of a chain and a random url amongst a list of known nodes will be used.
-	// /// If you pass a valid --chain, --url will be ignored
-	// /// --chain local = http://localhost:9933
-	// #[clap(long, short('b'), conflicts_with = "src_b")]
-	// pub chain_b: Option<ChainInfo>,
-	/// You probably want to use `Reduced`.
-	#[clap(long, short, default_value = "reduced")]
-	pub method: DiffMethod,
+	// /// Chain(s) to compare
+	// #[clap(short, long)]
+	// pub chain: Vec<ChainInfo>,
+
+	// /// Url(s) to compare
+	// #[clap(short, long)]
+	// pub url: Vec<Url>,
+
+	// /// Github reference(s) to compare, in the format <runtime>@<version>. For instance 'kusama@0.9.42'
+	// #[clap(short, long, alias = "gh")]
+	// pub github: Vec<String>,
+	/// Reference runtime
+	#[clap(index=1, value_parser = parse_source)]
+	pub runtime_1: Source,
+
+	/// Second runtime
+	#[clap(index=2, value_parser = parse_source)]
+	pub runtime_2: Source,
 }
 
 /// Shows the a reduced view of the runtime.
 ///
 /// A reduced view makes it much easier to understand the inner workings of a given runtime.
-#[derive(Parser)]
+#[derive(Parser, Debug)]
 pub struct ShowOpts {
 	/// The runtimwe to analyze
 	#[clap(required_unless_present_any = ["chain", "url", "github"], index = 1)]
@@ -245,7 +252,7 @@ pub struct ShowOpts {
 
 /// Compress a given runtime wasm file.
 /// You will get an error if you try compressing a runtime that is already compressed.
-#[derive(Parser)]
+#[derive(Parser, Debug)]
 pub struct CompressOpts {
 	/// The path of uncompressed wasm file to load.
 	#[clap(alias("in"), index = 1)]
@@ -261,7 +268,7 @@ pub struct CompressOpts {
 /// In that case, you will get the same content as output. This is useful
 /// if you want to decompress "no matter what" and don't really know whether the input
 /// will be compressed or not.
-#[derive(Parser)]
+#[derive(Parser, Debug)]
 pub struct DecompressOpts {
 	/// The path of the compressed or uncompressed wasm file to load.
 	#[clap(alias("in"), index = 1)]
@@ -273,6 +280,6 @@ pub struct DecompressOpts {
 }
 
 // // TODO: Remove that
-// fn parse_source(s: &str) -> error::Result<Source> {
-// 	Source::try_from(s).map_err(|_e| SubwasmError::SourceParseError(s.into()))
-// }
+fn parse_source(s: &str) -> error::Result<Source> {
+	Source::try_from(s).map_err(|_e| error::SubwasmError::SourceParseError(s.to_string()))
+}

@@ -6,11 +6,11 @@ use env_logger::Env;
 use log::*;
 use opts::*;
 use serde_json::json;
-use std::{env, io::Write, path::PathBuf};
+use std::{env, io::Write, path::PathBuf, str::FromStr};
 use subwasmlib::{source::Source, *};
 use text_style::{AnsiColor, StyledStr};
 use url::Url;
-use wasm_loader::BlockRef;
+use wasm_loader::{BlockRef, NodeEndpoint, Source as WasmLoaderSource};
 
 /// Main entry point of the `subwasm` cli
 fn main() -> color_eyre::Result<()> {
@@ -18,20 +18,27 @@ fn main() -> color_eyre::Result<()> {
 	color_eyre::install()?;
 
 	let opts: Opts = Opts::parse();
+	// debug!("opts: {opts:#?}");
 
 	match opts.subcmd {
 		Some(SubCommand::Get(get_opts)) => {
-			let gh_url = get_github_url(get_opts.github)?;
+			let gh_url =
+				if let Some(u) = get_opts.github { Some(GithubRef::from_str(u.as_str())?.as_url()) } else { None };
+			debug!("gh_url: {gh_url:?}");
+
 			let download_url = select_url(gh_url, get_opts.url);
+			debug!("download_url: {download_url:?}");
 
 			match (download_url, get_opts.rpc_url) {
 				(None, Some(rpc_url)) => {
 					let chain_name = get_opts.chain.map(|some| some.name);
-					let url = &get_url(chain_name.as_deref(), &rpc_url.into());
-					Ok(download_runtime(url, get_opts.block, get_opts.output)?)
+					let url = &get_url(chain_name.as_deref(), &rpc_url.into())?;
+					let _file =
+						download_runtime(NodeEndpoint::from_str(url.as_str())?, get_opts.block, get_opts.output)?;
+					Ok(())
 				}
 				(Some(url), None) | (Some(url), Some(_)) => {
-					let target = get_output_file(get_opts.output);
+					let target = get_output_file_local(get_opts.output);
 					let output = fetch_at_url(url, Some(target))?;
 					debug!("Fetched at {output:?}");
 					if output.exists() {
@@ -48,7 +55,8 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		Some(SubCommand::Info(info_opts)) => {
-			let gh_url = get_github_url(info_opts.github)?;
+			let gh_url =
+				if let Some(u) = info_opts.github { Some(GithubRef::from_str(u.as_str())?.as_url()) } else { None };
 			let download_url = select_url(gh_url, info_opts.url);
 			let source = get_source(info_opts.file, info_opts.chain, info_opts.block, download_url)?;
 
@@ -59,7 +67,8 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		Some(SubCommand::Version(info_opts)) => {
-			let gh_url = get_github_url(info_opts.github)?;
+			let gh_url =
+				if let Some(u) = info_opts.github { Some(GithubRef::from_str(u.as_str())?.as_url()) } else { None };
 			let download_url = select_url(gh_url, info_opts.url);
 			let source = get_source(info_opts.file, info_opts.chain, info_opts.block, download_url)?;
 
@@ -70,7 +79,8 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		Some(SubCommand::Metadata(meta_opts)) => {
-			let gh_url = get_github_url(meta_opts.github)?;
+			let gh_url =
+				if let Some(u) = meta_opts.github { Some(GithubRef::from_str(u.as_str())?.as_url()) } else { None };
 			let download_url = select_url(gh_url, meta_opts.url);
 			let source = get_source(meta_opts.file, meta_opts.chain, meta_opts.block, download_url)?;
 
@@ -112,41 +122,37 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		Some(SubCommand::Diff(diff_opts)) => {
-			log::debug!("Method: {:?}", diff_opts.method);
+			// debug!("{:#?}", &diff_opts);
 
-			// // let chain_a = diff_opts.chain_a.map(|some| some.name);
-			// let src_a = Source::from_str(diff_opts.src_a)?;
-			let src_a = diff_opts.src_a;
-			let src_b = diff_opts.src_b;
+			let runtime_1 = diff_opts.runtime_1.as_file()?;
+			debug!("Runtime 1: {}", runtime_1.display());
 
-			// // let chain_b = diff_opts.chain_b.map(|some| some.name);
-			// let src_b = get_source(chain_b.as_deref(), diff_opts.src_b, None)?;
+			let runtime_2 = diff_opts.runtime_2.as_file()?;
+			debug!("Runtime 2: {}", runtime_2.display());
 
-			match diff_opts.method {
-				DiffMethod::Reduced => {
-					let diff_result = reduced_diff(src_a.try_into()?, src_b.try_into()?).expect("Reduced diff failed");
-					if opts.json {
-						let s = serde_json::to_string_pretty(&diff_result).expect("serde_json ran into issues");
-						println!("{s}");
-						Ok(())
-					} else {
-						let warning = StyledStr::plain(
-							"!!! THE SUBWASM REDUCED DIFFER IS EXPERIMENTAL, DOUBLE CHECK THE RESULTS !!!\n",
-						);
+			let src_a = WasmLoaderSource::File(runtime_1);
+			let src_b = WasmLoaderSource::File(runtime_2);
 
-						let warning = if opts.no_color {
-							warning
-						} else {
-							warning.on(AnsiColor::Yellow.light()).with(AnsiColor::Red.light()).bold()
-						};
+			let diff_result = reduced_diff(src_a, src_b).expect("Reduced diff failed");
+			if opts.json {
+				let s = serde_json::to_string_pretty(&diff_result).expect("serde_json ran into issues");
+				println!("{s}");
+				Ok(())
+			} else {
+				let warning =
+					StyledStr::plain("!!! THE SUBWASM REDUCED DIFFER IS EXPERIMENTAL, DOUBLE CHECK THE RESULTS !!!\n");
 
-						text_style::crossterm::render(std::io::stdout(), &warning).expect("Could not render line");
-						println!("{diff_result}");
-						text_style::crossterm::render(std::io::stdout(), &warning).expect("Could not render line");
+				let warning = if opts.no_color {
+					warning
+				} else {
+					warning.on(AnsiColor::Yellow.light()).with(AnsiColor::Red.light()).bold()
+				};
 
-						Ok(())
-					}
-				}
+				text_style::crossterm::render(std::io::stdout(), &warning).expect("Could not render line");
+				println!("{diff_result}");
+				text_style::crossterm::render(std::io::stdout(), &warning).expect("Could not render line");
+
+				Ok(())
 			}
 		}
 
@@ -182,7 +188,8 @@ fn main() -> color_eyre::Result<()> {
 		}
 
 		Some(SubCommand::Show(show_opts)) => {
-			let gh_url = get_github_url(show_opts.github)?;
+			let gh_url =
+				if let Some(u) = show_opts.github { Some(GithubRef::from_str(u.as_str())?.as_url()) } else { None };
 			let download_url = select_url(gh_url, show_opts.url);
 			let source = get_source(show_opts.file, show_opts.chain, show_opts.block, download_url)?;
 
@@ -202,16 +209,6 @@ fn main() -> color_eyre::Result<()> {
 	}
 }
 
-/// Get the github artifacts url
-pub fn get_github_url(s: Option<String>) -> Result<Option<Url>> {
-	if let Some(g) = s {
-		let (runtime, version) = gh_to_runtime_and_version(&g)?;
-		Ok(Some(get_github_artifact_url(runtime, version)))
-	} else {
-		Ok(None)
-	}
-}
-
 /// Depending on the options passed by the user we select and return the URL
 pub fn select_url(gh_url: Option<Url>, dl_url: Option<Url>) -> Option<Url> {
 	match (gh_url, dl_url) {
@@ -227,7 +224,7 @@ pub fn get_source(
 	chain: Option<ChainInfo>,
 	block: Option<BlockRef>,
 	dl_url: Option<Url>,
-) -> Result<Source> {
+) -> error::Result<Source> {
 	let source: Source = Source::from_options(file, chain, block, dl_url)?;
 	// If the source is a URL, we try to fetch it first
 	Ok(match source {

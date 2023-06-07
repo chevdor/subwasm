@@ -16,7 +16,7 @@ pub fn ensure_local_wasm() -> String {
 		return WASM_FILE.to_string();
 	} else {
 		while retry < MAX_RETRIES {
-			let assert = cmd.args(["get", "wss://rpc.polkadot.io:443", "--output", WASM_FILE]).assert();
+			let assert = cmd.args(["get", "--chain", "wss://rpc.polkadot.io:443", "--output", WASM_FILE]).assert();
 
 			if assert.try_success().is_ok() {
 				println!("Successfully retrived a runtime");

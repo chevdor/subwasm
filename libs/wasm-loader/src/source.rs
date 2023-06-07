@@ -41,6 +41,8 @@ impl Display for Source {
 impl FromStr for Source {
 	type Err = WasmLoaderError;
 
+	/// This can handle the path of an existing file or a string that
+	/// can be parsed as a valid endpoint (http://... or ws://...)
 	fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
 		Self::get_source_type(s)
 	}
