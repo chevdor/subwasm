@@ -1,5 +1,6 @@
 use error::*;
 use log::debug;
+use parity_releng::GithubRef;
 use std::{fmt::Display, path::PathBuf, str::FromStr};
 use url::Url;
 use wasm_loader::{BlockRef, OnchainBlock, Source as WasmLoaderSource};
@@ -8,7 +9,6 @@ use crate::chain_urls::get_chain_urls;
 use crate::download_runtime;
 use crate::error;
 use crate::fetch_at_url;
-use crate::github_ref::GithubRef;
 use crate::is_wasm_from_url;
 use crate::ChainInfo;
 

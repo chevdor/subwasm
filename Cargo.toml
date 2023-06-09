@@ -13,6 +13,7 @@ members = [
 	"libs/substrate-runtime-proposal-hash",
 	"libs/substrate-differ",
 	"libs/ipfs-hasher",
+	"libs/parity-releng",
 ]
 
 # 59.31s

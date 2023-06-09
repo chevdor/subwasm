@@ -4,7 +4,6 @@ mod chain_info;
 mod chain_urls;
 mod convert;
 pub mod error;
-mod github_ref;
 mod macros;
 mod metadata_wrapper;
 mod runtime_info;
@@ -14,7 +13,6 @@ mod types;
 mod utils;
 
 pub use error::*;
-pub use github_ref::*;
 
 use log::{debug, info};
 pub use metadata_wrapper::OutputFormat;
@@ -26,6 +24,7 @@ use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, Was
 use wasm_testbed::WasmTestBed;
 
 pub use chain_info::*;
+pub use parity_releng;
 pub use runtime_info::*;
 pub use source::*;
 pub use subwasm::*;

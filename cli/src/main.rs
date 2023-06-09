@@ -7,7 +7,7 @@ use log::*;
 use opts::*;
 use serde_json::json;
 use std::{env, io::Write, path::PathBuf, str::FromStr};
-use subwasmlib::{source::Source, *};
+use subwasmlib::{parity_releng::GithubRef, source::Source, *};
 use text_style::{AnsiColor, StyledStr};
 use url::Url;
 use wasm_loader::{BlockRef, NodeEndpoint, Source as WasmLoaderSource};

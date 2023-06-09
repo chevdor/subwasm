@@ -41,6 +41,7 @@ sp-version = { tag = "monthly-2023-06", git = "https://github.com/paritytech/sub
 ipfs-hasher = { version = "1.0.0-alpha10", path = "../libs/ipfs-hasher" }
 wasm-loader = { version = "1.0.0-alpha10", path = "../libs/wasm-loader" }
 wasm-testbed = { version = "1.0.0-alpha10", path = "../libs/wasm-testbed" }
+parity-releng = { version = "0", path = "../libs/parity-releng" }
 substrate-differ = { version = "1.0.0-alpha10", path = "../libs/substrate-differ" }
 url = "2.3.1"
 reqwest = { version = "0.11", features = ["blocking"] }

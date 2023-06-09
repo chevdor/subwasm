@@ -1,4 +1,4 @@
-use crate::SubwasmLibError;
+use crate::error::*;
 use semver::Version;
 use std::{fmt::Display, str::FromStr};
 use url::Url;
@@ -37,13 +37,13 @@ impl GithubRef {
 }
 
 impl FromStr for GithubRef {
-	type Err = SubwasmLibError;
+	type Err = ParityRelengError;
 
 	/// Extract runtime and version from <runtime>@<version>
-	fn from_str(s: &str) -> Result<Self, Self::Err> {
+	fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
 		let mut parts = s.split('@');
 		if parts.clone().count() != 2 {
-			return Err(SubwasmLibError::Generic(
+			return Err(ParityRelengError::Generic(
 				"Unsupported Github version format, should be <runtime>@<version>".to_string(),
 			));
 		} else {
@@ -53,7 +53,7 @@ impl FromStr for GithubRef {
 			let res = Self {
 				runtime,
 				version: Version::from_str(&version)
-					.map_err(|_e| SubwasmLibError::Generic("Version parsing error".to_string()))?,
+					.map_err(|_e| ParityRelengError::Generic("Version parsing error".to_string()))?,
 			};
 			Ok(res)
 		}

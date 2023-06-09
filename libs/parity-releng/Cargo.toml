@@ -1,0 +1,18 @@
+[package]
+authors = ["Chevdor <chevdor@gmail.com>"]
+name = "parity-releng"
+version = "0.0.1"
+edition = "2021"
+description = "parity-releng is a lib"
+homepage = "https://github.com/paritytech/parity-releng"
+keywords = ["paritytech"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/paritytech/parity-releng"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+semver = "1.0.17"
+thiserror = "1.0.40"
+url = "2.4.0"

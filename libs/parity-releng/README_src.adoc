@@ -1,0 +1,4 @@
+= parity-releng
+
+This crate contains code related to Release Engineering and versioning at Parity.
+100% opinionated and based on the current workflows.
