@@ -1,5 +1,5 @@
 [workspace.package]
-version = "1.0.0-alpha9"
+version = "1.0.0-alpha10"
 authors = ["chevdor <chevdor@gmail.com>", "Wilfried Kopp <wilfried@parity.io>"]
 edition = "2021"
 
