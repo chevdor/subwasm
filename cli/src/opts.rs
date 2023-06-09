@@ -63,14 +63,14 @@ pub enum SubCommand {
 #[derive(Parser, Debug)]
 pub struct GetOpts {
 	/// The node url including (mandatory) the port number. Example: ws://localhost:9944 or http://localhost:9933
-	#[clap(default_value = "http://localhost:9933", required_unless_present_any = ["chain", "url", "github"], index = 1)]
+	#[clap(required_unless_present_any = ["chain", "url", "github"], index = 1)]
 	pub rpc_url: Option<OnchainBlock>,
 
-	/// Provide the name of a chain and a random url amongst a list of known nodes will be used.
+	/// Provide the name of a chain or an alias.
 	///
-	/// If you pass a valid --chain, --url will be ignored
+	/// If you pass a valid --chain, --rpc_url will be ignored
 	/// --chain local = http://localhost:9933
-	#[clap(long, conflicts_with = "url")]
+	#[clap(short, long, conflicts_with = "rpc_url")]
 	pub chain: Option<ChainInfo>,
 
 	/// The optional block where to fetch the runtime.

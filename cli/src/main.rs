@@ -22,6 +22,7 @@ fn main() -> color_eyre::Result<()> {
 
 	match opts.subcmd {
 		Some(SubCommand::Get(get_opts)) => {
+			debug!("get_opts: {get_opts:#?}");
 			let gh_url =
 				if let Some(u) = get_opts.github { Some(GithubRef::from_str(u.as_str())?.as_url()) } else { None };
 			debug!("gh_url: {gh_url:?}");
@@ -29,15 +30,23 @@ fn main() -> color_eyre::Result<()> {
 			let download_url = select_url(gh_url, get_opts.url);
 			debug!("download_url: {download_url:?}");
 
-			match (download_url, get_opts.rpc_url) {
+			// Get the RPC url if the user passed a chain name, alias, or url
+			let rpc_url = if let Some(o) = get_opts.rpc_url {
+				Some(o.as_url()?)
+			} else if let Some(c) = get_opts.chain {
+				Some(c.get_random_url(None)?)
+			} else {
+				None
+			};
+			debug!("rpc_url: {rpc_url:?}");
+
+			match (download_url, rpc_url) {
 				(None, Some(rpc_url)) => {
-					let chain_name = get_opts.chain.map(|some| some.name);
-					let url = &get_url(chain_name.as_deref(), &rpc_url.into())?;
 					let _file =
-						download_runtime(NodeEndpoint::from_str(url.as_str())?, get_opts.block, get_opts.output)?;
+						download_runtime(NodeEndpoint::from_str(rpc_url.as_str())?, get_opts.block, get_opts.output)?;
 					Ok(())
 				}
-				(Some(url), None) | (Some(url), Some(_)) => {
+				(Some(url), _) => {
 					let target = get_output_file_local(get_opts.output);
 					let output = fetch_at_url(url, Some(target))?;
 					debug!("Fetched at {output:?}");

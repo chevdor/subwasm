@@ -126,4 +126,10 @@ mod tests {
 		let ci = ChainInfo::from_str("polkadot").unwrap();
 		assert!(!ci.endpoints.is_empty());
 	}
+
+	#[test]
+	fn test_chain_info_from_url() {
+		let ci = ChainInfo::from_str("wss://rpc.polkadot.io:443").unwrap();
+		assert!(!ci.endpoints.is_empty());
+	}
 }
