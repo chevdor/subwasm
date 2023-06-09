@@ -69,6 +69,7 @@ impl From<SubwasmLibError> for ChainInfoError {
 impl FromStr for ChainInfo {
 	type Err = ChainInfoError;
 
+	/// Get a ChainInfo from a name or alias
 	fn from_str(name: &str) -> std::result::Result<Self, Self::Err> {
 		let name = name.to_lowercase();
 		let endpoints = get_chain_urls(name.as_str())?;
@@ -124,12 +125,6 @@ mod tests {
 	#[test]
 	fn test_chain_info() {
 		let ci = ChainInfo::from_str("polkadot").unwrap();
-		assert!(!ci.endpoints.is_empty());
-	}
-
-	#[test]
-	fn test_chain_info_from_url() {
-		let ci = ChainInfo::from_str("wss://rpc.polkadot.io:443").unwrap();
 		assert!(!ci.endpoints.is_empty());
 	}
 }

@@ -48,7 +48,7 @@ impl FromStr for GithubRef {
 			));
 		} else {
 			let runtime = parts.next().expect("We did not get the expected 2 parts").to_string();
-			let version = parts.next().expect("We did not get the expected 2 parts").to_string();
+			let version = parts.next().expect("We did not get the expected 2 parts").to_string().replace("v", "");
 
 			let res = Self {
 				runtime,
