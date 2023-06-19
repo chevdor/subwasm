@@ -18,7 +18,7 @@ pub type CalllHash = [u8; SIZE];
 type Prefix = (u8, u8);
 
 /// The PREFIX is prepended to the data before hashing
-pub const PREFIX_SYSTEM_SETCODE: Prefix = (0x00, 0x03);
+pub const PREFIX_SYSTEM_SETCODE: Prefix = (0x00, 0x02);
 
 const PARACHAIN_PALLET_ID_ENV: &str = "PARACHAIN_PALLET_ID";
 const DEFAULT_PARACHAIN_PALLET_ID: &str = "0x01";
@@ -33,7 +33,7 @@ pub struct SrhResult {
 	pub hash: CalllHash,
 
 	/// Hex encoded proposal hash.
-	pub encodedd_hash: String,
+	pub encoded_hash: String,
 }
 
 /// Concatenate 2 arrays.
@@ -47,7 +47,7 @@ pub fn concatenate_arrays<T: Clone>(x: &[T], y: &[T]) -> Vec<T> {
 pub fn get_result(prefix: Prefix, buffer: &[u8]) -> Result<SrhResult> {
 	buffer.using_encoded(|wasm_blob: &[u8]| {
 		let result = match get_call_hash(prefix, wasm_blob) {
-			Ok(hash) => Ok(SrhResult { hash, encodedd_hash: hex::encode(hash) }),
+			Ok(hash) => Ok(SrhResult { hash, encoded_hash: hex::encode(hash) }),
 			Err(_e) => Err(RuntimePropHashError::HashComputing()),
 		};
 		result
@@ -105,8 +105,8 @@ mod prop_hash_tests {
 		assert_eq!(
 			get_proposal_hash(&[1, 2, 42]).unwrap(),
 			[
-				156, 244, 243, 93, 21, 8, 113, 238, 186, 17, 20, 52, 240, 236, 140, 15, 108, 26, 86, 5, 152, 148, 91,
-				162, 108, 168, 3, 65, 254, 162, 114, 46
+				174, 123, 79, 240, 254, 106, 147, 26, 65, 61, 41, 84, 181, 102, 24, 182, 128, 135, 188, 31, 135, 187,
+				99, 34, 143, 35, 120, 100, 246, 90, 186, 106
 			]
 		);
 	}
@@ -116,8 +116,8 @@ mod prop_hash_tests {
 		assert_eq!(
 			get_call_hash(PREFIX_SYSTEM_SETCODE, &[1, 2, 42]).unwrap(),
 			[
-				156, 244, 243, 93, 21, 8, 113, 238, 186, 17, 20, 52, 240, 236, 140, 15, 108, 26, 86, 5, 152, 148, 91,
-				162, 108, 168, 3, 65, 254, 162, 114, 46
+				174, 123, 79, 240, 254, 106, 147, 26, 65, 61, 41, 84, 181, 102, 24, 182, 128, 135, 188, 31, 135, 187,
+				99, 34, 143, 35, 120, 100, 246, 90, 186, 106
 			]
 		);
 	}
@@ -164,13 +164,13 @@ mod prop_hash_tests {
 	#[test]
 	fn test_get_result() {
 		let res = get_result(PREFIX_SYSTEM_SETCODE, &[1, 2, 42]).unwrap();
-		assert!(res.encodedd_hash == "9388ba11b3f2a5db3ef9bf237f1c88ffb369d77ffa843fc67570c89c09fa9c0e");
+		assert_eq!(res.encoded_hash, "85233004e044626a6c08e469573369536d8de9b264b08eb6611b76b80148e429");
 	}
 
 	#[test]
 	fn test_long_input() {
 		const SIZE_8MB: usize = 8 * 1024 * 1024;
 		let res = get_result(PREFIX_SYSTEM_SETCODE, &[0; SIZE_8MB]).unwrap();
-		assert!(res.encodedd_hash == "9348da94fcffe94318313f8ce237211a7fd6c1531ab21b61606a1f7eeb8b2409");
+		assert_eq!(res.encoded_hash, "44de98eef7227a1f55c5d1cf2b437dc87e60177dc8607538a115773b567ed0d5");
 	}
 }
