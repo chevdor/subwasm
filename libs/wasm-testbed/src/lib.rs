@@ -3,14 +3,15 @@ mod logger_mock;
 
 pub use error::{Result, WasmTestbedError};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadataPrefixed};
+use hex::FromHex;
 use sc_executor::{WasmExecutionMethod, WasmExecutor};
 use sc_executor_common::runtime_blob::RuntimeBlob;
 use scale::Decode;
 use sp_core::Hasher;
 use sp_runtime::traits::BlakeTwo256;
 use sp_version::RuntimeVersion as SubstrateRuntimeVersion;
-use std::fmt;
-use substrate_runtime_proposal_hash::{get_parachainsystem_authorize_upgrade, get_result, SrhResult};
+use std::{env, fmt};
+use substrate_runtime_proposal_hash::{error::RuntimePropHashError, *};
 use wasm_loader::*;
 
 /// This is a "magic" number signaling that out Wasm is a substrate wasm.
@@ -52,6 +53,8 @@ impl fmt::Debug for WasmTestBed {
 
 impl WasmTestBed {
 	pub fn new(source: &Source) -> Result<Self> {
+		log::debug!("Loading testbed with source: {source:?}");
+
 		let loader = WasmLoader::load_from_source(source).map_err(|_| WasmTestbedError::Loading(source.to_string()))?;
 		let wasm = loader.uncompressed_bytes().to_vec();
 		let metadata_encoded = Self::call(&wasm, "Metadata_metadata", &[])?;
@@ -62,8 +65,6 @@ impl WasmTestBed {
 		if !WasmTestBed::is_substrate_wasm(&metadata) {
 			return Err(WasmTestbedError::UnsupportedRuntime);
 		}
-
-		// Self::print_magic_and_version(&metadata);
 
 		let runtime_metadata_prefixed: RuntimeMetadataPrefixed =
 			scale::Decode::decode(&mut &metadata[..]).map_err(|e| {
@@ -190,7 +191,20 @@ impl WasmTestBed {
 
 	/// Compute the proposal hash of the runtime
 	pub fn parachain_authorize_upgrade_hash(&self) -> Result<String> {
-		let result = get_parachainsystem_authorize_upgrade(&self.bytes)?;
+		let s1 = env::var(PARACHAIN_PALLET_ID_ENV)
+			.unwrap_or_else(|_| DEFAULT_PARACHAIN_PALLET_ID.into())
+			.replacen("0x", "", 1);
+		let s2 = env::var(AUTHORIZE_UPGRADE_PREFIX_ENV)
+			.unwrap_or_else(|_| DEFAULT_AUTHORIZE_UPGRADE_PREFIX.into())
+			.replacen("0x", "", 1);
+
+		let decoded1 = <[u8; 1]>::from_hex(&s1).map_err(|_| RuntimePropHashError::HexDecoding(s1))?;
+		let decoded2 = <[u8; 1]>::from_hex(&s2).map_err(|_| RuntimePropHashError::HexDecoding(s2))?;
+
+		let parachain_pallet_id = *decoded1.first().expect("Failure while fecthing the Parachain Pallet ID");
+		let authorize_upgrade_prefix = *decoded2.first().expect("Failure while fecthing the Auhtorize upgrade ID");
+
+		let result = get_parachainsystem_authorize_upgrade(parachain_pallet_id, authorize_upgrade_prefix, &self.bytes)?;
 		Ok(format!("0x{}", hex::encode(result)))
 	}
 

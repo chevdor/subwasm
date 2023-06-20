@@ -3923,6 +3923,7 @@ dependencies = [
  "text-style",
  "thiserror",
  "url",
+ "uuid",
  "wasm-loader",
  "wasm-testbed",
 ]

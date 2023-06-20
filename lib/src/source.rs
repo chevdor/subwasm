@@ -1,5 +1,6 @@
 use error::*;
 use log::debug;
+use log::trace;
 use std::{fmt::Display, path::PathBuf, str::FromStr};
 use url::Url;
 use wasm_loader::{BlockRef, OnchainBlock, Source as WasmLoaderSource};
@@ -152,6 +153,12 @@ impl Source {
 		block: Option<BlockRef>,
 		url: Option<Url>,
 	) -> Result<Self> {
+		trace!("Getting source from options:");
+		trace!(" - file : {file:?}");
+		trace!(" - chain: {chain:?}");
+		trace!(" - block: {block:?}");
+		trace!(" - url  : {url:?}");
+
 		if let Some(f) = file {
 			return Ok(Self::File(f));
 		}

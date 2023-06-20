@@ -25,7 +25,6 @@ pub struct RuntimeInfo {
 impl RuntimeInfo {
 	pub fn new(testbed: &WasmTestBed) -> Result<Self> {
 		let core_version = testbed.core_version();
-
 		let hasher = IpfsHasher::default();
 		let proposal_hash = testbed.proposal_hash()?;
 		let blake2_256 = testbed.blake2_256_hash()?;
