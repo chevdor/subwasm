@@ -1,14 +1,40 @@
-use comparable::VecChange;
-use log::*;
-
-use crate::differs::reduced::diff_analyzer::RequireTransactionVersionBump;
-
 use super::call::*;
 use super::constant::*;
 use super::error::*;
 use super::event::*;
 use super::signature::*;
 use super::storage::*;
+use crate::differs::reduced::diff_analyzer::RequireTransactionVersionBump;
+use crate::differs::reduced::prelude::ReducedPalletChange;
+use comparable::MapChange;
+use comparable::VecChange;
+use log::*;
+
+impl RequireTransactionVersionBump for ReducedPalletChange {
+	fn require_tx_version_bump(&self) -> bool {
+		let res = match self {
+			ReducedPalletChange::Index(_) => true,
+
+			ReducedPalletChange::Calls(x) => x
+				.iter()
+				.map(|i| match i {
+					MapChange::Added(_k, _d) => false,
+					MapChange::Removed(_k) => true,
+					MapChange::Changed(_k, c) => c.iter().map(|cc| cc.require_tx_version_bump()).any(|x| x),
+				})
+				.all(|x| x),
+
+			ReducedPalletChange::Name(_) => false,
+			ReducedPalletChange::Events(_x) => false,
+			ReducedPalletChange::Errors(_x) => false,
+			ReducedPalletChange::Storages(_x) => false,
+			ReducedPalletChange::Constants(_x) => false,
+		};
+
+		trace!("TxBump | Pallet: {res}");
+		res
+	}
+}
 
 impl RequireTransactionVersionBump for CallChange {
 	fn require_tx_version_bump(&self) -> bool {

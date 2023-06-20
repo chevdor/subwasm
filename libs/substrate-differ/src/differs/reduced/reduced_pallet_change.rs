@@ -1,10 +1,5 @@
-use super::{
-	diff_analyzer::{Compatible, RequireTransactionVersionBump},
-	reduced_pallet,
-};
-// use crate::differs::reduced::change_type::Change;
+use super::{diff_analyzer::Compatible, reduced_pallet};
 use comparable::MapChange;
-use log::*;
 use reduced_pallet::*;
 use std::fmt::Display;
 
@@ -41,32 +36,6 @@ impl ReducedPalletChange {
 			}
 		});
 		Ok(())
-	}
-}
-
-impl RequireTransactionVersionBump for ReducedPalletChange {
-	fn require_tx_version_bump(&self) -> bool {
-		let res = match self {
-			ReducedPalletChange::Index(_) => true,
-
-			ReducedPalletChange::Calls(x) => x
-				.iter()
-				.map(|i| match i {
-					MapChange::Added(_k, _d) => false,
-					MapChange::Removed(_k) => true,
-					MapChange::Changed(_k, c) => c.iter().map(|cc| cc.require_tx_version_bump()).any(|x| x),
-				})
-				.all(|x| x),
-
-			ReducedPalletChange::Name(_) => false,
-			ReducedPalletChange::Events(_x) => false,
-			ReducedPalletChange::Errors(_x) => false,
-			ReducedPalletChange::Storages(_x) => false,
-			ReducedPalletChange::Constants(_x) => false,
-		};
-
-		trace!("Pallet: {res}");
-		res
 	}
 }
 
