@@ -21,8 +21,8 @@ repository = "https://github.com/chevdor/subwasm"
 hex = "0.4"
 log = "0.4"
 thiserror = "1.0"
-wasm-loader = { version = "1.0.0-alpha9", path = "../wasm-loader" }
-substrate-runtime-proposal-hash = { version = "1.0.0-alpha9", path = "../substrate-runtime-proposal-hash" }
+wasm-loader = { version = "0.20.0", path = "../wasm-loader" }
+substrate-runtime-proposal-hash = { version = "0.20.0", path = "../substrate-runtime-proposal-hash" }
 sc-executor = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 sc-executor-common = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
 scale = { version = "3", package = "parity-scale-codec", default-features = false }
