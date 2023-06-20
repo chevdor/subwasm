@@ -1,4 +1,5 @@
 use comparable::VecChange;
+use log::*;
 
 use crate::differs::reduced::diff_analyzer::RequireTransactionVersionBump;
 
@@ -11,67 +12,86 @@ use super::storage::*;
 
 impl RequireTransactionVersionBump for CallChange {
 	fn require_tx_version_bump(&self) -> bool {
-		match self {
-			CallChange::Index(_) => false,
-			CallChange::Name(_) => true,
+		let res = match self {
+			CallChange::Index(_) => true,
+			CallChange::Name(_) => false,
 			CallChange::Signature(s) => s.require_tx_version_bump(),
-		}
+		};
+		trace!("TxBump | CallChange: {res}");
+		res
 	}
 }
 
 impl RequireTransactionVersionBump for ConstantChange {
 	fn require_tx_version_bump(&self) -> bool {
-		true
+		let res = false;
+		trace!("TxBump | ConstantChange: {res}");
+		res
 	}
 }
 
 impl RequireTransactionVersionBump for EventChange {
 	fn require_tx_version_bump(&self) -> bool {
-		true
+		let res = false;
+		trace!("TxBump | EventChange: {res}");
+		res
 	}
 }
 
 impl RequireTransactionVersionBump for ErrorChange {
 	fn require_tx_version_bump(&self) -> bool {
-		true
+		let res = false;
+		trace!("TxBump | ErrorChange: {res}");
+		res
 	}
 }
 
 impl RequireTransactionVersionBump for StorageChange {
 	fn require_tx_version_bump(&self) -> bool {
-		true
+		let res = false;
+		trace!("TxBump | StorageChange: {res}");
+		res
 	}
 }
 
 impl RequireTransactionVersionBump for SignatureChange {
 	fn require_tx_version_bump(&self) -> bool {
-		self.args.iter().map(|arg_changes| arg_changes.require_tx_version_bump()).all(|x| x)
+		let res = self.args.iter().map(|arg_changes| arg_changes.require_tx_version_bump()).any(|x| x);
+		trace!("TxBump | SignatureChange: {res}");
+		res
 	}
 }
 
 impl RequireTransactionVersionBump for VecChange<ArgDesc, Vec<ArgChange>> {
 	fn require_tx_version_bump(&self) -> bool {
-		match self {
+		let res = match self {
 			VecChange::Added(_size, _desc) => false,
+			// If an arg is removed, the call will no longer be **compatible** but that does not require a tx_version bump
 			VecChange::Removed(_size, _desc) => false,
 			VecChange::Changed(_size, change) => change.require_tx_version_bump(),
-		}
+		};
+		trace!("TxBump | VecChange<...>: {res}");
+		res
 	}
 }
 
 impl RequireTransactionVersionBump for Vec<ArgChange> {
 	fn require_tx_version_bump(&self) -> bool {
-		self.iter().map(|c| c.require_tx_version_bump()).all(|x| x)
+		let res = self.iter().map(|c| c.require_tx_version_bump()).any(|x| x);
+		trace!("TxBump | Vec<ArgChange>: {res}");
+		res
 	}
 }
 
 impl RequireTransactionVersionBump for ArgChange {
 	fn require_tx_version_bump(&self) -> bool {
-		match self {
+		let res = match self {
 			// Changing the name is fine
-			ArgChange::Name(_) => true,
+			ArgChange::Name(_) => false,
 			// Changing the type is not
-			ArgChange::Ty(_) => false,
-		}
+			ArgChange::Ty(_) => true,
+		};
+		trace!("TxBump | ArgChange: {res}");
+		res
 	}
 }

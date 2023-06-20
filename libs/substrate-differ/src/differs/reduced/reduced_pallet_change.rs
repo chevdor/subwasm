@@ -4,6 +4,7 @@ use super::{
 };
 // use crate::differs::reduced::change_type::Change;
 use comparable::MapChange;
+use log::*;
 use reduced_pallet::*;
 use std::fmt::Display;
 
@@ -45,31 +46,27 @@ impl ReducedPalletChange {
 
 impl RequireTransactionVersionBump for ReducedPalletChange {
 	fn require_tx_version_bump(&self) -> bool {
-		match self {
-			ReducedPalletChange::Index(_) => false,
-			ReducedPalletChange::Name(_) => true,
+		let res = match self {
+			ReducedPalletChange::Index(_) => true,
 
 			ReducedPalletChange::Calls(x) => x
 				.iter()
 				.map(|i| match i {
-					MapChange::Added(_k, _d) => true,
-					MapChange::Removed(_k) => false,
-					MapChange::Changed(_k, c) => c.iter().map(|cc| cc.require_tx_version_bump()).all(|x| x),
+					MapChange::Added(_k, _d) => false,
+					MapChange::Removed(_k) => true,
+					MapChange::Changed(_k, c) => c.iter().map(|cc| cc.require_tx_version_bump()).any(|x| x),
 				})
 				.all(|x| x),
-			ReducedPalletChange::Events(_x) => true,
-			ReducedPalletChange::Errors(_x) => true,
 
-			ReducedPalletChange::Constants(_x) => true,
-			// x.iter()
-			// .map(|i| match i {
-			// 	MapChange::Added(_k, _d) => true,
-			// 	MapChange::Removed(_k) => true,
-			// 	MapChange::Changed(_k, c) => c.iter().map(|cc| cc.compatible()).all(|x| x.into()),
-			// })
-			// .all(|x| x.into()),
-			ReducedPalletChange::Storages(_x) => true,
-		}
+			ReducedPalletChange::Name(_) => false,
+			ReducedPalletChange::Events(_x) => false,
+			ReducedPalletChange::Errors(_x) => false,
+			ReducedPalletChange::Storages(_x) => false,
+			ReducedPalletChange::Constants(_x) => false,
+		};
+
+		trace!("Pallet: {res}");
+		res
 	}
 }
 
