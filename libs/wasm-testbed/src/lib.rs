@@ -204,7 +204,8 @@ impl WasmTestBed {
 		let parachain_pallet_id = *decoded1.first().expect("Failure while fecthing the Parachain Pallet ID");
 		let authorize_upgrade_prefix = *decoded2.first().expect("Failure while fecthing the Auhtorize upgrade ID");
 
-		let result = get_parachainsystem_authorize_upgrade(parachain_pallet_id, authorize_upgrade_prefix, &self.bytes)?;
+		let parachainsystem_authorize_upgrade_prefix = (parachain_pallet_id, authorize_upgrade_prefix);
+		let result = get_parachainsystem_authorize_upgrade(parachainsystem_authorize_upgrade_prefix, &self.bytes)?;
 		Ok(format!("0x{}", hex::encode(result)))
 	}
 

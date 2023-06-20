@@ -63,19 +63,20 @@ pub fn get_proposal_hash(wasm_blob: &[u8]) -> Result<CalllHash> {
 	get_call_hash(PREFIX_SYSTEM_SETCODE, wasm_blob)
 }
 
+/// Calculate the proposal hash which is system.setCode
+///
+/// # Arguments
+/// * `wasm_blob` - The WASM blob
+/// # Returns
+/// * `CalllHash` - The hash of the proposal as calculated on chain
 /// This function replaces the deprecated `get_proposal_hash`
 pub fn get_system_setcode(wasm_blob: &[u8]) -> Result<CalllHash> {
 	get_call_hash(PREFIX_SYSTEM_SETCODE, wasm_blob)
 }
 
-pub fn get_parachainsystem_authorize_upgrade(
-	parachain_pallet_id: u8,
-	authorize_upgrade_prefix: u8,
-	wasm_blob: &[u8],
-) -> Result<CalllHash> {
-	let prefix_parachainsystem_authorize_upgrade: Prefix = (parachain_pallet_id, authorize_upgrade_prefix);
+pub fn get_parachainsystem_authorize_upgrade(prefix: Prefix, wasm_blob: &[u8]) -> Result<CalllHash> {
 	let code_hash = BlakeTwo256::hash(wasm_blob);
-	let call_hash = get_call_hash(prefix_parachainsystem_authorize_upgrade, code_hash.as_bytes())?;
+	let call_hash = get_call_hash(prefix, code_hash.as_bytes())?;
 	Ok(call_hash)
 }
 
@@ -114,11 +115,21 @@ mod prop_hash_tests {
 	}
 
 	#[test]
+	fn test_call_hash2() {
+		assert_eq!(
+			get_call_hash(PREFIX_SYSTEM_SETCODE, &[0u8; 10 * 1024 * 1024]).expect("Failed getting a hash"),
+			[
+				174, 179, 75, 47, 133, 33, 33, 117, 227, 27, 2, 242, 183, 69, 3, 244, 244, 219, 39, 24, 243, 38, 98,
+				214, 76, 225, 132, 3, 25, 124, 58, 225
+			]
+		);
+	}
+
+	#[test]
 	fn test_parachain_upgrade() {
 		assert_eq!(
 			get_parachainsystem_authorize_upgrade(
-				0x01,
-				0x02,
+				(0x01, 0x02),
 				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f]
 			)
 			.expect("Failed getting a hash"),
@@ -133,8 +144,7 @@ mod prop_hash_tests {
 	fn test_custom_parachain_upgrade() {
 		assert_eq!(
 			get_parachainsystem_authorize_upgrade(
-				0x32,
-				0x02,
+				(0x32, 0x02),
 				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f]
 			)
 			.expect("Failed getting a hash"),
