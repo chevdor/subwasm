@@ -56,14 +56,14 @@ mod tests {
 	#[test]
 	fn it_works_with_single_block() {
 		let hasher = IpfsHasher::default();
-		let ipfs = hasher.compute(b"foobar\n").unwrap();
+		let ipfs = hasher.compute(b"foobar\n").expect("Failed computing hash");
 		assert!(ipfs == "QmRgutAxd8t7oGkSm4wmeuByG6M51wcTso6cubDdQtuEfL");
 	}
 
 	#[test]
 	fn it_works_with_multiple_blocks() {
 		let hasher = IpfsHasher::new(2);
-		let ipfs = hasher.compute(b"foobar\n").unwrap();
+		let ipfs = hasher.compute(b"foobar\n").expect("Failed computing a hash");
 		assert!(ipfs == "QmRJHYTNvC3hmd9gJQARxLR1QMEincccBV53bBw524yyq6");
 	}
 
@@ -72,10 +72,11 @@ mod tests {
 	fn it_computes_a_runtime_ipfs_hash() {
 		const POLKADOT_BLOCK20: &str = "0x4d6a0bca208b85d41833a7f35cf73d1ae6974f4bad8ab576e2c3f751d691fe6c"; // Polkadot Block #20
 
-		let ocb = OnchainBlock::new("wss://rpc.polkadot.io:443", Some(POLKADOT_BLOCK20.to_string())).unwrap();
-		let loader = WasmLoader::load_from_source(&Source::Chain(ocb)).unwrap();
+		let ocb = OnchainBlock::new("wss://rpc.polkadot.io:443", Some(POLKADOT_BLOCK20.to_string()))
+			.expect("Failed getting onchain block");
+		let loader = WasmLoader::load_from_source(&Source::Chain(ocb)).expect("Failed loading wasm");
 		let hasher = IpfsHasher::default();
-		let cid = hasher.compute(loader.uncompressed_bytes()).unwrap();
+		let cid = hasher.compute(loader.uncompressed_bytes()).expect("Failed computing hash");
 		assert!(cid == "QmevKMGkRViXfQMSZ38DBdcJ1cXcXf9sXdfXie8Jkc7ZGs");
 	}
 }

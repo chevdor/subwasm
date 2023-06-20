@@ -75,7 +75,7 @@ mod test_github_ref {
 
 	#[test]
 	fn test_as_url() {
-		let gh = GithubRef::from_str("kusama@1.2.3").unwrap();
+		let gh = GithubRef::from_str("kusama@1.2.3").expect("Failed parsing GithubRef");
 		assert_eq!("https://github.com/paritytech/polkadot/releases/download/v1.2.3/kusama_runtime-v230.compact.compressed.wasm", gh.as_url().as_str());
 	}
 }

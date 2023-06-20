@@ -41,15 +41,15 @@ mod test_diffanalyzer {
 
 	fn analyze(rf1: RuntimeFile, rf2: RuntimeFile) -> Option<DiffAnalyzer> {
 		let a = get_runtime_file(rf1).expect("Runtime file should exist");
-		let ra = WasmTestBed::new(&Source::File(a)).unwrap().metadata().into();
+		let ra = WasmTestBed::new(&Source::File(a)).expect("Failed loading runtime").metadata().into();
 		let b = get_runtime_file(rf2).expect("Runtime file should exist");
-		let rb = WasmTestBed::new(&Source::File(b)).unwrap().metadata().into();
+		let rb = WasmTestBed::new(&Source::File(b)).expect("Failed loading runtime").metadata().into();
 		ReducedDiffResult::new(ra, rb).changes.map(DiffAnalyzer::new)
 	}
 
 	fn check_tx_version_bump(runtime_a: PathBuf, runtime_b: PathBuf) -> bool {
-		let a = WasmTestBed::new(&Source::File(runtime_a)).unwrap();
-		let b = WasmTestBed::new(&Source::File(runtime_b)).unwrap();
+		let a = WasmTestBed::new(&Source::File(runtime_a)).expect("Failed loading runtime");
+		let b = WasmTestBed::new(&Source::File(runtime_b)).expect("Failed loading runtime");
 
 		let ra = a.metadata().into();
 		let rb = b.metadata().into();
@@ -79,16 +79,16 @@ mod test_diffanalyzer {
 	#[ignore = "local data"]
 	fn test_require_tx_version_bump_9260_9260() {
 		assert!(check_tx_version_bump(
-			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).unwrap(),
-			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).unwrap(),
+			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Failed loading runtime"),
+			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Failed loading runtime"),
 		));
 	}
 
 	#[test]
 	#[ignore = "local data"]
 	fn test_require_tx_version_bump_9400_9420() {
-		let r1 = get_runtime_file(RuntimeFile::new(Chain::Statemint, 14, 9400)).unwrap();
-		let r2 = get_runtime_file(RuntimeFile::new(Chain::Statemint, 14, 9420)).unwrap();
+		let r1 = get_runtime_file(RuntimeFile::new(Chain::Statemint, 14, 9400)).expect("Failed loading runtime");
+		let r2 = get_runtime_file(RuntimeFile::new(Chain::Statemint, 14, 9420)).expect("Failed loading runtime");
 		let compat = check_tx_version_bump(r1, r2);
 		assert!(compat);
 	}
@@ -96,8 +96,10 @@ mod test_diffanalyzer {
 	#[test]
 	#[ignore = "local data"]
 	fn test_not_require_tx_version_bump_collectives_9400_9420() {
-		let r1 = get_runtime_file(RuntimeFile::new(Chain::CollectivesPolkadot, 14, 9400)).unwrap();
-		let r2 = get_runtime_file(RuntimeFile::new(Chain::CollectivesPolkadot, 14, 9420)).unwrap();
+		let r1 =
+			get_runtime_file(RuntimeFile::new(Chain::CollectivesPolkadot, 14, 9400)).expect("Failed loading runtime");
+		let r2 =
+			get_runtime_file(RuntimeFile::new(Chain::CollectivesPolkadot, 14, 9420)).expect("Failed loading runtime");
 		let compat = check_tx_version_bump(r1, r2);
 		assert!(!compat);
 	}
@@ -106,8 +108,8 @@ mod test_diffanalyzer {
 	#[ignore = "local data"]
 	fn test_require_tx_version_bump_9270_9270() {
 		assert!(check_tx_version_bump(
-			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9270)).unwrap(),
-			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9270)).unwrap(),
+			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9270)).expect("Failed loading runtime"),
+			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9270)).expect("Failed loading runtime"),
 		));
 	}
 
@@ -115,8 +117,8 @@ mod test_diffanalyzer {
 	#[ignore = "local data"]
 	fn test_require_tx_version_bump_not_9260_9270() {
 		assert!(!check_tx_version_bump(
-			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).unwrap(),
-			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9280)).unwrap(),
+			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Failed loading runtime"),
+			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9280)).expect("Failed loading runtime"),
 		));
 	}
 
@@ -124,8 +126,8 @@ mod test_diffanalyzer {
 	#[ignore = "local data"]
 	fn test_require_tx_version_bump_ksm_not_9280_9290() {
 		assert!(!check_tx_version_bump(
-			get_runtime_file(RuntimeFile::new(Chain::Kusama, 14, 9280)).unwrap(),
-			get_runtime_file(RuntimeFile::new(Chain::Kusama, 14, 9290)).unwrap(),
+			get_runtime_file(RuntimeFile::new(Chain::Kusama, 14, 9280)).expect("Failed loading runtime"),
+			get_runtime_file(RuntimeFile::new(Chain::Kusama, 14, 9290)).expect("Failed loading runtime"),
 		));
 	}
 
@@ -133,17 +135,17 @@ mod test_diffanalyzer {
 	#[ignore = "local data"]
 	fn test_require_tx_version_bump_dot_not_9280_9290() {
 		assert!(!check_tx_version_bump(
-			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9280)).unwrap(),
-			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).unwrap(),
+			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9280)).expect("Failed loading runtime"),
+			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).expect("Failed loading runtime"),
 		));
 	}
 
 	#[test]
 	#[ignore = "local data"]
 	fn test_changes_9280_9290() {
-		let da =
-			analyze(RuntimeFile::new(Chain::Polkadot, 14, 9280), RuntimeFile::new(Chain::Polkadot, 14, 9290)).unwrap();
-		let pallet_system_changes = da.get_pallet_changes(0).unwrap();
+		let da = analyze(RuntimeFile::new(Chain::Polkadot, 14, 9280), RuntimeFile::new(Chain::Polkadot, 14, 9290))
+			.expect("Failed loading runtime");
+		let pallet_system_changes = da.get_pallet_changes(0).expect("Failed loading runtime");
 		println!("pallet_system_changes = {pallet_system_changes:#?}");
 
 		// There is a single change in the system pallet between 9280 and 9290: Constant: Version
@@ -157,7 +159,7 @@ mod test_diffanalyzer {
 			_ => panic!("Unexpected change while comparing 9280 and 9290"),
 		}
 
-		let pallet_balances_changes = da.get_pallet_changes(4).unwrap();
+		let pallet_balances_changes = da.get_pallet_changes(4).expect("Failed loading runtime");
 		println!("pallet_balances_changes = {pallet_balances_changes:#?}");
 
 		// There is a single change in the balances pallet between 9280 and 9290: Calls: Signature changed
@@ -177,8 +179,8 @@ mod test_diffanalyzer {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_different_variants_v13_v14() {
-		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13_1))).unwrap();
-		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).unwrap();
+		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13_1))).expect("Failed loading runtime");
+		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).expect("Failed loading runtime");
 		let _differ = ReducedDiffer::new(a.metadata(), b.metadata());
 	}
 
@@ -186,8 +188,8 @@ mod test_diffanalyzer {
 	#[cfg(feature = "v13")]
 	#[ignore = "local data"]
 	fn test_v13() {
-		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13_1))).unwrap();
-		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13_2))).unwrap();
+		let a = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13_1))).expect("Failed loading runtime");
+		let b = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13_2))).expect("Failed loading runtime");
 		let comp = ReducedDiffer::compare(&a, &b);
 	}
 
@@ -203,8 +205,8 @@ mod test_diffanalyzer {
 	#[cfg(all(feature = "v13", feature = "v14"))]
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9100_9260() {
-		let diff =
-			analyze(RuntimeFile::new(Chain::Polkadot, 14, 9100), RuntimeFile::new(Chain::Polkadot, 14, 9260)).unwrap();
+		let diff = analyze(RuntimeFile::new(Chain::Polkadot, 14, 9100), RuntimeFile::new(Chain::Polkadot, 14, 9260))
+			.expect("Failed loading runtime");
 
 		assert!(!diff.require_tx_version_bump())
 	}
@@ -213,8 +215,8 @@ mod test_diffanalyzer {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9260_9270_full() {
-		let diff =
-			analyze(RuntimeFile::new(Chain::Polkadot, 14, 9260), RuntimeFile::new(Chain::Polkadot, 14, 9270)).unwrap();
+		let diff = analyze(RuntimeFile::new(Chain::Polkadot, 14, 9260), RuntimeFile::new(Chain::Polkadot, 14, 9270))
+			.expect("Failed loading runtime");
 
 		assert!(!diff.require_tx_version_bump())
 	}
@@ -224,7 +226,8 @@ mod test_diffanalyzer {
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9260_9270_content() {
 		let analyzer =
-			analyze(RuntimeFile::new(Chain::Polkadot, 14, 9260), RuntimeFile::new(Chain::Polkadot, 14, 9270)).unwrap();
+			analyze(RuntimeFile::new(Chain::Polkadot, 14, 9260), RuntimeFile::new(Chain::Polkadot, 14, 9270))
+				.expect("Failed loading runtime");
 		let pallet_changes = analyzer.changes.get_pallets_changes();
 		assert_eq!(4, pallet_changes.len());
 		assert!(!analyzer.require_tx_version_bump());
@@ -235,8 +238,8 @@ mod test_diffanalyzer {
 	#[ignore = "local data"]
 	#[should_panic]
 	fn test_unsupported_variants() {
-		let diff =
-			analyze(RuntimeFile::new(Chain::Polkadot, 12, 9000), RuntimeFile::new(Chain::Polkadot, 12, 9000)).unwrap();
+		let diff = analyze(RuntimeFile::new(Chain::Polkadot, 12, 9000), RuntimeFile::new(Chain::Polkadot, 12, 9000))
+			.expect("Failed loading runtime");
 
 		assert!(!diff.require_tx_version_bump())
 	}
@@ -245,8 +248,8 @@ mod test_diffanalyzer {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9280_9290_full() {
-		let diff =
-			analyze(RuntimeFile::new(Chain::Polkadot, 14, 9280), RuntimeFile::new(Chain::Polkadot, 14, 9290)).unwrap();
+		let diff = analyze(RuntimeFile::new(Chain::Polkadot, 14, 9280), RuntimeFile::new(Chain::Polkadot, 14, 9290))
+			.expect("Failed loading runtime");
 		assert!(!diff.require_tx_version_bump());
 
 		println!("changes = {:?}", diff.changes);

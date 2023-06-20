@@ -6,13 +6,13 @@ authors.workspace = true
 description = "subwasm is a utility that works on WASM Runtime of Substrate based chains"
 homepage = "https://github.com/chevdor/subwasm"
 keywords = [
-  "wasm",
-  "cli",
-  "substrate",
-  "blockchain",
-  "runtime",
-  "polkadot",
-  "kusama",
+	"wasm",
+	"cli",
+	"substrate",
+	"blockchain",
+	"runtime",
+	"polkadot",
+	"kusama",
 ]
 license = "MIT"
 readme = "README.md"
@@ -25,31 +25,32 @@ path = "src/main.rs"
 [dependencies]
 assert_cmd = "2.0"
 clap = { version = "4.0", features = [
-  "derive",
-  "env",
-  "unicode",
-  "cargo",
-  "color",
-  "help",
-  "usage",
-  "error-context",
-  "suggestions",
+	"derive",
+	"env",
+	"unicode",
+	"cargo",
+	"color",
+	"help",
+	"usage",
+	"error-context",
+	"suggestions",
 ] }
 color-eyre = "0.6"
 thiserror = "1.0"
 env_logger = "0.10"
 log = "0.4"
-substrate-runtime-proposal-hash = { version = "1.0.0-alpha9", path = "../libs/substrate-runtime-proposal-hash", optional = true }
-subwasmlib = { version = "1.0.0-alpha9", path = "../lib" }
-wasm-loader = { version = "1.0.0-alpha9", path = "../libs/wasm-loader" }
-wasm-testbed = { version = "1.0.0-alpha9", path = "../libs/wasm-testbed" }
+substrate-runtime-proposal-hash = { version = "0.20.0", path = "../libs/substrate-runtime-proposal-hash", optional = true }
+subwasmlib = { version = "0.20.0", path = "../lib" }
+wasm-loader = { version = "0.20.0", path = "../libs/wasm-loader" }
+wasm-testbed = { version = "0.20.0", path = "../libs/wasm-testbed" }
 serde_json = "1.0"
 text-style = { version = "0.3", features = ["crossterm"] }
-sp-runtime = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
+sp-runtime = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrate" }
 url = "2.3"
 
 [dev-dependencies]
 assert_cmd = "2.0"
+uuid = { version = "1.3", features = ["v4"] }
 
 [package.metadata.deb]
 assets = [["target/release/subwasm", "usr/bin/", "755"]]

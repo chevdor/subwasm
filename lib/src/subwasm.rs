@@ -32,7 +32,6 @@ impl Subwasm {
 
 			SubwasmLibError::Generic("Failed loading runtime".to_string())
 		})?;
-
 		let runtime_info = RuntimeInfo::new(&testbed)?;
 		Ok(Self { testbed, runtime_info })
 	}

@@ -236,6 +236,7 @@ pub fn get_source(
 ) -> error::Result<Source> {
 	let source: Source = Source::from_options(file, chain, block, dl_url)?;
 	// If the source is a URL, we try to fetch it first
+
 	Ok(match source {
 		Source::URL(u) => {
 			debug!("Fetching runtime from {}", u);

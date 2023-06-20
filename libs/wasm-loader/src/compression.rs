@@ -63,7 +63,7 @@ mod tests_compression {
 	#[test]
 	fn test_compression() {
 		let bytes = vec![0, 42, 7, 27, 0, 0, 0, 27, 26, 27];
-		let compressed = Compression::compress(&bytes).unwrap();
+		let compressed = Compression::compress(&bytes).expect("Should be able to compress");
 		assert_eq!(
 			vec![
 				82, 188, 83, 118, 70, 219, 142, 5, 40, 181, 47, 253, 0, 88, 81, 0, 0, 0, 42, 7, 27, 0, 0, 0, 27, 26, 27
@@ -72,6 +72,6 @@ mod tests_compression {
 		);
 
 		let decompressed = Compression::decompress(&compressed);
-		assert_eq!(bytes, decompressed.unwrap());
+		assert_eq!(bytes, decompressed.expect("Failed decompressing"));
 	}
 }

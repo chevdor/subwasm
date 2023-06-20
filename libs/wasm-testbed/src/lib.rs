@@ -3,14 +3,15 @@ mod logger_mock;
 
 pub use error::{Result, WasmTestbedError};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadataPrefixed};
+use hex::FromHex;
 use sc_executor::{WasmExecutionMethod, WasmExecutor};
 use sc_executor_common::runtime_blob::RuntimeBlob;
 use scale::Decode;
 use sp_core::Hasher;
 use sp_runtime::traits::BlakeTwo256;
 use sp_version::RuntimeVersion as SubstrateRuntimeVersion;
-use std::fmt;
-use substrate_runtime_proposal_hash::{get_parachainsystem_authorize_upgrade, get_result, SrhResult};
+use std::{env, fmt};
+use substrate_runtime_proposal_hash::{error::RuntimePropHashError, *};
 use wasm_loader::*;
 
 /// This is a "magic" number signaling that out Wasm is a substrate wasm.
@@ -52,6 +53,8 @@ impl fmt::Debug for WasmTestBed {
 
 impl WasmTestBed {
 	pub fn new(source: &Source) -> Result<Self> {
+		log::debug!("Loading testbed with source: {source:?}");
+
 		let loader = WasmLoader::load_from_source(source).map_err(|_| WasmTestbedError::Loading(source.to_string()))?;
 		let wasm = loader.uncompressed_bytes().to_vec();
 		let metadata_encoded = Self::call(&wasm, "Metadata_metadata", &[])?;
@@ -62,8 +65,6 @@ impl WasmTestBed {
 		if !WasmTestBed::is_substrate_wasm(&metadata) {
 			return Err(WasmTestbedError::UnsupportedRuntime);
 		}
-
-		// Self::print_magic_and_version(&metadata);
 
 		let runtime_metadata_prefixed: RuntimeMetadataPrefixed =
 			scale::Decode::decode(&mut &metadata[..]).map_err(|e| {
@@ -133,7 +134,7 @@ impl WasmTestBed {
 		// Substrate V14 requires a heap of ~34.
 		// Polkadot V14 requires a heap of ~20.
 		let executor: WasmExecutor<sp_io::SubstrateHostFunctions> = WasmExecutor::builder()
-			.with_execution_method(WasmExecutionMethod::Interpreted)
+			.with_execution_method(WasmExecutionMethod::default())
 			.with_offchain_heap_alloc_strategy(sc_executor::HeapAllocStrategy::Dynamic { maximum_pages: Some(64) })
 			.with_max_runtime_instances(8)
 			.with_runtime_cache_size(2)
@@ -185,12 +186,26 @@ impl WasmTestBed {
 	/// Compute the proposal hash of the runtime
 	pub fn proposal_hash(&self) -> Result<String> {
 		let result: SrhResult = get_result(substrate_runtime_proposal_hash::PREFIX_SYSTEM_SETCODE, &self.bytes)?;
-		Ok(format!("0x{}", &result.encodedd_hash))
+		Ok(format!("0x{}", &result.encoded_hash))
 	}
 
 	/// Compute the proposal hash of the runtime
 	pub fn parachain_authorize_upgrade_hash(&self) -> Result<String> {
-		let result = get_parachainsystem_authorize_upgrade(&self.bytes)?;
+		let s1 = env::var(PARACHAIN_PALLET_ID_ENV)
+			.unwrap_or_else(|_| DEFAULT_PARACHAIN_PALLET_ID.into())
+			.replacen("0x", "", 1);
+		let s2 = env::var(AUTHORIZE_UPGRADE_PREFIX_ENV)
+			.unwrap_or_else(|_| DEFAULT_AUTHORIZE_UPGRADE_PREFIX.into())
+			.replacen("0x", "", 1);
+
+		let decoded1 = <[u8; 1]>::from_hex(&s1).map_err(|_| RuntimePropHashError::HexDecoding(s1))?;
+		let decoded2 = <[u8; 1]>::from_hex(&s2).map_err(|_| RuntimePropHashError::HexDecoding(s2))?;
+
+		let parachain_pallet_id = *decoded1.first().expect("Failure while fecthing the Parachain Pallet ID");
+		let authorize_upgrade_prefix = *decoded2.first().expect("Failure while fecthing the Auhtorize upgrade ID");
+
+		let parachainsystem_authorize_upgrade_prefix = (parachain_pallet_id, authorize_upgrade_prefix);
+		let result = get_parachainsystem_authorize_upgrade(parachainsystem_authorize_upgrade_prefix, &self.bytes)?;
 		Ok(format!("0x{}", hex::encode(result)))
 	}
 
@@ -236,7 +251,7 @@ mod tests {
 		#[test]
 		#[ignore = "local data"]
 		fn it_loads_v12() {
-			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).unwrap();
+			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V12))).expect("Failed loading runtime");
 			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 12);
 			// assert!(runtime.core_version);
@@ -246,7 +261,7 @@ mod tests {
 		#[test]
 		#[ignore = "local data"]
 		fn it_loads_v13() {
-			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).unwrap();
+			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V13))).expect("Failed loading runtime");
 			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 13);
 			// assert!(runtime.core_version);
@@ -256,10 +271,8 @@ mod tests {
 		#[test]
 		#[ignore = "local data"]
 		fn it_loads_v14() {
-			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14)));
-			assert!(runtime.is_ok());
+			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(RUNTIME_V14))).expect("Failed loading runtime");
 			println!("runtime = {:?}", &runtime);
-			let runtime = runtime.unwrap();
 			assert!(runtime.metadata_version == 14);
 			assert!(runtime.is_supported());
 		}
@@ -273,7 +286,8 @@ mod tests {
 		#[should_panic]
 		#[ignore = "local data"]
 		fn it_loads_kusama_1050() {
-			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_1050_VXX))).unwrap();
+			let runtime =
+				WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_1050_VXX))).expect("Failed loading runtime");
 			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 11);
 			assert!(runtime.is_supported());
@@ -283,7 +297,8 @@ mod tests {
 		#[should_panic]
 		#[ignore = "local data"]
 		fn it_loads_kusama_1062() {
-			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_1062_VXX))).unwrap();
+			let runtime =
+				WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_1062_VXX))).expect("Failed loading runtime");
 			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 11);
 			assert!(runtime.is_supported());
@@ -300,7 +315,8 @@ mod tests {
 		#[test]
 		#[ignore = "local data"]
 		fn it_loads_kusama_metadata() {
-			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_2030_VXX))).unwrap();
+			let runtime =
+				WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_2030_VXX))).expect("Failed loading runtime");
 			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 12);
 			assert!(runtime.is_supported());
@@ -309,7 +325,8 @@ mod tests {
 		#[test]
 		#[ignore = "local data"]
 		fn it_loads_kusama_2030() {
-			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_2030_VXX))).unwrap();
+			let runtime =
+				WasmTestBed::new(&Source::File(PathBuf::from(KUSAMA_2030_VXX))).expect("Failed loading runtime");
 			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 12);
 			assert!(runtime.is_supported());
@@ -332,7 +349,8 @@ mod tests {
 		#[should_panic]
 		#[ignore = "local data"]
 		fn it_loads_polkadot_01() {
-			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(POLKADOT_01_V11))).unwrap();
+			let runtime =
+				WasmTestBed::new(&Source::File(PathBuf::from(POLKADOT_01_V11))).expect("Failed loading runtime");
 			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 11);
 			assert!(runtime.is_supported());
@@ -341,7 +359,8 @@ mod tests {
 		#[test]
 		#[ignore = "local data"]
 		fn it_loads_polkadot_29() {
-			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(POLKADOT_29_V12))).unwrap();
+			let runtime =
+				WasmTestBed::new(&Source::File(PathBuf::from(POLKADOT_29_V12))).expect("Failed loading runtime");
 
 			println!("{runtime:#?}");
 
@@ -357,7 +376,8 @@ mod tests {
 		#[test]
 		#[ignore = "local data"]
 		fn it_loads_westend_30() {
-			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(WESTEND_V30_V12))).unwrap();
+			let runtime =
+				WasmTestBed::new(&Source::File(PathBuf::from(WESTEND_V30_V12))).expect("Failed loading runtime");
 			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 12);
 			assert!(runtime.is_supported());
@@ -371,7 +391,7 @@ mod tests {
 		#[test]
 		#[ignore = "local data"]
 		fn it_loads_polkadot_dev() {
-			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(POLKADOT_DEV))).unwrap();
+			let runtime = WasmTestBed::new(&Source::File(PathBuf::from(POLKADOT_DEV))).expect("Failed loading runtime");
 			println!("{runtime:#?}");
 			assert!(runtime.metadata_version == 12);
 			assert!(runtime.is_supported());

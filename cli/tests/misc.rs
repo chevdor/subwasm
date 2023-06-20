@@ -7,7 +7,7 @@ mod cli_tests {
 
 		#[test]
 		fn it_shows_help() {
-			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
+			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).expect("Failed getting test bin");
 			let assert = cmd.arg("--help").assert();
 			assert.success().code(0);
 		}

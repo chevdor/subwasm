@@ -73,7 +73,8 @@ pub fn fetch_at_url(url: Url, target: Option<PathBuf>) -> Result<PathBuf> {
 	debug!("Fetching from {url}");
 	let target = if let Some(target) = target { target } else { get_output_file_tmp()? };
 
-	let mut resp = reqwest::blocking::get(url.to_owned()).map_err(|_e| error::SubwasmLibError::Io)?;
+	let mut resp = reqwest::blocking::get(url.to_owned())
+		.map_err(|_e| error::SubwasmLibError::Generic("Request error".to_string()))?;
 	if resp.status().is_success() {
 		let mut out = std::fs::File::create(target.clone()).map_err(|_e| error::SubwasmLibError::Io)?;
 		resp.copy_to(&mut out).map_err(|_e| error::SubwasmLibError::Io)?;

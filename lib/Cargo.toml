@@ -37,11 +37,11 @@ serde = { version = "1.0", features = ["derive"] }
 scale-info = { version = "2.1", default-features = false, features = [
 	"derive",
 ] }
-sp-version = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
-ipfs-hasher = { version = "1.0.0-alpha9", path = "../libs/ipfs-hasher" }
-wasm-loader = { version = "1.0.0-alpha9", path = "../libs/wasm-loader" }
-wasm-testbed = { version = "1.0.0-alpha9", path = "../libs/wasm-testbed" }
-substrate-differ = { version = "1.0.0-alpha9", path = "../libs/substrate-differ" }
+sp-version = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrate" }
+ipfs-hasher = { version = "0.20.0", path = "../libs/ipfs-hasher" }
+wasm-loader = { version = "0.20.0", path = "../libs/wasm-loader" }
+wasm-testbed = { version = "0.20.0", path = "../libs/wasm-testbed" }
+substrate-differ = { version = "0.20.0", path = "../libs/substrate-differ" }
 url = "2.3.1"
 reqwest = { version = "0.11", features = ["blocking"] }
 semver = "1.0.17"
