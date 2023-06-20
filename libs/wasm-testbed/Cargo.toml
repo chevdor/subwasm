@@ -23,15 +23,15 @@ log = "0.4"
 thiserror = "1.0"
 wasm-loader = { version = "0.20.0", path = "../wasm-loader" }
 substrate-runtime-proposal-hash = { version = "0.20.0", path = "../substrate-runtime-proposal-hash" }
-sc-executor = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
-sc-executor-common = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
+sc-executor = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrate" }
+sc-executor-common = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrate" }
 scale = { version = "3", package = "parity-scale-codec", default-features = false }
-sp-core = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
-sp-io = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
-sp-runtime = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
-sp-state-machine = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
-sp-wasm-interface = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
-sp-version = { tag = "monthly-2023-05", git = "https://github.com/paritytech/substrate" }
+sp-core = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrate" }
+sp-io = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrate" }
+sp-runtime = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrate" }
+sp-state-machine = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrate" }
+sp-wasm-interface = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrate" }
+sp-version = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrate" }
 scale-info = { version = "2.1", default-features = false, features = [
 	"derive",
 ] }

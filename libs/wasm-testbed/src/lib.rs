@@ -134,7 +134,7 @@ impl WasmTestBed {
 		// Substrate V14 requires a heap of ~34.
 		// Polkadot V14 requires a heap of ~20.
 		let executor: WasmExecutor<sp_io::SubstrateHostFunctions> = WasmExecutor::builder()
-			.with_execution_method(WasmExecutionMethod::Interpreted)
+			.with_execution_method(WasmExecutionMethod::default())
 			.with_offchain_heap_alloc_strategy(sc_executor::HeapAllocStrategy::Dynamic { maximum_pages: Some(64) })
 			.with_max_runtime_instances(8)
 			.with_runtime_cache_size(2)
