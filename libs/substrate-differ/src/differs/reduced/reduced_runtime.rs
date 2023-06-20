@@ -227,7 +227,8 @@ mod test_reduced_runtime {
 
 		let runtime_file =
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).expect("Runtime file should exist");
-		let _reduced_runtime: ReducedRuntime = WasmTestBed::new(&Source::File(runtime_file)).unwrap().metadata().into();
+		let _reduced_runtime: ReducedRuntime =
+			WasmTestBed::new(&Source::File(runtime_file)).expect("Failed loading runtime").metadata().into();
 	}
 
 	#[test]
@@ -240,9 +241,13 @@ mod test_reduced_runtime {
 
 		let runtime_file =
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).expect("Runtime file should exist");
-		let reduced_runtime: ReducedRuntime = WasmTestBed::new(&Source::File(runtime_file)).unwrap().metadata().into();
-		assert_eq!(0_u32, reduced_runtime.get_pallet_by_name("System").unwrap().index);
-		assert_eq!(1_u32, reduced_runtime.get_pallet_by_name("Scheduler").unwrap().index);
+		let reduced_runtime: ReducedRuntime =
+			WasmTestBed::new(&Source::File(runtime_file)).expect("Failed loading runtime").metadata().into();
+		assert_eq!(0_u32, reduced_runtime.get_pallet_by_name("System").expect("Failed getting pallet by name").index);
+		assert_eq!(
+			1_u32,
+			reduced_runtime.get_pallet_by_name("Scheduler").expect("Failed getting pallet by name").index
+		);
 	}
 
 	#[test]
@@ -254,7 +259,8 @@ mod test_reduced_runtime {
 
 		let runtime_file =
 			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).expect("Runtime file should exist");
-		let reduced_runtime: ReducedRuntime = WasmTestBed::new(&Source::File(runtime_file)).unwrap().metadata().into();
+		let reduced_runtime: ReducedRuntime =
+			WasmTestBed::new(&Source::File(runtime_file)).expect("Failed loading runtime").metadata().into();
 
 		println!("extrinsics = {:#?}", reduced_runtime.extrinsic);
 	}

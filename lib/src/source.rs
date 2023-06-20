@@ -208,7 +208,7 @@ mod tests_source {
 		let urls = vec!["ws://localhost:9933", "wss://localhost:9933"];
 
 		for url in urls {
-			let src = Source::try_from(url).unwrap();
+			let src = Source::try_from(url).expect("Failing parsing source");
 			match src {
 				Source::Chain(r) => match r.endpoint {
 					NodeEndpoint::WebSocket(ws) => assert_eq!(ws, url),
@@ -242,7 +242,7 @@ mod tests_source {
 		];
 
 		for url in urls {
-			let src = Source::try_from(url).unwrap();
+			let src = Source::try_from(url).expect("Failing parsing source");
 			match src {
 				Source::Chain(r) => match r.endpoint {
 					NodeEndpoint::Http(http) => assert_eq!(http, url),
@@ -258,7 +258,7 @@ mod tests_source {
 		let names = vec!["polkadot", "dot"];
 
 		for name in names {
-			assert!(matches!(Source::try_from(name).unwrap(), Source::Alias(_)));
+			assert!(matches!(Source::try_from(name).expect("Failing parsing source"), Source::Alias(_)));
 		}
 	}
 
@@ -267,7 +267,7 @@ mod tests_source {
 		let urls = vec!["https://github.com/paritytech/polkadot/releases/download/v0.9.42/kusama_runtime-v9420.compact.compressed.wasm"];
 
 		for url in urls {
-			let src = Source::try_from(url).unwrap();
+			let src = Source::try_from(url).expect("Failing parsing source");
 			assert!(matches!(src, Source::URL(_)));
 		}
 	}
@@ -282,7 +282,10 @@ mod tests_source {
 		let files = vec![path];
 
 		for file in files {
-			assert_eq!(Source::try_from(file.as_str()).unwrap(), Source::File(PathBuf::from(file)));
+			assert_eq!(
+				Source::try_from(file.as_str()).expect("Failing parsing source"),
+				Source::File(PathBuf::from(file))
+			);
 		}
 	}
 

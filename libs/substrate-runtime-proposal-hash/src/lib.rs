@@ -103,7 +103,7 @@ mod prop_hash_tests {
 	#[test]
 	fn test_proposal_hash() {
 		assert_eq!(
-			get_proposal_hash(&[1, 2, 42]).unwrap(),
+			get_proposal_hash(&[1, 2, 42]).expect("Failed getting a hash"),
 			[
 				174, 123, 79, 240, 254, 106, 147, 26, 65, 61, 41, 84, 181, 102, 24, 182, 128, 135, 188, 31, 135, 187,
 				99, 34, 143, 35, 120, 100, 246, 90, 186, 106
@@ -114,7 +114,7 @@ mod prop_hash_tests {
 	#[test]
 	fn test_call_hash() {
 		assert_eq!(
-			get_call_hash(PREFIX_SYSTEM_SETCODE, &[1, 2, 42]).unwrap(),
+			get_call_hash(PREFIX_SYSTEM_SETCODE, &[1, 2, 42]).expect("Failed getting a hash"),
 			[
 				174, 123, 79, 240, 254, 106, 147, 26, 65, 61, 41, 84, 181, 102, 24, 182, 128, 135, 188, 31, 135, 187,
 				99, 34, 143, 35, 120, 100, 246, 90, 186, 106
@@ -130,7 +130,7 @@ mod prop_hash_tests {
 			get_parachainsystem_authorize_upgrade(&[
 				0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f
 			])
-			.unwrap(),
+			.expect("Failed getting a hash"),
 			[
 				231, 116, 0, 171, 31, 105, 209, 55, 219, 85, 107, 244, 188, 127, 92, 82, 111, 152, 5, 80, 44, 48, 66,
 				9, 156, 175, 248, 163, 40, 92, 101, 11
@@ -148,7 +148,7 @@ mod prop_hash_tests {
 			get_parachainsystem_authorize_upgrade(&[
 				0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f
 			])
-			.unwrap(),
+			.expect("Failed getting a hash"),
 			[
 				51, 203, 30, 131, 48, 13, 150, 26, 217, 87, 213, 55, 43, 10, 200, 193, 248, 254, 202, 83, 165, 231, 4,
 				59, 213, 247, 98, 153, 119, 166, 175, 133
@@ -158,19 +158,19 @@ mod prop_hash_tests {
 
 	#[test]
 	fn test_hash_length() {
-		assert_eq!(32, get_proposal_hash(&[0]).unwrap().len());
+		assert_eq!(32, get_proposal_hash(&[0]).expect("Failed getting a hash").len());
 	}
 
 	#[test]
 	fn test_get_result() {
-		let res = get_result(PREFIX_SYSTEM_SETCODE, &[1, 2, 42]).unwrap();
+		let res = get_result(PREFIX_SYSTEM_SETCODE, &[1, 2, 42]).expect("Failed getting a hash");
 		assert_eq!(res.encoded_hash, "85233004e044626a6c08e469573369536d8de9b264b08eb6611b76b80148e429");
 	}
 
 	#[test]
 	fn test_long_input() {
 		const SIZE_8MB: usize = 8 * 1024 * 1024;
-		let res = get_result(PREFIX_SYSTEM_SETCODE, &[0; SIZE_8MB]).unwrap();
+		let res = get_result(PREFIX_SYSTEM_SETCODE, &[0; SIZE_8MB]).expect("Failed getting a hash");
 		assert_eq!(res.encoded_hash, "44de98eef7227a1f55c5d1cf2b437dc87e60177dc8607538a115773b567ed0d5");
 	}
 }

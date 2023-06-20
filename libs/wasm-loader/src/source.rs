@@ -58,7 +58,7 @@ mod tests_source {
 		let urls = vec!["ws://localhost:9933", "wss://localhost:9933"];
 
 		for url in urls {
-			let src = Source::from_str(url).unwrap();
+			let src = Source::from_str(url).expect("Failed getting a source");
 			match src {
 				Source::Chain(r) => match r.endpoint {
 					NodeEndpoint::WebSocket(ws) => assert_eq!(ws, url),
@@ -74,7 +74,7 @@ mod tests_source {
 		let urls = vec!["http://localhost:9933", "https://localhost:9933"];
 
 		for url in urls {
-			let src = Source::from_str(url).unwrap();
+			let src = Source::from_str(url).expect("Failed loading wasm");
 			match src {
 				Source::Chain(r) => match r.endpoint {
 					NodeEndpoint::Http(http) => assert_eq!(http, url),

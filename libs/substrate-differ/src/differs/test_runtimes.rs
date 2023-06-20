@@ -52,7 +52,7 @@ impl RuntimeFile {
 }
 
 pub fn get_runtime_file(runtime_file: RuntimeFile) -> Option<PathBuf> {
-	let workspace_root = env::var("CARGO_WORKSPACE_DIR").unwrap();
+	let workspace_root = env::var("CARGO_WORKSPACE_DIR").expect("Failed getting env");
 	let candidate = PathBuf::from_str(&format!(
 		"{workspace_root}data/{chain}/V{meta}/{spec}.wasm",
 		chain = runtime_file.chain,

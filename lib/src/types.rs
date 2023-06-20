@@ -43,16 +43,19 @@ mod test_super {
 	#[test]
 	fn it_passes_common_tests() {
 		assert!(
-			Filter::from_str("Module.caLL").unwrap()
+			Filter::from_str("Module.caLL").expect("Failed init filter")
 				== Filter { module: "module".to_string(), call: Some("call".to_string()) }
 		);
 
 		assert!(
-			Filter::from_str("module.call.foobar").unwrap()
+			Filter::from_str("module.call.foobar").expect("Failed init filter")
 				== Filter { module: "module".to_string(), call: Some("call".to_string()) }
 		);
 
-		assert!(Filter::from_str("module").unwrap() == Filter { module: "module".to_string(), call: None });
+		assert!(
+			Filter::from_str("module").expect("Failed init filter")
+				== Filter { module: "module".to_string(), call: None }
+		);
 
 		assert!(Filter::from_str("").is_err());
 	}

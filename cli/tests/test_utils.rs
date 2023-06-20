@@ -9,7 +9,7 @@ pub fn ensure_local_wasm() -> String {
 	const WASM_FILE: &str = "/tmp/runtime.wasm";
 	let mut retry = 0;
 
-	let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
+	let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).expect("Failed getting test bin");
 
 	if PathBuf::from(WASM_FILE).exists() {
 		println!("Found an existing runtime, reusing...");
