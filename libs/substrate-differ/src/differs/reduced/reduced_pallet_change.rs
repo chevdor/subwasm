@@ -1,4 +1,4 @@
-use super::{diff_analyzer::Compatible, reduced_pallet};
+use super::reduced_pallet;
 use comparable::MapChange;
 use reduced_pallet::*;
 use std::fmt::Display;
@@ -36,35 +36,5 @@ impl ReducedPalletChange {
 			}
 		});
 		Ok(())
-	}
-}
-
-impl Compatible for ReducedPalletChange {
-	fn compatible(&self) -> bool {
-		match self {
-			ReducedPalletChange::Index(_) => false,
-			ReducedPalletChange::Name(_) => true,
-
-			ReducedPalletChange::Calls(x) => x
-				.iter()
-				.map(|i| match i {
-					MapChange::Added(_k, _d) => true,
-					MapChange::Removed(_k) => false,
-					MapChange::Changed(_k, c) => c.iter().map(|cc| cc.compatible()).all(|x| x),
-				})
-				.all(|x| x),
-			ReducedPalletChange::Events(_x) => true,
-			ReducedPalletChange::Errors(_x) => true,
-
-			ReducedPalletChange::Constants(_x) => true,
-			// x.iter()
-			// .map(|i| match i {
-			// 	MapChange::Added(_k, _d) => true,
-			// 	MapChange::Removed(_k) => true,
-			// 	MapChange::Changed(_k, c) => c.iter().map(|cc| cc.compatible()).all(|x| x.into()),
-			// })
-			// .all(|x| x.into()),
-			ReducedPalletChange::Storages(_x) => true,
-		}
 	}
 }

@@ -22,7 +22,7 @@ impl RequireTransactionVersionBump for ReducedPalletChange {
 					MapChange::Removed(_k) => true,
 					MapChange::Changed(_k, c) => c.iter().map(|cc| cc.require_tx_version_bump()).any(|x| x),
 				})
-				.all(|x| x),
+				.any(|x| x),
 
 			ReducedPalletChange::Name(_) => false,
 			ReducedPalletChange::Events(_x) => false,

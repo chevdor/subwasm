@@ -15,10 +15,10 @@ impl RequireTransactionVersionBump for DiffAnalyzer {
 							comparable::MapChange::Added(_key, _ddesc) => true,
 							comparable::MapChange::Removed(_key) => false,
 							comparable::MapChange::Changed(_key, change) => {
-								change.iter().map(|x| x.require_tx_version_bump()).all(|x| x)
+								change.iter().map(|x| x.require_tx_version_bump()).any(|x| x)
 							}
 						})
-						.all(|x| x),
+						.any(|x| x),
 					ReducedRuntimeChange::Extrinsic(_extrinsic) => {
 						eprintln!("Extrinsic diff is not implemented yet but subwasm spotted some changes.");
 						eprintln!("This is normal if you compare different chains.");
@@ -34,12 +34,12 @@ impl RequireTransactionVersionBump for DiffAnalyzer {
 						// 			// }
 						// 		true
 						// 	},
-						// }).all(|x| x),
+						// }).any(|x| x),
 						// }
 						false
 					}
 				}
 			})
-			.all(|x| x)
+			.any(|x| x)
 	}
 }
