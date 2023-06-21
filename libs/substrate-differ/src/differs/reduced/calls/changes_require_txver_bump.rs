@@ -1,14 +1,7 @@
-use super::call::*;
-use super::constant::*;
-use super::error::*;
-use super::event::*;
-use super::signature::*;
-use super::storage::*;
-use crate::differs::reduced::diff_analyzer::RequireTransactionVersionBump;
-use crate::differs::reduced::prelude::ReducedPalletChange;
-use comparable::MapChange;
-use comparable::VecChange;
-use log::*;
+use super::{call::*, constant::*, error::*, event::*, signature::*, storage::*};
+use crate::differs::reduced::{diff_analyzer::RequireTransactionVersionBump, prelude::ReducedPalletChange};
+use comparable::{MapChange, VecChange};
+use log::trace;
 
 impl RequireTransactionVersionBump for ReducedPalletChange {
 	fn require_tx_version_bump(&self) -> bool {
@@ -30,7 +23,6 @@ impl RequireTransactionVersionBump for ReducedPalletChange {
 			ReducedPalletChange::Storages(_x) => false,
 			ReducedPalletChange::Constants(_x) => false,
 		};
-
 		trace!("TxBump | Pallet: {res}");
 		res
 	}
@@ -91,9 +83,10 @@ impl RequireTransactionVersionBump for SignatureChange {
 impl RequireTransactionVersionBump for VecChange<ArgDesc, Vec<ArgChange>> {
 	fn require_tx_version_bump(&self) -> bool {
 		let res = match self {
+			// If an arg is added/removed, the call will no longer be **compatible** but that does not require a tx_version bump
 			VecChange::Added(_size, _desc) => false,
-			// If an arg is removed, the call will no longer be **compatible** but that does not require a tx_version bump
 			VecChange::Removed(_size, _desc) => false,
+
 			VecChange::Changed(_size, change) => change.require_tx_version_bump(),
 		};
 		trace!("TxBump | VecChange<...>: {res}");
@@ -114,8 +107,9 @@ impl RequireTransactionVersionBump for ArgChange {
 		let res = match self {
 			// Changing the name is fine
 			ArgChange::Name(_) => false,
-			// Changing the type is not
-			ArgChange::Ty(_) => true,
+
+			// Changing the type is not ok for compat but ok for tx_version
+			ArgChange::Ty(_) => false,
 		};
 		trace!("TxBump | ArgChange: {res}");
 		res

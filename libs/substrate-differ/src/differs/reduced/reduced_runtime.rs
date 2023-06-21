@@ -216,7 +216,7 @@ impl Display for ReducedRuntime {
 #[cfg(test)]
 mod test_reduced_runtime {
 	use super::*;
-	use crate::differs::test_runtimes::{get_runtime_file, Chain, RuntimeFile};
+	use crate::differs::test_runtimes::{Chain, RuntimeFile};
 
 	#[test]
 	#[cfg(feature = "v14")]
@@ -225,8 +225,7 @@ mod test_reduced_runtime {
 		use wasm_loader::Source;
 		use wasm_testbed::WasmTestBed;
 
-		let runtime_file =
-			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).expect("Runtime file should exist");
+		let runtime_file = RuntimeFile::new(Chain::Polkadot, 14, 9290).try_into().expect("Runtime file should exist");
 		let _reduced_runtime: ReducedRuntime =
 			WasmTestBed::new(&Source::File(runtime_file)).expect("Failed loading runtime").metadata().into();
 	}
@@ -235,12 +234,11 @@ mod test_reduced_runtime {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_reduce_runtime_get_pallet() {
-		use crate::differs::test_runtimes::{get_runtime_file, Chain, RuntimeFile};
+		use crate::differs::test_runtimes::{Chain, RuntimeFile};
 		use wasm_loader::Source;
 		use wasm_testbed::WasmTestBed;
 
-		let runtime_file =
-			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).expect("Runtime file should exist");
+		let runtime_file = RuntimeFile::new(Chain::Polkadot, 14, 9290).try_into().expect("Runtime file should exist");
 		let reduced_runtime: ReducedRuntime =
 			WasmTestBed::new(&Source::File(runtime_file)).expect("Failed loading runtime").metadata().into();
 		assert_eq!(0_u32, reduced_runtime.get_pallet_by_name("System").expect("Failed getting pallet by name").index);
@@ -257,11 +255,11 @@ mod test_reduced_runtime {
 		use wasm_loader::Source;
 		use wasm_testbed::WasmTestBed;
 
-		let runtime_file =
-			get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9290)).expect("Runtime file should exist");
+		let runtime_file = RuntimeFile::new(Chain::Polkadot, 14, 9290).try_into().expect("Runtime file should exist");
 		let reduced_runtime: ReducedRuntime =
 			WasmTestBed::new(&Source::File(runtime_file)).expect("Failed loading runtime").metadata().into();
 
-		println!("extrinsics = {:#?}", reduced_runtime.extrinsic);
+		println!("reduced_runtime = {:#?}", reduced_runtime);
+		// println!("extrinsics = {:#?}", reduced_runtime.extrinsic);
 	}
 }

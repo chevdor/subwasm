@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use thiserror::Error;
 pub type Result<T> = std::result::Result<T, SubstrateDifferError>;
 
@@ -11,6 +13,9 @@ pub enum SubstrateDifferError {
 
 	#[error("RegistryError for {0} {1}")]
 	RegistryError(String, u32),
+
+	#[error("Could not find runtime at {0}")]
+	RuntimeNotFound(PathBuf),
 
 	#[error("Generic error: {0}")]
 	Generic(String),

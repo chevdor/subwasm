@@ -5,7 +5,7 @@ use crate::differs::reduced::pallet_data::PalletData;
 mod test_reduced_conversion {
 	use crate::differs::{
 		reduced::reduced_runtime,
-		test_runtimes::{get_runtime_file, Chain, RuntimeFile},
+		test_runtimes::{Chain, RuntimeFile},
 	};
 	use frame_metadata::RuntimeMetadata;
 	use wasm_loader::Source;
@@ -15,7 +15,7 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_first_pallet_first_call() {
-		let rtm1 = get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Runtime file should exist");
+		let rtm1 = RuntimeFile::new(Chain::Polkadot, 14, 9260).try_into().expect("Runtime file should exist");
 		let testbed = WasmTestBed::new(&Source::File(rtm1)).expect("Failed loading runtime");
 		let metadata = testbed.metadata();
 
@@ -38,7 +38,7 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_calls() {
-		let rtm1 = get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Runtime file should exist");
+		let rtm1 = RuntimeFile::new(Chain::Polkadot, 14, 9260).try_into().expect("Runtime file should exist");
 
 		let testbed = WasmTestBed::new(&Source::File(rtm1)).expect("Failed loading runtime");
 		let metadata = testbed.metadata();
@@ -62,7 +62,7 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_events() {
-		let rtm1 = get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Runtime file should exist");
+		let rtm1 = RuntimeFile::new(Chain::Polkadot, 14, 9260).try_into().expect("Runtime file should exist");
 		let testbed = WasmTestBed::new(&Source::File(rtm1)).expect("Failed loading runtime");
 		let metadata = testbed.metadata();
 
@@ -85,7 +85,7 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_global() {
-		let rtm1 = get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Runtime file should exist");
+		let rtm1 = RuntimeFile::new(Chain::Polkadot, 14, 9260).try_into().expect("Runtime file should exist");
 		let testbed = WasmTestBed::new(&Source::File(rtm1)).expect("Failed loading wasm");
 		let metadata = testbed.metadata();
 
@@ -114,7 +114,7 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_storages() {
-		let rtm1 = get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Runtime file should exist");
+		let rtm1 = RuntimeFile::new(Chain::Polkadot, 14, 9260).try_into().expect("Runtime file should exist");
 		let testbed = WasmTestBed::new(&Source::File(rtm1)).expect("Failed loading wasm");
 		let metadata = testbed.metadata();
 
@@ -137,7 +137,7 @@ mod test_reduced_conversion {
 	#[ignore = "local data"]
 	#[cfg(feature = "v14")]
 	fn test_reduce_v14_constants() {
-		let rtm1 = get_runtime_file(RuntimeFile::new(Chain::Polkadot, 14, 9260)).expect("Runtime file should exist");
+		let rtm1 = RuntimeFile::new(Chain::Polkadot, 14, 9260).try_into().expect("Runtime file should exist");
 		let testbed = WasmTestBed::new(&Source::File(rtm1)).expect("Failed loading wasm");
 		let metadata = testbed.metadata();
 

@@ -1,9 +1,16 @@
+use log::trace;
+
 use super::{traits::RequireTransactionVersionBump, DiffAnalyzer};
 use crate::differs::reduced::reduced_runtime::ReducedRuntimeChange;
 
 impl RequireTransactionVersionBump for DiffAnalyzer {
 	fn require_tx_version_bump(&self) -> bool {
-		self.changes
+		if self.changes.0.changes.is_empty() {
+			return false;
+		}
+
+		let res = self
+			.changes
 			.0
 			.changes
 			.iter()
@@ -12,7 +19,7 @@ impl RequireTransactionVersionBump for DiffAnalyzer {
 					ReducedRuntimeChange::Pallets(pallets) => pallets
 						.iter()
 						.map(|p| match p {
-							comparable::MapChange::Added(_key, _ddesc) => true,
+							comparable::MapChange::Added(_key, _desc) => false,
 							comparable::MapChange::Removed(_key) => false,
 							comparable::MapChange::Changed(_key, change) => {
 								change.iter().map(|x| x.require_tx_version_bump()).any(|x| x)
@@ -36,10 +43,14 @@ impl RequireTransactionVersionBump for DiffAnalyzer {
 						// 	},
 						// }).any(|x| x),
 						// }
+
+						// Until implemented, we want this path to be transparent
 						false
 					}
 				}
 			})
-			.any(|x| x)
+			.any(|x| x);
+		trace!("TxBump | Analyzer: {res}");
+		res
 	}
 }

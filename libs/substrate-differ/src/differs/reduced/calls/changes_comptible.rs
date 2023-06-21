@@ -1,7 +1,7 @@
 use super::{call::*, constant::*, error::*, event::*, signature::*, storage::*};
 use crate::differs::reduced::{diff_analyzer::Compatible, prelude::ReducedPalletChange};
 use comparable::{MapChange, VecChange};
-use log::*;
+use log::trace;
 
 impl Compatible for ReducedPalletChange {
 	fn compatible(&self) -> bool {
@@ -23,6 +23,7 @@ impl Compatible for ReducedPalletChange {
 			ReducedPalletChange::Constants(_x) => true,
 			ReducedPalletChange::Storages(_x) => true,
 		};
+
 		trace!("Compat. | Pallet: {res}");
 		res
 	}
@@ -35,6 +36,7 @@ impl Compatible for CallChange {
 			CallChange::Name(_) => false,
 			CallChange::Signature(s) => s.compatible(),
 		};
+
 		trace!("Compat. | Call: {res}");
 		res
 	}
