@@ -4,15 +4,17 @@
 use subwasmlib::SubwasmLibError;
 use thiserror::Error;
 
+/// Result alias
 pub type Result<T> = std::result::Result<T, SubwasmError>;
 
+/// `subwasm` cli custom errors
 #[derive(Error, Debug)]
 pub enum SubwasmError {
-	// #[error("You need to pass exactly 2 sources, you passed {0}")]
-	// WrongNumberOfSources(usize),
+	/// Error parsing the source
 	#[error("SourceParseError {0}")]
 	SourceParseError(String),
 
+	/// Generic error
 	#[error("Generic lib error: {0}")]
 	Generic(SubwasmLibError),
 }

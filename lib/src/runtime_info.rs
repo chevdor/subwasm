@@ -1,3 +1,4 @@
+use crate::error::*;
 use ipfs_hasher::IpfsHasher;
 use num_format::{Locale, ToFormattedString};
 use serde::Serialize;
@@ -6,19 +7,42 @@ use std::fmt::Display;
 use wasm_loader::Compression;
 use wasm_testbed::{ReservedMeta, WasmTestBed};
 
-use crate::error::*;
-
+/// Describe the summary information of a runtime.
+///
 #[derive(Debug, Serialize)]
 pub struct RuntimeInfo {
+	/// Size of the runtime, in bytes. Runtimes can be compressed or not. They are
+	/// usually compressed and the size will then returned as "store on disk".
 	size: usize,
+
+	/// Whether the runtime is compressed or not
 	compression: Compression,
+
+	/// The value of this field should never change.
+	/// It means `meta` in hex :)
 	reserved_meta: ReservedMeta,
+
+	/// Whether the [reserved_meta] is valid for a Substrate runtime
 	reserved_meta_valid: bool,
+
+	/// Knowing the metadata version is required to properly decode the metadata
 	metadata_version: u8,
+
+	/// This is the core version of the runtime as reported by the runtimes
 	core_version: SubstrateRuntimeVersion,
+
+	/// The proposal hash is the hash of the extrinsic as it will appear
+	/// on-chain when calling `System.setCode(<runtime>)`
 	proposal_hash: String,
+
+	/// This is the hash of the extrinsic to authorize a parachain upgrade
 	parachain_authorize_upgrade_hash: String,
+
+	/// This is the IPFS hash of the runtime. That does **not** guaranty the
+	/// runtime to be seeded, but if it is, you can fetch it with this hash
 	ipfs_hash: String,
+
+	/// The blake2_256 hash of the runtime
 	blake2_256: String,
 }
 

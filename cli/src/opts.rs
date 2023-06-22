@@ -1,13 +1,12 @@
 //! This module contains the definition of all commands, sub-commands and arguments
 //! supported by the `subwasm` cli.
 
+use crate::error;
 use clap::{crate_authors, crate_version, ColorChoice, Parser, Subcommand};
 use std::path::PathBuf;
 use subwasmlib::{source::Source, *};
 use url::Url;
 use wasm_loader::{BlockRef, OnchainBlock};
-
-use crate::error;
 
 /// `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains.
 #[derive(Parser, Debug)]
@@ -21,9 +20,11 @@ pub struct Opts {
 	#[clap(short, long, global = true, display_order = 99)]
 	pub quiet: bool,
 
+	/// Do not write color information to the output. This is recommended for scripts.
 	#[clap(short, long, global = true, env = "NO_COLOR", display_order = 99)]
 	pub no_color: bool,
 
+	#[allow(missing_docs)]
 	#[clap(subcommand)]
 	pub subcmd: Option<SubCommand>,
 
@@ -35,27 +36,35 @@ pub struct Opts {
 /// Define the list of all sub-commands.
 #[derive(Subcommand, Debug)]
 pub enum SubCommand {
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Get(GetOpts),
 
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Info(InfoOpts),
 
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Version(InfoOpts),
 
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!(), alias("meta"))]
 	Metadata(MetaOpts),
 
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Show(ShowOpts),
 
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Diff(DiffOpts),
 
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Compress(CompressOpts),
 
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Decompress(DecompressOpts),
 }

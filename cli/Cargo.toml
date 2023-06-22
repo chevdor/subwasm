@@ -4,6 +4,7 @@ version.workspace = true
 edition.workspace = true
 authors.workspace = true
 description = "subwasm is a utility that works on WASM Runtime of Substrate based chains"
+documentation = "https://chevdor.github.io/subwasm"
 homepage = "https://github.com/chevdor/subwasm"
 keywords = [
 	"wasm",

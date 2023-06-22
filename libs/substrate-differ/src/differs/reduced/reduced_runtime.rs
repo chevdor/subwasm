@@ -182,7 +182,7 @@ impl ReducedRuntime {
 			.find(|reduced_pallet| reduced_pallet.name.to_lowercase() == pallet_name.to_ascii_lowercase())
 	}
 
-	/// You can also use [get_pallet_by_name](Self::get_pallet_by_name) but prefer using [get_pallet_by_id](Self::get_pallet_by_id) where you can.
+	/// You can also use [get_pallet_by_name](fn@get_pallet_by_name) but prefer using [get_pallet_by_id](fn@get_pallet_by_id) where you can.
 	pub fn get_pallet_by_id(&self, pallet_id: PalletId) -> Option<&ReducedPallet> {
 		self.pallets.get(&pallet_id)
 	}

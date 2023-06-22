@@ -1,33 +1,32 @@
 #![allow(clippy::derive_partial_eq_without_eq)]
 
+pub mod error;
+pub mod source;
+
 mod chain_info;
 mod chain_urls;
 mod convert;
-pub mod error;
 mod github_ref;
 mod macros;
 mod metadata_wrapper;
 mod runtime_info;
-pub mod source;
 mod subwasm;
 mod types;
 mod utils;
 
-pub use error::*;
-pub use github_ref::*;
-
-use log::{debug, info};
-pub use metadata_wrapper::OutputFormat;
 use std::{fs::File, io::prelude::*, path::PathBuf, str::FromStr};
-pub use substrate_differ::differs::diff_method::DiffMethod;
 use substrate_differ::differs::reduced::{reduced_diff_result::ReducedDiffResult, reduced_runtime::ReducedRuntime};
 use url::Url;
 use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, WasmLoader};
 use wasm_testbed::WasmTestBed;
 
 pub use chain_info::*;
+pub use error::*;
+pub use github_ref::*;
+pub use metadata_wrapper::OutputFormat;
 pub use runtime_info::*;
 pub use source::*;
+pub use substrate_differ::differs::diff_method::DiffMethod;
 pub use subwasm::*;
 pub use types::*;
 pub use utils::*;
@@ -78,12 +77,13 @@ pub fn download_runtime(
 
 	let outfile = get_output_file_local(target);
 
-	info!("Saving runtime to {outfile:?}");
+	log::info!("Saving runtime to {outfile:?}");
 	let mut buffer = File::create(&outfile)?;
 	buffer.write_all(wasm)?;
 	Ok(outfile)
 }
 
+/// Compute the diff of 2 runtimes
 pub fn reduced_diff(src_a: Source, src_b: Source) -> Result<ReducedDiffResult> {
 	log::debug!("REDUCED: Loading WASM runtimes:");
 	log::info!("  🅰️  {:?}", src_a);
@@ -109,9 +109,9 @@ pub fn compress(input: PathBuf, output: PathBuf) -> Result<()> {
 	let bytes_compressed =
 		Compression::compress(wasm.original_bytes()).map_err(|_e| error::SubwasmLibError::CompressionFailed())?;
 
-	debug!("original   = {:?}", wasm.original_bytes().len());
-	debug!("compressed = {:?}", bytes_compressed.len());
-	info!("Saving compressed runtime to {:?}", output);
+	log::debug!("original   = {:?}", wasm.original_bytes().len());
+	log::debug!("compressed = {:?}", bytes_compressed.len());
+	log::info!("Saving compressed runtime to {:?}", output);
 
 	let mut buffer = File::create(output)?;
 	buffer.write_all(&bytes_compressed.to_vec())?;
@@ -130,10 +130,10 @@ pub fn decompress(input: PathBuf, output: PathBuf) -> Result<()> {
 			.map_err(|_e| error::SubwasmLibError::DecompressionFailed())?,
 	};
 
-	debug!("original     = {:?}", wasm.original_bytes().len());
-	debug!("decompressed = {:?}", bytes_decompressed.len());
+	log::debug!("original     = {:?}", wasm.original_bytes().len());
+	log::debug!("decompressed = {:?}", bytes_decompressed.len());
 
-	info!("Saving decompressed runtime to {:?}", output);
+	log::info!("Saving decompressed runtime to {:?}", output);
 	let mut buffer = File::create(output)?;
 	buffer.write_all(&bytes_decompressed.to_vec())?;
 
