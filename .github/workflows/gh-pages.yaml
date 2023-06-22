@@ -38,11 +38,18 @@ jobs:
 
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@v2
+        uses: actions/configure-pages@v3
 
       - name: Render doc
         run: |
           ./scripts/build-doc.sh
+
+      - shell: sh
+        run: |
+          chmod -c -R +rX "target/doc" |
+          while read line; do
+            echo "::warning title=Invalid file permissions automatically fixed::$line"
+          done
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
