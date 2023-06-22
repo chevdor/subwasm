@@ -10,7 +10,7 @@
 /// `transaction_version`, nonetheless, the runtimes could be incompatible.
 /// This can happen for instance if the **signature** of a Call has changed.
 ///
-/// See also [Compatible]
+/// See also `[Compatible]`
 pub trait RequireTransactionVersionBump {
 	fn require_tx_version_bump(&self) -> bool;
 }

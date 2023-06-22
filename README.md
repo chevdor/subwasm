@@ -19,51 +19,56 @@ This tool only works with Substrate-based runtimes which are `>=V11`. For earlie
 Any node can be queried to provide its current metadata. This can be displayed in json format for instance.
 This is a great way to have a peek at what the runtime can do. You may however want to inspect a runtime that was not deployed yet to any node.
 
-**`subwasm`** can work on wasm files without any node or internet connectivity.
+**`subwasm`** can work **offline** on wasm files without any node or internet connectivity.
 
 ## Capabilities & features
 
 `subwasm` can:
 
--   get the metadata from a a wasm file directly (no need for a node)
+-   get the metadata from a a wasm file directly (no need for a node): command `get`
 
--   show summary information and version of a runtime
+-   show summary information and version of a runtime: commands `info` and `version`)
 
--   diff between two runtime to help users spot changes and difference
+-   diff between two runtime to help users spot changes and difference: command `diff`
 
--   show the list of pallets and their content (calls, events, errors, storage, constants)
+-   show the list of pallets and their content (calls, events, errors, storage, constants): command `show`
 
--   analyse 2 runtimes to figure out whether they are comptible
+-   analyze 2 runtimes to figure out whether they are compatible and if the `transaction_version` needs to be bumped: command `diff`
 
--   compress and decompress a runtime WASM
+-   compress and decompress a runtime WASM: commands `compress` and `decompress`
 
--   get the latest metadata from a running node
+-   get the latest metadata from a running node: command `get`
 
--   fetch the latest runtime (wasm) from a running node
+-   fetch the latest runtime (wasm) from a running node: command `get`
 
--   get runtime and metadata at any point of time using a Block hash as reference
+-   get runtime and metadata at any point of time using a Block hash as reference: command `get`
 
 -   do all of the above with an output for human or as json
 
-## Sample runs
+## Demos
 
 <figure>
-<img src="scripts/demos/gif/demo-get.gif" alt="demo get" />
+<img src="./scripts/demos/gif/demo-get.gif" alt="demo get" />
 <figcaption>subwasm get</figcaption>
 </figure>
 
 <figure>
-<img src="scripts/demos/gif/demo-info.gif" alt="demo info" />
+<img src="./scripts/demos/gif/demo-info.gif" alt="demo info" />
 <figcaption>subwasm info</figcaption>
 </figure>
 
 <figure>
-<img src="scripts/demos/gif/demo-meta.gif" alt="demo meta" />
+<img src="./scripts/demos/gif/demo-meta.gif" alt="demo meta" />
+<figcaption>subwasm show</figcaption>
+</figure>
+
+<figure>
+<img src="./scripts/demos/gif/demo-meta.gif" alt="demo meta" />
 <figcaption>subwasm meta</figcaption>
 </figure>
 
 <figure>
-<img src="scripts/demos/gif/demo-diff.gif" alt="demo diff" />
+<img src="./scripts/demos/gif/demo-diff.gif" alt="demo diff" />
 <figcaption>subwasm diff</figcaption>
 </figure>
 
@@ -98,54 +103,102 @@ MacOS Homebrew users can use:
       get         Get/Download the runtime wasm from a running node through rpc
       info        The `info` command returns summarized information about a runtime
       version     The `version` command returns summarized information about the versions of a runtime
-      metadata    Returns the metadata as a json object. You may also use the "meta" alias. See also the 'show' sub-command
-      show        Shows the a reduced view of the runtime where the types have been resolved
-      diff        Compare 2 runtimes after converting them to ReducedRuntime
+      metadata    Returns the metadata of the given runtime in several format. You may also use the "meta" alias
+      show        Shows the a reduced view of the runtime
+      diff        Compare 2 runtimes after converting them to `ReducedRuntime`s
       compress    Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is already compressed
       decompress  Decompress a given runtime wasm file. You may pass a runtime that is already uncompressed
       help        Print this message or the help of the given subcommand(s)
 
     Options:
-      -j, --json      Output as json
-      -q, --quiet     Less output
-      -n, --no-color  [env: NO_COLOR=]
       -v, --version   Show the version
+      -j, --json      Output as json
+      -n, --no-color  [env: NO_COLOR=]
+      -q, --quiet     Less output
       -h, --help      Print help
 
 ### Command: get
 
     Get/Download the runtime wasm from a running node through rpc
 
-    Usage: subwasm get [OPTIONS] [URL]
+    Usage: subwasm get [OPTIONS] [RPC_URL]
 
     Arguments:
-      [URL]  The node url including (mandatory) the port number. Example: ws://localhost:9944 or http://localhost:9933 [default: http://localhost:9933]
+      [RPC_URL]
+              The node url including (mandatory) the port number. Example: ws://localhost:9944 or http://localhost:9933
 
     Options:
-          --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
-      -j, --json             Output as json
-      -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
-      -q, --quiet            Less output
-      -n, --no-color         [env: NO_COLOR=]
-      -o, --output <OUTPUT>  You may specifiy the output filename where the runtime will be saved. If not provided, we will figure out an appropriate default name based on a counter: runtime_NNN.wasm where NNN is incrementing to make sure you do not override previous runtime. If you specify an existing file as output, it will be overwritten
-      -h, --help             Print help
+      -c, --chain <CHAIN>
+              Provide the name of a chain or an alias.
+
+              If you pass a valid --chain, --rpc_url will be ignored --chain local = http://localhost:9933
+
+      -b, --block <BLOCK>
+              The optional block where to fetch the runtime.
+
+              That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported.
+
+      -u, --url <URL>
+              Load the wasm from a URL (no node) such as <https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm>
+
+      -g, --github <GITHUB>
+              Load the wasm from Github passing a string in the format `<runtime>@<version>` such as `kusama@0.9.42`
+
+      -o, --output <OUTPUT>
+              You may specifiy the output filename where the runtime will be saved.
+
+              If not provided, we will figure out an appropriate default name based on a counter: runtime_NNN.wasm where NNN is incrementing to make sure you do not override previous runtime. If you specify an existing file as output, it will be overwritten.
+
+      -j, --json
+              Output as json
+
+      -n, --no-color
+              [env: NO_COLOR=]
+
+      -q, --quiet
+              Less output
+
+      -h, --help
+              Print help (see a summary with '-h')
 
 ### Command: info
 
     The `info` command returns summarized information about a runtime
 
-    Usage: subwasm info [OPTIONS] [SOURCE]
+    Usage: subwasm info [OPTIONS] [FILE]
 
     Arguments:
-      [SOURCE]  The wasm file to load. It can be a path on your local filesystem such as /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944 [default: runtime_000.wasm]
+      [FILE]
+              The wasm file to load. It can be a path on your local filesystem such /tmp/runtime.wasm
+
+              You may also fetch the runtime remotely, see `chain` and `url` flags.
 
     Options:
-          --chain <CHAIN>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
-      -j, --json           Output as json
-      -b, --block <BLOCK>  The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
-      -q, --quiet          Less output
-      -n, --no-color       [env: NO_COLOR=]
-      -h, --help           Print help
+      -c, --chain <CHAIN>
+              Load the wasm from an RPC node url such as http://localhost:9933 or ws://localhost:9944, a node alias such as "polkadot" or "dot",
+
+              NOTE: --chain local = http://localhost:9933
+
+      -b, --block <BLOCK>
+              The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
+
+      -u, --url <URL>
+              Load the wasm from a URL (no node) such as <https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm>
+
+      -g, --github <GITHUB>
+              Load the wasm from Github passing a string in the format `<runtime>@<version>` such as `kusama@0.9.42`
+
+      -j, --json
+              Output as json
+
+      -n, --no-color
+              [env: NO_COLOR=]
+
+      -q, --quiet
+              Less output
+
+      -h, --help
+              Print help (see a summary with '-h')
 
 By default, the ID for the Parachain pallet is expected to be `0x01` and the call ID for `authorize_upgrade` is expected to be `0x03`.
 This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to the ID of your parachain pallet and the `AUTHORIZE_UPGRADE_PREFIX` to the ID of your choice.
@@ -154,76 +207,159 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
 
     The `version` command returns summarized information about the versions of a runtime
 
-    Usage: subwasm version [OPTIONS] [SOURCE]
+    Usage: subwasm version [OPTIONS] [FILE]
 
     Arguments:
-      [SOURCE]  The wasm file to load. It can be a path on your local filesystem such as /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944 [default: runtime_000.wasm]
+      [FILE]
+              The wasm file to load. It can be a path on your local filesystem such /tmp/runtime.wasm
+
+              You may also fetch the runtime remotely, see `chain` and `url` flags.
 
     Options:
-          --chain <CHAIN>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
-      -j, --json           Output as json
-      -b, --block <BLOCK>  The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
-      -q, --quiet          Less output
-      -n, --no-color       [env: NO_COLOR=]
-      -h, --help           Print help
+      -c, --chain <CHAIN>
+              Load the wasm from an RPC node url such as http://localhost:9933 or ws://localhost:9944, a node alias such as "polkadot" or "dot",
+
+              NOTE: --chain local = http://localhost:9933
+
+      -b, --block <BLOCK>
+              The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
+
+      -u, --url <URL>
+              Load the wasm from a URL (no node) such as <https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm>
+
+      -g, --github <GITHUB>
+              Load the wasm from Github passing a string in the format `<runtime>@<version>` such as `kusama@0.9.42`
+
+      -j, --json
+              Output as json
+
+      -n, --no-color
+              [env: NO_COLOR=]
+
+      -q, --quiet
+              Less output
+
+      -h, --help
+              Print help (see a summary with '-h')
 
 ### Command: meta
 
-    Returns the metadata as a json object. You may also use the "meta" alias. See also the 'show' sub-command
+    Returns the metadata of the given runtime in several format. You may also use the "meta" alias.
 
-    Usage: subwasm metadata [OPTIONS] [SOURCE]
+    If you want to see the content of a runtime, see the `show` sub-command.
+
+    Usage: subwasm metadata [OPTIONS] [FILE]
 
     Arguments:
-      [SOURCE]  The wasm file to load. It can be a path on your local filesystem such as /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944 [default: runtime_000.wasm]
+      [FILE]
+              The wasm file to load. It can be a path on your local filesystem such as /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944
 
     Options:
-          --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
-      -j, --json             Output as json
-      -m, --module <MODULE>  Without this flag, the metadata command display the list of all modules. Using this flag, you will only see the module of your choice and a few details about it
-      -q, --quiet            Less output
-      -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
-      -n, --no-color         [env: NO_COLOR=]
-      -f, --format <FORMAT>  You may specifiy the output format. One of "human", "scale", "json", "json+scale", "hex+scale". If you use the default: human, you may want to check out the "show_reduced" command instead [default: human]
-      -o, --output <OUTPUT>  You may specifiy the output filename where the metadata will be saved. Alternatively, you may use `auto` and an appropriate name will be generated according to the `format` your chose
-      -h, --help             Print help
+      -c, --chain <CHAIN>
+              Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
+
+      -u, --url <URL>
+              Load the wasm from a URL (no node) such as <https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm>
+
+      -g, --github <GITHUB>
+              Load the wasm from Github passing a string in the format `<runtime>@<version>` such as `kusama@0.9.42`
+
+      -b, --block <BLOCK>
+              The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
+
+      -m, --module <MODULE>
+              Without this flag, the metadata command display the list of all modules. Using this flag, you will only see the module of your choice and a few details about it
+
+      -f, --format <FORMAT>
+              You may specify the output format. One of "human", "scale", "json", "json+scale", "hex+scale". If you use the default: human, you may want to check out the "show_reduced" command instead
+
+              [default: human]
+
+      -o, --output <OUTPUT>
+              You may specifiy the output filename where the metadata will be saved. Alternatively, you may use `auto` and an appropriate name will be generated according to the `format` your chose
+
+      -j, --json
+              Output as json
+
+      -n, --no-color
+              [env: NO_COLOR=]
+
+      -q, --quiet
+              Less output
+
+      -h, --help
+              Print help (see a summary with '-h')
 
 ### Command: show
 
-    Shows the a reduced view of the runtime where the types have been resolved
+    Shows the a reduced view of the runtime.
 
-    Usage: subwasm show [OPTIONS] [SRC]
+    A reduced view makes it much easier to understand the inner workings of a given runtime.
+
+    Usage: subwasm show [OPTIONS] [FILE]
 
     Arguments:
-      [SRC]  The first source [default: runtime_000.wasm]
+      [FILE]
+              The runtimwe to analyze
 
     Options:
-          --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
-      -j, --json             Output as json
-      -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
-      -q, --quiet            Less output
-      -n, --no-color         [env: NO_COLOR=]
-      -p, --pallet <PALLET>  Show only information related to the provided pallet
+          --chain <CHAIN>
+              Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
+
+      -b, --block <BLOCK>
+              The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
+
+      -u, --url <URL>
+              Load the wasm from a URL (no node) such as <https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm>
+
+      -g, --github <GITHUB>
+              Load the wasm from Github passing a string in the format `<runtime>@<version>` such as `kusama@0.9.42`
+
+      -p, --pallet <PALLET>
+              Show only information related to the provided pallet
+
       -s, --summary
-      -h, --help             Print help
+              The runtime is shown as a table, listing all pallets with their IDs, the count of calls, events, errors, constants and storage items
+
+      -j, --json
+              Output as json
+
+      -n, --no-color
+              [env: NO_COLOR=]
+
+      -q, --quiet
+              Less output
+
+      -h, --help
+              Print help (see a summary with '-h')
 
 ### Command: diff
 
-    Compare 2 runtimes after converting them to ReducedRuntime
+    Compare 2 runtimes after converting them to `ReducedRuntime`s.
 
-    Usage: subwasm diff [OPTIONS] [SRC_A] [SRC_B]
+    You must pass exactly 2 runtimes.
+
+    Usage: subwasm diff [OPTIONS] <RUNTIME_1> <RUNTIME_2>
 
     Arguments:
-      [SRC_A]  The first source [default: runtime_000.wasm]
-      [SRC_B]  The second source [default: runtime_001.wasm]
+      <RUNTIME_1>
+              Reference runtime
+
+      <RUNTIME_2>
+              Second runtime
 
     Options:
-      -a, --chain-a <CHAIN_A>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
-      -j, --json               Output as json
-      -b, --chain-b <CHAIN_B>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
-      -q, --quiet              Less output
-      -m, --method <METHOD>    You probably want to use `Reduced` [default: reduced]
-      -n, --no-color           [env: NO_COLOR=]
-      -h, --help               Print help
+      -j, --json
+              Output as json
+
+      -n, --no-color
+              [env: NO_COLOR=]
+
+      -q, --quiet
+              Less output
+
+      -h, --help
+              Print help (see a summary with '-h')
 
 ### Command: compress
 
@@ -237,8 +373,8 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
 
     Options:
       -j, --json      Output as json
-      -q, --quiet     Less output
       -n, --no-color  [env: NO_COLOR=]
+      -q, --quiet     Less output
       -h, --help      Print help
 
 ### Command: decompress
@@ -260,11 +396,11 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
       -j, --json
               Output as json
 
-      -q, --quiet
-              Less output
-
       -n, --no-color
               [env: NO_COLOR=]
+
+      -q, --quiet
+              Less output
 
       -h, --help
               Print help (see a summary with '-h')
@@ -281,6 +417,8 @@ In addition to the command line flags, you can also pass one of the following EN
     # POLKADOT_WS=ws://localhost:9944
     # PARACHAIN_PALLET_ID=0x01
     # AUTHORIZE_UPGRADE_PREFIX=0x02
+
+    RUST_LOG=subwasm=debug,substrate_differ=trace
 
 ## Sample runs
 

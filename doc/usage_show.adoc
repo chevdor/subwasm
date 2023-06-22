@@ -1,16 +1,40 @@
-Shows the a reduced view of the runtime where the types have been resolved
+Shows the a reduced view of the runtime.
 
-Usage: subwasm show [OPTIONS] [SRC]
+A reduced view makes it much easier to understand the inner workings of a given runtime.
+
+Usage: subwasm show [OPTIONS] [FILE]
 
 Arguments:
-  [SRC]  The first source [default: runtime_000.wasm]
+  [FILE]
+          The runtimwe to analyze
 
 Options:
-      --chain <CHAIN>    Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
-  -j, --json             Output as json
-  -b, --block <BLOCK>    The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
-  -q, --quiet            Less output
-  -n, --no-color         [env: NO_COLOR=]
-  -p, --pallet <PALLET>  Show only information related to the provided pallet
-  -s, --summary          
-  -h, --help             Print help
+      --chain <CHAIN>
+          Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
+
+  -b, --block <BLOCK>
+          The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
+
+  -u, --url <URL>
+          Load the wasm from a URL (no node) such as <https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm>
+
+  -g, --github <GITHUB>
+          Load the wasm from Github passing a string in the format `<runtime>@<version>` such as `kusama@0.9.42`
+
+  -p, --pallet <PALLET>
+          Show only information related to the provided pallet
+
+  -s, --summary
+          The runtime is shown as a table, listing all pallets with their IDs, the count of calls, events, errors, constants and storage items
+
+  -j, --json
+          Output as json
+
+  -n, --no-color
+          [env: NO_COLOR=]
+
+  -q, --quiet
+          Less output
+
+  -h, --help
+          Print help (see a summary with '-h')

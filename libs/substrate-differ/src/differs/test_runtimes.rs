@@ -76,7 +76,7 @@ impl TryInto<PathBuf> for RuntimeFile {
 			meta = self.metadata_version,
 			spec = self.spec_version
 		))
-		.unwrap();
+		.expect("Should be infallible");
 
 		if candidate.exists() {
 			return Ok(candidate);

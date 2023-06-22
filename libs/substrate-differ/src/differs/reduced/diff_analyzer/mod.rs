@@ -10,7 +10,7 @@ use super::{calls::PalletId, changed_wapper::ChangedWrapper, reduced_pallet::*};
 use comparable::MapChange;
 use std::rc::Rc;
 
-/// This struct holds both the [ReducedRuntime] and its changes.
+/// This struct holds both the `[ReducedRuntime]` and its changes.
 /// It allows computing stats about the amount of changes,
 /// what has changed (or not) and making the decision about wether
 /// the new runtime breaks API compatibility with the reference one.
@@ -251,7 +251,7 @@ mod test_diffanalyzer {
 	#[cfg(feature = "v14")]
 	#[ignore = "local data"]
 	fn test_v14_polkadot_9270_9270_content() {
-		let a: PathBuf = RuntimeFile::new(Chain::Polkadot, 14, 9270).try_into().unwrap();
+		let a: PathBuf = RuntimeFile::new(Chain::Polkadot, 14, 9270).try_into().expect("Failed loading runtime");
 		// let rb = RuntimeFile::new(Chain::Polkadot, 14, 9270);
 		// let analyzer = analyze(ra, rb).unwrap();
 		// let pallet_changes = analyzer.changes.get_pallets_changes();

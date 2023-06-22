@@ -12,7 +12,7 @@ use crate::error::{self, *};
 /// There is a bug caused by printing big output to stdout.
 ///
 /// We need to take extra precautions due to the following bug:
-/// https://github.com/rust-lang/rust/issues/46016
+/// <https://github.com/rust-lang/rust/issues/46016>
 pub fn print_big_output_safe(s: &str) -> Result<()> {
 	// The following fails if piped to another command that truncates the output.
 	// println!("{}", s);

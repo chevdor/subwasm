@@ -1,16 +1,20 @@
+//! `subwasm` is a command line utility that can handle Substrate WASM Runtime files locally
+//! without the need for a node to be running and not even an Internet connection.
+//! `subwasm` can load a WASM from the local filesystem and call **some** of its functions.
 mod error;
 mod opts;
+mod utils;
 
 use clap::{crate_name, crate_version, Parser};
 use env_logger::Env;
 use log::*;
 use opts::*;
 use serde_json::json;
-use std::{env, io::Write, path::PathBuf, str::FromStr};
-use subwasmlib::{source::Source, *};
+use std::{env, io::Write, str::FromStr};
+use subwasmlib::*;
 use text_style::{AnsiColor, StyledStr};
-use url::Url;
-use wasm_loader::{BlockRef, NodeEndpoint, Source as WasmLoaderSource};
+use utils::*;
+use wasm_loader::{NodeEndpoint, Source as WasmLoaderSource};
 
 /// Main entry point of the `subwasm` cli
 fn main() -> color_eyre::Result<()> {
@@ -216,34 +220,4 @@ fn main() -> color_eyre::Result<()> {
 			}
 		}
 	}
-}
-
-/// Depending on the options passed by the user we select and return the URL
-pub fn select_url(gh_url: Option<Url>, dl_url: Option<Url>) -> Option<Url> {
-	match (gh_url, dl_url) {
-		(None, Some(u)) => Some(u),
-		(Some(u), None) => Some(u),
-		_ => None,
-	}
-}
-
-/// Retrive one unique source from all the options the user may pass
-pub fn get_source(
-	file: Option<PathBuf>,
-	chain: Option<ChainInfo>,
-	block: Option<BlockRef>,
-	dl_url: Option<Url>,
-) -> error::Result<Source> {
-	let source: Source = Source::from_options(file, chain, block, dl_url)?;
-	// If the source is a URL, we try to fetch it first
-
-	Ok(match source {
-		Source::URL(u) => {
-			debug!("Fetching runtime from {}", u);
-			let runtime_file = fetch_at_url(u, None)?;
-			debug!("Runtime fetched at {:?}", runtime_file.display());
-			Source::File(runtime_file)
-		}
-		s => s,
-	})
 }
