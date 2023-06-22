@@ -1,0 +1,18 @@
+== Demos
+
+:imagesdir: ./scripts/demos/gif
+
+.Get a runtime
+image::demo-get.gif[title="subwasm get"]
+
+.info command
+image::demo-info.gif[title="subwasm info"]
+
+.show command
+image::demo-meta.gif[title="subwasm show"]
+
+.meta command
+image::demo-meta.gif[title="subwasm meta"]
+
+.diff command
+image::demo-diff.gif[title="subwasm diff"]

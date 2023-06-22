@@ -2,7 +2,7 @@
 
 source env.sh
 
-echo -e "subwasm can work on a runtime from your filsystem but can also directly work on the runtime from a live chain." | $human
+echo -e "subwasm can work on a runtime from your filesystem but can also directly work on the runtime from a live chain." | $human
 echo -e "Let's get some information about the runtime on a live chain." | $human
 cmd="subwasm -q info --chain polkadot"
 echo -e "We use the following command:" | $human

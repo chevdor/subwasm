@@ -39,7 +39,7 @@ impl GithubRef {
 impl FromStr for GithubRef {
 	type Err = SubwasmLibError;
 
-	/// Extract runtime and version from <runtime>@<version>
+	/// Extract runtime and version from `<runtime>@<version>`
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
 		let mut parts = s.split('@');
 		if parts.clone().count() != 2 {

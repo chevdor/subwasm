@@ -1,7 +1,6 @@
+use crate::error::SubwasmLibError;
 use log::debug;
 use std::str::FromStr;
-
-use crate::error::SubwasmLibError;
 
 /// A Filter struct initially planned to filter module/call
 /// While module is implemented, the filter on call is not and
@@ -10,7 +9,10 @@ use crate::error::SubwasmLibError;
 /// when using the cli vs using json and filtering with jq.
 #[derive(Debug, PartialEq, Default)]
 pub struct Filter {
+	/// The name of the module. This is now called `pallet`.
 	pub module: String,
+
+	/// Optional: the name of the call
 	pub call: Option<String>,
 }
 

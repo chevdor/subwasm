@@ -2,7 +2,7 @@
 . env.sh
 
 pushd ../../
-cargo install --locked --path cli
+cargo install --profile production --locked --path cli
 popd
 
 mkdir -p casts gif
@@ -10,6 +10,7 @@ mkdir -p casts gif
 demos=( \
     demo-get \
     demo-info \
+    demo-show \
     demo-meta \
     demo-diff \
 )

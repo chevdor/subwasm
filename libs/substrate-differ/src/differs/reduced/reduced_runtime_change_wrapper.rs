@@ -1,13 +1,12 @@
+use super::{
+	reduced_pallet::*, reduced_pallet_change_wrapper::ReducedPalletChangeWrapper, reduced_runtime::*, ComparisonSide,
+};
 use crate::differs::reduced::calls::PalletId;
-use std::fmt::Display;
-use std::rc::Rc;
-
-use super::reduced_pallet::*;
-use super::reduced_pallet_change_wrapper::ReducedPalletChangeWrapper;
-use super::reduced_runtime::*;
-use super::ComparisonSide;
 use comparable::MapChange;
 use serde::Serialize;
+use std::{fmt::Display, rc::Rc};
+
+// TODO: It would be useful adding a fn to output an object showing each item of Runtime #2 and the results of the Analysis next to it.
 
 /// This struct is important as it brings together the diff as well
 /// as references to the runtimes that have been diffed.

@@ -19,36 +19,24 @@ NOTE: This tool only works with Substrate-based runtimes which are `>=V11`. For 
 Any node can be queried to provide its current metadata. This can be displayed in json format for instance.
 This is a great way to have a peek at what the runtime can do. You may however want to inspect a runtime that was not deployed yet to any node.
 
-**`subwasm`** can work on wasm files without any node or internet connectivity.
+**`subwasm`** can work **offline** on wasm files without any node or internet connectivity.
 
 == Capabilities & features
 
 {prj} can:
 
-- get the metadata from a a wasm file directly (no need for a node)
-- show summary information and version of a runtime
-- diff between two runtime to help users spot changes and difference
-- show the list of pallets and their content (calls, events, errors, storage, constants)
-- analyse 2 runtimes to figure out whether they are comptible
-- compress and decompress a runtime WASM
-- get the latest metadata from a running node
-- fetch the latest runtime (wasm) from a running node
-- get runtime and metadata at any point of time using a Block hash as reference
+- get the metadata from a a wasm file directly (no need for a node): command `get`
+- show summary information and version of a runtime: commands `info` and `version`)
+- diff between two runtime to help users spot changes and difference: command `diff`
+- show the list of pallets and their content (calls, events, errors, storage, constants): command `show`
+- analyze 2 runtimes to figure out whether they are compatible and if the `transaction_version` needs to be bumped: command `diff`
+- compress and decompress a runtime WASM: commands `compress` and `decompress`
+- get the latest metadata from a running node: command `get`
+- fetch the latest runtime (wasm) from a running node: command `get`
+- get runtime and metadata at any point of time using a Block hash as reference: command `get`
 - do all of the above with an output for human or as json
 
-== Sample runs
-
-.Get a runtime
-image::scripts/demos/gif/demo-get.gif[title="subwasm get"]
-
-.info command
-image::scripts/demos/gif/demo-info.gif[title="subwasm info"]
-
-.meta command
-image::scripts/demos/gif/demo-meta.gif[title="subwasm meta"]
-
-.diff command
-image::scripts/demos/gif/demo-diff.gif[title="subwasm diff"]
+include::./doc/demos.adoc[]
 
 == Install
 

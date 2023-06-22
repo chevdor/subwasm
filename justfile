@@ -20,7 +20,7 @@ test_all:
 	cargo test -- --include-ignored
 
 # Generate usage samples
-_usage:
+usage:
 	cargo run -q -- --help > doc/usage.adoc
 	cargo run -q -- get --help > doc/usage_get.adoc
 	cargo run -q -- info --help > doc/usage_info.adoc
@@ -32,8 +32,11 @@ _usage:
 	cargo run -q -- show --help > doc/usage_show.adoc
 
 # Generate documentation
-doc: _usage
-	cargo doc -p subwasm -p subwasmlib -p wasm-loader -p wasm-testbed -p substrate-runtime-proposal-hash --all-features --no-deps
+doc:
+	./scripts/build-doc.sh
+
+watch-doc:
+	cargo watch -s './scripts/build-doc.sh && browser-sync start --ss target/doc -s target/doc --directory --no-open'
 
 # Generate demos
 demos:

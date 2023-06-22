@@ -11,6 +11,7 @@ use crate::{
 	RuntimeInfo, SubwasmLibError,
 };
 
+/// The main `subwasm` object
 pub struct Subwasm {
 	testbed: WasmTestBed,
 	runtime_info: RuntimeInfo,

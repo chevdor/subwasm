@@ -1,4 +1,5 @@
 use comparable::Comparable;
+use log::trace;
 use serde::Serialize;
 use std::rc::Rc;
 
@@ -47,6 +48,7 @@ impl ReducedDiffResult {
 	}
 
 	pub fn init(mut self) -> Self {
+		// TODO: remove those clones, use refs
 		let ra = self.runtime_a.clone();
 		let rb = self.runtime_b.clone();
 		self.changes = match ra.comparison(&rb) {
@@ -62,13 +64,20 @@ impl ReducedDiffResult {
 			self.compatible = Some(da.compatible());
 		} else {
 			self.require_transaction_version_bump = Some(false);
-			self.compatible = Some(false);
+			self.compatible = Some(true);
 		}
+
+		trace!("require_transaction_version_bump: {:?}", self.require_transaction_version_bump);
+		trace!("compatible: {:?}", self.compatible);
 		self
 	}
 
-	pub fn require_transaction_version_bump(&self) -> Option<bool> {
-		self.require_transaction_version_bump
+	pub fn require_transaction_version_bump(&self) -> bool {
+		self.require_transaction_version_bump.expect("Dit not init run ?")
+	}
+
+	pub fn compatible(&self) -> bool {
+		self.compatible.expect("Dit not init run ?")
 	}
 }
 
