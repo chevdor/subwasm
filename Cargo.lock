@@ -1685,17 +1685,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "frame-metadata"
-version = "16.0.0"
-source = "git+https://github.com/paritytech/frame-metadata?branch=main#94e7743fa454963609763cf9cccbb7f85bc96d2f"
-dependencies = [
- "cfg-if",
- "parity-scale-codec",
- "scale-info",
- "serde",
-]
-
-[[package]]
 name = "fs-err"
 version = "2.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4110,7 +4099,7 @@ name = "sp-metadata-ir"
 version = "0.6.0"
 source = "git+https://github.com/paritytech/polkadot-sdk?branch=master#b00e168129cc38d68fb170dc3dc581cf5f17f5b1"
 dependencies = [
- "frame-metadata 16.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "frame-metadata",
  "parity-scale-codec",
  "scale-info",
 ]
@@ -4455,7 +4444,7 @@ version = "0.21.0"
 dependencies = [
  "comparable",
  "document-features",
- "frame-metadata 16.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "frame-metadata",
  "log",
  "num-format",
  "scale-info",
@@ -4471,7 +4460,7 @@ name = "substrate-runtime-proposal-hash"
 version = "0.21.0"
 dependencies = [
  "blake2",
- "frame-metadata 16.0.0 (git+https://github.com/paritytech/frame-metadata?branch=main)",
+ "frame-metadata",
  "hex",
  "parity-scale-codec",
  "sp-core",
@@ -4513,7 +4502,7 @@ name = "subwasmlib"
 version = "0.21.0"
 dependencies = [
  "calm_io",
- "frame-metadata 16.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "frame-metadata",
  "hex",
  "ipfs-hasher",
  "log",
@@ -5193,7 +5182,7 @@ dependencies = [
 name = "wasm-testbed"
 version = "0.21.0"
 dependencies = [
- "frame-metadata 16.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "frame-metadata",
  "hex",
  "log",
  "parity-scale-codec",

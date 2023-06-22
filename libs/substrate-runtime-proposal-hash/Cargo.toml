@@ -26,6 +26,6 @@ sp-core = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk
 sp-io = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
 sp-runtime = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
 sp-wasm-interface = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
-frame-metadata = { package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main", features = [
+frame-metadata = { version = "16", package = "frame-metadata", features = [
 	"std",
 ] }
