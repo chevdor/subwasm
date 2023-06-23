@@ -1,10 +1,12 @@
+//! This module contains the definition of all commands, sub-commands and arguments
+//! supported by the `subwasm` cli.
+
+use crate::error;
 use clap::{crate_authors, crate_version, ColorChoice, Parser, Subcommand};
 use std::path::PathBuf;
 use subwasmlib::{source::Source, *};
 use url::Url;
 use wasm_loader::{BlockRef, OnchainBlock};
-
-use crate::error;
 
 /// `subwasm` allows fetching, parsing and calling some methods on WASM runtimes of Substrate based chains.
 #[derive(Parser, Debug)]
@@ -18,9 +20,11 @@ pub struct Opts {
 	#[clap(short, long, global = true, display_order = 99)]
 	pub quiet: bool,
 
+	/// Do not write color information to the output. This is recommended for scripts.
 	#[clap(short, long, global = true, env = "NO_COLOR", display_order = 99)]
 	pub no_color: bool,
 
+	#[allow(missing_docs)]
 	#[clap(subcommand)]
 	pub subcmd: Option<SubCommand>,
 
@@ -29,32 +33,38 @@ pub struct Opts {
 	pub version: bool,
 }
 
-/// You can find all available commands below.
+/// Define the list of all sub-commands.
 #[derive(Subcommand, Debug)]
 pub enum SubCommand {
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Get(GetOpts),
 
-	/// The `info` command returns summarized information about a runtime.
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Info(InfoOpts),
 
-	/// The `version` command returns summarized information about the versions of a runtime.
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Version(InfoOpts),
 
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!(), alias("meta"))]
 	Metadata(MetaOpts),
 
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Show(ShowOpts),
 
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Diff(DiffOpts),
 
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Compress(CompressOpts),
 
+	#[allow(missing_docs)]
 	#[clap(version = crate_version!(), author = crate_authors!())]
 	Decompress(DecompressOpts),
 }
@@ -80,11 +90,11 @@ pub struct GetOpts {
 	#[clap(short, long, requires = "chain")]
 	pub block: Option<BlockRef>,
 
-	/// Load the wasm from a URL (no node) such as https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm
+	/// Load the wasm from a URL (no node) such as <https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm>
 	#[clap(long, short, conflicts_with = "rpc_url")]
 	pub url: Option<Url>,
 
-	/// Load the wasm from Github passing a string in the format <runtime>@<version>
+	/// Load the wasm from Github passing a string in the format `<runtime>@<version>`
 	/// such as `kusama@0.9.42`
 	#[clap(long, short, alias = "gh", conflicts_with = "rpc_url")]
 	pub github: Option<String>,
@@ -100,6 +110,7 @@ pub struct GetOpts {
 	pub output: Option<PathBuf>,
 }
 
+/// Shows information about a given runtime
 #[derive(Parser, Debug)]
 pub struct InfoOpts {
 	/// The wasm file to load. It can be a path on your local filesystem such /tmp/runtime.wasm
@@ -120,11 +131,11 @@ pub struct InfoOpts {
 	#[clap(short, long, requires = "chain")]
 	pub block: Option<BlockRef>,
 
-	/// Load the wasm from a URL (no node) such as https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm
+	/// Load the wasm from a URL (no node) such as <https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm>
 	#[clap(long, short, conflicts_with = "file")]
 	pub url: Option<Url>,
 
-	/// Load the wasm from Github passing a string in the format <runtime>@<version>
+	/// Load the wasm from Github passing a string in the format `<runtime>@<version>`
 	/// such as `kusama@0.9.42`
 	#[clap(long, short, alias = "gh", conflicts_with = "file")]
 	pub github: Option<String>,
@@ -149,11 +160,11 @@ pub struct MetaOpts {
 	#[clap(long, short, conflicts_with = "file")]
 	pub chain: Option<ChainInfo>,
 
-	/// Load the wasm from a URL (no node) such as https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm
+	/// Load the wasm from a URL (no node) such as <https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm>
 	#[clap(long, short, conflicts_with = "file")]
 	pub url: Option<Url>,
 
-	/// Load the wasm from Github passing a string in the format <runtime>@<version>
+	/// Load the wasm from Github passing a string in the format `<runtime>@<version>`
 	/// such as `kusama@0.9.42`
 	#[clap(long, short, alias = "gh", conflicts_with = "file")]
 	pub github: Option<String>,
@@ -168,7 +179,7 @@ pub struct MetaOpts {
 	#[clap(long, short)]
 	pub module: Option<String>,
 
-	/// You may specifiy the output format. One of "human", "scale", "json", "json+scale", "hex+scale".
+	/// You may specify the output format. One of "human", "scale", "json", "json+scale", "hex+scale".
 	/// If you use the default: human, you may want to check out the "show_reduced" command instead.
 	#[clap(long, short, default_value = "human")]
 	pub format: Option<String>,
@@ -179,7 +190,7 @@ pub struct MetaOpts {
 	pub output: Option<String>,
 }
 
-/// Compare 2 runtimes after converting them to `ReducedRuntime`s.
+/// Compare 2 runtimes after converting them to `[ReducedRuntime]`s.
 ///
 /// You must pass exactly 2 runtimes.
 #[derive(Parser, Debug)]
@@ -232,11 +243,11 @@ pub struct ShowOpts {
 	#[clap(short, long)]
 	pub block: Option<BlockRef>,
 
-	/// Load the wasm from a URL (no node) such as https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm
+	/// Load the wasm from a URL (no node) such as <https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm>
 	#[clap(long, short, conflicts_with = "file")]
 	pub url: Option<Url>,
 
-	/// Load the wasm from Github passing a string in the format <runtime>@<version>
+	/// Load the wasm from Github passing a string in the format `<runtime>@<version>`
 	/// such as `kusama@0.9.42`
 	#[clap(long, short, alias = "gh", conflicts_with = "file")]
 	pub github: Option<String>,
@@ -279,7 +290,7 @@ pub struct DecompressOpts {
 	pub output: PathBuf,
 }
 
-// // TODO: Remove that
-fn parse_source(s: &str) -> error::Result<Source> {
+/// This parser wrapper is used by clap to parse a `&str` as [Source](subwasmlib::source::Source).
+pub fn parse_source(s: &str) -> error::Result<Source> {
 	Source::try_from(s).map_err(|_e| error::SubwasmError::SourceParseError(s.to_string()))
 }

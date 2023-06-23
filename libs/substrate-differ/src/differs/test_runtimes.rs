@@ -1,6 +1,8 @@
 #![cfg(test)]
 
 use std::{env, fmt::Display, path::PathBuf, str::FromStr};
+
+use crate::error::SubstrateDifferError;
 pub const RUNTIME_V12: &str = "../../data/runtime_v12.wasm";
 
 pub const RUNTIME_V13: &str = "../../data/runtime_v13.wasm";
@@ -15,30 +17,41 @@ pub const RUNTIME_POLKADOT_V14_9280: &str = "../../data/polkadot/V14/9280.wasm";
 pub const RUNTIME_POLKADOT_V14_9290: &str = "../../data/polkadot/V14/9290.wasm";
 pub const RUNTIME_STATEMINE_V14_9290: &str = "../../data/statemine/V14/9290.wasm";
 
+#[derive(Debug, Clone)]
+/// List of the runtime supported in our tests
 pub enum Chain {
-	Statemine,
-	Statemint,
-	Westmint,
-	Polkadot,
-	Kusama,
 	Westend,
+	AssetHubWestend,
+
+	Kusama,
+	AssetHubKusama,
+
+	Polkadot,
+	AssetHubPolkadot,
+
 	CollectivesPolkadot,
 }
 
 impl Display for Chain {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		match self {
-			Chain::Statemine => write!(f, "statemine"),
-			Chain::Statemint => write!(f, "statemint"),
-			Chain::Westmint => write!(f, "westmint"),
-			Chain::Polkadot => write!(f, "polkadot"),
-			Chain::Kusama => write!(f, "kusama"),
-			Chain::Westend => write!(f, "westend"),
+			Chain::Westend => write!(f, "Westend"),
+			Chain::AssetHubWestend => write!(f, "Asset Hub Westend"),
+
+			Chain::Kusama => write!(f, "Kusama"),
+			Chain::AssetHubKusama => write!(f, "Asset Hub Kusama"),
+
+			Chain::Polkadot => write!(f, "Polkadot"),
+			Chain::AssetHubPolkadot => write!(f, "Asset Hub Polkadot"),
+
 			Chain::CollectivesPolkadot => write!(f, "collectives-polkadot"),
 		}
 	}
 }
 
+/// Helper to easily fetch runtimes locally
+// TODO: It would speed up the tests to add caching here so we avoid reloading the runtimes over and over again
+#[derive(Debug, Clone)]
 pub struct RuntimeFile {
 	chain: Chain,
 	metadata_version: u8,
@@ -51,20 +64,23 @@ impl RuntimeFile {
 	}
 }
 
-pub fn get_runtime_file(runtime_file: RuntimeFile) -> Option<PathBuf> {
-	let workspace_root = env::var("CARGO_WORKSPACE_DIR").unwrap();
-	let candidate = PathBuf::from_str(&format!(
-		"{workspace_root}data/{chain}/V{meta}/{spec}.wasm",
-		chain = runtime_file.chain,
-		meta = runtime_file.metadata_version,
-		spec = runtime_file.spec_version
-	))
-	.ok();
-	if let Some(c) = candidate {
-		if c.exists() {
-			return Some(c);
-		}
-	}
+impl TryInto<PathBuf> for RuntimeFile {
+	type Error = SubstrateDifferError;
 
-	None
+	/// Try fetching a runtime locally from disk
+	fn try_into(self) -> Result<PathBuf, Self::Error> {
+		let workspace_root = env::var("CARGO_WORKSPACE_DIR").expect("Failed getting env");
+		let candidate = PathBuf::from_str(&format!(
+			"{workspace_root}data/{chain}/V{meta}/{spec}.wasm",
+			chain = self.chain,
+			meta = self.metadata_version,
+			spec = self.spec_version
+		))
+		.expect("Should be infallible");
+
+		if candidate.exists() {
+			return Ok(candidate);
+		}
+		Err(SubstrateDifferError::RuntimeNotFound(candidate))
+	}
 }

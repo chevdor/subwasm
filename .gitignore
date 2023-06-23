@@ -11,3 +11,6 @@ metadata.*
 *.jscale
 *.profraw
 *.deb
+
+.vscode
+docs

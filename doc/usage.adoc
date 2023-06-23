@@ -6,16 +6,16 @@ Commands:
   get         Get/Download the runtime wasm from a running node through rpc
   info        The `info` command returns summarized information about a runtime
   version     The `version` command returns summarized information about the versions of a runtime
-  metadata    Returns the metadata as a json object. You may also use the "meta" alias. See also the 'show' sub-command
-  show        Shows the a reduced view of the runtime where the types have been resolved
-  diff        Compare 2 runtimes after converting them to ReducedRuntime
+  metadata    Returns the metadata of the given runtime in several format. You may also use the "meta" alias
+  show        Shows the a reduced view of the runtime
+  diff        Compare 2 runtimes after converting them to `ReducedRuntime`s
   compress    Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is already compressed
   decompress  Decompress a given runtime wasm file. You may pass a runtime that is already uncompressed
   help        Print this message or the help of the given subcommand(s)
 
 Options:
-  -j, --json      Output as json
-  -q, --quiet     Less output
-  -n, --no-color  [env: NO_COLOR=]
   -v, --version   Show the version
+  -j, --json      Output as json
+  -n, --no-color  [env: NO_COLOR=]
+  -q, --quiet     Less output
   -h, --help      Print help

@@ -11,6 +11,7 @@ use crate::{
 	RuntimeInfo, SubwasmLibError,
 };
 
+/// The main `subwasm` object
 pub struct Subwasm {
 	testbed: WasmTestBed,
 	runtime_info: RuntimeInfo,
@@ -32,7 +33,6 @@ impl Subwasm {
 
 			SubwasmLibError::Generic("Failed loading runtime".to_string())
 		})?;
-
 		let runtime_info = RuntimeInfo::new(&testbed)?;
 		Ok(Self { testbed, runtime_info })
 	}

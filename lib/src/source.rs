@@ -1,5 +1,4 @@
 use error::*;
-use log::debug;
 use parity_releng::GithubRef;
 use std::{fmt::Display, path::PathBuf, str::FromStr};
 use url::Url;
@@ -12,7 +11,7 @@ use crate::fetch_at_url;
 use crate::is_wasm_from_url;
 use crate::ChainInfo;
 
-/// The wasmloader provides a basic Source struct that
+/// The [wasmloader] provides a basic Source struct that
 /// can handle only a file or RPC endpoint.
 /// This Enum here is fancier and will allow more sources.
 #[derive(Debug, Clone, PartialEq)]
@@ -26,9 +25,10 @@ pub enum Source {
 	/// A chain alias such as "westend" or "wnd"
 	Alias(String),
 
-	// A URL to Github, S3, IPFS, etc...
+	/// A URL to Github, S3, IPFS, etc...
 	URL(Url),
 
+	/// A reference to a version in Github in the form of `<runtime>@<version>`
 	Github(GithubRef),
 }
 
@@ -72,7 +72,7 @@ impl TryFrom<&str> for Source {
 			// - we can HTTP get it
 			// - the result looks like a wasm (that will be lose...)
 			if is_wasm_from_url(&url).is_ok_and(|x| x) {
-				debug!("What we got at {url} could be some wasm indeed");
+				log::debug!("What we got at {url} could be some wasm indeed");
 				return Ok(Source::URL(url));
 			}
 		} else {
@@ -152,6 +152,12 @@ impl Source {
 		block: Option<BlockRef>,
 		url: Option<Url>,
 	) -> Result<Self> {
+		log::trace!("Getting source from options:");
+		log::trace!(" - file : {file:?}");
+		log::trace!(" - chain: {chain:?}");
+		log::trace!(" - block: {block:?}");
+		log::trace!(" - url  : {url:?}");
+
 		if let Some(f) = file {
 			return Ok(Self::File(f));
 		}
@@ -208,7 +214,7 @@ mod tests_source {
 		let urls = vec!["ws://localhost:9933", "wss://localhost:9933"];
 
 		for url in urls {
-			let src = Source::try_from(url).unwrap();
+			let src = Source::try_from(url).expect("Failing parsing source");
 			match src {
 				Source::Chain(r) => match r.endpoint {
 					NodeEndpoint::WebSocket(ws) => assert_eq!(ws, url),
@@ -242,7 +248,7 @@ mod tests_source {
 		];
 
 		for url in urls {
-			let src = Source::try_from(url).unwrap();
+			let src = Source::try_from(url).expect("Failing parsing source");
 			match src {
 				Source::Chain(r) => match r.endpoint {
 					NodeEndpoint::Http(http) => assert_eq!(http, url),
@@ -258,7 +264,7 @@ mod tests_source {
 		let names = vec!["polkadot", "dot"];
 
 		for name in names {
-			assert!(matches!(Source::try_from(name).unwrap(), Source::Alias(_)));
+			assert!(matches!(Source::try_from(name).expect("Failing parsing source"), Source::Alias(_)));
 		}
 	}
 
@@ -267,7 +273,7 @@ mod tests_source {
 		let urls = vec!["https://github.com/paritytech/polkadot/releases/download/v0.9.42/kusama_runtime-v9420.compact.compressed.wasm"];
 
 		for url in urls {
-			let src = Source::try_from(url).unwrap();
+			let src = Source::try_from(url).expect("Failing parsing source");
 			assert!(matches!(src, Source::URL(_)));
 		}
 	}
@@ -282,7 +288,10 @@ mod tests_source {
 		let files = vec![path];
 
 		for file in files {
-			assert_eq!(Source::try_from(file.as_str()).unwrap(), Source::File(PathBuf::from(file)));
+			assert_eq!(
+				Source::try_from(file.as_str()).expect("Failing parsing source"),
+				Source::File(PathBuf::from(file))
+			);
 		}
 	}
 

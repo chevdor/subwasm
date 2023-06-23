@@ -1,3 +1,5 @@
+//! This module contains a collection of useful macros
+
 #[macro_export]
 macro_rules! write_module {
 	($modules: expr, $filter: ident, $out: ident) => {

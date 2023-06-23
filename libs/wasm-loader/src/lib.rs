@@ -178,7 +178,7 @@ pub mod tests {
 		const WASM_FILE: &str = "/tmp/runtime.wasm";
 		let mut retry = 0;
 
-		let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
+		let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).expect("Failed loading wasm");
 
 		if PathBuf::from(WASM_FILE).exists() {
 			return WASM_FILE.to_string();
@@ -224,7 +224,7 @@ pub mod tests {
 		let url = get_ws_node(false);
 		println!("Connecting to {:?}", &url);
 		let reference = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: None };
-		let loader = WasmLoader::load_from_source(&Source::Chain(reference)).unwrap();
+		let loader = WasmLoader::load_from_source(&Source::Chain(reference)).expect("Failed loading wasm");
 		let wasm = loader.uncompressed_bytes();
 		println!("uncompressed wasm size: {:?}", wasm.len());
 		assert!(wasm.len() > 1_000_000);
@@ -236,7 +236,7 @@ pub mod tests {
 		let url = get_ws_node(false);
 		println!("Connecting to {:?}", &url);
 		let reference = OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: None };
-		let loader = WasmLoader::load_from_source(&Source::Chain(reference)).unwrap();
+		let loader = WasmLoader::load_from_source(&Source::Chain(reference)).expect("Failed loading wasm");
 		let uncompressed_bytes = loader.uncompressed_bytes();
 		let original_bytes = loader.original_bytes();
 		println!("uncompressed wasm size: {:?}", uncompressed_bytes.len());
@@ -256,10 +256,10 @@ pub mod tests {
 		let older =
 			OnchainBlock { endpoint: NodeEndpoint::WebSocket(url), block_ref: Some(POLKADOT_BLOCK20.to_string()) };
 
-		let loader_latest = WasmLoader::load_from_source(&Source::Chain(latest)).unwrap();
+		let loader_latest = WasmLoader::load_from_source(&Source::Chain(latest)).expect("Failed loading wasm");
 		let wasm_latest = loader_latest.uncompressed_bytes();
 
-		let loader_older = WasmLoader::load_from_source(&Source::Chain(older)).unwrap();
+		let loader_older = WasmLoader::load_from_source(&Source::Chain(older)).expect("Failed loading wasm");
 		let wasm_older = loader_older.uncompressed_bytes();
 
 		println!("wasm latest size: {:?}", wasm_latest.len());

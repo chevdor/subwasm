@@ -1,14 +1,36 @@
 The `info` command returns summarized information about a runtime
 
-Usage: subwasm info [OPTIONS] [SOURCE]
+Usage: subwasm info [OPTIONS] [FILE]
 
 Arguments:
-  [SOURCE]  The wasm file to load. It can be a path on your local filesystem such as /tmp/runtime.wasm or a node url such as http://localhost:9933 or ws://localhost:9944 [default: runtime_000.wasm]
+  [FILE]
+          The wasm file to load. It can be a path on your local filesystem such /tmp/runtime.wasm
+          
+          You may also fetch the runtime remotely, see `chain` and `url` flags.
 
 Options:
-      --chain <CHAIN>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
-  -j, --json           Output as json
-  -b, --block <BLOCK>  The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
-  -q, --quiet          Less output
-  -n, --no-color       [env: NO_COLOR=]
-  -h, --help           Print help
+  -c, --chain <CHAIN>
+          Load the wasm from an RPC node url such as http://localhost:9933 or ws://localhost:9944, a node alias such as "polkadot" or "dot",
+          
+          NOTE: --chain local = http://localhost:9933
+
+  -b, --block <BLOCK>
+          The optional block where to fetch the runtime. That allows fetching older runtimes but you will need to connect to archive nodes. Currently, you must pass a block hash. Passing the block numbers is not supported
+
+  -u, --url <URL>
+          Load the wasm from a URL (no node) such as <https://github.com/paritytech/polkadot/releases/download/v0.9.42/polkadot_runtime-v9420.compact.compressed.wasm>
+
+  -g, --github <GITHUB>
+          Load the wasm from Github passing a string in the format `<runtime>@<version>` such as `kusama@0.9.42`
+
+  -j, --json
+          Output as json
+
+  -n, --no-color
+          [env: NO_COLOR=]
+
+  -q, --quiet
+          Less output
+
+  -h, --help
+          Print help (see a summary with '-h')

@@ -50,15 +50,33 @@ mod test_spec_version {
 
 	#[test]
 	fn test_from_version() {
-		assert_eq!(9420_u32, SpecVersion::from(Version::parse("0.9.42").unwrap()).spec_version);
-		assert_eq!(9420_u32, SpecVersion::from(Version::parse("0.9.420").unwrap()).spec_version);
-		assert_eq!(100042_u32, SpecVersion::from(Version::parse("1.0.42").unwrap()).spec_version);
-		assert_eq!(100420_u32, SpecVersion::from(Version::parse("1.0.420").unwrap()).spec_version);
+		assert_eq!(
+			9420_u32,
+			SpecVersion::from(Version::parse("0.9.42").expect("Simple version can be parsed")).spec_version
+		);
+		assert_eq!(
+			9420_u32,
+			SpecVersion::from(Version::parse("0.9.420").expect("Simple version can be parsed")).spec_version
+		);
+		assert_eq!(
+			100042_u32,
+			SpecVersion::from(Version::parse("1.0.42").expect("Simple version can be parsed")).spec_version
+		);
+		assert_eq!(
+			100420_u32,
+			SpecVersion::from(Version::parse("1.0.420").expect("Simple version can be parsed")).spec_version
+		);
 	}
 
 	#[test]
 	fn test_to_version() {
-		assert_eq!(Version::parse("0.9.420").unwrap(), SpecVersion::from(9420_u32).into());
-		assert_eq!(Version::parse("1.2.345").unwrap(), SpecVersion::from(102345_u32).into());
+		assert_eq!(
+			Version::parse("0.9.420").expect("Simple version can be parsed"),
+			SpecVersion::from(9420_u32).into()
+		);
+		assert_eq!(
+			Version::parse("1.2.345").expect("Simple version can be parsed"),
+			SpecVersion::from(102345_u32).into()
+		);
 	}
 }

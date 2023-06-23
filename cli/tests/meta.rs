@@ -9,14 +9,14 @@ mod cli_tests {
 		fn it_shows_metadata() {
 			let test_wasm: &str = &crate::test_utils::ensure_local_wasm();
 
-			let mut cmd = AssertCommand::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
+			let mut cmd = AssertCommand::cargo_bin(env!("CARGO_PKG_NAME")).expect("Failed getting test bin");
 			let assert = cmd.args(["meta", test_wasm]).assert();
 			assert.success().code(0);
 		}
 
 		// #[test]
 		// fn it_shows_when_piped() {
-		// 	// let mut cmd = AssertCommand::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
+		// 	// let mut cmd = AssertCommand::cargo_bin(env!("CARGO_PKG_NAME")).expect("Failed getting test bin");
 		// 	// let assert = cmd.args(["get", "wss://rpc.polkadot.io:443", "--output", "runtime.wasm"]).assert();
 		// 	// assert.success().code(0);
 

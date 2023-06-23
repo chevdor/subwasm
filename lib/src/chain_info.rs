@@ -1,3 +1,4 @@
+use crate::{chain_urls::get_chain_urls, error, SubwasmLibError};
 use error::*;
 use rand::seq::SliceRandom;
 use std::str::FromStr;
@@ -5,25 +6,32 @@ use thiserror::Error;
 use url::Url;
 use wasm_loader::NodeEndpoint;
 
-use crate::{chain_urls::get_chain_urls, error, SubwasmLibError};
+/// An enumeration of the type of endpoints
 #[derive(Debug, PartialEq)]
 pub enum EndpointType {
+	/// http or https endpoint
 	Http,
-	WesbSocket,
+
+	/// WebSocket endpoint, with or without SSL
+	WebSocket,
 }
 
 impl PartialEq<NodeEndpoint> for EndpointType {
 	fn eq(&self, other: &NodeEndpoint) -> bool {
 		match other {
 			NodeEndpoint::Http(_) => self == &EndpointType::Http,
-			NodeEndpoint::WebSocket(_) => self == &EndpointType::WesbSocket,
+			NodeEndpoint::WebSocket(_) => self == &EndpointType::WebSocket,
 		}
 	}
 }
 
+/// A struct to hold the name of a chain and the list of its endpoints.
 #[derive(Debug, Clone)]
 pub struct ChainInfo {
+	/// Name of the chain
 	pub name: String,
+
+	/// List of endpoints for the chain [name]
 	pub endpoints: Vec<NodeEndpoint>,
 }
 
@@ -52,10 +60,12 @@ impl ChainInfo {
 	}
 }
 
+/// Custom error
 #[derive(Debug, Error)]
 pub enum ChainInfoError {
 	#[error("Unsupported chain: {0}")]
 	ChainUsupported(String),
+
 	#[error("Chain not found: {0}")]
 	ChainNotFound(String),
 }
@@ -95,36 +105,36 @@ mod tests {
 	#[test]
 	fn it_gets_chain_endpoints() {
 		assert!(ChainInfo::from_str("local").is_ok());
-		assert!(ChainInfo::from_str("local").unwrap().endpoints.len() == 1);
+		assert_eq!(1, ChainInfo::from_str("local").expect("Failed getting ChainInfo from string").endpoints.len());
 		assert!(ChainInfo::from_str("polkadot").is_ok());
 		assert!(ChainInfo::from_str("PolkaDOT").is_ok());
-		assert!(!ChainInfo::from_str("polkadot").unwrap().endpoints.is_empty());
+		assert!(!ChainInfo::from_str("polkadot").expect("Failed getting ChainInfo from string").endpoints.is_empty());
 		assert!(ChainInfo::from_str("foobar").is_err());
 	}
 
 	#[test]
 	fn it_returns_a_url() {
-		let info = ChainInfo::from_str("polkadot").unwrap();
-		let _endpoint = info.get_random_url(None).unwrap();
+		let info = ChainInfo::from_str("polkadot").expect("Failed getting ChainInfo from string");
+		let _endpoint = info.get_random_url(None).expect("Failed getting url");
 	}
 
 	#[test]
 	fn it_returns_a_http_url() {
-		let info = ChainInfo::from_str("local").unwrap();
-		let endpoint = info.get_random_url(Some(EndpointType::Http)).unwrap();
+		let info = ChainInfo::from_str("local").expect("Failed getting ChainInfo from string");
+		let endpoint = info.get_random_url(Some(EndpointType::Http)).expect("Failed getting url");
 		assert!(endpoint.to_string().starts_with("http"));
 	}
 
 	#[test]
 	fn it_returns_a_ws_url() {
-		let info = ChainInfo::from_str("polkadot").unwrap();
-		let endpoint = info.get_random_url(Some(EndpointType::WesbSocket)).unwrap();
+		let info = ChainInfo::from_str("polkadot").expect("Failed getting ChainInfo from string");
+		let endpoint = info.get_random_url(Some(EndpointType::WebSocket)).expect("Failed getting url");
 		assert!(endpoint.to_string().starts_with("ws"));
 	}
 
 	#[test]
 	fn test_chain_info() {
-		let ci = ChainInfo::from_str("polkadot").unwrap();
+		let ci = ChainInfo::from_str("polkadot").expect("Failed getting ChainInfo from string");
 		assert!(!ci.endpoints.is_empty());
 	}
 }

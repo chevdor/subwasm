@@ -8,6 +8,6 @@ Arguments:
 
 Options:
   -j, --json      Output as json
-  -q, --quiet     Less output
   -n, --no-color  [env: NO_COLOR=]
+  -q, --quiet     Less output
   -h, --help      Print help

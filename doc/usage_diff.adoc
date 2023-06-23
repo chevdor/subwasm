@@ -1,16 +1,25 @@
-Compare 2 runtimes after converting them to ReducedRuntime
+Compare 2 runtimes after converting them to `ReducedRuntime`s.
 
-Usage: subwasm diff [OPTIONS] [SRC_A] [SRC_B]
+You must pass exactly 2 runtimes.
+
+Usage: subwasm diff [OPTIONS] <RUNTIME_1> <RUNTIME_2>
 
 Arguments:
-  [SRC_A]  The first source [default: runtime_000.wasm]
-  [SRC_B]  The second source [default: runtime_001.wasm]
+  <RUNTIME_1>
+          Reference runtime
+
+  <RUNTIME_2>
+          Second runtime
 
 Options:
-  -a, --chain-a <CHAIN_A>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
-  -j, --json               Output as json
-  -b, --chain-b <CHAIN_B>  Provide the name of a chain and a random url amongst a list of known nodes will be used. If you pass a valid --chain, --url will be ignored --chain local = http://localhost:9933
-  -q, --quiet              Less output
-  -m, --method <METHOD>    You probably want to use `Reduced` [default: reduced]
-  -n, --no-color           [env: NO_COLOR=]
-  -h, --help               Print help
+  -j, --json
+          Output as json
+
+  -n, --no-color
+          [env: NO_COLOR=]
+
+  -q, --quiet
+          Less output
+
+  -h, --help
+          Print help (see a summary with '-h')
