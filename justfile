@@ -1,5 +1,5 @@
-VERSION := `toml get cli/Cargo.toml package.version | jq -r`
-export TAG:=`toml get cli/Cargo.toml "package.version" | jq -r .`
+VERSION := `toml get Cargo.toml workspace.package.version | jq -r`
+export TAG:=`toml get Cargo.toml "workspace.package.version" | jq -r .`
 
 # List available commands
 _default:
