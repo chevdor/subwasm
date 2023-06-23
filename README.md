@@ -47,25 +47,35 @@ This is a great way to have a peek at what the runtime can do. You may however w
 
 ## Demos
 
+### Get a runtime
+
 <figure>
 <img src="./scripts/demos/gif/demo-get.gif" alt="demo get" />
 <figcaption>subwasm get</figcaption>
 </figure>
+
+### info command
 
 <figure>
 <img src="./scripts/demos/gif/demo-info.gif" alt="demo info" />
 <figcaption>subwasm info</figcaption>
 </figure>
 
+### show command
+
 <figure>
 <img src="./scripts/demos/gif/demo-meta.gif" alt="demo meta" />
 <figcaption>subwasm show</figcaption>
 </figure>
 
+### meta command
+
 <figure>
 <img src="./scripts/demos/gif/demo-meta.gif" alt="demo meta" />
 <figcaption>subwasm meta</figcaption>
 </figure>
+
+### diff command
 
 <figure>
 <img src="./scripts/demos/gif/demo-diff.gif" alt="demo diff" />
