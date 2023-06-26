@@ -52,17 +52,6 @@ pub fn get_result(prefix: Prefix, buffer: &[u8]) -> Result<SrhResult> {
 	})
 }
 
-/// Calculate the proposal hash
-///
-/// # Arguments
-/// * `wasm_blob` - The WASM blob
-/// # Returns
-/// * `CalllHash` - The hash of the proposal as calculated on chain
-/// @deprecated
-pub fn get_proposal_hash(wasm_blob: &[u8]) -> Result<CalllHash> {
-	get_call_hash(PREFIX_SYSTEM_SETCODE, wasm_blob)
-}
-
 /// Calculate the proposal hash which is system.setCode
 ///
 /// # Arguments
