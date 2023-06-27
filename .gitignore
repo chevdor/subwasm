@@ -14,3 +14,5 @@ metadata.*
 
 .vscode
 docs
+
+cli/executables
