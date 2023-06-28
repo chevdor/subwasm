@@ -1,0 +1,73 @@
+# Subwasm Differ Report
+
+
+{% for c in changes.changes %}
+
+{% set palletsAdded = c.Pallets | filter(attribute="Added") %}
+{% set palletsChanged = c.Pallets | filter(attribute="Changed") %}
+{% set palletsRemoved = c.Pallets | filter(attribute="Removed") %}
+
+{# {{ c | json_encode }}
+{{ p.Changed | json_encode }}
+#}
+## Pallets Removed
+{% if palletsRemoved | length %}
+{% for p in palletsRemoved %}
+
+{% set pallet_id = p.Removed[0]  %}
+{% set pallet_a = changes.runtime_a.pallets[pallet_id]  %}
+{% set content = p.Removed[1] %}
+### {{pallet_a.name}}
+{% endfor %}
+{% else %}
+No pallet removed
+{% endif %}
+{#
+#}
+
+
+## Pallets Added
+{% if palletsAdded | length %}
+{% for p in palletsAdded %}
+
+{% set pallet_id = p.Added[0]  %}
+{% set pallet_b = changes.runtime_b.pallets[pallet_id]  %}
+{% set content = p.Added[1] %}
+
+### {{pallet_b.name}}
+
+```
+{{ pallet_b | json_encode(pretty=true) }}
+```
+{% endfor %}
+{% else %}
+No pallet removed
+{% endif %}
+{#
+#}
+
+
+## Pallets Changed
+
+{% if palletsChanged | length %}
+{% for p in palletsChanged %}
+
+{% set pallet_id = p.Changed[0]  %}
+{% set pallet_a = changes.runtime_a.pallets[pallet_id]  %}
+{% set pallet_b = changes.runtime_b.pallets[pallet_id]  %}
+{% set content = p.Changed[1] %}
+
+### {{pallet_a.name}}
+{% endfor %}
+{% else %}
+No pallet removed
+{% endif %}
+{#
+#}
+
+{% endfor %}
+
+## Analysis
+
+- tx bump: {{ require_transaction_version_bump }}
+- compat : {{ compatible }}

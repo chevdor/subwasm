@@ -52,17 +52,6 @@ pub fn get_result(prefix: Prefix, buffer: &[u8]) -> Result<SrhResult> {
 	})
 }
 
-/// Calculate the proposal hash
-///
-/// # Arguments
-/// * `wasm_blob` - The WASM blob
-/// # Returns
-/// * `CalllHash` - The hash of the proposal as calculated on chain
-/// @deprecated
-pub fn get_proposal_hash(wasm_blob: &[u8]) -> Result<CalllHash> {
-	get_call_hash(PREFIX_SYSTEM_SETCODE, wasm_blob)
-}
-
 /// Calculate the proposal hash which is system.setCode
 ///
 /// # Arguments
@@ -91,17 +80,6 @@ fn get_call_hash(prefix: Prefix, wasm_blob: &[u8]) -> Result<CalllHash> {
 #[cfg(test)]
 mod prop_hash_tests {
 	use super::*;
-
-	#[test]
-	fn test_proposal_hash() {
-		assert_eq!(
-			get_proposal_hash(&[1, 2, 42]).expect("Failed getting a hash"),
-			[
-				174, 123, 79, 240, 254, 106, 147, 26, 65, 61, 41, 84, 181, 102, 24, 182, 128, 135, 188, 31, 135, 187,
-				99, 34, 143, 35, 120, 100, 246, 90, 186, 106
-			]
-		);
-	}
 
 	#[test]
 	fn test_call_hash() {
@@ -157,7 +135,7 @@ mod prop_hash_tests {
 
 	#[test]
 	fn test_hash_length() {
-		assert_eq!(32, get_proposal_hash(&[0]).expect("Failed getting a hash").len());
+		assert_eq!(32, get_call_hash((0, 0), &[0]).expect("Failed getting a hash").len());
 	}
 
 	#[test]
