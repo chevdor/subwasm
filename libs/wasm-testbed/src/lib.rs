@@ -4,7 +4,7 @@ mod logger_mock;
 pub use error::{Result, WasmTestbedError};
 use frame_metadata::{RuntimeMetadata, RuntimeMetadataPrefixed};
 use hex::FromHex;
-use sc_executor::{WasmExecutionMethod, WasmExecutor};
+use sc_executor::WasmExecutor;
 use sc_executor_common::runtime_blob::RuntimeBlob;
 use scale::Decode;
 use sp_core::Hasher;
@@ -58,6 +58,7 @@ impl WasmTestBed {
 		let loader = WasmLoader::load_from_source(source).map_err(|_| WasmTestbedError::Loading(source.to_string()))?;
 		let wasm = loader.uncompressed_bytes().to_vec();
 		let metadata_encoded = Self::call(&wasm, "Metadata_metadata", &[])?;
+
 		let metadata =
 			<Vec<u8>>::decode(&mut &metadata_encoded[..]).map_err(|_| WasmTestbedError::Decoding(metadata_encoded))?;
 
@@ -130,17 +131,16 @@ impl WasmTestBed {
 	/// as we have no blocks, storage, etc...
 	fn call(wasm: &[u8], method: &str, call_data: &[u8]) -> Result<Vec<u8>> {
 		let mut ext = sp_state_machine::BasicExternalities::default();
-
 		// Substrate V14 requires a heap of ~34.
 		// Polkadot V14 requires a heap of ~20.
+		let runtime_blob = RuntimeBlob::new(wasm)?;
+
 		let executor: WasmExecutor<sp_io::SubstrateHostFunctions> = WasmExecutor::builder()
-			.with_execution_method(WasmExecutionMethod::default())
+			// .with_execution_method(WasmExecutionMethod::default())
 			.with_offchain_heap_alloc_strategy(sc_executor::HeapAllocStrategy::Dynamic { maximum_pages: Some(64) })
 			.with_max_runtime_instances(8)
 			.with_runtime_cache_size(2)
 			.build();
-
-		let runtime_blob = RuntimeBlob::new(wasm)?;
 		executor
 			.uncached_call(runtime_blob, &mut ext, true, method, call_data)
 			.map_err(|_| WasmTestbedError::Calling(method.to_string()))
@@ -233,6 +233,7 @@ mod tests {
 	const RUNTIME_V12: &str = "../../data/kusama/V12/2030.wasm";
 	const RUNTIME_V13: &str = "../../data/kusama/V13/9090.wasm";
 	const RUNTIME_V14: &str = "../../data/polkadot/V14/9100.wasm";
+	const MOONRIVER_V14: &str = "../../data/moonriver/V14/moonriver_runtime.compact.compressed.wasm";
 
 	#[cfg(test)]
 	mod common {
@@ -382,6 +383,24 @@ mod tests {
 			assert!(runtime.metadata_version == 12);
 			assert!(runtime.is_supported());
 		}
+	}
+
+	#[cfg(test)]
+	mod moonriver {
+		use super::*;
+
+		// #[test]
+		// #[ignore = "local data"]
+		// // This test is there to demonstrate an issue with chains build on a substrate not including
+		// // https://github.com/paritytech/substrate/pull/13804
+		// // This test will fail. More details at https://github.com/chevdor/subwasm/issues/79
+		// fn it_loads_moonriver() {
+		// 	let runtime =
+		// 		WasmTestBed::new(&Source::File(PathBuf::from(MOONRIVER_V14))).expect("Failed loading runtime");
+		// 	println!("{runtime:#?}");
+		// 	// assert!(runtime.metadata_version == 12);
+		// 	assert!(runtime.is_supported());
+		// }
 	}
 
 	#[cfg(test)]
