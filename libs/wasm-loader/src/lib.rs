@@ -178,7 +178,7 @@ pub mod tests {
 		const WASM_FILE: &str = "/tmp/runtime.wasm";
 		let mut retry = 0;
 
-		let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).expect("Failed loading wasm");
+		let mut cmd = Command::cargo_bin("subwasm").expect("Failed loading wasm");
 
 		if PathBuf::from(WASM_FILE).exists() {
 			return WASM_FILE.to_string();

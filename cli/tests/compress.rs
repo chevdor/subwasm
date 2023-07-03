@@ -4,7 +4,7 @@ mod test_utils;
 mod cli_tests {
 	#[cfg(test)]
 	mod cli_compress {
-		use crate::test_utils::temp_file;
+		use crate::test_utils::{temp_file, CLI};
 		use assert_cmd::Command;
 
 		#[test]
@@ -13,10 +13,10 @@ mod cli_tests {
 			let tmp_decompressed = temp_file();
 			let tmp_recompressed = temp_file();
 
-			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).expect("Failed getting test bin");
+			let mut cmd = Command::cargo_bin(CLI).expect("Failed getting test bin");
 			cmd.args(["decompress", test_wasm, tmp_decompressed.as_str()]).assert().success().code(0);
 
-			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).expect("Failed getting test bin");
+			let mut cmd = Command::cargo_bin(CLI).expect("Failed getting test bin");
 			cmd.args(["compress", tmp_decompressed.as_str(), tmp_recompressed.as_str()]).assert().success().code(0);
 		}
 
@@ -26,10 +26,10 @@ mod cli_tests {
 			let tmp_decompressed = temp_file();
 			let tmp_decompressed_again = temp_file();
 
-			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).expect("Failed getting test bin");
+			let mut cmd = Command::cargo_bin(CLI).expect("Failed getting test bin");
 			cmd.args(["decompress", test_wasm, tmp_decompressed.as_str()]).assert().success().code(0);
 
-			let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).expect("Failed getting test bin");
+			let mut cmd = Command::cargo_bin(CLI).expect("Failed getting test bin");
 			cmd.args(["decompress", tmp_decompressed.as_str(), tmp_decompressed_again.as_str()])
 				.assert()
 				.success()

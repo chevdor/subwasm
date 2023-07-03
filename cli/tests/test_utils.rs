@@ -2,6 +2,9 @@ use assert_cmd::Command;
 use core::panic;
 use std::{env::temp_dir, path::PathBuf};
 
+#[cfg(test)]
+pub const CLI: &str = "subwasm";
+
 #[allow(dead_code)]
 #[cfg(test)]
 /// Ensure we have a local wasm available at /tpm/runtime.wasm
@@ -10,7 +13,7 @@ pub fn ensure_local_wasm() -> String {
 	const WASM_FILE: &str = "/tmp/runtime.wasm";
 	let mut retry = 0;
 
-	let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).expect("Failed getting test bin");
+	let mut cmd = Command::cargo_bin(CLI).expect("Failed getting test bin");
 
 	if PathBuf::from(WASM_FILE).exists() {
 		println!("Found an existing runtime, reusing...");

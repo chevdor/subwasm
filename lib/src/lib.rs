@@ -31,6 +31,8 @@ pub use subwasm::*;
 pub use types::*;
 pub use utils::*;
 
+pub const CLI: &str = "subwasm";
+
 /// Returns Some node url if possible, None otherwise.
 fn get_node_url(chain: &str) -> Result<Url> {
 	let chain_info = ChainInfo::from_str(chain).expect("Unknown chain");
