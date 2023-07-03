@@ -27,8 +27,5 @@ sp-io = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrat
 sp-runtime = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrate" }
 sp-wasm-interface = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrate" }
 frame-metadata = { package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main", features = [
-	"v12",
-	"v13",
-	"v14",
 	"std",
 ] }
