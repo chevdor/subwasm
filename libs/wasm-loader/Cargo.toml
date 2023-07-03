@@ -25,7 +25,7 @@ multibase = "0.9"
 multihash = "0.18"
 array-bytes = { version = "6.1" }
 serde = { version = "1.0", features = ["derive"] }
-sp-maybe-compressed-blob = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrate/" }
+sp-maybe-compressed-blob = { tag = "monthly-2023-07", git = "https://github.com/paritytech/substrate/" }
 url = "2.3"
 
 # RPC components

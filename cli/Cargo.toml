@@ -46,7 +46,7 @@ wasm-loader = { version = "0.20.0", path = "../libs/wasm-loader" }
 wasm-testbed = { version = "0.20.0", path = "../libs/wasm-testbed" }
 serde_json = "1.0"
 text-style = { version = "0.3", features = ["crossterm"] }
-sp-runtime = { tag = "monthly-2023-06", git = "https://github.com/paritytech/substrate" }
+sp-runtime = { tag = "monthly-2023-07", git = "https://github.com/paritytech/substrate" }
 url = "2.3"
 
 [dev-dependencies]
