@@ -1,5 +1,5 @@
 use comparable::Comparable;
-use frame_metadata::{ExtrinsicMetadata, SignedExtensionMetadata};
+use frame_metadata::v14::{ExtrinsicMetadata, SignedExtensionMetadata};
 use scale_info::form::PortableForm;
 use serde::Serialize;
 

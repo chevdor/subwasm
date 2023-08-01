@@ -9,7 +9,8 @@ use crate::differs::reduced::calls::{
 use crate::error::*;
 use comparable::Comparable;
 use frame_metadata::{
-	v14, PalletMetadata,
+	v14,
+	v14::PalletMetadata,
 	RuntimeMetadata::{self, *},
 };
 use scale_info::{form::PortableForm, PortableRegistry};

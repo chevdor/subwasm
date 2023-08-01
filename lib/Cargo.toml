@@ -20,10 +20,7 @@ keywords = [
 
 [dependencies]
 uuid = { version = "1.3", features = ["v4"] }
-frame-metadata = { version = "15", package = "frame-metadata", features = [
-	"v12",
-	"v13",
-	"v14",
+frame-metadata = { version = "16", package = "frame-metadata", features = [
 	"std",
 ] }
 log = "0.4"
@@ -37,7 +34,7 @@ serde = { version = "1.0", features = ["derive"] }
 scale-info = { version = "2.1", default-features = false, features = [
 	"derive",
 ] }
-sp-version = { tag = "monthly-2023-07", git = "https://github.com/paritytech/substrate" }
+sp-version = { tag = "monthly-2023-08", git = "https://github.com/paritytech/substrate" }
 ipfs-hasher = { version = "0.20.0", path = "../libs/ipfs-hasher" }
 wasm-loader = { version = "0.20.0", path = "../libs/wasm-loader" }
 wasm-testbed = { version = "0.20.0", path = "../libs/wasm-testbed" }
