@@ -22,10 +22,10 @@ hex = "0.4"
 blake2 = "0.10"
 thiserror = "1.0"
 codec = { version = "3.1", package = "parity-scale-codec" }
-sp-core = { tag = "monthly-2023-08", git = "https://github.com/paritytech/substrate" }
-sp-io = { tag = "monthly-2023-08", git = "https://github.com/paritytech/substrate" }
-sp-runtime = { tag = "monthly-2023-08", git = "https://github.com/paritytech/substrate" }
-sp-wasm-interface = { tag = "monthly-2023-08", git = "https://github.com/paritytech/substrate" }
+sp-core = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
+sp-io = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
+sp-runtime = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
+sp-wasm-interface = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
 frame-metadata = { package = "frame-metadata", git = "https://github.com/paritytech/frame-metadata", branch = "main", features = [
 	"std",
 ] }
