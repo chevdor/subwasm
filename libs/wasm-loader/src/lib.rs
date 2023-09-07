@@ -75,9 +75,9 @@ impl WasmLoader {
 
 				// One for Ping, one for response.
 				for _ in 0..2_u8 {
-					let Message::Text(t) = map_err(ws.read_message(), WasmLoaderError::WsClient(url.to_string()))? else {
-						continue
-
+					let Message::Text(t) = map_err(ws.read_message(), WasmLoaderError::WsClient(url.to_string()))?
+					else {
+						continue;
 					};
 
 					wasm_hex = serde_json::from_str::<Response>(&t).map(|r| r.result).ok();

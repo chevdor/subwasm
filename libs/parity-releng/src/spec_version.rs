@@ -50,22 +50,12 @@ mod test_spec_version {
 
 	#[test]
 	fn test_from_version() {
-		assert_eq!(
-			9420_u32,
-			SpecVersion::from(Version::parse("0.9.42").expect("Simple version can be parsed")).spec_version
-		);
-		assert_eq!(
-			9420_u32,
-			SpecVersion::from(Version::parse("0.9.420").expect("Simple version can be parsed")).spec_version
-		);
-		assert_eq!(
-			100042_u32,
-			SpecVersion::from(Version::parse("1.0.42").expect("Simple version can be parsed")).spec_version
-		);
-		assert_eq!(
-			100420_u32,
-			SpecVersion::from(Version::parse("1.0.420").expect("Simple version can be parsed")).spec_version
-		);
+		assert_eq!(9420_u32, SpecVersion::from(Version::parse("0.9.42").unwrap()).spec_version);
+		assert_eq!(9420_u32, SpecVersion::from(Version::parse("0.9.420").unwrap()).spec_version);
+		assert_eq!(100042_u32, SpecVersion::from(Version::parse("1.0.42").unwrap()).spec_version);
+		assert_eq!(100420_u32, SpecVersion::from(Version::parse("1.0.420").unwrap()).spec_version);
+		assert_eq!(100001_u32, SpecVersion::from(Version::parse("1.0.1").unwrap()).spec_version);
+		assert_eq!(100010_u32, SpecVersion::from(Version::parse("1.0.10").unwrap()).spec_version);
 	}
 
 	#[test]
