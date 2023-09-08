@@ -49,13 +49,28 @@ mod test_spec_version {
 	}
 
 	#[test]
-	fn test_from_version() {
-		assert_eq!(9420_u32, SpecVersion::from(Version::parse("0.9.42").unwrap()).spec_version);
-		assert_eq!(9420_u32, SpecVersion::from(Version::parse("0.9.420").unwrap()).spec_version);
-		assert_eq!(100042_u32, SpecVersion::from(Version::parse("1.0.42").unwrap()).spec_version);
-		assert_eq!(100420_u32, SpecVersion::from(Version::parse("1.0.420").unwrap()).spec_version);
-		assert_eq!(100001_u32, SpecVersion::from(Version::parse("1.0.1").unwrap()).spec_version);
-		assert_eq!(100010_u32, SpecVersion::from(Version::parse("1.0.10").unwrap()).spec_version);
+	fn test_from_version_0_9() {
+		assert_eq!(0_9_420_u32, SpecVersion::from(Version::parse("0.9.42").unwrap()).spec_version);
+	}
+
+	#[test]
+	fn test_from_version_1_x_polkadot() {
+		assert_eq!(1_00_042_u32, SpecVersion::from(Version::parse("1.0.42").unwrap()).spec_version);
+		assert_eq!(1_00_001_u32, SpecVersion::from(Version::parse("1.0.1").unwrap()).spec_version);
+		assert_eq!(1_00_010_u32, SpecVersion::from(Version::parse("1.0.10").unwrap()).spec_version);
+		assert_eq!(1_01_000_u32, SpecVersion::from(Version::parse("1.1.0").unwrap()).spec_version);
+		assert_eq!(1_01_001_u32, SpecVersion::from(Version::parse("1.1.1").unwrap()).spec_version);
+	}
+
+	#[test]
+	fn test_from_version_cumulus() {
+		assert_eq!(0_09_420_u32, SpecVersion::from(Version::parse("0.9.420").unwrap()).spec_version);
+		assert_eq!(1_00_420_u32, SpecVersion::from(Version::parse("1.0.420").unwrap()).spec_version);
+		assert_eq!(1_00_042_u32, SpecVersion::from(Version::parse("1.0.42").unwrap()).spec_version);
+		assert_eq!(1_01_000_u32, SpecVersion::from(Version::parse("1.1.0").unwrap()).spec_version);
+		assert_eq!(1_01_001_u32, SpecVersion::from(Version::parse("1.1.1").unwrap()).spec_version);
+		assert_eq!(1_01_010_u32, SpecVersion::from(Version::parse("1.1.10").unwrap()).spec_version);
+		assert_eq!(1_01_100_u32, SpecVersion::from(Version::parse("1.1.100").unwrap()).spec_version);
 	}
 
 	#[test]
