@@ -25,7 +25,6 @@ pub use error::*;
 pub use github_ref::*;
 pub use metadata_wrapper::OutputFormat;
 pub use runtime_info::*;
-pub use source::*;
 pub use substrate_differ::differs::diff_method::DiffMethod;
 pub use subwasm::*;
 pub use types::*;
