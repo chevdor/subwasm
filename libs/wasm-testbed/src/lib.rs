@@ -197,6 +197,9 @@ impl WasmTestBed {
 		let s2 = env::var(AUTHORIZE_UPGRADE_PREFIX_ENV)
 			.unwrap_or_else(|_| DEFAULT_AUTHORIZE_UPGRADE_PREFIX.into())
 			.replacen("0x", "", 1);
+		let maybe_check_version = env::var(AUTHORIZE_UPGRADE_CHECK_VERSION_ENV)
+			.map(|var| if var == "true" { Some(true) } else { Some(false) })
+			.unwrap_or_else(|_| None);
 
 		let decoded1 = <[u8; 1]>::from_hex(&s1).map_err(|_| RuntimePropHashError::HexDecoding(s1))?;
 		let decoded2 = <[u8; 1]>::from_hex(&s2).map_err(|_| RuntimePropHashError::HexDecoding(s2))?;
@@ -205,7 +208,18 @@ impl WasmTestBed {
 		let authorize_upgrade_prefix = *decoded2.first().expect("Failure while fecthing the Auhtorize upgrade ID");
 
 		let parachainsystem_authorize_upgrade_prefix = (parachain_pallet_id, authorize_upgrade_prefix);
-		let result = get_parachainsystem_authorize_upgrade(parachainsystem_authorize_upgrade_prefix, &self.bytes)?;
+		let result = if let Some(check_version) = maybe_check_version {
+			get_parachainsystem_authorize_upgrade_with_check_version(
+				parachainsystem_authorize_upgrade_prefix,
+				&self.bytes,
+				check_version,
+			)
+		} else {
+			get_parachainsystem_authorize_upgrade_without_check_version(
+				parachainsystem_authorize_upgrade_prefix,
+				&self.bytes,
+			)
+		}?;
 		Ok(format!("0x{}", hex::encode(result)))
 	}
 

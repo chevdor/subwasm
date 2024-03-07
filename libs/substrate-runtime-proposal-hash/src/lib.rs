@@ -24,6 +24,9 @@ pub const DEFAULT_PARACHAIN_PALLET_ID: &str = "0x01";
 pub const AUTHORIZE_UPGRADE_PREFIX_ENV: &str = "AUTHORIZE_UPGRADE_PREFIX";
 pub const DEFAULT_AUTHORIZE_UPGRADE_PREFIX: &str = "0x02";
 
+pub const AUTHORIZE_UPGRADE_CHECK_VERSION_ENV: &str = "AUTHORIZE_UPGRADE_CHECK_VERSION";
+pub const DEFAULT_AUTHORIZE_UPGRADE_CHECK_VERSION: bool = true;
+
 /// This struct is a container for whatever we calculated.
 #[derive(Debug)]
 pub struct SrhResult {
@@ -63,7 +66,20 @@ pub fn get_system_setcode(wasm_blob: &[u8]) -> Result<CalllHash> {
 	get_call_hash(PREFIX_SYSTEM_SETCODE, wasm_blob)
 }
 
-pub fn get_parachainsystem_authorize_upgrade(prefix: Prefix, wasm_blob: &[u8]) -> Result<CalllHash> {
+pub fn get_parachainsystem_authorize_upgrade_with_check_version(
+	prefix: Prefix,
+	wasm_blob: &[u8],
+	check_version: bool,
+) -> Result<CalllHash> {
+	let encoded_check_version = if check_version { [1u8; 1] } else { [0u8; 1] };
+	let encoded_wasm_and_spec_version = [wasm_blob, encoded_check_version.as_slice()].concat();
+	get_parachainsystem_authorize_upgrade_without_check_version(prefix, &encoded_wasm_and_spec_version.as_slice())
+}
+
+pub fn get_parachainsystem_authorize_upgrade_without_check_version(
+	prefix: Prefix,
+	wasm_blob: &[u8],
+) -> Result<CalllHash> {
 	let code_hash = BlakeTwo256::hash(wasm_blob);
 	let call_hash = get_call_hash(prefix, code_hash.as_bytes())?;
 	Ok(call_hash)
@@ -107,9 +123,9 @@ mod prop_hash_tests {
 	#[test]
 	fn test_parachain_upgrade() {
 		assert_eq!(
-			get_parachainsystem_authorize_upgrade(
+			get_parachainsystem_authorize_upgrade_without_check_version(
 				(0x01, 0x02),
-				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f]
+				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f],
 			)
 			.expect("Failed getting a hash"),
 			[
@@ -120,16 +136,72 @@ mod prop_hash_tests {
 	}
 
 	#[test]
+	fn test_parachain_upgrade_with_check_version_flag() {
+		assert_eq!(
+			get_parachainsystem_authorize_upgrade_with_check_version(
+				(0x01, 0x02),
+				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f],
+				true
+			)
+			.expect("Failed getting a hash"),
+			[
+				255, 136, 77, 165, 38, 191, 103, 149, 77, 98, 123, 91, 145, 68, 229, 218, 76, 57, 90, 255, 251, 185,
+				240, 122, 3, 97, 200, 201, 148, 176, 159, 91
+			]
+		);
+		assert_eq!(
+			get_parachainsystem_authorize_upgrade_with_check_version(
+				(0x01, 0x02),
+				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f],
+				false
+			)
+			.expect("Failed getting a hash"),
+			[
+				236, 29, 41, 41, 176, 186, 147, 240, 151, 133, 19, 116, 252, 74, 252, 218, 203, 96, 210, 187, 190, 1,
+				104, 151, 64, 220, 202, 65, 178, 71, 230, 49
+			]
+		);
+	}
+
+	#[test]
 	fn test_custom_parachain_upgrade() {
 		assert_eq!(
-			get_parachainsystem_authorize_upgrade(
+			get_parachainsystem_authorize_upgrade_without_check_version(
 				(0x32, 0x02),
-				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f]
+				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f],
 			)
 			.expect("Failed getting a hash"),
 			[
 				51, 203, 30, 131, 48, 13, 150, 26, 217, 87, 213, 55, 43, 10, 200, 193, 248, 254, 202, 83, 165, 231, 4,
 				59, 213, 247, 98, 153, 119, 166, 175, 133
+			]
+		);
+	}
+
+	#[test]
+	fn test_custom_parachain_upgrade_with_check_version_flag() {
+		assert_eq!(
+			get_parachainsystem_authorize_upgrade_with_check_version(
+				(0x32, 0x02),
+				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f],
+				true
+			)
+			.expect("Failed getting a hash"),
+			[
+				45, 195, 105, 108, 164, 19, 190, 55, 10, 126, 79, 178, 211, 123, 159, 167, 169, 37, 119, 152, 252, 196,
+				96, 75, 18, 40, 83, 130, 69, 56, 82, 183
+			]
+		);
+		assert_eq!(
+			get_parachainsystem_authorize_upgrade_with_check_version(
+				(0x32, 0x02),
+				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f],
+				false
+			)
+			.expect("Failed getting a hash"),
+			[
+				160, 254, 254, 97, 81, 81, 123, 207, 195, 131, 209, 158, 223, 59, 62, 111, 249, 65, 32, 70, 130, 46,
+				213, 109, 158, 210, 161, 134, 69, 37, 212, 122
 			]
 		);
 	}
