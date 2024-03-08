@@ -201,7 +201,7 @@ impl WasmTestBed {
 			.map(|var| if var == "true" { Some(true) } else { Some(false) })
 			.unwrap_or_else(|_| None);
 		if check_version.is_none() {
-			log::warn!("Env variable `{AUTHORIZE_UPGRADE_CHECK_VERSION_ENV}` not specified. If you are running on Substrate >= 0.9.41, this will most likely yield wrong values for the `parachainSystem::authorizeUpgrade` call hash.");
+			log::warn!("Env variable `{AUTHORIZE_UPGRADE_CHECK_VERSION_ENV}` not specified. If your chain is running on Substrate >= 0.9.41, this will most likely yield wrong values for the `parachainSystem::authorizeUpgrade` call hash.");
 		}
 
 		let decoded1 = <[u8; 1]>::from_hex(&s1).map_err(|_| RuntimePropHashError::HexDecoding(s1))?;

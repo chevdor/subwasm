@@ -25,7 +25,6 @@ pub const AUTHORIZE_UPGRADE_PREFIX_ENV: &str = "AUTHORIZE_UPGRADE_PREFIX";
 pub const DEFAULT_AUTHORIZE_UPGRADE_PREFIX: &str = "0x02";
 
 pub const AUTHORIZE_UPGRADE_CHECK_VERSION_ENV: &str = "AUTHORIZE_UPGRADE_CHECK_VERSION";
-pub const DEFAULT_AUTHORIZE_UPGRADE_CHECK_VERSION: bool = true;
 
 /// This struct is a container for whatever we calculated.
 #[derive(Debug)]
