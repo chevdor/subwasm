@@ -4378,6 +4378,7 @@ dependencies = [
  "blake2",
  "frame-metadata 16.0.0 (git+https://github.com/paritytech/frame-metadata?branch=main)",
  "hex",
+ "log",
  "parity-scale-codec",
  "sp-core",
  "sp-io",
