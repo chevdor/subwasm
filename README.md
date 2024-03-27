@@ -111,11 +111,11 @@ MacOS Homebrew users can use:
 
     Commands:
       get         Get/Download the runtime wasm from a running node through rpc
-      info        The `info` command returns summarized information about a runtime
-      version     The `version` command returns summarized information about the versions of a runtime
+      info        Shows information about a given runtime
+      version     Shows information about a given runtime
       metadata    Returns the metadata of the given runtime in several format. You may also use the "meta" alias
       show        Shows the a reduced view of the runtime
-      diff        Compare 2 runtimes after converting them to `ReducedRuntime`s
+      diff        Compare 2 runtimes after converting them to `[ReducedRuntime]`s
       compress    Compress a given runtime wasm file. You will get an error if you try compressing a runtime that is already compressed
       decompress  Decompress a given runtime wasm file. You may pass a runtime that is already uncompressed
       help        Print this message or the help of the given subcommand(s)
@@ -123,7 +123,7 @@ MacOS Homebrew users can use:
     Options:
       -v, --version   Show the version
       -j, --json      Output as json
-      -n, --no-color  [env: NO_COLOR=]
+      -n, --no-color  Do not write color information to the output. This is recommended for scripts [env: NO_COLOR=]
       -q, --quiet     Less output
       -h, --help      Print help
 
@@ -163,6 +163,8 @@ MacOS Homebrew users can use:
               Output as json
 
       -n, --no-color
+              Do not write color information to the output. This is recommended for scripts
+
               [env: NO_COLOR=]
 
       -q, --quiet
@@ -173,7 +175,7 @@ MacOS Homebrew users can use:
 
 ### Command: info
 
-    The `info` command returns summarized information about a runtime
+    Shows information about a given runtime
 
     Usage: subwasm info [OPTIONS] [FILE]
 
@@ -202,6 +204,8 @@ MacOS Homebrew users can use:
               Output as json
 
       -n, --no-color
+              Do not write color information to the output. This is recommended for scripts
+
               [env: NO_COLOR=]
 
       -q, --quiet
@@ -211,11 +215,18 @@ MacOS Homebrew users can use:
               Print help (see a summary with '-h')
 
 By default, the ID for the Parachain pallet is expected to be `0x01` and the call ID for `authorize_upgrade` is expected to be `0x03`.
-This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to the ID of your parachain pallet and the `AUTHORIZE_UPGRADE_PREFIX` to the ID of your choice.
+This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to the ID of your parachain pallet and the
+`AUTHORIZE_UPGRADE_PREFIX` to the ID of your choice.
+
+Due to a [breaking change to the `parachainSystem::authorizeUpgrade` extrinsic](https://github.com/paritytech/cumulus/commit/3249186fe643f62ca95769e2217f858dde803ab6), a new `checkVersion` boolean flag is required on chains running on Cumulus v0.9.41 and above.
+This new behavior is supported by the `AUTHORIZE_UPGRADE_CHECK_VERSION` env variable, which, if set, is evaluated to
+`true` if its value is the string `"true"`, or `` false` `` otherwise. If not set, the behavior remains the same as pre-0.9.41.
+
+The new `check_spec_version` parameter can be provided with the `AUTHORIZE_UPGRADE_CHECK_VERSION=true` or `AUTHORIZE_UPGRADE_CHECK_VERSION=false` variable, if needed.
 
 ### Command: version
 
-    The `version` command returns summarized information about the versions of a runtime
+    Shows information about a given runtime
 
     Usage: subwasm version [OPTIONS] [FILE]
 
@@ -244,6 +255,8 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
               Output as json
 
       -n, --no-color
+              Do not write color information to the output. This is recommended for scripts
+
               [env: NO_COLOR=]
 
       -q, --quiet
@@ -292,6 +305,8 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
               Output as json
 
       -n, --no-color
+              Do not write color information to the output. This is recommended for scripts
+
               [env: NO_COLOR=]
 
       -q, --quiet
@@ -335,6 +350,8 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
               Output as json
 
       -n, --no-color
+              Do not write color information to the output. This is recommended for scripts
+
               [env: NO_COLOR=]
 
       -q, --quiet
@@ -345,7 +362,7 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
 
 ### Command: diff
 
-    Compare 2 runtimes after converting them to `ReducedRuntime`s.
+    Compare 2 runtimes after converting them to `[ReducedRuntime]`s.
 
     You must pass exactly 2 runtimes.
 
@@ -363,6 +380,8 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
               Output as json
 
       -n, --no-color
+              Do not write color information to the output. This is recommended for scripts
+
               [env: NO_COLOR=]
 
       -q, --quiet
@@ -383,7 +402,7 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
 
     Options:
       -j, --json      Output as json
-      -n, --no-color  [env: NO_COLOR=]
+      -n, --no-color  Do not write color information to the output. This is recommended for scripts [env: NO_COLOR=]
       -q, --quiet     Less output
       -h, --help      Print help
 
@@ -407,6 +426,8 @@ This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to t
               Output as json
 
       -n, --no-color
+              Do not write color information to the output. This is recommended for scripts
+
               [env: NO_COLOR=]
 
       -q, --quiet
@@ -441,8 +462,8 @@ Please note that you will likely need to connect to an **archive** node to retri
 **Here we get the latest version of the runtime, the 3 commands do the same since they all use the default values:**
 
     subwasm get
-    subwasm get --url http://localhost:9933
-    subwasm get --url http://localhost:9933 --output runtime_000.wasm
+    subwasm get http://localhost:9933
+    subwasm get http://localhost:9933 --output runtime_000.wasm
 
 **Here we get an older runtime, back when Polkadot was at block 20 !**
 
@@ -453,10 +474,10 @@ By default, your runtime will be saved as `runtime_000.wasm`. Running this comma
 **Get quick check of a runtime**
 
     # Show the runtime version and exit with status 0
-    subwasm info --input kusama-2030.wasm
+    subwasm info kusama-2030.wasm
 
     # Provide a few explanations and exit with a status that is not 0
-    subwasm info --input tictactoe.wasm
+    subwasm info tictactoe.wasm
 
 ### Metadata JSON and jq tricks
 

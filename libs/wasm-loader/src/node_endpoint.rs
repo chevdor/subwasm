@@ -1,6 +1,6 @@
 use url::Url;
 
-use crate::error::{self, WasmLoaderError};
+use crate::error::{self};
 use error::*;
 use std::str::FromStr;
 

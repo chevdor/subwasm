@@ -290,7 +290,7 @@ pub struct DecompressOpts {
 	pub output: PathBuf,
 }
 
-/// This parser wrapper is used by clap to parse a `&str` as [Source](subwasmlib::source::Source).
+/// This parser wrapper is used by clap to parse a `&str` as [Source].
 pub fn parse_source(s: &str) -> error::Result<Source> {
 	Source::try_from(s).map_err(|_e| error::SubwasmError::SourceParseError(s.to_string()))
 }

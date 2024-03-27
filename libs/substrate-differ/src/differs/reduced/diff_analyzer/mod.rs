@@ -2,8 +2,6 @@ mod compatible;
 mod require_tx_version_bump;
 mod traits;
 
-pub use compatible::*;
-pub use require_tx_version_bump::*;
 pub use traits::*;
 
 use super::{calls::PalletId, changed_wapper::ChangedWrapper, reduced_pallet::*};
