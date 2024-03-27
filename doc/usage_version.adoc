@@ -1,4 +1,4 @@
-The `version` command returns summarized information about the versions of a runtime
+Shows information about a given runtime
 
 Usage: subwasm version [OPTIONS] [FILE]
 
@@ -27,6 +27,8 @@ Options:
           Output as json
 
   -n, --no-color
+          Do not write color information to the output. This is recommended for scripts
+          
           [env: NO_COLOR=]
 
   -q, --quiet

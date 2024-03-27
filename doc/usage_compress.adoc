@@ -8,6 +8,6 @@ Arguments:
 
 Options:
   -j, --json      Output as json
-  -n, --no-color  [env: NO_COLOR=]
+  -n, --no-color  Do not write color information to the output. This is recommended for scripts [env: NO_COLOR=]
   -q, --quiet     Less output
   -h, --help      Print help
