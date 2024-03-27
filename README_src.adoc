@@ -86,8 +86,8 @@ NOTE: Please note that you will likely need to connect to an **archive** node to
 .Here we get the latest version of the runtime, the 3 commands do the same since they all use the default values:
 
     subwasm get
-    subwasm get --url http://localhost:9933
-    subwasm get --url http://localhost:9933 --output runtime_000.wasm
+    subwasm get http://localhost:9933
+    subwasm get http://localhost:9933 --output runtime_000.wasm
 
 .Here we get an older runtime, back when Polkadot was at block 20 !
 
@@ -100,10 +100,10 @@ NOTE: By default, your runtime will be saved as `runtime_000.wasm`. Running this
 [subs="attributes+"]
 ----
 # Show the runtime version and exit with status 0
-{cmd} info --input kusama-2030.wasm
+{cmd} info kusama-2030.wasm
 
 # Provide a few explanations and exit with a status that is not 0
-{cmd} info --input tictactoe.wasm
+{cmd} info tictactoe.wasm
 ----
 
 === Metadata JSON and jq tricks
