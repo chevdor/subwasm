@@ -11,6 +11,8 @@ jobs:
   daily_check:
     env:
       CARGO_TERM_COLOR: always
+      RUST_TEST_NOCAPTURE: 1
+
     strategy:
       fail-fast: false
       matrix:
