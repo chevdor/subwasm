@@ -1,7 +1,5 @@
 use super::calls::{call::*, constant::*, error::*, event::*, storage::*};
 use comparable::Comparable;
-// use frame_metadata::PalletCallMetadata;
-// use scale_info::form::PortableForm;
 use std::fmt::Display;
 
 #[derive(Debug, PartialEq, Hash, Comparable, PartialOrd, Ord, Eq)]

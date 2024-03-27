@@ -1,4 +1,4 @@
-use crate::{chain_urls::get_chain_urls, error, SubwasmLibError};
+use crate::{chain_urls::get_chain_urls, error};
 use error::*;
 use rand::seq::SliceRandom;
 use std::str::FromStr;
@@ -31,7 +31,7 @@ pub struct ChainInfo {
 	/// Name of the chain
 	pub name: String,
 
-	/// List of endpoints for the chain [name]
+	/// List of endpoints for the chain [ChainInfo::name]
 	pub endpoints: Vec<NodeEndpoint>,
 }
 

@@ -18,11 +18,8 @@ scale-info = { version = "2.1.2", default-features = false, features = [
 	"std",
 	"serde",
 ] }
-frame-metadata = { version = "15", package = "frame-metadata", features = [
-	"v12",
-	"v13",
-	"v14",
-	"std",
+frame-metadata = { version = "16", package = "frame-metadata", features = [
+	"std", "legacy"
 ] }
 
 [dev-dependencies]

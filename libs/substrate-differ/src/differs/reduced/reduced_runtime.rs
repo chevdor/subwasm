@@ -9,7 +9,8 @@ use crate::differs::reduced::calls::{
 use crate::error::*;
 use comparable::Comparable;
 use frame_metadata::{
-	v14, PalletMetadata,
+	v14,
+	v14::PalletMetadata,
 	RuntimeMetadata::{self, *},
 };
 use scale_info::{form::PortableForm, PortableRegistry};
@@ -182,7 +183,7 @@ impl ReducedRuntime {
 			.find(|reduced_pallet| reduced_pallet.name.to_lowercase() == pallet_name.to_ascii_lowercase())
 	}
 
-	/// You can also use [get_pallet_by_name](fn@get_pallet_by_name) but prefer using [get_pallet_by_id](fn@get_pallet_by_id) where you can.
+	/// You can also use [get_pallet_by_name](ReducedRuntime::get_pallet_by_name) but prefer using [get_pallet_by_id](ReducedRuntime::get_pallet_by_id) where you can.
 	pub fn get_pallet_by_id(&self, pallet_id: PalletId) -> Option<&ReducedPallet> {
 		self.pallets.get(&pallet_id)
 	}

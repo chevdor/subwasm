@@ -67,7 +67,7 @@ impl WasmLoader {
 				let mut ws = map_err(tungstenite::connect(url), WasmLoaderError::WsClient(url.to_string()))?.0;
 
 				map_err(
-					ws.write_message(Message::Binary(serde_json::to_vec(&data).expect("invalid data"))),
+					ws.send(Message::Binary(serde_json::to_vec(&data).expect("invalid data"))),
 					WasmLoaderError::WsClient(url.to_string()),
 				)?;
 
@@ -75,8 +75,7 @@ impl WasmLoader {
 
 				// One for Ping, one for response.
 				for _ in 0..2_u8 {
-					let Message::Text(t) = map_err(ws.read_message(), WasmLoaderError::WsClient(url.to_string()))?
-					else {
+					let Message::Text(t) = map_err(ws.read(), WasmLoaderError::WsClient(url.to_string()))? else {
 						continue;
 					};
 
