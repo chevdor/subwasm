@@ -3,7 +3,6 @@ use super::{
 	signature::{Arg, Signature},
 };
 use comparable::Comparable;
-use scale_info::{form::PortableForm, TypeDefVariant};
 use serde::Serialize;
 use std::{collections::BTreeMap, fmt::Display};
 
@@ -70,8 +69,6 @@ pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId,
 
 #[cfg(test)]
 mod test_reduced_call {
-	use crate::differs::reduced::calls::signature::Arg;
-
 	use super::*;
 
 	#[test]

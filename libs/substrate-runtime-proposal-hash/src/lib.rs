@@ -24,6 +24,8 @@ pub const DEFAULT_PARACHAIN_PALLET_ID: &str = "0x01";
 pub const AUTHORIZE_UPGRADE_PREFIX_ENV: &str = "AUTHORIZE_UPGRADE_PREFIX";
 pub const DEFAULT_AUTHORIZE_UPGRADE_PREFIX: &str = "0x02";
 
+pub const AUTHORIZE_UPGRADE_CHECK_VERSION_ENV: &str = "AUTHORIZE_UPGRADE_CHECK_VERSION";
+
 /// This struct is a container for whatever we calculated.
 #[derive(Debug)]
 pub struct SrhResult {
@@ -63,9 +65,19 @@ pub fn get_system_setcode(wasm_blob: &[u8]) -> Result<CalllHash> {
 	get_call_hash(PREFIX_SYSTEM_SETCODE, wasm_blob)
 }
 
-pub fn get_parachainsystem_authorize_upgrade(prefix: Prefix, wasm_blob: &[u8]) -> Result<CalllHash> {
+pub fn get_parachainsystem_authorize_upgrade(
+	prefix: Prefix,
+	wasm_blob: &[u8],
+	check_spec_version: Option<bool>,
+) -> Result<CalllHash> {
 	let code_hash = BlakeTwo256::hash(wasm_blob);
-	let call_hash = get_call_hash(prefix, code_hash.as_bytes())?;
+	let call_hash_preimage = if let Some(check_version) = check_spec_version {
+		let encoded_check_version = [check_version as u8; 1];
+		[code_hash.as_bytes(), encoded_check_version.as_slice()].concat()
+	} else {
+		code_hash.as_bytes().to_owned()
+	};
+	let call_hash = get_call_hash(prefix, call_hash_preimage.as_slice())?;
 	Ok(call_hash)
 }
 
@@ -109,7 +121,8 @@ mod prop_hash_tests {
 		assert_eq!(
 			get_parachainsystem_authorize_upgrade(
 				(0x01, 0x02),
-				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f]
+				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f],
+				None
 			)
 			.expect("Failed getting a hash"),
 			[
@@ -120,16 +133,73 @@ mod prop_hash_tests {
 	}
 
 	#[test]
+	fn test_parachain_upgrade_with_check_version_flag() {
+		assert_eq!(
+			get_parachainsystem_authorize_upgrade(
+				(0x01, 0x02),
+				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f],
+				Some(true)
+			)
+			.expect("Failed getting a hash"),
+			[
+				3, 115, 197, 16, 201, 214, 199, 165, 224, 209, 253, 187, 187, 123, 235, 163, 30, 53, 236, 117, 235,
+				174, 36, 14, 244, 4, 117, 95, 184, 249, 174, 176
+			]
+		);
+		assert_eq!(
+			get_parachainsystem_authorize_upgrade(
+				(0x01, 0x02),
+				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f],
+				Some(false)
+			)
+			.expect("Failed getting a hash"),
+			[
+				119, 119, 214, 62, 223, 113, 109, 231, 134, 250, 52, 135, 213, 23, 52, 143, 125, 34, 235, 123, 167,
+				177, 14, 206, 14, 88, 22, 165, 110, 233, 139, 157
+			]
+		);
+	}
+
+	#[test]
 	fn test_custom_parachain_upgrade() {
 		assert_eq!(
 			get_parachainsystem_authorize_upgrade(
 				(0x32, 0x02),
-				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f]
+				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f],
+				None
 			)
 			.expect("Failed getting a hash"),
 			[
 				51, 203, 30, 131, 48, 13, 150, 26, 217, 87, 213, 55, 43, 10, 200, 193, 248, 254, 202, 83, 165, 231, 4,
 				59, 213, 247, 98, 153, 119, 166, 175, 133
+			]
+		);
+	}
+
+	#[test]
+	fn test_custom_parachain_upgrade_with_check_version_flag() {
+		assert_eq!(
+			get_parachainsystem_authorize_upgrade(
+				(0x32, 0x02),
+				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f],
+				Some(true)
+			)
+			.expect("Failed getting a hash"),
+			[
+				70, 248, 60, 132, 125, 149, 3, 80, 167, 12, 27, 56, 89, 181, 128, 158, 6, 205, 11, 42, 25, 255, 123,
+				216, 86, 86, 127, 53, 193, 119, 224, 44
+			]
+		);
+		assert_eq!(
+			get_parachainsystem_authorize_upgrade(
+				(0x32, 0x02),
+				&[0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x97, 0x03, 0x39, 0x60, 0x03, 0x7f, 0x7f],
+				Some(false)
+			)
+			.expect("Failed getting a hash"),
+			[
+				209, 146, 155, 255, 19, 158, 45, 191, 35, 129, 211, 182, 29, 74, 42, 196, 13, 139, 203, 105, 183, 102,
+				35, 186, 218, 119, 33, 152, 116, 152, 199, 203
 			]
 		);
 	}

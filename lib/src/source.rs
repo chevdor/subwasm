@@ -11,7 +11,7 @@ use crate::github_ref::GithubRef;
 use crate::is_wasm_from_url;
 use crate::ChainInfo;
 
-/// The [wasmloader] provides a basic Source struct that
+/// The [wasm_loader::WasmLoader] provides a basic Source struct that
 /// can handle only a file or RPC endpoint.
 /// This Enum here is fancier and will allow more sources.
 #[derive(Debug, Clone, PartialEq)]
