@@ -211,10 +211,14 @@ MacOS Homebrew users can use:
               Print help (see a summary with '-h')
 
 By default, the ID for the Parachain pallet is expected to be `0x01` and the call ID for `authorize_upgrade` is expected to be `0x03`.
-This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to the ID of your parachain pallet and the `AUTHORIZE_UPGRADE_PREFIX` to the ID of your choice.
-Also, because of a recent [breaking change to the `parachainSystem::authorizeUpgrade` extrinsic](https://github.com/paritytech/cumulus/commit/3249186fe643f62ca95769e2217f858dde803ab6), a new `checkVersion` boolean flag is required on chains running on Cumulus v0.9.41 and above.
-This new behavior is supported by the `AUTHORIZE_UPGRADE_CHECK_VERSION` env variable, which, if set, is evaluated to `true` if its value is the string `"true"`, or false otherwise.
-If not set, the behavior remains the same as pre-0.9.41.
+This default behavior can be overriden by setting the `PARACHAIN_PALLET_ID` to the ID of your parachain pallet and the
+`AUTHORIZE_UPGRADE_PREFIX` to the ID of your choice.
+
+Due to a \[breaking change to the `parachainSystem::authorizeUpgrade` extrinsic\](<https://github.com/paritytech/cumulus/commit/3249186fe643f62ca95769e2217f858dde803ab6>), a new `checkVersion` boolean flag is required on chains running on Cumulus v0.9.41 and above.
+This new behavior is supported by the `AUTHORIZE_UPGRADE_CHECK_VERSION` env variable, which, if set, is evaluated to
+`true` if its value is the string `"true"`, or `` false` `` otherwise. If not set, the behavior remains the same as pre-0.9.41.
+
+The new `check_spec_version` parameter can be provided with the `AUTHORIZE_UPGRADE_CHECK_VERSION=true` or `AUTHORIZE_UPGRADE_CHECK_VERSION=false` variable, if needed.
 
 ### Command: version
 
