@@ -1,5 +1,4 @@
 use sc_executor_common::error::WasmError;
-// use std::fmt;
 use substrate_runtime_proposal_hash::error::RuntimePropHashError;
 use thiserror::Error;
 

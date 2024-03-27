@@ -1,5 +1,5 @@
 use crate::{
-	error::{self, WasmLoaderError},
+	error::{self},
 	NodeEndpoint,
 };
 use std::str::FromStr;

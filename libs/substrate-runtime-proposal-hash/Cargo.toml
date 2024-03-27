@@ -18,7 +18,6 @@ readme = "README.md"
 repository = "https://github.com/chevdor/subwasm"
 
 [dependencies]
-log = "0.4"
 hex = "0.4"
 blake2 = "0.10"
 thiserror = "1.0"

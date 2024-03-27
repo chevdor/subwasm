@@ -8,7 +8,7 @@ use crate::{
 	error::*,
 	metadata_wrapper::{self, MetadataWrapper},
 	utils::print_big_output_safe,
-	RuntimeInfo, SubwasmLibError,
+	RuntimeInfo,
 };
 
 /// The main `subwasm` object

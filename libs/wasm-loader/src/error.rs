@@ -1,4 +1,3 @@
-// use std::fmt;
 use thiserror::Error;
 
 pub type Result<T> = std::result::Result<T, WasmLoaderError>;
