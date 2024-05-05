@@ -30,8 +30,8 @@ url = "2.3"
 
 # RPC components
 serde_json = { version = "1.0" }
-subrpcer = { version = "0.10" }
-tungstenite = { version = "0.20", features = ["rustls-tls-native-roots"] }
+subrpcer = { version = "0.11" }
+tungstenite = { version = "0.21", features = ["rustls-tls-native-roots"] }
 ureq = { version = "2.6", features = ["json"] }
 
 [dev-dependencies]

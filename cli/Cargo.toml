@@ -38,7 +38,7 @@ clap = { version = "4.0", features = [
 ] }
 color-eyre = "0.6"
 thiserror = "1.0"
-env_logger = "0.10"
+env_logger = "0.11"
 log = "0.4"
 substrate-runtime-proposal-hash = { version = "0.20.0", path = "../libs/substrate-runtime-proposal-hash", optional = true }
 subwasmlib = { version = "0.20.0", path = "../lib" }
