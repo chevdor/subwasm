@@ -2000,7 +2000,7 @@ dependencies = [
 
 [[package]]
 name = "ipfs-hasher"
-version = "0.21.0"
+version = "0.21.1"
 dependencies = [
  "ipfs-unixfs",
  "thiserror",
@@ -4147,7 +4147,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-differ"
-version = "0.21.0"
+version = "0.21.1"
 dependencies = [
  "comparable",
  "document-features",
@@ -4164,7 +4164,7 @@ dependencies = [
 
 [[package]]
 name = "substrate-runtime-proposal-hash"
-version = "0.21.0"
+version = "0.21.1"
 dependencies = [
  "blake2",
  "frame-metadata",
@@ -4185,7 +4185,7 @@ checksum = "81cdd64d312baedb58e21336b31bc043b77e01cc99033ce76ef539f78e965ebc"
 
 [[package]]
 name = "subwasm"
-version = "0.21.0"
+version = "0.21.1"
 dependencies = [
  "assert_cmd",
  "clap",
@@ -4206,7 +4206,7 @@ dependencies = [
 
 [[package]]
 name = "subwasmlib"
-version = "0.21.0"
+version = "0.21.1"
 dependencies = [
  "calm_io",
  "frame-metadata",
@@ -4893,7 +4893,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-loader"
-version = "0.21.0"
+version = "0.21.1"
 dependencies = [
  "array-bytes",
  "assert_cmd",
@@ -4912,7 +4912,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-testbed"
-version = "0.21.0"
+version = "0.21.1"
 dependencies = [
  "frame-metadata",
  "hex",
