@@ -177,12 +177,13 @@ fn main() -> color_eyre::Result<()> {
 			if opts.version {
 				let name = crate_name!();
 				let version = crate_version!();
-				let commit_hash = env::var("SUBWASM_CLI_GIT_COMMIT_HASH");
-				let build_date = env::var("SUBWASM_CLI_BUILD_DATE");
+				let commit_hash = option_env!("SUBWASM_CLI_GIT_COMMIT_HASH");
+				let build_date = option_env!("SUBWASM_CLI_BUILD_DATE");
 
 				if !opts.json {
-					let commit_hash_str = if let Ok(s) = commit_hash { format!("-{s}") } else { String::from("") };
-					let build_date_str = if let Ok(s) = build_date { format!(" built {s}") } else { String::from("") };
+					let commit_hash_str = commit_hash.map(|s| format!("-{s}")).unwrap_or_default();
+					let build_date_str = build_date.map(|s| format!(" built {s}")).unwrap_or_default();
+
 					println!("{name} v{version}{commit_hash_str}{build_date_str}");
 				} else {
 					let version_data = json!({
