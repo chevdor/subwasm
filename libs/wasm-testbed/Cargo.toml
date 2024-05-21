@@ -23,16 +23,16 @@ log = "0.4"
 thiserror = "1.0"
 wasm-loader = { version = "0.21.0", path = "../wasm-loader" }
 substrate-runtime-proposal-hash = { version = "0.21.0", path = "../substrate-runtime-proposal-hash" }
-sc-executor = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
-sc-executor-common = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
+sc-executor = "0.37.0"
+sc-executor-common = "0.33.0"
 scale = { version = "3", package = "parity-scale-codec", default-features = false }
-sp-core = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
-sp-io = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
-sp-runtime = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
-sp-state-machine = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
-sp-wasm-interface = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
-sp-version = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
-scale-info = { version = "2.1", default-features = false, features = [
+sp-core = "32.0.0"
+sp-io = "35.0.0"
+sp-runtime = "36.0.0"
+sp-state-machine = "0.40.0"
+sp-wasm-interface = "21.0.0"
+sp-version = "34.0.0"
+scale-info = { version = "2.11.3", default-features = false, features = [
 	"derive",
 ] }
 frame-metadata = { version = "16", package = "frame-metadata", features = [
