@@ -21,8 +21,8 @@ repository = "https://github.com/chevdor/subwasm"
 hex = "0.4"
 log = "0.4"
 thiserror = "1.0"
-wasm-loader = { version = "0.20.0", path = "../wasm-loader" }
-substrate-runtime-proposal-hash = { version = "0.20.0", path = "../substrate-runtime-proposal-hash" }
+wasm-loader = { version = "0.21.0", path = "../wasm-loader" }
+substrate-runtime-proposal-hash = { version = "0.21.0", path = "../substrate-runtime-proposal-hash" }
 sc-executor = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
 sc-executor-common = { branch = "master", git = "https://github.com/paritytech/polkadot-sdk" }
 scale = { version = "3", package = "parity-scale-codec", default-features = false }
