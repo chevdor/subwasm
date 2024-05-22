@@ -21,8 +21,8 @@ repository = "https://github.com/chevdor/subwasm"
 hex = "0.4"
 log = "0.4"
 thiserror = "1.0"
-wasm-loader = { version = "0.21.1", path = "../wasm-loader" }
-substrate-runtime-proposal-hash = { version = "0.21.1", path = "../substrate-runtime-proposal-hash" }
+wasm-loader = { version = "0.21.2", path = "../wasm-loader" }
+substrate-runtime-proposal-hash = { version = "0.21.2", path = "../substrate-runtime-proposal-hash" }
 sc-executor = "0.37.0"
 sc-executor-common = "0.33.0"
 scale = { version = "3", package = "parity-scale-codec", default-features = false }
