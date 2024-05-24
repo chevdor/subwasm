@@ -23,6 +23,9 @@ repository = "https://github.com/chevdor/subwasm"
 name = "subwasm"
 path = "src/main.rs"
 
+[build-dependencies]
+chrono = "0.4"
+
 [dependencies]
 assert_cmd = "2.0"
 clap = { version = "4.0", features = [
