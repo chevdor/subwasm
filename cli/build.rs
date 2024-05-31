@@ -1,3 +1,5 @@
+use chrono::{DateTime, Utc};
+
 use std::{borrow::Cow, process::Command};
 
 fn main() {
@@ -11,23 +13,15 @@ pub fn generate_cargo_keys() {
 }
 
 pub fn generate_cargo_key_build_date() {
-	let build_date = match Command::new("date").args(["-u", "+%FT%TZ"]).output() {
-		Ok(o) if o.status.success() => {
-			let sha = String::from_utf8_lossy(&o.stdout).trim().to_owned();
-			Cow::from(sha)
-		}
-		Ok(o) => {
-			let status = o.status;
-			println!("cargo:warning=Failed fetching the date timestamp: {status}");
-			Cow::from("unknown")
-		}
-		Err(err) => {
-			println!("cargo:warning=Failed fetching the datge: {err}");
-			Cow::from("unknown")
-		}
-	};
+	let build_date = std::env::var("SOURCE_DATE_EPOCH")
+		.ok()
+		.and_then(|ts| ts.parse::<i64>().ok())
+		.and_then(|ts| DateTime::from_timestamp(ts, 0))
+		.unwrap_or_else(|| Utc::now());
 
-	println!("cargo:rustc-env=SUBWASM_CLI_BUILD_DATE={build_date}");
+	let formatted_build_date = build_date.format("%Y-%m-%dT%H:%M:%SZ").to_string();
+
+	println!("cargo:rustc-env=SUBWASM_CLI_BUILD_DATE={formatted_build_date}");
 }
 
 pub fn generate_cargo_key_git() {
