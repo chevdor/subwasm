@@ -13,4 +13,4 @@ ipfs-unixfs = "0.2"
 thiserror = "1.0"
 
 [dev-dependencies]
-wasm-loader = { version = "0.21.2", path = "../wasm-loader" }
+wasm-loader = { version = "0.21.3", path = "../wasm-loader" }

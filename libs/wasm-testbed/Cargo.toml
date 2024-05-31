@@ -21,17 +21,17 @@ repository = "https://github.com/chevdor/subwasm"
 hex = "0.4"
 log = "0.4"
 thiserror = "1.0"
-wasm-loader = { version = "0.21.2", path = "../wasm-loader" }
-substrate-runtime-proposal-hash = { version = "0.21.2", path = "../substrate-runtime-proposal-hash" }
-sc-executor = "0.37.0"
-sc-executor-common = "0.33.0"
+wasm-loader = { version = "0.21.3", path = "../wasm-loader" }
+substrate-runtime-proposal-hash = { version = "0.21.3", path = "../substrate-runtime-proposal-hash" }
+sc-executor = "0.38.0"
+sc-executor-common = "0.34.0"
 scale = { version = "3", package = "parity-scale-codec", default-features = false }
-sp-core = "32.0.0"
-sp-io = "35.0.0"
-sp-runtime = "36.0.0"
-sp-state-machine = "0.40.0"
+sp-core = "33.0.0"
+sp-io = "36.0.0"
+sp-runtime = "37.0.0"
+sp-state-machine = "0.41.0"
 sp-wasm-interface = "21.0.0"
-sp-version = "34.0.0"
+sp-version = "35.0.0"
 scale-info = { version = "2.11.3", default-features = false, features = [
 	"derive",
 ] }
