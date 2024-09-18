@@ -34,7 +34,7 @@ serde = { version = "1.0", features = ["derive"] }
 scale-info = { version = "2.11.3", default-features = false, features = [
 	"derive",
 ] }
-sp-version = "35.0.0"
+sp-version = "37.0.0"
 ipfs-hasher = { version = "0.21.3", path = "../libs/ipfs-hasher" }
 wasm-loader = { version = "0.21.3", path = "../libs/wasm-loader" }
 wasm-testbed = { version = "0.21.3", path = "../libs/wasm-testbed" }
