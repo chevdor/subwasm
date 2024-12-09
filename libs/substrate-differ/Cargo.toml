@@ -12,7 +12,7 @@ document-features = { version = "0.2" }
 thiserror = "1.0"
 serde = { version = "1.0", features = ["derive", "rc"] }
 comparable = { version = ">=0.5.3", features = ["derive", "serde"] }
-wasm-testbed = { version = "0.21.3", path = "../wasm-testbed" }
+wasm-testbed = { version = "0.21.3", path = "../wasm-testbed", optional = true }
 scale-info = { version = "2.11.3", default-features = false, features = [
 	"derive",
 	"std",
@@ -27,8 +27,11 @@ wasm-loader = { version = "0.21.3", path = "../wasm-loader" }
 
 [features]
 ## The default feature currently excludes feature that are deprecated
-default = ["v14", "reduced"]
+default = ["v14", "reduced", "runtimes"]
 deprecated = ["v12", "v13"]
+
+## Support loading runtimes (wasm files)
+runtimes = ["wasm-testbed"]
 
 ## v12 runtimes
 v12 = []
