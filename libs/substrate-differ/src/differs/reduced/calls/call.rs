@@ -3,11 +3,12 @@ use super::{
 	signature::{Arg, Signature},
 };
 use comparable::Comparable;
-use serde::Serialize;
-use std::{collections::BTreeMap, fmt::Display};
+use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
 
 /// Reduced Call
-#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
+#[self_describing]
 pub struct Call {
 	pub index: ExtrinsicId,
 	pub name: String,
@@ -17,17 +18,21 @@ pub struct Call {
 	pub docs: Documentation,
 }
 
-impl Display for Call {
+impl std::fmt::Display for Call {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		f.write_fmt(format_args!("{: >2}: {} ( {} )", self.index, self.name, self.signature))
 	}
 }
 
-// impl Display for CallChange {
-// 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-// 		f.write_fmt(format_args!("CALL {self}"))
-// 	}
-// }
+impl std::fmt::Display for CallChange {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Signature(sig) => f.write_fmt(format_args!("{}", sig))?,
+			_ => f.write_fmt(format_args!("{:?}", self))?,
+		}
+		Ok(())
+	}
+}
 
 // impl Call {
 // 	pub fn comp(&self) {

@@ -1,10 +1,11 @@
 use super::prelude::*;
 use comparable::Comparable;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
 /// Reduced Storage
-#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
+#[self_describing]
 pub struct Storage {
 	pub name: String,
 	// String to allow new runtimes adding more variants
@@ -44,11 +45,11 @@ impl Display for Storage {
 	}
 }
 
-// impl Display for StorageChange {
-// 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-// 		f.write_fmt(format_args!("STOR {self}"))
-// 	}
-// }
+impl Display for StorageChange {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		f.write_fmt(format_args!("--- STOR {self:?}"))
+	}
+}
 
 // pub fn print_storage_changes(changes: &Vec<StorageChange>) {
 // 	println!("storage change start");

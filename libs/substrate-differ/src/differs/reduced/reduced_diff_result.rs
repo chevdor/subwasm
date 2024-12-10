@@ -48,14 +48,15 @@ impl ReducedDiffResult {
 	}
 
 	pub fn init(mut self) -> Self {
-		// TODO: remove those clones, use refs
-		let ra = self.runtime_a.clone();
-		let rb = self.runtime_b.clone();
-		self.changes = match ra.comparison(&rb) {
+		self.changes = match self.runtime_a.comparison(&self.runtime_b) {
 			comparable::Changed::Unchanged => None,
-			comparable::Changed::Changed(reduced_runtime_change) => Some(Rc::new(ChangedWrapper::from(
-				ReducedRuntimeChangeWrapper::new(reduced_runtime_change, ra.clone(), rb.clone()),
-			))),
+			comparable::Changed::Changed(reduced_runtime_change) => {
+				Some(Rc::new(ChangedWrapper::from(ReducedRuntimeChangeWrapper::new(
+					reduced_runtime_change,
+					self.runtime_a.clone(),
+					self.runtime_b.clone(),
+				))))
+			}
 		};
 
 		if let Some(changes) = &self.changes {

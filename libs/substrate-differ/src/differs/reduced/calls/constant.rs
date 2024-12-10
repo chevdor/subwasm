@@ -1,10 +1,11 @@
 use super::prelude::*;
 use comparable::Comparable;
-use serde::Serialize;
-use std::fmt::Display;
+use serde::{Deserialize, Serialize};
+use std::fmt::{Debug, Display};
 
 /// Reduced Constant
-#[derive(Debug, Serialize, Hash, Comparable, PartialOrd, Ord, PartialEq, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Hash, Comparable, PartialOrd, Ord, PartialEq, Eq, Clone)]
+#[self_describing]
 pub struct Constant {
 	/// Name
 	pub name: String,
@@ -31,11 +32,15 @@ impl Display for Constant {
 	}
 }
 
-// impl Display for ConstantChange {
-// 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-// 		f.write_fmt(format_args!("CST {}", self.to_string()))
-// 	}
-// }
+impl Display for ConstantChange {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Name(name) => f.write_fmt(format_args!("Name changed: {} -> {}", name.0, name.1))?,
+			Self::Value(value) => f.write_fmt(format_args!("Value changed: {value:?}"))?,
+		}
+		Ok(())
+	}
+}
 
 #[cfg(test)]
 mod test_reduced_constant {

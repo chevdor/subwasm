@@ -80,7 +80,7 @@ impl RequireTransactionVersionBump for SignatureChange {
 	}
 }
 
-impl RequireTransactionVersionBump for VecChange<ArgDesc, Vec<ArgChange>> {
+impl RequireTransactionVersionBump for VecChange<Arg, Vec<ArgChange>> {
 	fn require_tx_version_bump(&self) -> bool {
 		let res = match self {
 			// If an arg is added/removed, the call will no longer be **compatible** but that does not require a tx_version bump

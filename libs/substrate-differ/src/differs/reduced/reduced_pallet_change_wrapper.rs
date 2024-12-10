@@ -38,40 +38,30 @@ impl<'a> ReducedPalletChangeWrapper<'a> {
 /// This macro helps formatting changes for a given pallet field.
 macro_rules! fmt_vec_changes {
 	( $self:ident, $f:ident, $field:ident, $changes:ident ) => {{
-		let _ = writeln!($f, "  - {} changes:", stringify!($field));
-		$changes.iter().for_each(|item_changes| {
-			let _ = match item_changes {
-				comparable::MapChange::Added(id, desc) => {
-					let _item_a = $self.pallet_a.map(|pallet| pallet.$field.get(id)).flatten();
-					let _item_b = $self.pallet_b.map(|pallet| pallet.$field.get(id)).flatten();
-					writeln!($f, "    [+] {:?}", desc)
+		writeln!($f, "  - {} changes:", stringify!($field))?;
+		let get_a = |id| $self.pallet_a.and_then(|p| p.$field.get(id));
+		let get_b = |id| $self.pallet_b.and_then(|p| p.$field.get(id));
+		for change in $changes {
+			let _ = match change {
+				comparable::MapChange::Added(_id, desc) => {
+					writeln!($f, "    [+] {}", desc)?;
 				}
 				comparable::MapChange::Changed(id, changes) => {
-					let item_a = $self.pallet_a.map(|pallet| pallet.$field.get(id)).flatten();
-					let _item_b = $self.pallet_b.map(|pallet| pallet.$field.get(id)).flatten();
+					let item_a = get_a(id).map(|i| i.to_string()).unwrap_or_default();
+					let item_b = get_b(id).map(|i| i.to_string()).unwrap_or_default();
 					let indent: usize = 4;
-					let _ = writeln!(
-						$f,
-						"{:indent$}[≠] {item:<20}",
-						" ",
-						item = if let Some(item) = item_a { item.to_string() } else { "n/a".to_string() },
-					);
-					// TODO: The debug render of `change` is very verbose. It would be great to make it more compact/readable
-					// for change in changes {
-					// 	println!("{change}");
-					// }
-					let _ = writeln!($f, "{:indent$}    {changes:?}", " ");
-					Ok(())
+					writeln!($f, "{:indent$}[≠] OLD: {item_a:<20}", " ",)?;
+					writeln!($f, "{:indent$}    NEW: {item_b:<20}", " ",)?;
+					for change in changes {
+						writeln!($f, "{:indent$}    {change}", " ")?;
+					}
 				}
 				comparable::MapChange::Removed(id) => {
-					let item_a_name = match $self.pallet_a.map(|pallet| pallet.$field.get(id)).flatten() {
-						Some(c) => &c.name,
-						None => "n/a",
-					};
-					writeln!($f, "    [-] {:?}", item_a_name)
+					let item_a_name = get_a(id).map(|c| c.name.as_str()).unwrap_or("n/a");
+					writeln!($f, "    [-] {}", item_a_name)?;
 				}
 			};
-		});
+		}
 		Ok(())
 	}};
 }
