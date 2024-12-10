@@ -1,7 +1,4 @@
-use super::{
-	prelude::*,
-	signature::{Arg, Signature},
-};
+use super::{fields_to_args, prelude::*, signature::Signature};
 use comparable::Comparable;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -36,15 +33,11 @@ impl std::fmt::Display for EventChange {
 	}
 }
 
-pub fn variant_to_events(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Event> {
+pub fn variant_to_events(registry: &PortableRegistry, td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Event> {
 	td.variants
 		.iter()
 		.map(|vv| {
-			let args = vv
-				.fields
-				.iter()
-				.map(|f| Arg { name: f.name.clone().unwrap_or_default(), ty: f.type_name.clone().unwrap_or_default() })
-				.collect();
+			let args = fields_to_args(registry, &vv.fields);
 
 			(
 				vv.index as PalletId,

@@ -39,6 +39,7 @@ impl Compatible for ConstantChange {
 		let res = match self {
 			ConstantChange::Name(_) => false,
 			ConstantChange::Value(_) => true,
+			ConstantChange::Ty(_) => false,
 		};
 		trace!("Compat. | Constant: {res}");
 		res
@@ -73,6 +74,7 @@ impl Compatible for StorageChange {
 		let res = match self {
 			StorageChange::Name(_) => false,
 			StorageChange::Modifier(_) => false,
+			StorageChange::Ty(_) => false,
 			StorageChange::DefaultValue(_) => true,
 		};
 		trace!("Compat. | Storage: {res}");

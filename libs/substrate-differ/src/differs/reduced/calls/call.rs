@@ -1,7 +1,4 @@
-use super::{
-	prelude::*,
-	signature::{Arg, Signature},
-};
+use super::{fields_to_args, prelude::*, signature::Signature};
 use comparable::Comparable;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -43,15 +40,11 @@ impl std::fmt::Display for CallChange {
 // 	}
 // }
 
-pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Call> {
+pub fn variant_to_calls(registry: &PortableRegistry, td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Call> {
 	td.variants
 		.iter()
 		.map(|vv| {
-			let args = vv
-				.fields
-				.iter()
-				.map(|f| Arg { name: f.name.clone().unwrap_or_default(), ty: f.type_name.clone().unwrap_or_default() })
-				.collect();
+			let args = fields_to_args(registry, &vv.fields);
 
 			// PalletItem::Call(PalletData {
 			// 	index: Indexme(vv.index()Indexs u32),
@@ -75,6 +68,7 @@ pub fn variant_to_calls(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId,
 #[cfg(test)]
 mod test_reduced_call {
 	use super::*;
+	use crate::differs::reduced::calls::Arg;
 
 	#[test]
 	fn test_call() {

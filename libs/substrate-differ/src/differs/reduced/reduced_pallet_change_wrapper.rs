@@ -53,7 +53,7 @@ macro_rules! fmt_vec_changes {
 					writeln!($f, "{:indent$}[≠] OLD: {item_a:<20}", " ",)?;
 					writeln!($f, "{:indent$}    NEW: {item_b:<20}", " ",)?;
 					for change in changes {
-						writeln!($f, "{:indent$}    {change}", " ")?;
+						writeln!($f, "{:indent$}    CHANGES: {change}", " ")?;
 					}
 				}
 				comparable::MapChange::Removed(id) => {

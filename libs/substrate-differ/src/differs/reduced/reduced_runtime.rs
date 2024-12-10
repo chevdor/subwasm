@@ -4,7 +4,8 @@ use super::{
 	reduced_pallet::ReducedPallet,
 };
 use crate::differs::reduced::calls::{
-	call::variant_to_calls, constant::Constant, error::variant_to_errors, event::variant_to_events, storage::*,
+	call::variant_to_calls, constant::Constant, error::variant_to_errors, event::variant_to_events,
+	signature::registry_resolve_type, storage::*,
 };
 use crate::error::*;
 use comparable::Comparable;
@@ -55,13 +56,11 @@ impl ReducedRuntime {
 		// calls
 		let calls = if let Some(calls) = &p.calls {
 			let id = calls.ty.id;
-			let ty = registry
-				.resolve(id.to_owned())
-				.ok_or_else(|| SubstrateDifferError::RegistryError("call".to_string(), id))?;
+			let ty = registry.resolve(id).ok_or_else(|| SubstrateDifferError::RegistryError("call".to_string(), id))?;
 
 			match &ty.type_def {
 				scale_info::TypeDef::Variant(v) => {
-					let calls: BTreeMap<PalletId, Call> = variant_to_calls(v);
+					let calls: BTreeMap<PalletId, Call> = variant_to_calls(registry, v);
 
 					// calls.iter().for_each(|call| println!("  call = {}", call));
 					calls
@@ -76,13 +75,12 @@ impl ReducedRuntime {
 		// events
 		let events = if let Some(item) = &p.event {
 			let id = item.ty.id;
-			let ty = registry
-				.resolve(id.to_owned())
-				.ok_or_else(|| SubstrateDifferError::RegistryError("event".to_string(), id))?;
+			let ty =
+				registry.resolve(id).ok_or_else(|| SubstrateDifferError::RegistryError("event".to_string(), id))?;
 
 			match &ty.type_def {
 				scale_info::TypeDef::Variant(v) => {
-					let events: BTreeMap<PalletId, Event> = variant_to_events(v);
+					let events: BTreeMap<PalletId, Event> = variant_to_events(registry, v);
 
 					// events.iter().for_each(|event| println!("  event = {}", event));
 					events
@@ -97,9 +95,8 @@ impl ReducedRuntime {
 		// errors
 		let errors = if let Some(item) = &p.error {
 			let id = item.ty.id;
-			let ty = registry
-				.resolve(id.to_owned())
-				.ok_or_else(|| SubstrateDifferError::RegistryError("error".to_string(), id))?;
+			let ty =
+				registry.resolve(id).ok_or_else(|| SubstrateDifferError::RegistryError("error".to_string(), id))?;
 
 			match &ty.type_def {
 				scale_info::TypeDef::Variant(v) => {
@@ -123,7 +120,7 @@ impl ReducedRuntime {
 						Storage {
 							name: e.name.clone(),
 							modifier: format!("{:?}", e.modifier),
-							// ty: format!("{:?}", e.ty),
+							ty: StorageType::from_v14_metadata(registry, &e.ty),
 							docs: e.docs.clone(),
 							default_value: e.default.clone(),
 						},
@@ -139,7 +136,10 @@ impl ReducedRuntime {
 		let constants: BTreeMap<String, Constant> = p
 			.constants
 			.iter()
-			.map(|i| (i.name.clone(), Constant::new(&i.name, i.value.clone(), i.docs.clone())))
+			.map(|i| {
+				let ty = registry_resolve_type(registry, i.ty.id, None);
+				(i.name.clone(), Constant::new(&i.name, ty, i.value.clone(), i.docs.clone()))
+			})
 			.collect();
 
 		Ok(ReducedPallet { index: p.index.into(), name: name.into(), calls, events, errors, constants, storages })
