@@ -1,6 +1,6 @@
-use super::{call::*, constant::*, error::*, event::*, signature::*, storage::*};
+use super::{call::*, constant::*, error::*, event::*, hashed_type::HashedTypeChange, signature::*, storage::*};
 use crate::differs::reduced::{diff_analyzer::Compatible, prelude::ReducedPalletChange};
-use comparable::{MapChange, VecChange};
+use comparable::{Changed, MapChange, VecChange};
 use log::trace;
 
 impl Compatible for ReducedPalletChange {
@@ -62,7 +62,7 @@ impl Compatible for ErrorChange {
 	fn compatible(&self) -> bool {
 		let res = match self {
 			ErrorChange::Index(_) => false,
-			ErrorChange::Name(_) => false,
+			ErrorChange::Name(_) => true,
 		};
 		trace!("Compat. | Error: {res}");
 		res
@@ -74,7 +74,7 @@ impl Compatible for StorageChange {
 		let res = match self {
 			StorageChange::Name(_) => false,
 			StorageChange::Modifier(_) => false,
-			StorageChange::Ty(_) => false,
+			StorageChange::Ty(ty) => ty.compatible(),
 			StorageChange::DefaultValue(_) => true,
 		};
 		trace!("Compat. | Storage: {res}");
@@ -82,10 +82,33 @@ impl Compatible for StorageChange {
 	}
 }
 
+impl Compatible for StorageTypeChange {
+	fn compatible(&self) -> bool {
+		let res = match self {
+			Self::BothPlain(ty) => ty.compatible(),
+			Self::BothMap { hashers, key, value } => hashers.is_unchanged() && key.compatible() && value.compatible(),
+			Self::Different(_, _) => false,
+		};
+		trace!("Compat. | StorageType: {res}");
+		res
+	}
+}
+
 impl Compatible for SignatureChange {
 	fn compatible(&self) -> bool {
-		let res = self.args.iter().map(|arg_changes| arg_changes.compatible()).all(|x| x);
+		let res = self.args.compatible();
 		trace!("Compat. | Signature: {res}");
+		res
+	}
+}
+
+impl<T: Compatible> Compatible for Changed<T> {
+	fn compatible(&self) -> bool {
+		let res = match self {
+			Changed::Unchanged => true,
+			Changed::Changed(x) => x.compatible(),
+		};
+		trace!("Compat. | {}: {res}", std::any::type_name::<Self>());
 		res
 	}
 }
@@ -93,7 +116,7 @@ impl Compatible for SignatureChange {
 impl<T: Compatible> Compatible for Vec<T> {
 	fn compatible(&self) -> bool {
 		let res = self.iter().map(|c| c.compatible()).all(|x| x);
-		trace!("Compat. | Vec<T>: {res}");
+		trace!("Compat. | {}: {res}", std::any::type_name::<Self>());
 		res
 	}
 }
@@ -117,7 +140,7 @@ impl<Key, Desc, Change: Compatible> Compatible for MapChange<Key, Desc, Change> 
 			MapChange::Removed(_key) => false,
 			MapChange::Changed(_key, change) => change.compatible(),
 		};
-		trace!("Compat. | MapChange: {res}");
+		trace!("Compat. | {}: {res}", std::any::type_name::<Self>());
 		res
 	}
 }
@@ -126,9 +149,25 @@ impl Compatible for ArgChange {
 	fn compatible(&self) -> bool {
 		let res = match self {
 			ArgChange::Name(_) => false,
-			ArgChange::Ty(_) => false,
+			ArgChange::Ty(ty) => ty.compatible(),
 		};
 		trace!("Compat. | ArgChange: {res}");
+		res
+	}
+}
+
+impl Compatible for HashedTypeChange {
+	fn compatible(&self) -> bool {
+		let res = match self {
+			// If only the name changed, then it is compatible.  This is to allow types to be renamed or moved to different modules.
+			HashedTypeChange::NameChanged(_) => true,
+			// If the name is the same and only the hash changed, then we can consider it compatible.
+			// This is needed because the `RuntimeCall` enum can change when new pallets or extrinsics are added.
+			HashedTypeChange::HashChanged(_) => true,
+			// If both name and hash changed then it is not compatible.
+			HashedTypeChange::NameAndHashChanged(_, _) => false,
+		};
+		trace!("Compat. | HashedTypeChange: {res}");
 		res
 	}
 }

@@ -1,15 +1,79 @@
 use super::prelude::*;
-use comparable::Comparable;
+use comparable::{Changed, Comparable, StringChange};
 use scale_info::{TypeDef, TypeDefPrimitive};
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
 
-#[derive(Debug, PartialEq, Serialize, Deserialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
-#[self_describing]
+#[derive(Debug, PartialEq, Serialize, Deserialize, Hash, PartialOrd, Ord, Eq, Clone)]
 pub struct HashedType {
 	pub ty: String,
-	#[comparable_ignore]
 	pub hashed: String,
+}
+
+impl HashedType {
+	/// Split the type name into a tuple of the path and the ident.
+	pub fn path_and_ident(&self) -> (String, String) {
+		let (name, generics) = match self.ty.split_once('<') {
+			Some((name, generics)) => (name, format!("<{}", generics)),
+			None => (self.ty.as_str(), "".to_string()),
+		};
+		let n = name.rsplit_once("::");
+		match n {
+			Some((prefix, ident)) => (prefix.to_string(), format!("{}{}", ident, generics)),
+			None => ("".to_string(), self.ty.clone()),
+		}
+	}
+
+	/// Return only the ident part of the type name.
+	pub fn ident(&self) -> String {
+		self.path_and_ident().1
+	}
+}
+
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
+pub enum HashedTypeChange {
+	NameChanged(StringChange),
+	HashChanged(StringChange),
+	NameAndHashChanged(StringChange, StringChange),
+}
+
+impl Comparable for HashedType {
+	type Desc = HashedType;
+
+	fn describe(&self) -> Self::Desc {
+		self.clone()
+	}
+
+	type Change = HashedTypeChange;
+
+	fn comparison(&self, other: &Self) -> Changed<Self::Change> {
+		let ty = match self.ty.comparison(&other.ty) {
+			Changed::Unchanged => None,
+			Changed::Changed(change) => Some(change),
+		};
+		let hashed = match self.hashed.comparison(&other.hashed) {
+			Changed::Unchanged => None,
+			Changed::Changed(change) => Some(change),
+		};
+		match (ty, hashed) {
+			(None, None) => Changed::Unchanged,
+			(Some(ty), None) => Changed::Changed(HashedTypeChange::NameChanged(ty)),
+			(None, Some(hashed)) => Changed::Changed(HashedTypeChange::HashChanged(hashed)),
+			(Some(ty), Some(hashed)) => Changed::Changed(HashedTypeChange::NameAndHashChanged(ty, hashed)),
+		}
+	}
+}
+
+/// Only show the full type names if the prefix is different.
+pub fn type_name_changed(name: &StringChange) -> String {
+	let n0 = name.0.rsplit_once("::");
+	let n1 = name.1.rsplit_once("::");
+	match (n0, n1) {
+		(Some((prefix0, ident0)), Some((prefix1, ident1))) if prefix0 == prefix1 => {
+			format!("{} -> {}", ident0, ident1)
+		}
+		_ => format!("{} -> {}", name.0, name.1),
+	}
 }
 
 impl From<&str> for HashedType {
@@ -20,13 +84,19 @@ impl From<&str> for HashedType {
 
 impl std::fmt::Display for HashedType {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		f.write_fmt(format_args!("{}", self.ty))
+		f.write_fmt(format_args!("{}", self.ident()))
 	}
 }
 
 impl std::fmt::Display for HashedTypeChange {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		f.write_fmt(format_args!("{} -> {}", self.ty.0, self.ty.1))
+		match self {
+			Self::NameChanged(name) => f.write_fmt(format_args!("Name changed: {}", type_name_changed(name))),
+			Self::HashChanged(_hash) => f.write_fmt(format_args!("Hash changed")),
+			Self::NameAndHashChanged(name, _hash) => {
+				f.write_fmt(format_args!("Name and Hash changed: {}", type_name_changed(name)))
+			}
+		}
 	}
 }
 
@@ -38,11 +108,6 @@ fn hash_type_impl(registry: &PortableRegistry, id: u32, hasher: &mut blake3::Has
 	}
 	seen.insert(id);
 	let ty = if let Some(ty) = registry.resolve(id) {
-		if ty.path.is_empty() {
-			log::trace!("Hashing type: {:?}", ty.type_def);
-		} else {
-			log::trace!("Hashing type: {}", ty.path);
-		}
 		ty
 	} else {
 		// This shouldn't happen, since the `id` should be in the registry.
@@ -51,6 +116,18 @@ fn hash_type_impl(registry: &PortableRegistry, id: u32, hasher: &mut blake3::Has
 		hasher.update(format!("Unknown_{id}").as_bytes());
 		return;
 	};
+
+	// For some top-level Substrate runtime types (like `*::runtime::RuntimeCall`), just use a fixed hash.
+	// This is so that adding pallets or extrinsics doesn't change the hash of the runtime.
+	if let Some(ident) = ty.path.ident() {
+		match ident.as_ref() {
+			"RuntimeCall" | "RuntimeEvent" => {
+				hasher.update(ident.as_bytes());
+				return;
+			}
+			_ => {}
+		}
+	}
 
 	match &ty.type_def {
 		TypeDef::Composite(def) => {
@@ -124,7 +201,7 @@ pub fn hash_type(registry: &PortableRegistry, id: u32) -> String {
 
 fn resolve_type_impl(registry: &PortableRegistry, id: u32) -> Option<String> {
 	let ty = registry.resolve(id)?;
-	let full_name = ty.path.to_string();
+	let full_name = ty.path.ident().unwrap_or_default();
 	if full_name.is_empty() {
 		// If `path` is empty we need to build the type name manually (i.e. for sequences Vec<T>, arrays [T; n], tuples (T1, T2,), etc..).
 		match &ty.type_def {

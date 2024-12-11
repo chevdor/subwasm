@@ -17,9 +17,7 @@ impl Compatible for DiffAnalyzer {
 					.map(|p| match p {
 						comparable::MapChange::Added(_key, _desc) => true,
 						comparable::MapChange::Removed(_key) => false,
-						comparable::MapChange::Changed(_key, change) => {
-							change.iter().map(|x| x.compatible()).all(|x| x)
-						}
+						comparable::MapChange::Changed(_key, change) => change.compatible(),
 					})
 					.all(|x| x),
 				ReducedRuntimeChange::Extrinsic(_extrinsic) => {
