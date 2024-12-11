@@ -84,20 +84,12 @@ impl RequireTransactionVersionBump for VecChange<Arg, Vec<ArgChange>> {
 	fn require_tx_version_bump(&self) -> bool {
 		let res = match self {
 			// If an arg is added/removed, the call will no longer be **compatible** but that does not require a tx_version bump
-			VecChange::Added(_size, _desc) => false,
-			VecChange::Removed(_size, _desc) => false,
+			VecChange::Added(_idx, _desc) => false,
+			VecChange::Removed(_idx, _desc) => false,
 
-			VecChange::Changed(_size, change) => change.require_tx_version_bump(),
+			VecChange::Changed(_idx, change) => change.require_tx_version_bump(),
 		};
 		trace!("TxBump | VecChange<...>: {res}");
-		res
-	}
-}
-
-impl<T: RequireTransactionVersionBump> RequireTransactionVersionBump for Vec<T> {
-	fn require_tx_version_bump(&self) -> bool {
-		let res = self.iter().map(|c| c.require_tx_version_bump()).any(|x| x);
-		trace!("TxBump | Vec<T>: {res}");
 		res
 	}
 }
@@ -112,6 +104,26 @@ impl RequireTransactionVersionBump for ArgChange {
 			ArgChange::Ty(_) => false,
 		};
 		trace!("TxBump | ArgChange: {res}");
+		res
+	}
+}
+
+impl<T: RequireTransactionVersionBump> RequireTransactionVersionBump for Vec<T> {
+	fn require_tx_version_bump(&self) -> bool {
+		let res = self.iter().map(|c| c.require_tx_version_bump()).any(|x| x);
+		trace!("TxBump | Vec<T>: {res}");
+		res
+	}
+}
+
+impl<Key, Desc, Change: RequireTransactionVersionBump> RequireTransactionVersionBump for MapChange<Key, Desc, Change> {
+	fn require_tx_version_bump(&self) -> bool {
+		let res = match self {
+			MapChange::Added(_key, _desc) => false,
+			MapChange::Removed(_key) => true,
+			MapChange::Changed(_key, change) => change.require_tx_version_bump(),
+		};
+		trace!("TxBump | {}: {res}", std::any::type_name::<Self>());
 		res
 	}
 }

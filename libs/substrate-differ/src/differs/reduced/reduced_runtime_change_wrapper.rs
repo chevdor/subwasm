@@ -1,5 +1,9 @@
 use super::{
-	reduced_pallet::*, reduced_pallet_change_wrapper::ReducedPalletChangeWrapper, reduced_runtime::*, ComparisonSide,
+	diff_analyzer::{Compatible, RequireTransactionVersionBump},
+	reduced_pallet::*,
+	reduced_pallet_change_wrapper::ReducedPalletChangeWrapper,
+	reduced_runtime::*,
+	ComparisonSide,
 };
 use crate::differs::reduced::calls::PalletId;
 use comparable::MapChange;
@@ -100,10 +104,16 @@ impl Display for ReducedRuntimeChangeWrapper {
 
 								writeln!(
 									f,
-									"[≠] pallet {id}: {name_a} -> {count} change(s)",
+									"[≠] pallet {id}: {name_a} -> {count} change(s){compatible}{bump_tx}",
 									id = pallet_id,
 									name_a = pallet_a_name,
-									count = ReducedRuntimeChangeWrapper::get_changes_count(changes)
+									count = ReducedRuntimeChangeWrapper::get_changes_count(changes),
+									compatible = if changes.compatible() { "" } else { " NOT COMPATIBLE" },
+									bump_tx = if changes.require_tx_version_bump() {
+										", REQUIRES TX VERSION BUMP"
+									} else {
+										""
+									}
 								)?;
 
 								for change in changes {

@@ -1,6 +1,7 @@
 use serde::Serialize;
 use std::fmt::Display;
 
+use super::diff_analyzer::{Compatible, RequireTransactionVersionBump};
 use super::reduced_pallet::*;
 
 #[derive(Debug, Serialize)]
@@ -37,8 +38,16 @@ impl<'a> ReducedPalletChangeWrapper<'a> {
 
 /// This macro helps formatting changes for a given pallet field.
 macro_rules! fmt_vec_changes {
-	( $self:ident, $f:ident, $field:ident, $changes:ident ) => {{
-		writeln!($f, "  - {} changes:", stringify!($field))?;
+	( $self:ident, $f:ident, $field:ident, $changes:ident, $bump_tx_check:ident ) => {{
+		writeln!(
+			$f,
+			"  - {} {count} change(s):{compatible}{bump_tx}",
+			stringify!($field),
+			count = $changes.len(),
+			compatible = if $changes.compatible() { "" } else { " NOT COMPATIBLE" },
+			bump_tx =
+				if $bump_tx_check && $changes.require_tx_version_bump() { ", REQUIRES TX VERSION BUMP" } else { "" }
+		)?;
 		let get_a = |id| $self.pallet_a.and_then(|p| p.$field.get(id));
 		let get_b = |id| $self.pallet_b.and_then(|p| p.$field.get(id));
 		for change in $changes {
@@ -52,6 +61,12 @@ macro_rules! fmt_vec_changes {
 					let indent: usize = 4;
 					writeln!($f, "{:indent$}[≠] OLD: {item_a:<20}", " ",)?;
 					writeln!($f, "{:indent$}    NEW: {item_b:<20}", " ",)?;
+					if !changes.compatible() {
+						writeln!($f, "{:indent$}    NOT COMPATIBLE", " ")?;
+					}
+					if $bump_tx_check && changes.require_tx_version_bump() {
+						writeln!($f, "{:indent$}    REQUIRES TX VERSION BUMP", " ")?;
+					}
 					for change in changes {
 						writeln!($f, "{:indent$}    CHANGES: {change}", " ")?;
 					}
@@ -72,12 +87,12 @@ impl<'a> Display for ReducedPalletChangeWrapper<'a> {
 			ReducedPalletChange::Index(c) => writeln!(f, "index: {c:?}"),
 			ReducedPalletChange::Name(c) => writeln!(f, "name: {c:?}"),
 
-			ReducedPalletChange::Calls(c) => fmt_vec_changes!(self, f, calls, c),
-			ReducedPalletChange::Events(c) => fmt_vec_changes!(self, f, events, c),
-			ReducedPalletChange::Errors(c) => fmt_vec_changes!(self, f, errors, c),
+			ReducedPalletChange::Calls(c) => fmt_vec_changes!(self, f, calls, c, true),
+			ReducedPalletChange::Events(c) => fmt_vec_changes!(self, f, events, c, false),
+			ReducedPalletChange::Errors(c) => fmt_vec_changes!(self, f, errors, c, false),
 
-			ReducedPalletChange::Constants(c) => fmt_vec_changes!(self, f, constants, c),
-			ReducedPalletChange::Storages(c) => fmt_vec_changes!(self, f, storages, c),
+			ReducedPalletChange::Constants(c) => fmt_vec_changes!(self, f, constants, c, false),
+			ReducedPalletChange::Storages(c) => fmt_vec_changes!(self, f, storages, c, false),
 		}
 	}
 }
