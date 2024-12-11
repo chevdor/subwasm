@@ -1,4 +1,4 @@
-use super::{prelude::*, ScaleType};
+use super::{hashed_type::HashedType, prelude::*};
 use comparable::Comparable;
 use serde::{Deserialize, Serialize};
 use std::fmt::{Debug, Display};
@@ -14,7 +14,7 @@ pub struct Constant {
 	pub value: Value,
 
 	/// Type
-	pub ty: ScaleType,
+	pub ty: HashedType,
 
 	/// Documentation of the constant.
 	#[comparable_ignore]
@@ -22,7 +22,7 @@ pub struct Constant {
 }
 
 impl Constant {
-	pub fn new(name: &str, ty: ScaleType, value: Vec<u8>, docs: Documentation) -> Self {
+	pub fn new(name: &str, ty: HashedType, value: Vec<u8>, docs: Documentation) -> Self {
 		Self { name: name.into(), ty, value, docs }
 	}
 }

@@ -21,6 +21,7 @@ scale-info = { version = "2.11.3", default-features = false, features = [
 frame-metadata = { version = "16", package = "frame-metadata", features = [
 	"std", "legacy"
 ] }
+blake3 = "1.5"
 
 [dev-dependencies]
 wasm-loader = { version = "0.21.3", path = "../wasm-loader" }

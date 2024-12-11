@@ -94,10 +94,10 @@ impl RequireTransactionVersionBump for VecChange<Arg, Vec<ArgChange>> {
 	}
 }
 
-impl RequireTransactionVersionBump for Vec<ArgChange> {
+impl<T: RequireTransactionVersionBump> RequireTransactionVersionBump for Vec<T> {
 	fn require_tx_version_bump(&self) -> bool {
 		let res = self.iter().map(|c| c.require_tx_version_bump()).any(|x| x);
-		trace!("TxBump | Vec<ArgChange>: {res}");
+		trace!("TxBump | Vec<T>: {res}");
 		res
 	}
 }

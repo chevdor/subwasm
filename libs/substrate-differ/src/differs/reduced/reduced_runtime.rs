@@ -5,7 +5,7 @@ use super::{
 };
 use crate::differs::reduced::calls::{
 	call::variant_to_calls, constant::Constant, error::variant_to_errors, event::variant_to_events,
-	signature::registry_resolve_type, storage::*,
+	hashed_type::resolve_type, storage::*,
 };
 use crate::error::*;
 use comparable::Comparable;
@@ -137,7 +137,7 @@ impl ReducedRuntime {
 			.constants
 			.iter()
 			.map(|i| {
-				let ty = registry_resolve_type(registry, i.ty.id, None);
+				let ty = resolve_type(registry, i.ty.id, None);
 				(i.name.clone(), Constant::new(&i.name, ty, i.value.clone(), i.docs.clone()))
 			})
 			.collect();

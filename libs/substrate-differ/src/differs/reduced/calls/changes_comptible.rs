@@ -90,10 +90,10 @@ impl Compatible for SignatureChange {
 	}
 }
 
-impl<Change: Compatible> Compatible for Vec<Change> {
+impl<T: Compatible> Compatible for Vec<T> {
 	fn compatible(&self) -> bool {
 		let res = self.iter().map(|c| c.compatible()).all(|x| x);
-		trace!("Compat. | Vec<Change>: {res}");
+		trace!("Compat. | Vec<T>: {res}");
 		res
 	}
 }

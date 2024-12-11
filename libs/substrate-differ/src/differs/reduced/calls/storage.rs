@@ -1,4 +1,5 @@
-use super::{prelude::*, registry_resolve_type, ScaleType};
+use super::hashed_type::*;
+use super::prelude::*;
 use comparable::{Changed, Comparable};
 use frame_metadata::v14::{StorageEntryType, StorageHasher};
 use serde::{Deserialize, Serialize};
@@ -58,15 +59,15 @@ impl Display for StorageChange {
 #[derive(Debug, PartialEq, Serialize, Deserialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
 #[self_describing]
 pub enum StorageType {
-	Plain(ScaleType),
-	Map { hashers: Vec<String>, key: ScaleType, value: ScaleType },
+	Plain(HashedType),
+	Map { hashers: Vec<String>, key: HashedType, value: HashedType },
 }
 
 impl StorageType {
 	pub fn from_v14_metadata(registry: &PortableRegistry, entry: &StorageEntryType<PortableForm>) -> Self {
 		match entry {
 			StorageEntryType::Plain(ty) => {
-				let ty = registry_resolve_type(registry, ty.id, None);
+				let ty = resolve_type(registry, ty.id, None);
 				StorageType::Plain(ty)
 			}
 			StorageEntryType::Map { hashers, key, value } => {
@@ -82,8 +83,8 @@ impl StorageType {
 						StorageHasher::Identity => "identity".to_string(),
 					})
 					.collect();
-				let key = registry_resolve_type(registry, key.id, None);
-				let value = registry_resolve_type(registry, value.id, None);
+				let key = resolve_type(registry, key.id, None);
+				let value = resolve_type(registry, value.id, None);
 				StorageType::Map { hashers, key, value }
 			}
 		}
