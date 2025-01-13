@@ -111,8 +111,9 @@ impl ReducedRuntime {
 		};
 
 		// storages
-		let storages = if let Some(item) = &p.storage {
-			item.entries
+		let (storage_prefix, storages) = if let Some(item) = &p.storage {
+			let entries = item
+				.entries
 				.iter()
 				.map(|e| {
 					(
@@ -126,10 +127,11 @@ impl ReducedRuntime {
 						},
 					)
 				})
-				.collect()
+				.collect();
+			(item.prefix.clone(), entries)
 		} else {
 			// println!("   {} has no storage", &p.name);
-			BTreeMap::new()
+			Default::default()
 		};
 
 		// constants
@@ -142,7 +144,16 @@ impl ReducedRuntime {
 			})
 			.collect();
 
-		Ok(ReducedPallet { index: p.index.into(), name: name.into(), calls, events, errors, constants, storages })
+		Ok(ReducedPallet {
+			index: p.index.into(),
+			name: name.into(),
+			storage_prefix,
+			calls,
+			events,
+			errors,
+			constants,
+			storages,
+		})
 	}
 
 	#[cfg(feature = "v14")]

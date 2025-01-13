@@ -8,6 +8,7 @@ impl Compatible for ReducedPalletChange {
 		let res = match self {
 			ReducedPalletChange::Index(_) => false,
 			ReducedPalletChange::Name(_) => false,
+			ReducedPalletChange::StoragePrefix(_) => false,
 
 			ReducedPalletChange::Calls(x) => x.compatible(),
 			ReducedPalletChange::Events(x) => x.compatible(),

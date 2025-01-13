@@ -86,6 +86,7 @@ impl<'a> Display for ReducedPalletChangeWrapper<'a> {
 		match self.changes {
 			ReducedPalletChange::Index(c) => writeln!(f, "index: {c:?}"),
 			ReducedPalletChange::Name(c) => writeln!(f, "name: {c:?}"),
+			ReducedPalletChange::StoragePrefix(c) => writeln!(f, "storage_prefix: {c:?}"),
 
 			ReducedPalletChange::Calls(c) => fmt_vec_changes!(self, f, calls, c, true),
 			ReducedPalletChange::Events(c) => fmt_vec_changes!(self, f, events, c, false),

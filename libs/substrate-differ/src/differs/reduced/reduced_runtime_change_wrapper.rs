@@ -60,7 +60,9 @@ impl ReducedRuntimeChangeWrapper {
 		let val = changes
 			.iter()
 			.map(|item| match item {
-				ReducedPalletChange::Index(_) | ReducedPalletChange::Name(_) => 1,
+				ReducedPalletChange::Index(_)
+				| ReducedPalletChange::Name(_)
+				| ReducedPalletChange::StoragePrefix(_) => 1,
 				ReducedPalletChange::Calls(x) => x.len(),
 				ReducedPalletChange::Events(x) => x.len(),
 				ReducedPalletChange::Errors(x) => x.len(),

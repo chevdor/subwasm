@@ -18,6 +18,7 @@ impl RequireTransactionVersionBump for ReducedPalletChange {
 				.any(|x| x),
 
 			ReducedPalletChange::Name(_) => false,
+			ReducedPalletChange::StoragePrefix(_) => false,
 			ReducedPalletChange::Events(_x) => false,
 			ReducedPalletChange::Errors(_x) => false,
 			ReducedPalletChange::Storages(_x) => false,

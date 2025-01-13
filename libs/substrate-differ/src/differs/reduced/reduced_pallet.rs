@@ -15,6 +15,9 @@ pub struct ReducedPallet {
 	/// Name of the pallet
 	pub name: String,
 
+	/// Storage prefix.
+	pub storage_prefix: String,
+
 	pub calls: BTreeMap<PalletId, Call>,
 	pub events: BTreeMap<PalletId, Event>,
 	pub errors: BTreeMap<PalletId, Error>,
@@ -67,6 +70,7 @@ impl Default for ReducedPallet {
 		Self {
 			index: 42,
 			name: String::new(),
+			storage_prefix: String::new(),
 			calls: BTreeMap::new(),
 			events: BTreeMap::new(),
 			errors: BTreeMap::new(),
