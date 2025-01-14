@@ -31,6 +31,10 @@ pub struct ReducedDiffResult {
 	require_transaction_version_bump: Option<bool>,
 
 	/// After computing the [changes] we analysis the content of the changes and set this flag depending
+	/// on whether the storage of any pallet has changed in a way that requires a migration.
+	require_storage_migration: Option<bool>,
+
+	/// After computing the [changes] we analysis the content of the changes and set this flag depending
 	/// on whether we consider the runtimes compatible or not.
 	compatible: Option<bool>,
 }
@@ -42,6 +46,7 @@ impl ReducedDiffResult {
 			runtime_b: Rc::new(rb),
 			changes: None,
 			require_transaction_version_bump: None,
+			require_storage_migration: None,
 			compatible: None,
 		};
 		instance.init()
@@ -62,13 +67,16 @@ impl ReducedDiffResult {
 		if let Some(changes) = &self.changes {
 			let da = DiffAnalyzer::new(changes.clone());
 			self.require_transaction_version_bump = Some(da.require_tx_version_bump());
+			self.require_storage_migration = Some(!da.is_storage_compatible());
 			self.compatible = Some(da.compatible());
 		} else {
 			self.require_transaction_version_bump = Some(false);
+			self.require_storage_migration = Some(false);
 			self.compatible = Some(true);
 		}
 
 		trace!("require_transaction_version_bump: {:?}", self.require_transaction_version_bump);
+		trace!("require_storage_migration: {:?}", self.require_storage_migration);
 		trace!("compatible: {:?}", self.compatible);
 		self
 	}
@@ -84,22 +92,27 @@ impl ReducedDiffResult {
 
 impl Display for ReducedDiffResult {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let _ = match &self.changes {
-			Some(changes) => f.write_fmt(format_args!("{changes}")),
-			None => f.write_str("No change detected\n"),
-		};
+		match &self.changes {
+			Some(changes) => f.write_fmt(format_args!("{changes}"))?,
+			None => f.write_str("No change detected\n")?,
+		}
 
-		let _ = f.write_fmt(format_args!("SUMMARY:\n"));
-		let _ = f.write_fmt(format_args!(
+		f.write_fmt(format_args!("SUMMARY:\n"))?;
+		f.write_fmt(format_args!(
 			"{:.<35}: {}\n",
 			"- Compatible",
 			self.compatible.map(|v| v.to_string()).unwrap_or(String::from("not computed"))
-		));
-		let _ = f.write_fmt(format_args!(
+		))?;
+		f.write_fmt(format_args!(
 			"{:.<35}: {}\n",
 			"- Require transaction_version bump",
 			self.require_transaction_version_bump.map(|v| v.to_string()).unwrap_or(String::from("n/a"))
-		));
+		))?;
+		f.write_fmt(format_args!(
+			"{:.<35}: {}\n",
+			"- Require storage migration",
+			self.require_storage_migration.map(|v| v.to_string()).unwrap_or(String::from("n/a"))
+		))?;
 		Ok(())
 	}
 }

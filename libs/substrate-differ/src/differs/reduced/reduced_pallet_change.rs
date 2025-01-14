@@ -1,9 +1,16 @@
-use super::reduced_pallet;
+use super::{diff_analyzer::Compatible, reduced_pallet};
 use comparable::MapChange;
 use reduced_pallet::*;
 use std::fmt::Display;
 
 impl ReducedPalletChange {
+	pub fn is_storage_compatible(&self) -> bool {
+		match self {
+			ReducedPalletChange::Storages(x) => x.compatible(),
+			_ => true,
+		}
+	}
+
 	// /// Get only the calls, or the events, etc...
 	pub fn filter_changed_items(changes: &[ReducedPalletChange], what: PalletItemType) -> Vec<&ReducedPalletChange> {
 		changes
