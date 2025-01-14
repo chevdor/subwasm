@@ -6,6 +6,7 @@ use std::fmt::Display;
 impl ReducedPalletChange {
 	pub fn is_storage_compatible(&self) -> bool {
 		match self {
+			ReducedPalletChange::StoragePrefix(_) => false,
 			ReducedPalletChange::Storages(x) => x.compatible(),
 			_ => true,
 		}

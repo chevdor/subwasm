@@ -85,6 +85,10 @@ impl ReducedDiffResult {
 		self.require_transaction_version_bump.expect("Dit not init run ?")
 	}
 
+	pub fn require_storage_migration(&self) -> bool {
+		self.require_storage_migration.expect("Dit not init run ?")
+	}
+
 	pub fn compatible(&self) -> bool {
 		self.compatible.expect("Dit not init run ?")
 	}
