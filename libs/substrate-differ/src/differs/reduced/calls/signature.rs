@@ -1,16 +1,18 @@
+use std::sync::Arc;
+
 use super::hashed_type::*;
 use super::prelude::*;
 use comparable::{Comparable, VecChange};
 use serde::{Deserialize, Serialize};
 
 /// Signature of a reduced call or event.
-#[derive(Debug, PartialEq, Serialize, Deserialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
+#[derive(Debug, PartialEq, Serialize, Deserialize, Comparable, Clone)]
 #[self_describing]
 pub struct Signature {
 	pub args: Vec<Arg>,
 }
 
-#[derive(Debug, PartialEq, Serialize, Deserialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
+#[derive(Debug, PartialEq, Serialize, Deserialize, Comparable, Clone)]
 #[self_describing]
 pub struct Arg {
 	pub name: String,
@@ -93,7 +95,7 @@ impl std::fmt::Display for ArgChange {
 	}
 }
 
-pub fn fields_to_args(registry: &PortableRegistry, fields: &[Field<PortableForm>]) -> Vec<Arg> {
+pub fn fields_to_args(registry: &Arc<PortableRegistry>, fields: &[Field<PortableForm>]) -> Vec<Arg> {
 	fields
 		.iter()
 		.map(|f| {

@@ -2,9 +2,10 @@ use super::{fields_to_args, prelude::*, signature::Signature};
 use comparable::Comparable;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+use std::sync::Arc;
 
 /// Reduced Call
-#[derive(Debug, PartialEq, Deserialize, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Comparable, PartialEq, Clone)]
 #[self_describing]
 pub struct Call {
 	pub index: ExtrinsicId,
@@ -40,7 +41,10 @@ impl std::fmt::Display for CallChange {
 // 	}
 // }
 
-pub fn variant_to_calls(registry: &PortableRegistry, td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Call> {
+pub fn variant_to_calls(
+	registry: &Arc<PortableRegistry>,
+	td: &TypeDefVariant<PortableForm>,
+) -> BTreeMap<PalletId, Call> {
 	td.variants
 		.iter()
 		.map(|vv| {

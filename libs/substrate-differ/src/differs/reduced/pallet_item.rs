@@ -2,7 +2,7 @@ use super::calls::{call::*, constant::*, error::*, event::*, storage::*};
 use comparable::Comparable;
 use std::fmt::Display;
 
-#[derive(Debug, PartialEq, Hash, Comparable, PartialOrd, Ord, Eq)]
+#[derive(Debug, Comparable)]
 /// A [PalletItem] is what [ReducedRuntime](super::reduced_runtime::ReducedRuntime) are made of.
 pub enum PalletItem {
 	Call(Call),

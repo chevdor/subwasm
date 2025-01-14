@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, fmt::Display};
 
 /// Reduced Error
-#[derive(Debug, PartialEq, Deserialize, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Comparable, PartialEq, Clone)]
 #[self_describing]
 pub struct Error {
 	pub index: ExtrinsicId,

@@ -4,9 +4,10 @@ use comparable::{Changed, Comparable};
 use frame_metadata::v14::{StorageEntryType, StorageHasher};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
+use std::sync::Arc;
 
 /// Reduced Storage
-#[derive(Debug, PartialEq, Deserialize, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Comparable, PartialEq, Clone)]
 #[self_describing]
 pub struct Storage {
 	pub name: String,
@@ -56,7 +57,7 @@ impl Display for StorageChange {
 // 	}
 // }
 
-#[derive(Debug, PartialEq, Serialize, Deserialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
+#[derive(Debug, Serialize, Deserialize, Comparable, PartialEq, Clone)]
 #[self_describing]
 pub enum StorageType {
 	Plain(HashedType),
@@ -64,7 +65,7 @@ pub enum StorageType {
 }
 
 impl StorageType {
-	pub fn from_v14_metadata(registry: &PortableRegistry, entry: &StorageEntryType<PortableForm>) -> Self {
+	pub fn from_v14_metadata(registry: &Arc<PortableRegistry>, entry: &StorageEntryType<PortableForm>) -> Self {
 		match entry {
 			StorageEntryType::Plain(ty) => {
 				let ty = resolve_type(registry, ty.id, None);

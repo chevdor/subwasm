@@ -17,6 +17,7 @@ use frame_metadata::{
 use scale_info::{form::PortableForm, PortableRegistry};
 use serde::Serialize;
 use std::fmt::Debug;
+use std::sync::Arc;
 use std::{
 	collections::{BTreeMap, HashMap},
 	fmt::Display,
@@ -25,7 +26,7 @@ use std::{
 pub type ReducedRuntimeError = String;
 pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
 
-#[derive(Debug, PartialEq, Comparable, Serialize)]
+#[derive(Debug, Comparable, Serialize)]
 pub struct ReducedRuntime {
 	pub extrinsic: ReducedExtrinsic,
 	pub pallets: HashMap<PalletId, ReducedPallet>,
@@ -49,7 +50,7 @@ impl ReducedRuntime {
 	#[cfg(feature = "v14")]
 	pub fn get_reduced_pallet_from_v14_pallet(
 		p: &PalletMetadata<PortableForm>,
-		registry: &PortableRegistry,
+		registry: &Arc<PortableRegistry>,
 	) -> crate::error::Result<ReducedPallet> {
 		let name = &p.name;
 
@@ -159,7 +160,7 @@ impl ReducedRuntime {
 	#[cfg(feature = "v14")]
 	/// Reduce a RuntimeMetadataV14 into a normalized ReducedRuntime
 	pub fn from_v14(v14: &v14::RuntimeMetadataV14) -> Result<Self> {
-		let registry = &v14.types;
+		let registry = Arc::new(v14.types.clone());
 
 		// TODO: deal with extrinsic as well
 		let extrinsic = &v14.extrinsic;
@@ -169,7 +170,7 @@ impl ReducedRuntime {
 		let reduced_pallets = pallets
 			.iter()
 			.map(|p| {
-				let reduced_pallet = ReducedRuntime::get_reduced_pallet_from_v14_pallet(p, registry);
+				let reduced_pallet = ReducedRuntime::get_reduced_pallet_from_v14_pallet(p, &registry);
 				let index = match &reduced_pallet {
 					Ok(p) => p.index,
 					Err(_) => 0,

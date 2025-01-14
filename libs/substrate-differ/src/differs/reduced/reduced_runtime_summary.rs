@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::{collections::BTreeMap, fmt::Display};
 
 use super::{calls::prelude::*, prelude::*};
 use serde::Serialize;
@@ -8,7 +8,7 @@ pub struct ReducedRuntimeSummary {
 	pallets: Vec<ReducedPalletSummary>,
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Serialize)]
 pub struct ReducedPalletSummary {
 	id: PalletId,
 	name: String,
@@ -52,9 +52,8 @@ impl Display for ReducedRuntimeSummary {
 		let _ =
 			writeln!(fmt, "            ---------------------------------------------------------------------------",);
 
-		let mut pallets = self.pallets.clone();
-		pallets.sort();
-		for pallet in &pallets {
+		let pallets = self.pallets.iter().map(|p| (p.id, p)).collect::<BTreeMap<_, _>>();
+		for pallet in pallets.into_values() {
 			let _ = writeln!(fmt, "{pallet}");
 		}
 		Ok(())

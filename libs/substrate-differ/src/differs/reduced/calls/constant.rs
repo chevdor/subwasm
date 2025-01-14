@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::fmt::{Debug, Display};
 
 /// Reduced Constant
-#[derive(Debug, Deserialize, Serialize, Hash, Comparable, PartialOrd, Ord, PartialEq, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Comparable, PartialEq, Clone)]
 #[self_describing]
 pub struct Constant {
 	/// Name

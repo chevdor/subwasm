@@ -1,10 +1,10 @@
 use super::{fields_to_args, prelude::*, signature::Signature};
 use comparable::Comparable;
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, sync::Arc};
 
 /// Reduced Event
-#[derive(Debug, PartialEq, Deserialize, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Comparable, PartialEq, Clone)]
 #[self_describing]
 pub struct Event {
 	pub index: ExtrinsicId,
@@ -33,7 +33,10 @@ impl std::fmt::Display for EventChange {
 	}
 }
 
-pub fn variant_to_events(registry: &PortableRegistry, td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Event> {
+pub fn variant_to_events(
+	registry: &Arc<PortableRegistry>,
+	td: &TypeDefVariant<PortableForm>,
+) -> BTreeMap<PalletId, Event> {
 	td.variants
 		.iter()
 		.map(|vv| {

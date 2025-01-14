@@ -1,6 +1,6 @@
 use super::{call::*, constant::*, error::*, event::*, hashed_type::HashedTypeChange, signature::*, storage::*};
 use crate::differs::reduced::{diff_analyzer::Compatible, prelude::ReducedPalletChange};
-use comparable::{Changed, MapChange, VecChange};
+use comparable::{Changed, MapChange, StringChange, VecChange};
 use log::trace;
 
 impl Compatible for ReducedPalletChange {
@@ -149,7 +149,14 @@ impl<Key, Desc, Change: Compatible> Compatible for MapChange<Key, Desc, Change> 
 impl Compatible for ArgChange {
 	fn compatible(&self) -> bool {
 		let res = match self {
-			ArgChange::Name(_) => false,
+			ArgChange::Name(StringChange(old, new)) => {
+				// Ignore underscore prefix change.
+				if old.trim_start_matches('_') == new.trim_start_matches('_') {
+					true
+				} else {
+					false
+				}
+			}
 			ArgChange::Ty(ty) => ty.compatible(),
 		};
 		trace!("Compat. | ArgChange: {res}");
@@ -160,11 +167,12 @@ impl Compatible for ArgChange {
 impl Compatible for HashedTypeChange {
 	fn compatible(&self) -> bool {
 		let res = match self {
+			// The type changed.
+			HashedTypeChange::TypeChanged(_) => false,
 			// If only the name changed, then it is compatible.  This is to allow types to be renamed or moved to different modules.
 			HashedTypeChange::NameChanged(_) => true,
-			// If the name is the same and only the hash changed, then we can consider it compatible.
-			// This is needed because the `RuntimeCall` enum can change when new pallets or extrinsics are added.
-			HashedTypeChange::HashChanged(_) => true,
+			// If the type hash changed, then it is not compatible.
+			HashedTypeChange::HashChanged(_) => false,
 			// If both name and hash changed then it is not compatible.
 			HashedTypeChange::NameAndHashChanged(_, _) => false,
 		};
