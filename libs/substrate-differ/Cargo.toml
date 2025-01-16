@@ -9,7 +9,7 @@ log = "0.4"
 num-format = "0.4"
 serde_json = "1.0"
 document-features = { version = "0.2" }
-thiserror = "1.0"
+thiserror = "2.0.11"
 serde = { version = "1.0", features = ["derive", "rc"] }
 comparable = { version = ">=0.5.3", features = ["derive", "serde"] }
 wasm-testbed = { version = "0.21.3", path = "../wasm-testbed" }
@@ -18,7 +18,7 @@ scale-info = { version = "2.11.3", default-features = false, features = [
 	"std",
 	"serde",
 ] }
-frame-metadata = { version = "16", package = "frame-metadata", features = [
+frame-metadata = { version = "18", package = "frame-metadata", features = [
 	"std", "legacy"
 ] }
 

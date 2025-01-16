@@ -20,12 +20,12 @@ repository = "https://github.com/chevdor/subwasm"
 [dependencies]
 hex = "0.4"
 blake2 = "0.10"
-thiserror = "1.0"
+thiserror = "2.0.11"
 codec = { version = "3.1", package = "parity-scale-codec" }
-sp-core = "34.0.0"
-sp-io = "38.0.0"
-sp-runtime = "39.0.0"
+sp-core = "35.0.0"
+sp-io = "39.0.0"
+sp-runtime = "40.0.0"
 sp-wasm-interface = "21.0.0"
-frame-metadata = { version = "16", package = "frame-metadata", features = [
+frame-metadata = { version = "18", package = "frame-metadata", features = [
 	"std",
 ] }

@@ -229,7 +229,6 @@ impl WasmTestBed {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use sp_runtime::RuntimeString;
 	use std::path::PathBuf;
 
 	const WASM_NO_SUBSTRATE: &str = "../../data/wasm/qjs.wasm";
@@ -314,8 +313,8 @@ mod tests {
 			assert!(runtime.is_supported());
 
 			let v = &runtime.core_version;
-			assert!(v.spec_name == RuntimeString::from("kusama"));
-			assert!(v.impl_name == RuntimeString::from("parity-kusama"));
+			assert!(v.spec_name == String::from("kusama"));
+			assert!(v.impl_name == String::from("parity-kusama"));
 			assert!(v.authoring_version == 2);
 			assert!(v.spec_version == 1062);
 			assert!(v.impl_version == 0);
@@ -342,8 +341,8 @@ mod tests {
 			assert!(runtime.is_supported());
 
 			let v = &runtime.core_version;
-			assert!(v.spec_name == RuntimeString::from("kusama"));
-			assert!(v.impl_name == RuntimeString::from("parity-kusama"));
+			assert!(v.spec_name == String::from("kusama"));
+			assert!(v.impl_name == String::from("parity-kusama"));
 			assert!(v.authoring_version == 2);
 			assert!(v.spec_version == 2030);
 			assert!(v.impl_version == 0);
