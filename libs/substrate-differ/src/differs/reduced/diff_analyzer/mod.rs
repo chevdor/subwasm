@@ -2,7 +2,10 @@ mod compatible;
 mod require_tx_version_bump;
 mod traits;
 
+use log::trace;
 pub use traits::*;
+
+use crate::differs::reduced::prelude::ReducedRuntimeChange;
 
 use super::{calls::PalletId, changed_wapper::ChangedWrapper, reduced_pallet::*};
 use comparable::MapChange;
@@ -26,6 +29,38 @@ impl DiffAnalyzer {
 		pallet_id: u32,
 	) -> Option<&MapChange<PalletId, ReducedPalletDesc, Vec<ReducedPalletChange>>> {
 		self.changes.get_pallet_changes_by_id(pallet_id)
+	}
+
+	pub fn is_storage_compatible(&self) -> bool {
+		if self.changes.0.changes.is_empty() {
+			return true;
+		}
+
+		let res = self
+			.changes
+			.0
+			.changes
+			.iter()
+			.map(|change| match change {
+				ReducedRuntimeChange::Pallets(pallets) => pallets
+					.iter()
+					.map(|p| match p {
+						comparable::MapChange::Added(_key, _desc) => true,
+						comparable::MapChange::Removed(_key) => {
+							trace!("IsStorageCompatible | Removed pallet needs migration to clear its storage");
+							false
+						}
+						comparable::MapChange::Changed(_key, change) => {
+							// check changed pallets for storage compatibility
+							change.iter().map(|x| x.is_storage_compatible()).all(|x| x)
+						}
+					})
+					.all(|x| x),
+				ReducedRuntimeChange::Extrinsic(_) => true,
+			})
+			.all(|x| x);
+		trace!("IsStorageCompatible | Analyzer: {res}");
+		res
 	}
 }
 
