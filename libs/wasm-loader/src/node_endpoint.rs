@@ -2,7 +2,7 @@ use url::Url;
 
 use crate::error::{self};
 use error::*;
-use std::str::FromStr;
+use std::{fmt::Display, str::FromStr};
 
 /// A [`NodeEndpoint`] can be either `Http` or `WebSocket`.
 #[derive(Debug, Clone, PartialEq)]
@@ -21,11 +21,12 @@ impl NodeEndpoint {
 	}
 }
 
-impl ToString for NodeEndpoint {
-	fn to_string(&self) -> String {
-		String::from(match self {
+impl Display for NodeEndpoint {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		let s = String::from(match self {
 			Self::Http(s) | Self::WebSocket(s) => s,
-		})
+		});
+		f.write_str(&s)
 	}
 }
 
