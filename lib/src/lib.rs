@@ -15,7 +15,9 @@ mod types;
 mod utils;
 
 use std::{fs::File, io::prelude::*, path::PathBuf, str::FromStr};
-use substrate_differ::differs::reduced::{reduced_diff_result::ReducedDiffResult, reduced_runtime::ReducedRuntime};
+use substrate_differ::differs::reduced::{
+	reduced_diff_result::ReducedDiffResult, reduced_import::ReducedImport, reduced_runtime::ReducedRuntime,
+};
 use url::Url;
 use wasm_loader::{BlockRef, Compression, NodeEndpoint, OnchainBlock, Source, WasmLoader};
 use wasm_testbed::WasmTestBed;
@@ -82,6 +84,17 @@ pub fn download_runtime(
 	Ok(outfile)
 }
 
+fn extract_reduced_imports(testbed: &WasmTestBed) -> std::collections::BTreeMap<String, ReducedImport> {
+	testbed
+		.imports()
+		.into_iter()
+		.map(|(module, name)| {
+			let key = format!("{module}.{name}");
+			(key, ReducedImport { module, name })
+		})
+		.collect()
+}
+
 /// Compute the diff of 2 runtimes
 pub fn reduced_diff(src_a: Source, src_b: Source) -> Result<ReducedDiffResult> {
 	log::debug!("REDUCED: Loading WASM runtimes:");
@@ -90,8 +103,11 @@ pub fn reduced_diff(src_a: Source, src_b: Source) -> Result<ReducedDiffResult> {
 	log::info!("  🅱️  {:?}", src_b);
 	let runtime_b = WasmTestBed::new(&src_b)?;
 
-	let ra = ReducedRuntime::from(runtime_a.metadata());
-	let rb = ReducedRuntime::from(runtime_b.metadata());
+	let imports_a = extract_reduced_imports(&runtime_a);
+	let imports_b = extract_reduced_imports(&runtime_b);
+
+	let ra = ReducedRuntime::from(runtime_a.metadata()).with_imports(imports_a);
+	let rb = ReducedRuntime::from(runtime_b.metadata()).with_imports(imports_b);
 
 	Ok(ReducedDiffResult::new(ra, rb))
 }

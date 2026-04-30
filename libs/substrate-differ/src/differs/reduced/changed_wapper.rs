@@ -19,6 +19,7 @@ impl ChangedWrapper {
 			.filter_map(|c| match c {
 				ReducedRuntimeChange::Extrinsic(_) => None,
 				ReducedRuntimeChange::Pallets(p) => Some(p),
+				ReducedRuntimeChange::Imports(_) => None,
 			})
 			.flatten()
 			.collect()
@@ -38,7 +39,8 @@ impl ChangedWrapper {
 			.changes
 			.iter()
 			.flat_map(|change| match change {
-				ReducedRuntimeChange::Extrinsic(_ex) => None,
+				ReducedRuntimeChange::Extrinsic(_) => None,
+				ReducedRuntimeChange::Imports(_) => None,
 				ReducedRuntimeChange::Pallets(pallets) => pallets.iter().find(|&map_change| {
 					matches!(map_change,
 							MapChange::Added(id, _) |
