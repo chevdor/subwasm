@@ -4,6 +4,7 @@ pub mod changes_require_txver_bump;
 pub mod constant;
 pub mod error;
 pub mod event;
+pub mod hashed_type;
 pub mod prelude;
 pub mod signature;
 pub mod storage;

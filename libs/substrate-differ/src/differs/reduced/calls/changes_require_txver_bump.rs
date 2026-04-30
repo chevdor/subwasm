@@ -8,13 +8,17 @@ impl RequireTransactionVersionBump for ReducedPalletChange {
 		let res = match self {
 			ReducedPalletChange::Index(_) => true,
 
-			ReducedPalletChange::Calls(x) => x.iter().any(|i| match i {
-				MapChange::Added(_k, _d) => false,
-				MapChange::Removed(_k) => true,
-				MapChange::Changed(_k, c) => c.iter().any(|cc| cc.require_tx_version_bump()),
-			}),
+			ReducedPalletChange::Calls(x) => x
+				.iter()
+				.map(|i| match i {
+					MapChange::Added(_k, _d) => false,
+					MapChange::Removed(_k) => true,
+					MapChange::Changed(_k, c) => c.iter().map(|cc| cc.require_tx_version_bump()).any(|x| x),
+				})
+				.any(|x| x),
 
 			ReducedPalletChange::Name(_) => false,
+			ReducedPalletChange::StoragePrefix(_) => false,
 			ReducedPalletChange::Events(_x) => false,
 			ReducedPalletChange::Errors(_x) => false,
 			ReducedPalletChange::Storages(_x) => false,
@@ -71,30 +75,22 @@ impl RequireTransactionVersionBump for StorageChange {
 
 impl RequireTransactionVersionBump for SignatureChange {
 	fn require_tx_version_bump(&self) -> bool {
-		let res = self.args.iter().any(|arg_changes| arg_changes.require_tx_version_bump());
+		let res = self.args.iter().map(|arg_changes| arg_changes.require_tx_version_bump()).any(|x| x);
 		trace!("TxBump | SignatureChange: {res}");
 		res
 	}
 }
 
-impl RequireTransactionVersionBump for VecChange<ArgDesc, Vec<ArgChange>> {
+impl RequireTransactionVersionBump for VecChange<Arg, Vec<ArgChange>> {
 	fn require_tx_version_bump(&self) -> bool {
 		let res = match self {
 			// If an arg is added/removed, the call will no longer be **compatible** but that does not require a tx_version bump
-			VecChange::Added(_size, _desc) => false,
-			VecChange::Removed(_size, _desc) => false,
+			VecChange::Added(_idx, _desc) => false,
+			VecChange::Removed(_idx, _desc) => false,
 
-			VecChange::Changed(_size, change) => change.require_tx_version_bump(),
+			VecChange::Changed(_idx, change) => change.require_tx_version_bump(),
 		};
 		trace!("TxBump | VecChange<...>: {res}");
-		res
-	}
-}
-
-impl RequireTransactionVersionBump for Vec<ArgChange> {
-	fn require_tx_version_bump(&self) -> bool {
-		let res = self.iter().any(|c| c.require_tx_version_bump());
-		trace!("TxBump | Vec<ArgChange>: {res}");
 		res
 	}
 }
@@ -109,6 +105,26 @@ impl RequireTransactionVersionBump for ArgChange {
 			ArgChange::Ty(_) => false,
 		};
 		trace!("TxBump | ArgChange: {res}");
+		res
+	}
+}
+
+impl<T: RequireTransactionVersionBump> RequireTransactionVersionBump for Vec<T> {
+	fn require_tx_version_bump(&self) -> bool {
+		let res = self.iter().map(|c| c.require_tx_version_bump()).any(|x| x);
+		trace!("TxBump | Vec<T>: {res}");
+		res
+	}
+}
+
+impl<Key, Desc, Change: RequireTransactionVersionBump> RequireTransactionVersionBump for MapChange<Key, Desc, Change> {
+	fn require_tx_version_bump(&self) -> bool {
+		let res = match self {
+			MapChange::Added(_key, _desc) => false,
+			MapChange::Removed(_key) => true,
+			MapChange::Changed(_key, change) => change.require_tx_version_bump(),
+		};
+		trace!("TxBump | {}: {res}", std::any::type_name::<Self>());
 		res
 	}
 }

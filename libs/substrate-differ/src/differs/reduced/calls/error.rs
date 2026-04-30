@@ -1,10 +1,11 @@
 use super::prelude::*;
 use comparable::Comparable;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, fmt::Display};
 
 /// Reduced Error
-#[derive(Debug, PartialEq, Serialize, Hash, Comparable, PartialOrd, Ord, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Comparable, PartialEq, Clone)]
+#[self_describing]
 pub struct Error {
 	pub index: ExtrinsicId,
 	pub name: String,
@@ -21,11 +22,11 @@ impl Display for Error {
 	}
 }
 
-// impl Display for ErrorChange {
-// 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-// 		f.write_fmt(format_args!("ERR {self}"))
-// 	}
-// }
+impl std::fmt::Display for ErrorChange {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		f.write_fmt(format_args!("{self:?}"))
+	}
+}
 
 pub fn variant_to_errors(td: &TypeDefVariant<PortableForm>) -> BTreeMap<PalletId, Error> {
 	td.variants

@@ -7,18 +7,26 @@ impl Compatible for DiffAnalyzer {
 			return true;
 		}
 
-		self.changes.0.changes.iter().all(|change| match change {
-			ReducedRuntimeChange::Pallets(pallets) => pallets.iter().all(|p| match p {
-				comparable::MapChange::Added(_key, _desc) => true,
-				comparable::MapChange::Removed(_key) => false,
-				comparable::MapChange::Changed(_key, change) => change.iter().all(|x| x.compatible()),
-			}),
-			ReducedRuntimeChange::Extrinsic(_extrinsic) => {
-				// TODO  todo!("Extrinsic diff not implemented yet and usually does not change")
+		self.changes
+			.0
+			.changes
+			.iter()
+			.map(|change| match change {
+				ReducedRuntimeChange::Pallets(pallets) => pallets
+					.iter()
+					.map(|p| match p {
+						comparable::MapChange::Added(_key, _desc) => true,
+						comparable::MapChange::Removed(_key) => false,
+						comparable::MapChange::Changed(_key, change) => change.compatible(),
+					})
+					.all(|x| x),
+				ReducedRuntimeChange::Extrinsic(_extrinsic) => {
+					// TODO  todo!("Extrinsic diff not implemented yet and usually does not change")
 
-				// Until implemented, we want this path to be transparent
-				true
-			}
-		})
+					// Until implemented, we want this path to be transparent
+					true
+				}
+			})
+			.all(|x| x)
 	}
 }

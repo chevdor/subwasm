@@ -7,7 +7,7 @@ use std::{collections::BTreeMap, fmt::Display};
 /// A [ReducedPallet] could be a `Vec` or [PalletItem] but it ends
 /// but providing a much more useful output after diffing when using
 /// separated fields.
-#[derive(Debug, PartialEq, Hash, Comparable, Serialize, Clone)]
+#[derive(Debug, Comparable, Serialize, Clone)]
 pub struct ReducedPallet {
 	/// Index of the pallet
 	pub index: PalletId,
@@ -15,18 +15,15 @@ pub struct ReducedPallet {
 	/// Name of the pallet
 	pub name: String,
 
+	/// Storage prefix.
+	pub storage_prefix: String,
+
 	pub calls: BTreeMap<PalletId, Call>,
 	pub events: BTreeMap<PalletId, Event>,
 	pub errors: BTreeMap<PalletId, Error>,
 
 	pub constants: BTreeMap<String, Constant>,
 	pub storages: BTreeMap<String, Storage>,
-}
-
-impl PartialOrd for ReducedPallet {
-	fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-		self.index.partial_cmp(&other.index)
-	}
 }
 
 macro_rules! display_pallet_items {
@@ -67,6 +64,7 @@ impl Default for ReducedPallet {
 		Self {
 			index: 42,
 			name: String::new(),
+			storage_prefix: String::new(),
 			calls: BTreeMap::new(),
 			events: BTreeMap::new(),
 			errors: BTreeMap::new(),

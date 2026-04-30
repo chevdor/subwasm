@@ -3,7 +3,7 @@ use frame_metadata::v14::{ExtrinsicMetadata, SignedExtensionMetadata};
 use scale_info::form::PortableForm;
 use serde::Serialize;
 
-#[derive(Debug, PartialEq, Hash, Comparable, Serialize, Clone)]
+#[derive(Debug, Comparable, Serialize, Clone)]
 pub struct ReducedExtrinsic {
 	version: u8,
 	signed_extensions: Vec<ReducedSignedExtension>,
@@ -19,7 +19,7 @@ impl ReducedExtrinsic {
 }
 
 // TODO:
-#[derive(Debug, PartialEq, Hash, Comparable, Serialize, Clone)]
+#[derive(Debug, Comparable, PartialEq, Serialize, Clone)]
 pub struct ReducedSignedExtension {
 	identifier: String,
 	// additional_signed: Unknown,
