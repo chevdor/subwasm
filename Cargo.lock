@@ -5290,6 +5290,7 @@ dependencies = [
  "substrate-runtime-proposal-hash",
  "thiserror 2.0.11",
  "wasm-loader",
+ "wasmparser",
 ]
 
 [[package]]

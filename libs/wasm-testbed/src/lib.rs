@@ -219,6 +219,20 @@ impl WasmTestBed {
 		Ok(format!("0x{}", hex::encode(result)))
 	}
 
+	/// Extract WASM imports (host functions) from the binary.
+	pub fn imports(&self) -> Vec<(String, String)> {
+		use wasmparser::{Parser, Payload};
+		let mut imports = Vec::new();
+		for payload in Parser::new(0).parse_all(&self.wasm) {
+			if let Ok(Payload::ImportSection(reader)) = payload {
+				for import in reader.into_iter().flatten() {
+					imports.push((import.module.to_string(), import.name.to_string()));
+				}
+			}
+		}
+		imports
+	}
+
 	/// Compute the blake2-256 hash of the runtime
 	pub fn blake2_256_hash(&self) -> Result<String> {
 		let result = BlakeTwo256::hash(&self.bytes);

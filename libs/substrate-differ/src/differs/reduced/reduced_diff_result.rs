@@ -1,4 +1,4 @@
-use comparable::Comparable;
+use comparable::{Comparable, MapChange};
 use log::trace;
 use serde::Serialize;
 use std::rc::Rc;
@@ -6,7 +6,7 @@ use std::rc::Rc;
 use super::{
 	changed_wapper::ChangedWrapper,
 	diff_analyzer::{Compatible, DiffAnalyzer, RequireTransactionVersionBump},
-	reduced_runtime::ReducedRuntime,
+	reduced_runtime::{ReducedRuntime, ReducedRuntimeChange},
 	reduced_runtime_change_wrapper::ReducedRuntimeChangeWrapper,
 };
 use std::fmt::Display;
@@ -92,6 +92,14 @@ impl ReducedDiffResult {
 	pub fn compatible(&self) -> bool {
 		self.compatible.expect("Dit not init run ?")
 	}
+
+	fn count_new_imports(&self) -> usize {
+		let Some(changes) = &self.changes else { return 0 };
+		changes.0.changes.iter().map(|c| match c {
+			ReducedRuntimeChange::Imports(imports) => imports.iter().filter(|i| matches!(i, MapChange::Added(..))).count(),
+			_ => 0,
+		}).sum()
+	}
 }
 
 impl Display for ReducedDiffResult {
@@ -117,6 +125,15 @@ impl Display for ReducedDiffResult {
 			"- Require storage migration",
 			self.require_storage_migration.map(|v| v.to_string()).unwrap_or(String::from("n/a"))
 		))?;
+
+		let new_imports = self.count_new_imports();
+		if new_imports > 0 {
+			f.write_fmt(format_args!(
+				"{:.<35}: {} (node must support them)\n",
+				"- New host fn imports", new_imports
+			))?;
+		}
+
 		Ok(())
 	}
 }

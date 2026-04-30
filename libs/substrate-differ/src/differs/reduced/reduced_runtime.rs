@@ -1,6 +1,7 @@
 use super::{
 	calls::{call::Call, error::Error, event::Event, prelude::PalletId},
 	reduced_extrinsic::ReducedExtrinsic,
+	reduced_import::ReducedImport,
 	reduced_pallet::ReducedPallet,
 };
 use crate::differs::reduced::calls::{
@@ -30,11 +31,17 @@ pub type Result<T> = core::result::Result<T, ReducedRuntimeError>;
 pub struct ReducedRuntime {
 	pub extrinsic: ReducedExtrinsic,
 	pub pallets: HashMap<PalletId, ReducedPallet>,
+	pub imports: BTreeMap<String, ReducedImport>,
 }
 
 impl ReducedRuntime {
 	pub fn new(extrinsic: ReducedExtrinsic, pallets: HashMap<PalletId, ReducedPallet>) -> Self {
-		Self { extrinsic, pallets }
+		Self { extrinsic, pallets, imports: BTreeMap::new() }
+	}
+
+	pub fn with_imports(mut self, imports: BTreeMap<String, ReducedImport>) -> Self {
+		self.imports = imports;
+		self
 	}
 
 	#[cfg(feature = "v13")]
@@ -221,6 +228,13 @@ impl Display for ReducedRuntime {
 		self.pallets.iter().for_each(|(_id, pallet)| {
 			let _ = writeln!(f, "{pallet}");
 		});
+
+		if !self.imports.is_empty() {
+			let _ = writeln!(f, "Imports ({}):", self.imports.len());
+			self.imports.iter().for_each(|(key, _import)| {
+				let _ = writeln!(f, "  - {key}");
+			});
+		}
 
 		Ok(())
 	}

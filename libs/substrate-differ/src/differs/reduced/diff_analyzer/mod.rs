@@ -57,6 +57,7 @@ impl DiffAnalyzer {
 					})
 					.all(|x| x),
 				ReducedRuntimeChange::Extrinsic(_) => true,
+				ReducedRuntimeChange::Imports(_) => true, // host-fn imports don't affect storage layout
 			})
 			.all(|x| x);
 		trace!("IsStorageCompatible | Analyzer: {res}");

@@ -126,6 +126,21 @@ impl Display for ReducedRuntimeChangeWrapper {
 						}
 					}
 				}
+				ReducedRuntimeChange::Imports(imports) => {
+					imports.iter().for_each(|mc| {
+						match mc {
+							MapChange::Added(_key, desc) => {
+								let _ = writeln!(f, "[+] new import: {}.{}", desc.module, desc.name);
+							}
+							MapChange::Removed(key) => {
+								let _ = writeln!(f, "[-] removed import: {key}");
+							}
+							MapChange::Changed(key, _changes) => {
+								let _ = writeln!(f, "[≠] changed import: {key}");
+							}
+						}
+					});
+				}
 			}
 		}
 

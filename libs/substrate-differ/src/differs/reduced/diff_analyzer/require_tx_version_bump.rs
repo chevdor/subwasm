@@ -19,24 +19,10 @@ impl RequireTransactionVersionBump for DiffAnalyzer {
 				ReducedRuntimeChange::Extrinsic(_extrinsic) => {
 					eprintln!("Extrinsic diff is not implemented yet but subwasm spotted some changes.");
 					eprintln!("This is normal if you compare different chains.");
-					// todo!("Extrinsic diff not implemented yet and usually does not change")
-					// 		extrinsic.iter().map(|p| match p {
-					// 	ReducedExtrinsicChange::Version(version) => {
-					// 		// match versiopn {
-					// 		// }
-					// 		true
-					// 	},
-					// 	ReducedExtrinsicChange::SignedExtensions(signed_extensions) => {
-					// 		// match signed_extensions {
-					// 			// }
-					// 		true
-					// 	},
-					// }).any(|x| x),
-					// }
-
 					// Until implemented, we want this path to be transparent
 					false
 				}
+				ReducedRuntimeChange::Imports(_) => false, // import changes don't affect tx format
 			}
 		});
 		trace!("TxBump | Analyzer: {res}");

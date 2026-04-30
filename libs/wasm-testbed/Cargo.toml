@@ -38,3 +38,4 @@ scale-info = { version = "2.11.3", default-features = false, features = [
 frame-metadata = { version = "18", package = "frame-metadata", features = [
 	"std",
 ] }
+wasmparser = "0.102"

@@ -26,6 +26,14 @@ impl Compatible for DiffAnalyzer {
 					// Until implemented, we want this path to be transparent
 					true
 				}
+				ReducedRuntimeChange::Imports(imports) => imports
+					.iter()
+					.map(|i| match i {
+						comparable::MapChange::Added(_key, _desc) => false, // new import = node must support it
+						comparable::MapChange::Removed(_key) => true,
+						comparable::MapChange::Changed(_key, _changes) => true,
+					})
+					.all(|x| x),
 			})
 			.all(|x| x)
 	}
